@@ -25,6 +25,9 @@ etc/user.properties
 # Test files
 etc/testconf.txt
 
+# Local log files
+log/*
+
 # External tool builders
 .externalToolBuilders/
 
