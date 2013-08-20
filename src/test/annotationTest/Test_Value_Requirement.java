@@ -1,6 +1,5 @@
 package test.annotationTest;
 
-
 import annotations.Requirement;
 
 public class Test_Value_Requirement extends Requirement {

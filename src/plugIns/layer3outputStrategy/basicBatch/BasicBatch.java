@@ -1,8 +1,6 @@
 package plugIns.layer3outputStrategy.basicBatch;
 
-import test.annotationTest.SimulationEndRequirement;
 import test.annotationTest.Test_Value_Requirement;
-import annotations.BoolSimulationProperty;
 import annotations.IntSimulationProperty;
 
 public class BasicBatch {
