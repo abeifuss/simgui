@@ -20,10 +20,10 @@ local.properties
 *.ear
 
 # User configuration / properties
-etc/user.properties
+etc/conf/user.properties
 
 # Test files
-etc/testconf.txt
+etc/conf/testconf.txt
 
 # Local log files
 log/*
