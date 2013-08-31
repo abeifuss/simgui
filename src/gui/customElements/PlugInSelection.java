@@ -21,8 +21,6 @@ public class PlugInSelection extends JPanel{
 	public PlugInSelection() {
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
 		
-		// Beispiel, davon machst du 5 stk... fuer jeden layer einen!
-		
 		Map<String,String>[] PluginLayerMap = gcr.getPlugIns();		
 		
 		String[] levelStrings[]= {	PluginLayerMap[0].keySet().toArray(new String[PluginLayerMap[0].size()]),

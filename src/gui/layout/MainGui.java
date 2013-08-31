@@ -36,12 +36,12 @@ import org.jfree.chart.ChartPanel;
 @SuppressWarnings("serial")
 public class MainGui extends JFrame {
 
-	SimPropRegistry gcr = SimPropRegistry.getInstance();
+	// SimPropRegistry gcr = SimPropRegistry.getInstance();
 
-	Accordion accordian;
+	// Accordion accordian; // not needed
 	JPanel helpPanel;
-	SimHelpContentPanel contentPanel;
-	SimHelpContentPanel menuPanel;
+	//SimHelpContentPanel contentPanel;
+	//SimHelpContentPanel menuPanel;
 	
 	JPanel left;
 	JTabbedPane top;
@@ -90,11 +90,11 @@ public class MainGui extends JFrame {
 		verticalSplitPlane.setOneTouchExpandable(true);
 		verticalSplitPlane.setDividerLocation(400);
 
-		JPanel buttonBar = new JPanel();
-		
-		buttonBar.add(new JButton("Load"), BorderLayout.SOUTH);
-		buttonBar.add(new JButton("Save"), BorderLayout.SOUTH);
-		buttonBar.add(new JButton("Reset"), BorderLayout.SOUTH);
+//		JPanel buttonBar = new JPanel();
+//		
+//		buttonBar.add(new JButton("Load"), BorderLayout.SOUTH);
+//		buttonBar.add(new JButton("Save"), BorderLayout.SOUTH);
+//		buttonBar.add(new JButton("Reset"), BorderLayout.SOUTH);
 		
 		left = SimConfigPanel.getInstance();
 		helpPanel = HelpFrame.getInstance().getPanel();
