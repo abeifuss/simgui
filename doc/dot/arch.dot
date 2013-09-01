@@ -24,6 +24,9 @@ Menu [shape=box, color=black]
 HomeTab [shape=box, color=black]
 SimulationTab [shape=box, color=black]
 ChartPanel [shape=box, color=black]
+UserConfigService [shape=box, color=black]
+gMixBinding [shape=box, color=black]
+Simulator [shape=box, color=black]
 
 main -> SimPropRegistry [label="getInstance",fontsize=9]
 main -> DependencyChecker [label="getInstance",fontsize=9]
@@ -59,4 +62,8 @@ MainGui -> Menu [label="setupMenu",fontsize=9]
 MainGui -> HomeTab
 MainGui -> SimulationTab
 MainGui -> ChartPanel
+
+SimulationTab -> gMixBinding
+gMixBinding -> Simulator
+
 }
