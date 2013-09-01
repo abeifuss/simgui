@@ -47,6 +47,14 @@ public class SimulationTab extends JPanel implements ActionListener{
 	        
 	       if (event.getSource() == startButton) {
 	    	   String[] params = {"etc/conf/testconf.txt"};
+	    	   
+	    	   // TODO:
+	    	   // This is where the SimPropService must dump the configuration
+	    	   // and pass it to the Simulator.
+	    	   
+	    	   /*
+	    	    * 
+	    	    */
 	            
 	    	   @SuppressWarnings("unused")
 				gMixBinding callSimulation = new gMixBinding(params);

@@ -1,5 +1,6 @@
 package conf.service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,14 +8,30 @@ import java.util.Properties;
 
 public class UserConfigService {
 
-	Properties configFile;
+	Properties configuration;
+	final String configPath = "etc/conf";
+	final String configFileName = "user.properties";
+	final String configFile = configPath + "/" + configFileName;
 	
 	private static UserConfigService instance = null;
 	
 	private UserConfigService(){
-		configFile = new Properties();
-	    try {
-			configFile.load(new FileInputStream("etc/conf/user.properties"));
+		configuration = new Properties();
+		
+	    try {	    	
+	    	File folder = new File(configPath);
+	    	File conf = new File(configFile);
+	    	
+	    	if (!folder.exists())
+	    		folder.mkdir();
+	    	
+	    	if( !conf.exists() ) 
+	    	    conf.createNewFile();
+	    	
+			FileOutputStream oFile = new FileOutputStream(conf, true);
+	    	oFile.close();
+	    	
+			configuration.load(new FileInputStream(configFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,13 +50,13 @@ public class UserConfigService {
 	}
 	
 	public boolean getBool(String item){
-		return Boolean.parseBoolean(configFile.getProperty(item));
+		return Boolean.parseBoolean(configuration.getProperty(item));
 	}
 	
 	public void setBool(String key, boolean value){
-		configFile.setProperty(key, new Boolean(value).toString());
+		configuration.setProperty(key, new Boolean(value).toString());
 		try {
-			configFile.store(new FileOutputStream("etc/conf/user.properties"), null);
+			configuration.store(new FileOutputStream(configFile), null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,13 +64,13 @@ public class UserConfigService {
 	}
 	
 	public String getString(String item){
-		return configFile.getProperty(item);
+		return configuration.getProperty(item);
 	}
 	
 	public void setString(String key, String value){
-		configFile.setProperty(key, value);
+		configuration.setProperty(key, value);
 		try {
-			configFile.store(new FileOutputStream("etc/conf/user.properties"), null);
+			configuration.store(new FileOutputStream(configFile), null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,13 +78,13 @@ public class UserConfigService {
 	}
 	
 	public int getInteger(String item){
-		return Integer.parseInt(configFile.getProperty(item));
+		return Integer.parseInt(configuration.getProperty(item));
 	}
 	
 	public void setInteger(String key, int value){
-		configFile.setProperty(key, new Integer(value).toString());
+		configuration.setProperty(key, new Integer(value).toString());
 		try {
-			configFile.store(new FileOutputStream("etc/conf/user.properties"), null);
+			configuration.store(new FileOutputStream(configFile), null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,13 +92,13 @@ public class UserConfigService {
 	}
 	
 	public float getFloat(String item){
-		return Float.parseFloat(configFile.getProperty(item));
+		return Float.parseFloat(configuration.getProperty(item));
 	}
 	
 	public void setFloat(String key, float value){
-		configFile.setProperty(key, new Float(value).toString());
+		configuration.setProperty(key, new Float(value).toString());
 		try {
-			configFile.store(new FileOutputStream("etc/conf/user.properties"), null);
+			configuration.store(new FileOutputStream(configFile), null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -70,7 +70,7 @@ Benutzer- / Entwicklerhandbuch} % Subtitle
 Dieser Abschnitt behandelt das Thema Mixe und motiviert die Entwicklung des gMix-Simulators.
 % subsection gmix (end)
 
-\subsection{Ziele der GUI} % (fold)
+\subsection{Ziele der GUI} % (fold)ssu
 \label{sub:ziele_der_gui}
 In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, für die die GUI gedacht ist. Es wird analysiert, welche Anforderungen und Bedürfnisse die jeweiligen Anwendergruppen haben. Entlang der gewonnenen Erkenntnissen soll dann die GUI entwickelt werden, so dass nach Möglichkeit die Anforderungen aller Gruppen zufriedengestellt werden können.
 % subsection ziele_der_gui (end)
@@ -89,8 +89,10 @@ Die GUI Komponente für den gMix-Simulator basiert gurndlegen auf dem Einsatz vo
 \subsection{Uebersicht der Architektur} % (fold)
 \label{ssub:uebersicht}
 
-\begin{figure}
+\begin{figure}[!htp]
 \includegraphics[width=\textwidth]{dot/arch}
+\caption{Aufrufhierarchie}
+\label{fig:callgraph}
 \end{figure}
 
 % subsubsection uebersicht (end)
@@ -120,6 +122,10 @@ Die GUI Komponente für den gMix-Simulator basiert gurndlegen auf dem Einsatz vo
 Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI bereistellt.
 % subsection annotations (end)
 
+\subsubsection{Feld Annotations} % (fold)
+\label{ssub:feld_annotations}
+
+\begin{figure}[!htp]
 \begin{tikzpicture}
 \umlsimpleclass[fill=blue!10]{SimProp}
 \umlemptyclass[x=-4.5, y=-2, fill=blue!10]{BoolProp}
@@ -130,19 +136,26 @@ Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unser
 \umlVHVinherit[arm2=-1.2cm]{IntProp}{SimProp}
 \umlVHVinherit[arm2=-1.2cm]{FloatProp}{SimProp}
 \umlVHVinherit[arm2=-1.2cm]{StringProp}{SimProp}
-\end{tikzpicture} 
+\end{tikzpicture}
+\caption{Vererbung der Feld Annotations}
+\label{fig:field_annotations}
+\end{figure}
 
-\subsection{Plug-In Annotations} % (fold)
-\label{sub:subsection_name}
+% subsubsection feld_annotations (end)
+
+\subsubsection{Plug-In Annotations} % (fold)
+\label{ssub:subsection_name}
 Neben den Feld Annotations gibt es eine weitere Klasse von Annotations, die Plug-In Annotations. 
 % subsection subsection_name (end)
 
 \section{Features} % (fold)
 \label{sec:features}
 Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
+
+TEST \cite{dummy:svs}.
 % section features (end)
 
-\bibliographystyle{unsrt}
+\bibliographystyle{plain}
 
 \bibliography{references}
 
