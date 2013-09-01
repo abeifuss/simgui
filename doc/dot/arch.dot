@@ -28,6 +28,8 @@ UserConfigService [shape=box, color=black]
 gMixBinding [shape=box, color=black]
 Simulator [shape=box, color=black]
 
+Filesystem [shape=DatabaseShape,peripheries=0,color=black];
+
 main -> SimPropRegistry [label="getInstance",fontsize=9]
 main -> DependencyChecker [label="getInstance",fontsize=9]
 main -> GuiService [label="getInstance",fontsize=9]
@@ -42,6 +44,9 @@ DependencyChecker -> Requirement [label="check",fontsize=9]
 GuiService -> MainGui [label="getInstance",fontsize=9]
 GuiService -> ToolFrame [label="getInstance",fontsize=9]
 GuiService -> HelpFrame [label="getInstance",fontsize=9]
+GuiService -> UserConfigService [label="loadOldWinConfig",fontsize=9]
+GuiService -> MainGui [label="toggleConfTool",fontsize=9]
+GuiService -> MainGui [label="toogleHelpTool",fontsize=9]
 
 ToolFrame -> SimConfigPanel
 SimConfigPanel -> PlugInSelection
@@ -62,6 +67,9 @@ MainGui -> Menu [label="setupMenu",fontsize=9]
 MainGui -> HomeTab
 MainGui -> SimulationTab
 MainGui -> ChartPanel
+
+UserConfigService -> Filesystem [label="setProperty",fontsize=9]
+UserConfigService -> Filesystem [label="getProperty",fontsize=9]
 
 SimulationTab -> gMixBinding
 gMixBinding -> Simulator
