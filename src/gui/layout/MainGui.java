@@ -106,7 +106,7 @@ public class MainGui extends JFrame {
 		top = new JTabbedPane();
 		top.addTab("Home", new HomeTab());
 		top.addTab("Simulator", new SimulationTab());
-		top.addTab("Results", new ChartPanel(LineJFreeChartCreator.createAChart()));
+		//top.addTab("Results", new ChartPanel(LineJFreeChartCreator.createAChart()));
 		
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
