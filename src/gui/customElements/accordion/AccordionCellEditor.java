@@ -16,47 +16,45 @@ import javax.swing.table.TableCellEditor;
 @SuppressWarnings("serial")
 public class AccordionCellEditor extends AbstractCellEditor implements TableCellEditor{
 
-	// TODO: final Component instead of several concrete Elements?!
-	final JSpinner spinner = new JSpinner();
-//	final JSpinner spinnerFloat = new JSpinner();
-	final JCheckBox cbox = new JCheckBox();
-	final JTextField textfield = new JTextField();
-	Class<?> c;
+	private final JSpinner _spinner = new JSpinner();
+	private final JCheckBox _cbox = new JCheckBox();
+	private final JTextField _textfield = new JTextField();
+	private Class<?> _class;
 
 	@Override
 	public Component getTableCellEditorComponent( JTable table, Object value, boolean isSelected, int row, int column){
 		
-		SimPropRegistry gcr = SimPropRegistry.getInstance();
+		SimPropRegistry spr = SimPropRegistry.getInstance();
 		List<Entry<String, String>> list = ((AccordionModel) table.getModel()).getProperties();
-		c = gcr.getValue(list.get(row).getKey()).getValueType();
+		_class = spr.getValue(list.get(row).getKey()).getValueType();
 		
 		// TODO: extend!!!
-		if (c == Integer.class){
-			spinner.setValue((int)value);
-			return spinner;
-		}else if (c == Float.class){
-			textfield.setText(value+"");
-			return textfield;
-		}else if (c == Boolean.class){
-			cbox.setSelected((boolean)value);
-			return cbox;
+		if (_class == Integer.class){
+			_spinner.setValue((int)value);
+			return _spinner;
+		}else if (_class == Float.class){
+			_textfield.setText(value+"");
+			return _textfield;
+		}else if (_class == Boolean.class){
+			_cbox.setSelected((boolean)value);
+			return _cbox;
 		}
 		
-		textfield.setText((String)value);
-		return textfield;
+		_textfield.setText((String)value);
+		return _textfield;
 	}
 
 	@Override
 	public Object getCellEditorValue() {
 		
-		if (c == Integer.class){
-			return spinner.getValue();
-		}else if (c == Boolean.class){
-			return cbox.isSelected();
-		}else if (c == Float.class){
-			return textfield.getText();
-		}else if (c == String.class){
-			return textfield.getText();
+		if (_class == Integer.class){
+			return _spinner.getValue();
+		}else if (_class == Boolean.class){
+			return _cbox.isSelected();
+		}else if (_class == Float.class){
+			return _textfield.getText();
+		}else if (_class == String.class){
+			return _textfield.getText();
 		}
 		
 		return "unknown";

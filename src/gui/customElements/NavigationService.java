@@ -10,8 +10,7 @@ public class NavigationService {
 
 	public static String getMenu() {
 		String head = ""+
-//				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
-//				"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n"+
+				"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n"+
 				"<head>\n"+
 				"<title> Navigation </title>\n"+
 				"</head>\n"+

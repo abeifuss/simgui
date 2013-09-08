@@ -38,22 +38,22 @@ import com.google.classpath.RegExpResourceFilter;
 
 public class SimPropRegistry {
 
-	private Map<String, SimProp> properties = new HashMap<String, SimProp>();
+	private Map<String, SimProp> _properties = new HashMap<String, SimProp>();
 
 	@SuppressWarnings("unchecked")
-	private Map<String, String>[] PluginLayerMap = new HashMap[5];
+	private Map<String, String>[] _pluginLayerMap = new HashMap[5];
 
-	private static SimPropRegistry instance = null;
+	private static SimPropRegistry _instance = null;
 
 	private SimPropRegistry() {
 		scanPlugins();
 	}
 
 	public static SimPropRegistry getInstance() {
-		if (instance == null) {
-			instance = new SimPropRegistry();
+		if (_instance == null) {
+			_instance = new SimPropRegistry();
 		}
-		return instance;
+		return _instance;
 	}
 
 	// Scans the simulation properties
@@ -85,7 +85,7 @@ public class SimPropRegistry {
 				
 				Field f = field.next();
 				
-				if (item == BoolSimulationProperty.class) {
+				if (item == BoolSimulationProperty.class) { // Boolean
 					BoolSimulationProperty annotation = f.getAnnotation(BoolSimulationProperty.class);
 					property = new BoolProp();
 					if (annotation != null) {
@@ -101,7 +101,7 @@ public class SimPropRegistry {
 						property.setEnable(true);
 					}
 					register(property);
-				}else if(item == FloatSimulationProperty.class){
+				}else if(item == FloatSimulationProperty.class){ // Float
 					FloatSimulationProperty annotation = f.getAnnotation(FloatSimulationProperty.class);
 					property = new FloatProp();
 					if (annotation != null) {
@@ -119,7 +119,7 @@ public class SimPropRegistry {
 						property.setEnable(true);
 					}
 					register(property);
-				}else if(item == IntSimulationProperty.class){
+				}else if(item == IntSimulationProperty.class){ // Integer
 					IntSimulationProperty annotation = f.getAnnotation(IntSimulationProperty.class);
 					property = new IntProp();
 					if (annotation != null) {
@@ -138,7 +138,7 @@ public class SimPropRegistry {
 						property.setEnable(true);
 					}
 					register(property);
-				}else if(item == StringSimulationProperty.class){
+				}else if(item == StringSimulationProperty.class){ // String
 					StringSimulationProperty annotation = f.getAnnotation(StringSimulationProperty.class);
 					property = new StringProp();
 					if (annotation != null) {
@@ -158,57 +158,54 @@ public class SimPropRegistry {
 					Logger.Log(LogLevel.ERROR, "GuiConfigRegistry - bad type");
 					continue;
 				}
-				
 			}
 		}
 
-		// initial dependency-check for per plugin configurations
+		// call initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(this);
 	}
 
 	public void register(SimProp s) {
 		System.out.println("Register: " + s.getId());
-		if ( properties.containsKey(s.getId()) ){
+		if ( _properties.containsKey(s.getId()) ){
 			
 			@SuppressWarnings("unused")
 			JOptionPane alert =  new JOptionPane();
 			JOptionPane.showMessageDialog(null,
-				    "Redefinition of "+s.getId()+" dtetected!",
+				    "Redefinition of "+s.getId()+" "+s.getPlugin()+" dtetected!",
 				    "Warning",
 				    JOptionPane.WARNING_MESSAGE);
-			
-			// TODO: Search the plugins that register this property and integrate their names in the error message!
 		} else {
-			properties.put(s.getId(), s);
+			_properties.put(s.getId(), s);
 		}
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
-		return properties.entrySet();
+		return _properties.entrySet();
 	}
 
 	public SimProp getValue(String key) {
 
-		return properties.get(key);
+		return _properties.get(key);
 	}
 
 	public void setValue(String key, Object arg0) {
 
 		if (arg0.getClass() == Boolean.class) {
 			System.out.println("Integer");
-			properties.get(key).setValue((Boolean) arg0);
+			_properties.get(key).setValue((Boolean) arg0);
 			
 		}else if (arg0.getClass() == Float.class) {
 			System.out.println("Integer");
-			properties.get(key).setValue((Float) arg0);
+			_properties.get(key).setValue((Float) arg0);
 			
 		}else if (arg0.getClass() == Integer.class) {
 			System.out.println("Integer");
-			properties.get(key).setValue((Integer) arg0);
+			_properties.get(key).setValue((Integer) arg0);
 			
 		}else if (arg0.getClass() == String.class) {
 			System.out.println("Integer");
-			properties.get(key).setValue((String) arg0);
+			_properties.get(key).setValue((String) arg0);
 			
 		}else {
 			
@@ -220,7 +217,7 @@ public class SimPropRegistry {
 
 		List<Entry<String, String>> hm = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = properties.entrySet()
+		Iterator<Entry<String, SimProp>> iter = _properties.entrySet()
 				.iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
@@ -244,13 +241,11 @@ public class SimPropRegistry {
 
 		for (int i = 0; i < 5; i++) {
 
-			Pattern p = Pattern
-					.compile("^plugIns/" + plugInLayer[i] + "/.+/.+");
-			PluginLayerMap[i] = new HashMap<String, String>();
+			Pattern p = Pattern.compile("^plugIns/" + plugInLayer[i] + "/.+/.+");
+			_pluginLayerMap[i] = new HashMap<String, String>();
 
 			for (final String r : resources) {
 
-				// Level1 PlugIns - network
 				if (p.matcher(r).matches()) {
 					String[] splitString = r.split("/");
 
@@ -260,24 +255,18 @@ public class SimPropRegistry {
 					}
 
 					String plugInName = splitString[2];
-					String plugInPath = splitString[0] + "/" + splitString[1]
-							+ "/" + splitString[2] + "/";
-					PluginLayerMap[i].put(plugInName, plugInPath);
+					String plugInPath = splitString[0] + "/" + splitString[1]+ "/" + splitString[2] + "/";
+					_pluginLayerMap[i].put(plugInName, plugInPath);
 
-//					Logger.Log(log.LogLevel.DEBUG, "found: " + r);
-//					Logger.Log(log.LogLevel.DEBUG, "Name: " + plugInName);
-//					Logger.Log(log.LogLevel.DEBUG, "Path: " + plugInPath);
-
-					Iterator<Entry<String, String>> iter = PluginLayerMap[i]
-							.entrySet().iterator();
-
-					while (iter.hasNext()) {
-						Entry<String, String> entry = iter.next();
+//					Iterator<Entry<String, String>> iter = _pluginLayerMap[i].entrySet().iterator();
+//
+//					while (iter.hasNext()) {
+//						Entry<String, String> entry = iter.next();
 //						Logger.Log(
 //								log.LogLevel.DEBUG,
 //								"Name: " + entry.getKey() + "; Path: "
 //										+ entry.getValue());
-					}
+//					}
 
 					continue;
 				}
@@ -286,7 +275,7 @@ public class SimPropRegistry {
 	}
 
 	public Map<String, String>[] getPlugIns() {
-		return PluginLayerMap;
+		return _pluginLayerMap;
 	}
 
 	public void dumpConfiguration() {

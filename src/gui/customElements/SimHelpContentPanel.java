@@ -12,30 +12,30 @@ import log.Logger;
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
 
-	XHTMLPanel panelx;
+	XHTMLPanel _htmlContent;
 	
-	private static SimHelpContentPanel instance = null;
+	private static SimHelpContentPanel _instance = null;
 	
 	private SimHelpContentPanel(){
 		init();
 	}
 	
 	public static SimHelpContentPanel getInstance() {
-		if (instance == null) {
-			instance = new SimHelpContentPanel();
+		if (_instance == null) {
+			_instance = new SimHelpContentPanel();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	private void init(){
 		
 		try {
-			panelx = new XHTMLPanel();
+			_htmlContent = new XHTMLPanel();
 			setLayout(new BorderLayout());
 			setBackground(Color.WHITE);
-			panelx.setDocument(new File("etc/html/index.html"));
+			_htmlContent.setDocument(new File("etc/html/index.html"));
 			
-			add(new FSScrollPane(panelx));
+			add(new FSScrollPane(_htmlContent));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("Some problem has occured" + ex.getMessage());
@@ -46,9 +46,8 @@ public class SimHelpContentPanel extends JPanel {
 	public void loadURL(String url){
 		Logger.Log(LogLevel.DEBUG, "Loading help-page: "+url );
 		try {
-			panelx.setDocument(new File(url));
+			_htmlContent.setDocument(new File(url));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

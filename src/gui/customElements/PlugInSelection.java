@@ -12,11 +12,11 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class PlugInSelection extends JPanel{
 
-	JComboBox<String> l1List;
-	JComboBox<String> l2List;
-	JComboBox<String> l3List;
-	JComboBox<String> l4List;
-	JComboBox<String> l5List;
+	JComboBox<String> plugInLevel1List;
+	JComboBox<String> plugInLevel2List;
+	JComboBox<String> plugInLevel3List;
+	JComboBox<String> plugInLevel4List;
+	JComboBox<String> plugInLevel5List;
 				
 	public PlugInSelection() {
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
@@ -30,18 +30,18 @@ public class PlugInSelection extends JPanel{
 									PluginLayerMap[4].keySet().toArray(new String[PluginLayerMap[4].size()])
 								 };		
 				
-		l1List = new JComboBox<String>(levelStrings[0]);		
-		l2List = new JComboBox<String>(levelStrings[1]);
-		l3List = new JComboBox<String>(levelStrings[2]);
-		l4List = new JComboBox<String>(levelStrings[3]);
-		l5List = new JComboBox<String>(levelStrings[4]);
+		plugInLevel1List = new JComboBox<String>(levelStrings[0]);		
+		plugInLevel2List = new JComboBox<String>(levelStrings[1]);
+		plugInLevel3List = new JComboBox<String>(levelStrings[2]);
+		plugInLevel4List = new JComboBox<String>(levelStrings[3]);
+		plugInLevel5List = new JComboBox<String>(levelStrings[4]);
 		
-		l2List.setEnabled(false);
-		l3List.setEnabled(false);
-		l4List.setEnabled(false);
-		l5List.setEnabled(false);
+		plugInLevel2List.setEnabled(false);
+		plugInLevel3List.setEnabled(false);
+		plugInLevel4List.setEnabled(false);
+		plugInLevel5List.setEnabled(false);
 		
-		l1List.addActionListener( new ActionListener() {
+		plugInLevel1List.addActionListener( new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -49,7 +49,7 @@ public class PlugInSelection extends JPanel{
 			}
 		});
 		
-		l2List.addActionListener( new ActionListener() {
+		plugInLevel2List.addActionListener( new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -57,7 +57,7 @@ public class PlugInSelection extends JPanel{
 			}
 		});
 		
-		l3List.addActionListener( new ActionListener() {
+		plugInLevel3List.addActionListener( new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -65,7 +65,7 @@ public class PlugInSelection extends JPanel{
 			}
 		});
 		
-		l4List.addActionListener( new ActionListener() {
+		plugInLevel4List.addActionListener( new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,34 +74,34 @@ public class PlugInSelection extends JPanel{
 		});
 		
 		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		this.add(l1List);
-		this.add(l2List);
-		this.add(l3List);
-		this.add(l4List);
-		this.add(l5List);
+		this.add(plugInLevel1List);
+		this.add(plugInLevel2List);
+		this.add(plugInLevel3List);
+		this.add(plugInLevel4List);
+		this.add(plugInLevel5List);
 	}
 	
 	public void selectedL1PlugIn(){
-		if ((String)l1List.getSelectedItem() != " ") {
-			l2List.setEnabled(true);
+		if ((String)plugInLevel1List.getSelectedItem() != " ") {
+			plugInLevel2List.setEnabled(true);
 		}
 	}
 	
 	public void selectedL2PlugIn(){
-		if ((String)l1List.getSelectedItem() != " ") {
-			l3List.setEnabled(true);
+		if ((String)plugInLevel1List.getSelectedItem() != " ") {
+			plugInLevel3List.setEnabled(true);
 		}
 	}
 	
 	public void selectedL3PlugIn(){
-		if ((String)l1List.getSelectedItem() != " ") {
-			l4List.setEnabled(true);
+		if ((String)plugInLevel1List.getSelectedItem() != " ") {
+			plugInLevel4List.setEnabled(true);
 		}
 	}
 	
 	public void selectedL4PlugIn(){
-		if ((String)l1List.getSelectedItem() != " ") {
-			l5List.setEnabled(true);
+		if ((String)plugInLevel1List.getSelectedItem() != " ") {
+			plugInLevel5List.setEnabled(true);
 		}
 	}
 	

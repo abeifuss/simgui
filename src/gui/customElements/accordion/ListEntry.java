@@ -3,28 +3,28 @@ package gui.customElements.accordion;
 import java.util.Map;
 
 public final class ListEntry<K, V> implements Map.Entry<K, V> {
-    private final K key;
-    private V value;
+    private final K _key;
+    private V _value;
 
     public ListEntry(K key, V value) {
-        this.key = key;
-        this.value = value;
+        this._key = key;
+        this._value = value;
     }
 
     @Override
     public K getKey() {
-        return key;
+        return _key;
     }
 
     @Override
     public V getValue() {
-        return value;
+        return _value;
     }
 
     @Override
     public V setValue(V value) {
-        V old = this.value;
-        this.value = value;
+        V old = this._value;
+        this._value = value;
         return old;
     }
 }

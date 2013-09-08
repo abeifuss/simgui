@@ -2,16 +2,16 @@ package annotations;
 
 public class BoolProp extends SimProp{
 
-	boolean value;
+	private boolean _value;
 
 	@Override
 	public Object getValue() {
-		return value;
+		return _value;
 	}
 
 	@Override
 	public void setValue(Object o) {
-		value = (boolean)(o);
+		_value = (boolean)(o);
 	}
 	
 	@Override

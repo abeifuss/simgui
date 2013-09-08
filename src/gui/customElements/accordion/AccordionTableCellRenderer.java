@@ -11,18 +11,18 @@ import annotations.SimProp;
 @SuppressWarnings("serial")
 public class AccordionTableCellRenderer extends DefaultTableCellRenderer {
 
-	List<SimProp> toolTipList;
+	private List<SimProp> _toolTipList;
 
 	public AccordionTableCellRenderer(List<SimProp> l) {
 		super();
-		toolTipList = l;
+		_toolTipList = l;
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		
-		setToolTipText(toolTipList.get(row).getTooltip());
+		setToolTipText(_toolTipList.get(row).getTooltip());
 
 		if (column == 1) {
 			setHorizontalAlignment(RIGHT);

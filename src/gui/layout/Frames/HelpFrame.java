@@ -21,7 +21,7 @@ import conf.service.UserConfigService;
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
-	private static HelpFrame instance = null;
+	private static HelpFrame _instance = null;
 	private int _helpFrameXPos;
 	private int _helpFrameYPos;
 	private int _helpFrameWidth;
@@ -79,10 +79,10 @@ public class HelpFrame extends JFrame {
 	}
 	
 	public static HelpFrame getInstance() {
-		if (instance == null) {
-			instance = new HelpFrame();
+		if (_instance == null) {
+			_instance = new HelpFrame();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	public void init(){

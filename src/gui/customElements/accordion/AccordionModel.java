@@ -14,13 +14,13 @@ import log.Logger;
 
 public class AccordionModel implements TableModel {
 
-	SimPropRegistry gcr;
-	List<Entry<String, String>> propertiesInThisCategory;
+	private SimPropRegistry _spr;
+	private List<Entry<String, String>> _propertiesInThisCategory;
 
 	public AccordionModel(String category) {
 
-		gcr = SimPropRegistry.getInstance();
-		propertiesInThisCategory = gcr.getCategoryItems(category);
+		_spr = SimPropRegistry.getInstance();
+		_propertiesInThisCategory = _spr.getCategoryItems(category);
 	}
 
 	@Override
@@ -32,7 +32,6 @@ public class AccordionModel implements TableModel {
 	public Class<?> getColumnClass(int arg0) {
 
 		if (arg0 == 1) {
-			// String, Integer, Float, Bool or some exotic stuff
 			return Object.class;
 		} else if (arg0 == 0) {
 			// First row is always a string (property name)
@@ -53,35 +52,22 @@ public class AccordionModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return propertiesInThisCategory.size();
+		return _propertiesInThisCategory.size();
 	}
 
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
 		
 		if (arg1 == 0){
-			return propertiesInThisCategory.get(arg0).getKey();
+			return _propertiesInThisCategory.get(arg0).getKey();
 		}
 		
-		return gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValue();
-		
-		// request the value from the guiConfigReqistry
-//		if (gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValueType() == Integer.class ){
-//			return gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValue();
-//		}else if (gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValueType() == Boolean.class ){
-//			return gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValue();
-//		}else if (gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValueType() == Float.class ){
-//			return gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValue();
-//		}else if (gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValueType() == String.class ){
-//			return gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getValue();
-//		}else {
-//			return new String("");
-//		}
+		return _spr.getValue(_propertiesInThisCategory.get(arg0).getKey()).getValue();
 	}
 
 	@Override
 	public boolean isCellEditable(int arg0, int arg1) {
-		if (arg1 == 1 && gcr.getValue(propertiesInThisCategory.get(arg0).getKey()).getEnable() ){
+		if (arg1 == 1 && _spr.getValue(_propertiesInThisCategory.get(arg0).getKey()).getEnable() ){
 			return true;
 		}
 		return false;
@@ -95,15 +81,15 @@ public class AccordionModel implements TableModel {
 	@Override
 	public void setValueAt(Object arg0, int arg1, int arg2) {
 		
-		String id = propertiesInThisCategory.get(arg1).getKey();
+		String id = _propertiesInThisCategory.get(arg1).getKey();
 		Logger.Log(LogLevel.DEBUG, "Changed " + id);
-		gcr.setValue(id, arg0);
+		_spr.setValue(id, arg0);
 		
-		DependencyChecker.checkAll(gcr);
+		DependencyChecker.checkAll(_spr);
 	}
 
 	public List<Entry<String, String>> getProperties() {
-		return propertiesInThisCategory;
+		return _propertiesInThisCategory;
 	}
 
 }

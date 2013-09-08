@@ -25,16 +25,16 @@ import core.binding.gMixBinding;
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener{
 	
-	JPanel top;
-	JTabbedPane bottom;
-	JButton startButton = new JButton("Start");
-	int resultcounter;
+	private JPanel _top;
+	private JTabbedPane _bottom;
+	private JButton _startButton = new JButton("Start");
+	private int _resultCounter;
 	
 	
 	
 	public SimulationTab(){
 		
-		resultcounter = 1;
+		_resultCounter = 1;
 		
 		JSplitPane verticalSplitPlane = new JSplitPane();
 		verticalSplitPlane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -45,7 +45,7 @@ public class SimulationTab extends JPanel implements ActionListener{
 		this.add(verticalSplitPlane, BorderLayout.CENTER);
 		
 		
-		top = new JPanel();			
+		_top = new JPanel();			
 		
 		JLabel wellcomeLabel = new JLabel("Simulation Test");
 		wellcomeLabel.setFont(new Font("arial", 1, 35));
@@ -58,37 +58,37 @@ public class SimulationTab extends JPanel implements ActionListener{
 	    gbc.weighty = 1;
 	    gbc.gridx = GridBagConstraints.RELATIVE;
 	    gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbl.setConstraints(top, gbc);
-		top.setLayout(gbl);
+		gbl.setConstraints(_top, gbc);
+		_top.setLayout(gbl);
 		
 		//top.setLayout(new BorderLayout());
-		top.add(wellcomeLabel, gbc);
-		top.add(startButton);		
+		_top.add(wellcomeLabel, gbc);
+		_top.add(_startButton);		
 		
-		startButton.addActionListener(this);
+		_startButton.addActionListener(this);
 		
 		
-		bottom = new JTabbedPane();		
+		_bottom = new JTabbedPane();		
 		//bottom.setLayout(new BorderLayout());
 		//bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
 		/*
 		bottom.addTab("Home", new HomeTab());
 		bottom.addTab("Simulator", new SimulationTab());
 		*/
-		bottom.addTab("Results_"+resultcounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
-		resultcounter++;
-		bottom.addTab("Results_"+resultcounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
-		resultcounter++;
+		_bottom.addTab("Results_"+_resultCounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
+		_resultCounter++;
+		_bottom.addTab("Results_"+_resultCounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
+		_resultCounter++;
 		
-		verticalSplitPlane.setTopComponent(top);
-		verticalSplitPlane.setBottomComponent(bottom);
+		verticalSplitPlane.setTopComponent(_top);
+		verticalSplitPlane.setBottomComponent(_bottom);
 		
 		
 	}
 	
 	 public void actionPerformed(ActionEvent event) {
 	        
-	       if (event.getSource() == startButton) {
+	       if (event.getSource() == _startButton) {
 	    	   String[] params = {"etc/conf/testconf.txt"};
 	    	   
 	    	   // TODO:
@@ -101,8 +101,8 @@ public class SimulationTab extends JPanel implements ActionListener{
 	            
 	    	   @SuppressWarnings("unused")
 				gMixBinding callSimulation = new gMixBinding(params);
-	    	   	bottom.addTab("Results_"+resultcounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
-	   			resultcounter++;	    	   
+	    	   	_bottom.addTab("Results_"+_resultCounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
+	   			_resultCounter++;	    	   
 	    	   }
 	        }
 	

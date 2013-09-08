@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class ToolFrame extends JFrame{
 
-	private static ToolFrame instance = null;
+	private static ToolFrame _instance = null;
 	
 	private ToolFrame() {
 		
@@ -60,10 +60,10 @@ public class ToolFrame extends JFrame{
 	}
 
 	public static ToolFrame getInstance() {
-		if (instance == null) {
-			instance = new ToolFrame();
+		if (_instance == null) {
+			_instance = new ToolFrame();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	public void init(){
