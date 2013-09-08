@@ -13,11 +13,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import log.LogLevel;
+import log.Logger;
+
+import conf.service.UserConfigService;
+
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
 	private static HelpFrame instance = null;
-	JPanel panel;
+	private int _helpFrameXPos;
+	private int _helpFrameYPos;
+	private int _helpFrameWidth;
+	private int _helpFrameHeight;
+	
+	private JPanel panel;
 	
 	private HelpFrame() {
 		
@@ -48,15 +58,18 @@ public class HelpFrame extends JFrame {
 			
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				safeProperties();
 				GuiService.getInstance().toogleHelpTools();
 			}
 			
 			@Override
 			public void windowClosed(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
@@ -88,10 +101,42 @@ public class HelpFrame extends JFrame {
 		add(panel);
 		
 		this.pack();
-		this.setBounds(1200, 10, 500, 500);
+		
+		try {
+			_helpFrameXPos = UserConfigService.getInstance().getInteger("HELPFRAME_XPOS");
+		} catch (Exception e) {
+			_helpFrameXPos = 500;
+		}
+		
+		try {
+			_helpFrameYPos = UserConfigService.getInstance().getInteger("HELPFRAME_YPOS");
+		} catch (Exception e) {
+			_helpFrameYPos = 500;
+		}
+		
+		try {
+			_helpFrameWidth = UserConfigService.getInstance().getInteger("HELPFRAME_WIDTH");
+		} catch (Exception e) {
+			_helpFrameWidth = 500;
+		}
+		
+		try {
+			_helpFrameHeight = UserConfigService.getInstance().getInteger("HELPFRAME_HEIGTH");
+		} catch (Exception e) {
+			_helpFrameHeight = 1200;
+		}
+
+		this.setBounds(_helpFrameXPos, _helpFrameYPos, _helpFrameWidth, _helpFrameHeight);
 	}
 
 	public JPanel getPanel() {
 		return panel;
+	}
+	
+	private void safeProperties(){
+		UserConfigService.getInstance().setInteger("HELPFRAME_XPOS", this.getX());
+		UserConfigService.getInstance().setInteger("HELPFRAME_YPOS", this.getY());
+		UserConfigService.getInstance().setInteger("HELPFRAME_WIDTH", this.getWidth());
+		UserConfigService.getInstance().setInteger("HELPFRAME_HEIGTH", this.getHeight());
 	}
 }

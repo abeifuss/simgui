@@ -210,6 +210,7 @@ public class MainGui extends JFrame {
 	// (De)seperate the configuration tool
 	public void toogleConfTool( boolean b ){
 		if ( b ){
+			left = SimConfigPanel.getInstance();
 			horrizontalSplitPlane.setLeftComponent(left);
 		}else{
 			horrizontalSplitPlane.remove(left);
@@ -219,6 +220,7 @@ public class MainGui extends JFrame {
 	// (De)seperate the help tool
 	public void toogleHelpTool( boolean b ){
 		if ( b ){
+			helpPanel = HelpFrame.getInstance().getPanel();
 			top.addTab("Tutorial", helpPanel);
 		}else{
 			top.remove(helpPanel);
