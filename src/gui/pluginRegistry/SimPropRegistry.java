@@ -2,6 +2,8 @@ package gui.pluginRegistry;
 
 import gui.customElements.accordion.ListEntry;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import log.LogLevel;
@@ -169,12 +172,18 @@ public class SimPropRegistry {
 		System.out.println("Register: " + s.getId());
 		if ( _properties.containsKey(s.getId()) ){
 			
-			@SuppressWarnings("unused")
-			JOptionPane alert =  new JOptionPane();
-			JOptionPane.showMessageDialog(null,
-				    "Redefinition of "+s.getId()+" "+s.getPlugin()+" dtetected!",
-				    "Warning",
-				    JOptionPane.WARNING_MESSAGE);
+			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			int x = gd.getDisplayMode().getWidth();
+			int y = gd.getDisplayMode().getHeight();	
+			
+			JOptionPane alert =  new JOptionPane("Redefinition of "+s.getId()+" ("+s.getPlugin()+") detected!");
+			
+			JDialog d = alert.createDialog(null,"");
+			int w = d.getWidth();
+			int h = d.getHeight();
+			d.setLocation(x/2-w/2, y/2-h/2);
+			d.setVisible(true);
+			
 		} else {
 			_properties.put(s.getId(), s);
 		}
