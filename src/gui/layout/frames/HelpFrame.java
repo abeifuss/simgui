@@ -1,4 +1,4 @@
-package gui.layout.Frames;
+package gui.layout.frames;
 
 import gui.customElements.SimHelpContentPanel;
 import gui.customElements.SimHelpMenuPanel;
@@ -105,25 +105,25 @@ public class HelpFrame extends JFrame {
 		try {
 			_helpFrameXPos = UserConfigService.getInstance().getInteger("HELPFRAME_XPOS");
 		} catch (Exception e) {
-			_helpFrameXPos = 500;
+			_helpFrameXPos = 600;
 		}
 		
 		try {
 			_helpFrameYPos = UserConfigService.getInstance().getInteger("HELPFRAME_YPOS");
 		} catch (Exception e) {
-			_helpFrameYPos = 500;
+			_helpFrameYPos = 100;
 		}
 		
 		try {
 			_helpFrameWidth = UserConfigService.getInstance().getInteger("HELPFRAME_WIDTH");
 		} catch (Exception e) {
-			_helpFrameWidth = 500;
+			_helpFrameWidth = 700;
 		}
 		
 		try {
 			_helpFrameHeight = UserConfigService.getInstance().getInteger("HELPFRAME_HEIGTH");
 		} catch (Exception e) {
-			_helpFrameHeight = 1200;
+			_helpFrameHeight = 750;
 		}
 
 		this.setBounds(_helpFrameXPos, _helpFrameYPos, _helpFrameWidth, _helpFrameHeight);

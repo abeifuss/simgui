@@ -1,4 +1,4 @@
-package gui.layout.Frames;
+package gui.layout.frames;
 
 import gui.customElements.SimConfigPanel;
 import gui.service.GuiService;
@@ -10,10 +10,16 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
+import conf.service.UserConfigService;
+
 @SuppressWarnings("serial")
 public class ToolFrame extends JFrame{
 
 	private static ToolFrame _instance = null;
+	private int _confToolFrameXPos;
+	private int _confToolFrameYPos;
+	private int _confToolFrameWidth;
+	private int _confToolFrameHeight;
 	
 	private ToolFrame() {
 		
@@ -42,15 +48,18 @@ public class ToolFrame extends JFrame{
 			
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				safeProperties();
 				GuiService.getInstance().toogleConfTools();
 			}
 			
 			@Override
 			public void windowClosed(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
@@ -70,6 +79,38 @@ public class ToolFrame extends JFrame{
 		SimConfigPanel panel = SimConfigPanel.getInstance();
 		this.add(panel);
 		this.pack();
-		this.setBounds(10, 10, 325, 600);
+		
+		try {
+			_confToolFrameXPos = UserConfigService.getInstance().getInteger("CONFTOOLFRAME_XPOS");
+		} catch (Exception e) {
+			_confToolFrameXPos = 100;
+		}
+		
+		try {
+			_confToolFrameYPos = UserConfigService.getInstance().getInteger("CONFTOOLFRAME_YPOS");
+		} catch (Exception e) {
+			_confToolFrameYPos = 100;
+		}
+		
+		try {
+			_confToolFrameWidth = UserConfigService.getInstance().getInteger("CONFTOOLFRAME_WIDTH");
+		} catch (Exception e) {
+			_confToolFrameWidth = 500;
+		}
+		
+		try {
+			_confToolFrameHeight = UserConfigService.getInstance().getInteger("CONFTOOLFRAME_HEIGTH");
+		} catch (Exception e) {
+			_confToolFrameHeight = 750;
+		}
+
+		this.setBounds(_confToolFrameXPos, _confToolFrameYPos, _confToolFrameWidth, _confToolFrameHeight);
+	}
+	
+	private void safeProperties(){
+		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_XPOS", this.getX());
+		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_YPOS", this.getY());
+		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_WIDTH", this.getWidth());
+		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_HEIGTH", this.getHeight());
 	}
 }

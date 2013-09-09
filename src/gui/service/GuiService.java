@@ -1,8 +1,8 @@
 package gui.service;
 
 import gui.layout.MainGui;
-import gui.layout.Frames.HelpFrame;
-import gui.layout.Frames.ToolFrame;
+import gui.layout.frames.HelpFrame;
+import gui.layout.frames.ToolFrame;
 import conf.service.UserConfigService;
 
 

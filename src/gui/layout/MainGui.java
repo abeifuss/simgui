@@ -2,8 +2,9 @@ package gui.layout;
 
 import gui.console.ConsolePanel;
 import gui.customElements.SimConfigPanel;
-import gui.layout.Frames.HelpFrame;
+import gui.layout.frames.HelpFrame;
 import gui.layout.menu.MainMenu;
+import gui.service.GuiService;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -11,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -21,15 +24,21 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import conf.service.UserConfigService;
+
 @SuppressWarnings("serial")
 public class MainGui extends JFrame {
 
-	JPanel _helpToolView;
-	JPanel _configToolView;
-	JTabbedPane _mainView;
-	JSplitPane _horrizontalSplitPlane;
+	private JPanel _helpToolView;
+	private JPanel _configToolView;
+	private JTabbedPane _mainView;
+	private JSplitPane _horrizontalSplitPlane;
 
 	private static MainGui instance = null;
+	private int _mainGuiXPos;
+	private int _mainGuiYPos;
+	private int _mainGuiWidth;
+	private int _mainGuiHeight;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -47,8 +56,68 @@ public class MainGui extends JFrame {
 		}
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(360, 10, 800, 600);
+
 		this.setVisible(true);
+		
+		try {
+			_mainGuiXPos = UserConfigService.getInstance().getInteger("MAINGUI_XPOS");
+		} catch (Exception e) {
+			_mainGuiXPos = 100;
+		}
+		
+		try {
+			_mainGuiYPos = UserConfigService.getInstance().getInteger("MAINGUI_YPOS");
+		} catch (Exception e) {
+			_mainGuiYPos = 100;
+		}
+		
+		try {
+			_mainGuiWidth = UserConfigService.getInstance().getInteger("MAINGUI_WIDTH");
+		} catch (Exception e) {
+			_mainGuiWidth = 500;
+		}
+		
+		try {
+			_mainGuiHeight = UserConfigService.getInstance().getInteger("MAINGUI_HEIGTH");
+		} catch (Exception e) {
+			_mainGuiHeight = 750;
+		}
+
+		this.setBounds(_mainGuiXPos, _mainGuiYPos, _mainGuiWidth, _mainGuiHeight);
+		
+		this.addWindowListener( new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				safeProperties();
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				safeProperties();
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				safeProperties();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+			}
+		});
 	}
 
 	public static MainGui getInstance() {
@@ -127,5 +196,12 @@ public class MainGui extends JFrame {
 		}else{
 			_mainView.remove(_helpToolView);
 		}
+	}
+	
+	private void safeProperties(){
+		UserConfigService.getInstance().setInteger("MAINGUI_XPOS", this.getX());
+		UserConfigService.getInstance().setInteger("MAINGUI_YPOS", this.getY());
+		UserConfigService.getInstance().setInteger("MAINGUI_WIDTH", this.getWidth());
+		UserConfigService.getInstance().setInteger("MAINGUI_HEIGTH", this.getHeight());
 	}
 }
