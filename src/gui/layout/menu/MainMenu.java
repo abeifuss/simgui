@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
 public class MainMenu extends JMenuBar{
@@ -36,8 +37,17 @@ public class MainMenu extends JMenuBar{
 		_close = new JMenuItem("Exit");
 		
 		_preferences = new JMenuItem("Preferences");
-		_seperateConfigTool = new JMenuItem("Separate configuration tool");
-		_seperateHelpTool = new JMenuItem("Separate help tool");
+		_seperateConfigTool = new JMenuItem("Separate Configuration Tool");
+		_seperateConfigTool.setMnemonic('C');
+		_seperateConfigTool.setAccelerator(KeyStroke.getKeyStroke(
+		        java.awt.event.KeyEvent.VK_C, 
+		        java.awt.Event.CTRL_MASK));
+		
+		_seperateHelpTool = new JMenuItem("Separate Help Tool");
+		_seperateHelpTool.setMnemonic('H');
+		_seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(
+		        java.awt.event.KeyEvent.VK_H, 
+		        java.awt.Event.CTRL_MASK));
 		
 		_faq = new JMenuItem("F.A.Q.");
 		_about = new JMenuItem("About");
