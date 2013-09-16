@@ -13,26 +13,25 @@ import annotations.SimProp;
 
 public class AccordionMouseMotionAdapter implements MouseMotionListener {
 
-	JTable table;
-	List<SimProp>  list;
+	private JTable _table;
+	private List<SimProp>  _listOfCategoryEntries;
 	
-	public AccordionMouseMotionAdapter(List<SimProp>  l, JTable tab) {
-		table = tab;
-		list = l;
+	public AccordionMouseMotionAdapter(List<SimProp>  l, JTable t) {
+		_table = t;
+		_listOfCategoryEntries = l;
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent evt) {
-            Point p = evt.getPoint();
-			int y = table.rowAtPoint(p);
+	public void mouseMoved(MouseEvent event) {
+            Point point = event.getPoint();
+			int row = _table.rowAtPoint(point);
             DescriptionService ds = DescriptionService.getInstance();
-			ds.setDescription(list.get(y).getDescription());
+			ds.setDescription(_listOfCategoryEntries.get(row).getDescription());
     }
 
 }

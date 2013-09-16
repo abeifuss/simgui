@@ -8,19 +8,19 @@ import java.util.Properties;
 
 public class UserConfigService {
 
-	Properties configuration;
-	final String configPath = "etc/conf";
-	final String configFileName = "user.properties";
-	final String configFile = configPath + "/" + configFileName;
+	private Properties _configuration;
+	private final String _configPath = "etc/conf";
+	private final String _configFileName = "user.properties";
+	private final String _configFile = _configPath + "/" + _configFileName;
 	
 	private static UserConfigService instance = null;
 	
 	private UserConfigService(){
-		configuration = new Properties();
+		_configuration = new Properties();
 		
 	    try {	    	
-	    	File folder = new File(configPath);
-	    	File conf = new File(configFile);
+	    	File folder = new File(_configPath);
+	    	File conf = new File(_configFile);
 	    	
 	    	if (!folder.exists())
 	    		folder.mkdir();
@@ -31,7 +31,7 @@ public class UserConfigService {
 			FileOutputStream oFile = new FileOutputStream(conf, true);
 	    	oFile.close();
 	    	
-			configuration.load(new FileInputStream(configFile));
+			_configuration.load(new FileInputStream(_configFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -50,57 +50,53 @@ public class UserConfigService {
 	}
 	
 	public boolean getBool(String item){
-		return Boolean.parseBoolean(configuration.getProperty(item));
+		return Boolean.parseBoolean(_configuration.getProperty(item));
 	}
 	
 	public void setBool(String key, boolean value){
-		configuration.setProperty(key, new Boolean(value).toString());
+		_configuration.setProperty(key, new Boolean(value).toString());
 		try {
-			configuration.store(new FileOutputStream(configFile), null);
+			_configuration.store(new FileOutputStream(_configFile), null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public String getString(String item){
-		return configuration.getProperty(item);
+		return _configuration.getProperty(item);
 	}
 	
 	public void setString(String key, String value){
-		configuration.setProperty(key, value);
+		_configuration.setProperty(key, value);
 		try {
-			configuration.store(new FileOutputStream(configFile), null);
+			_configuration.store(new FileOutputStream(_configFile), null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public int getInteger(String item){
-		return Integer.parseInt(configuration.getProperty(item));
+		return Integer.parseInt(_configuration.getProperty(item));
 	}
 	
 	public void setInteger(String key, int value){
-		configuration.setProperty(key, new Integer(value).toString());
+		_configuration.setProperty(key, new Integer(value).toString());
 		try {
-			configuration.store(new FileOutputStream(configFile), null);
+			_configuration.store(new FileOutputStream(_configFile), null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public float getFloat(String item){
-		return Float.parseFloat(configuration.getProperty(item));
+		return Float.parseFloat(_configuration.getProperty(item));
 	}
 	
 	public void setFloat(String key, float value){
-		configuration.setProperty(key, new Float(value).toString());
+		_configuration.setProperty(key, new Float(value).toString());
 		try {
-			configuration.store(new FileOutputStream(configFile), null);
+			_configuration.store(new FileOutputStream(_configFile), null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -10,24 +10,23 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SimConfigPanel extends JPanel {
 
-	private Accordion accordian;
-	
-	private static SimConfigPanel instance = null;
+	private Accordion _accordian;
+	private static SimConfigPanel _instance = null;
 	
 	private SimConfigPanel(){
 		init();
 	}
 	
 	public static SimConfigPanel getInstance() {
-		if (instance == null) {
-			instance = new SimConfigPanel();
+		if (_instance == null) {
+			_instance = new SimConfigPanel();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	private void init(){
 	
-		accordian = new Accordion();
+		_accordian = new Accordion();
 		PlugInSelection plugInSelection = new PlugInSelection();
 
 		JPanel buttonBar = new JPanel();
@@ -37,7 +36,7 @@ public class SimConfigPanel extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		this.add(plugInSelection, BorderLayout.NORTH);
-		this.add(accordian, BorderLayout.CENTER);
+		this.add(_accordian, BorderLayout.CENTER);
 		this.add(buttonBar, BorderLayout.SOUTH); 
 	};
 }

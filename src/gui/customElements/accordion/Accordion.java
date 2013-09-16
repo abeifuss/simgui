@@ -19,10 +19,8 @@ import annotations.SimProp;
 @SuppressWarnings("serial")
 public class Accordion extends JScrollPane{
 
-	JPanel panel;
-	int count = 6;
-	
-	SimPropRegistry gcr = SimPropRegistry.getInstance();
+	private JPanel _panel;
+	private SimPropRegistry _spr = SimPropRegistry.getInstance();
 	
 	public Accordion() {
 
@@ -30,9 +28,7 @@ public class Accordion extends JScrollPane{
 		setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		//setPreferredSize(new Dimension(200, 600));
-		
-		panel = new JPanel();
+		_panel = new JPanel();
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -41,10 +37,10 @@ public class Accordion extends JScrollPane{
 	    gbc.weighty = 0;
 	    gbc.gridx = GridBagConstraints.RELATIVE;
 	    gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbl.setConstraints(panel, gbc);
-		panel.setLayout(gbl);
+		gbl.setConstraints(_panel, gbc);
+		_panel.setLayout(gbl);
 		
-		setViewportView(panel);
+		setViewportView(_panel);
 		// End Layout
 		
 		AccordionEntry acordition;
@@ -73,7 +69,7 @@ public class Accordion extends JScrollPane{
 			}
 			
 			acordition = new AccordionEntry(category, listOfAllSectionsInACategory);
-			panel.add( acordition, gbc );
+			_panel.add( acordition, gbc );
 		}
 		
 		gbc.weighty = 1;
@@ -81,8 +77,7 @@ public class Accordion extends JScrollPane{
 		// Spring element to push all other elements to the top
 		// needed for alignment
 		JPanel jp = new JPanel();
-		panel.add ( jp, gbc );
-		
+		_panel.add ( jp, gbc );
 		
 		setVisible(true);
 	}
@@ -91,7 +86,7 @@ public class Accordion extends JScrollPane{
 	private List<SimProp> getSections() {
 		List<SimProp> list = new LinkedList<SimProp>();
 		
-		Set<Entry<String, SimProp>> e = gcr.getAllSimProps();
+		Set<Entry<String, SimProp>> e = _spr.getAllSimProps();
 		
 		Iterator<Entry<String, SimProp>> iter = e.iterator();
 	    while (iter.hasNext()) {

@@ -1,4 +1,4 @@
-package gui.layout.Frames;
+package gui.layout.frames;
 
 import gui.customElements.SimHelpContentPanel;
 import gui.customElements.SimHelpMenuPanel;
@@ -13,11 +13,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import log.LogLevel;
+import log.Logger;
+
+import conf.service.UserConfigService;
+
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
-	private static HelpFrame instance = null;
-	JPanel panel;
+	private static HelpFrame _instance = null;
+	private int _helpFrameXPos;
+	private int _helpFrameYPos;
+	private int _helpFrameWidth;
+	private int _helpFrameHeight;
+	
+	private JPanel panel;
 	
 	private HelpFrame() {
 		
@@ -48,15 +58,18 @@ public class HelpFrame extends JFrame {
 			
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				safeProperties();
 				GuiService.getInstance().toogleHelpTools();
 			}
 			
 			@Override
 			public void windowClosed(WindowEvent arg0) {
+				safeProperties();
 			}
 			
 			@Override
@@ -66,10 +79,10 @@ public class HelpFrame extends JFrame {
 	}
 	
 	public static HelpFrame getInstance() {
-		if (instance == null) {
-			instance = new HelpFrame();
+		if (_instance == null) {
+			_instance = new HelpFrame();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	public void init(){
@@ -88,10 +101,42 @@ public class HelpFrame extends JFrame {
 		add(panel);
 		
 		this.pack();
-		this.setBounds(1200, 10, 500, 500);
+		
+		try {
+			_helpFrameXPos = UserConfigService.getInstance().getInteger("HELPFRAME_XPOS");
+		} catch (Exception e) {
+			_helpFrameXPos = 600;
+		}
+		
+		try {
+			_helpFrameYPos = UserConfigService.getInstance().getInteger("HELPFRAME_YPOS");
+		} catch (Exception e) {
+			_helpFrameYPos = 100;
+		}
+		
+		try {
+			_helpFrameWidth = UserConfigService.getInstance().getInteger("HELPFRAME_WIDTH");
+		} catch (Exception e) {
+			_helpFrameWidth = 700;
+		}
+		
+		try {
+			_helpFrameHeight = UserConfigService.getInstance().getInteger("HELPFRAME_HEIGTH");
+		} catch (Exception e) {
+			_helpFrameHeight = 750;
+		}
+
+		this.setBounds(_helpFrameXPos, _helpFrameYPos, _helpFrameWidth, _helpFrameHeight);
 	}
 
 	public JPanel getPanel() {
 		return panel;
+	}
+	
+	private void safeProperties(){
+		UserConfigService.getInstance().setInteger("HELPFRAME_XPOS", this.getX());
+		UserConfigService.getInstance().setInteger("HELPFRAME_YPOS", this.getY());
+		UserConfigService.getInstance().setInteger("HELPFRAME_WIDTH", this.getWidth());
+		UserConfigService.getInstance().setInteger("HELPFRAME_HEIGTH", this.getHeight());
 	}
 }

@@ -20,20 +20,20 @@ import annotations.SimProp;
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
 	
-	JButton btn;
-	JTable tab;
+	private JButton _entryButton;
+	private JTable _entryTable;
 	
 	public AccordionEntry(String name, List<SimProp>  listOfAllSectionsInACategory) {
 		
 		setLayout(new BorderLayout(0, 0));
 
-		btn = new JButton(name,  new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
-		btn.setForeground(Color.BLACK);
-		btn.setHorizontalAlignment(SwingConstants.LEFT);
-		btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+		_entryButton = new JButton(name,  new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+		_entryButton.setForeground(Color.BLACK);
+		_entryButton.setHorizontalAlignment(SwingConstants.LEFT);
+		_entryButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 		
 		
-		tab = new JTable(new AccordionModel(name)){
+		_entryTable = new JTable(new AccordionModel(name)){
 			
 			// This takes care that the non-editable cells are grayed out.
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -45,11 +45,11 @@ public class AccordionEntry extends JPanel {
 				}
 		};
 		
-		tab.addMouseMotionListener(new AccordionMouseMotionAdapter(listOfAllSectionsInACategory, tab));
-		tab.setDefaultRenderer(Object.class, new AccordionTableCellRenderer(listOfAllSectionsInACategory));
-		tab.setVisible(false);
+		_entryTable.addMouseMotionListener(new AccordionMouseMotionAdapter(listOfAllSectionsInACategory, _entryTable));
+		_entryTable.setDefaultRenderer(Object.class, new AccordionTableCellRenderer(listOfAllSectionsInACategory));
+		_entryTable.setVisible(false);
 
-		TableColumn col = tab.getColumnModel().getColumn(1);
+		TableColumn col = _entryTable.getColumnModel().getColumn(1);
 		col.setCellEditor(new AccordionCellEditor());
 		
 		ActionListener al = new ActionListener() {
@@ -60,23 +60,23 @@ public class AccordionEntry extends JPanel {
 			}
 		};
 		
-		btn.addActionListener(al);
-		btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-		tab.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_entryButton.addActionListener(al);
+		_entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		this.add(btn, BorderLayout.NORTH);
-		this.add(tab, BorderLayout.CENTER);
+		this.add(_entryButton, BorderLayout.NORTH);
+		this.add(_entryTable, BorderLayout.CENTER);
 	}
 	
 	private void toggleVisibility(Object source){
 		
 		JButton btn = ( JButton ) source;
-		if (!tab.isVisible()){
+		if (!_entryTable.isVisible()){
 			btn.setIcon( new ImageIcon("etc/img/icons/red/arrow-144-24.png") );
 		}else{
 			btn.setIcon( new ImageIcon("etc/img/icons/green/arrow-144-24.png") );
 		}
-		tab.setVisible(!tab.isVisible());
+		_entryTable.setVisible(!_entryTable.isVisible());
 		
 		
 	}

@@ -18,8 +18,9 @@ public class DependencyChecker {
 		Boolean errorValue;
 		Boolean errorEnabled;
 
-		// Marker if the simprop is disabled so that 1. no further check for
-		// enabled are made and 2. ValueChecks are not executed
+		// Marker if the simprop is disabled so that 
+		// 1. no further check for enabled are made
+		// 2. ValueChecks are not executed
 		Boolean disabled;
 
 		for (Entry<String, SimProp> entry : allSimProps) {

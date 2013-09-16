@@ -8,7 +8,7 @@ edge [fontname=Verdana,color="#000000"]
 main [shape=box, color=red]
 SimPropRegistry [shape=box, color=black]
 DependencyChecker [shape=box, color=black]
-Annotations [shape=box, color=black]
+SimProp [shape=box, color=black]
 Requirement [shape=box, color=black]
 GuiService [shape=box, color=black]
 MainGui [shape=box, color=black]
@@ -16,6 +16,7 @@ ToolFrame [shape=box, color=black]
 HelpFrame [shape=box, color=black]
 SimHelpContentPanel [shape=box, color=black]
 SimHelpMenuPanel [shape=box, color=black]
+NavigationService [shape=box, color=black]
 SimConfigPanel [shape=box, color=black]
 PlugInSelection [shape=box, color=black]
 Accordion [shape=box, color=black]
@@ -26,7 +27,7 @@ SimulationTab [shape=box, color=black]
 ChartPanel [shape=box, color=black]
 UserConfigService [shape=box, color=black]
 gMixBinding [shape=box, color=black]
-Simulator [shape=box, color=black]
+Simulator [shape=box, color=red]
 
 Filesystem [shape=DatabaseShape,peripheries=0,color=black];
 
@@ -34,9 +35,9 @@ main -> SimPropRegistry [label="getInstance",fontsize=9]
 main -> DependencyChecker [label="getInstance",fontsize=9]
 main -> GuiService [label="getInstance",fontsize=9]
 
-SimPropRegistry -> Annotations [label="scan",fontsize=9]
-SimPropRegistry -> SimPropRegistry [label="scanPlugIns",fontsize=9]
-Annotations -> Requirement
+SimPropRegistry -> SimProp [label="scan",fontsize=9]
+SimProp -> Requirement [label="getValue_requirements",fontsize=9]
+SimProp -> Requirement [label="setValue_requirements",fontsize=9]
 
 DependencyChecker -> SimPropRegistry [label="getAllSimProps",fontsize=9]
 DependencyChecker -> Requirement [label="check",fontsize=9]
@@ -59,7 +60,9 @@ AccordionEntry -> AccordionEntry [label="toggleVisibility",fontsize=9]
 
 HelpFrame -> SimHelpContentPanel
 HelpFrame -> SimHelpMenuPanel
-SimHelpMenuPanel -> SimHelpContentPanel [label="hyperlinkUpdate",fontsize=9]
+SimHelpMenuPanel -> SimHelpContentPanel [label="loadURL",fontsize=9]
+SimHelpMenuPanel -> NavigationService [label="getMenu",fontsize=9]
+NavigationService -> SimPropRegistry [label="getPlugIns",fontsize=9]
 
 MainGui -> GuiService [label="toggleConfTool",fontsize=9]
 MainGui -> GuiService [label="toogleHelpTool",fontsize=9]
@@ -72,6 +75,8 @@ UserConfigService -> Filesystem [label="setProperty",fontsize=9]
 UserConfigService -> Filesystem [label="getProperty",fontsize=9]
 
 SimulationTab -> gMixBinding
-gMixBinding -> Simulator
-
+gMixBinding -> SimPropRegistry [label="getConfig",fontsize=9]
+gMixBinding -> Simulator [label="run",fontsize=9]
+Simulator -> Filesystem
+ChartPanel -> Filesystem
 }

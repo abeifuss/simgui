@@ -8,36 +8,36 @@ import java.util.Observer;
 
 public class DescriptionService extends Observable{
 
-	String description;
-	List<Observer> observers;
+	private String _description;
+	private List<Observer> _observers;
 	
-	private static DescriptionService instance = null;
+	private static DescriptionService _instance = null;
 
 	private DescriptionService() {
 		super();
-		observers = new LinkedList<Observer>();
+		_observers = new LinkedList<Observer>();
 	}
 
 	public static DescriptionService getInstance() {
-		if (instance == null) {
-			instance = new DescriptionService();
+		if (_instance == null) {
+			_instance = new DescriptionService();
 		}
-		return instance;
+		return _instance;
 	}
 	
 	public void addObserver(Observer o){
-		observers.add(o);
+		_observers.add(o);
 	}
 	
 	public void notifyObservers(){
-		Iterator<Observer> iter = observers.iterator();
+		Iterator<Observer> iter = _observers.iterator();
 		while (iter.hasNext()) {
-			iter.next().update(this, description);
+			iter.next().update(this, _description);
 		}
 	}
 	
 	public void setDescription(String descr){
-		description = descr;
+		_description = descr;
 		notifyObservers();
 	}
 

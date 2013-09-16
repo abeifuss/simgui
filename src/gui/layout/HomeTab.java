@@ -16,7 +16,6 @@ public class HomeTab extends JPanel{
 	public HomeTab() {
 		
 		Color bg  = getBackground();
-		//setPreferredSize(new Dimension(600, 600));
 		
 		JLabel wellcomeLabel = new JLabel("Wellcome to gMixSim");
 		wellcomeLabel.setFont(new Font("arial", 1, 35));

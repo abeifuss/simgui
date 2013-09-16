@@ -6,7 +6,7 @@ import gui.pluginRegistry.SimPropRegistry;
 
 public abstract class Requirement {
 
-	private String comment;
+	private String _comment;
 	
 	/**
 	 * checks if an defined Requirement is met
@@ -32,11 +32,11 @@ public abstract class Requirement {
 
 
 	public String getComment() {
-		return comment;
+		return _comment;
 	}
 
 	public void setComment(String comment) {
-		this.comment = comment;
+		this._comment = comment;
 	}
 	
 	

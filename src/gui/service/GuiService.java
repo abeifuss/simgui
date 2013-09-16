@@ -1,24 +1,25 @@
 package gui.service;
 
-import conf.service.UserConfigService;
 import gui.layout.MainGui;
-import gui.layout.Frames.HelpFrame;
-import gui.layout.Frames.ToolFrame;
+import gui.layout.frames.HelpFrame;
+import gui.layout.frames.ToolFrame;
+import conf.service.UserConfigService;
 
 
 public class GuiService {
 
-	private MainGui mainGui;
-	private ToolFrame toolFrame;
-	private HelpFrame helpFrame;
+	private MainGui _mainGui;
+	private ToolFrame _configToolFrame;
+	private HelpFrame _helpToolFrame;
 
 	private static GuiService instance = null;
 	
 	private GuiService() {
 		
-			mainGui = MainGui.getInstance();
-			toolFrame = ToolFrame.getInstance();
-			helpFrame = HelpFrame.getInstance();
+			_mainGui = MainGui.getInstance();
+			_configToolFrame = ToolFrame.getInstance();
+			_helpToolFrame = HelpFrame.getInstance();
+			
 			loadOldWinConf();
 	}
 
@@ -36,48 +37,48 @@ public class GuiService {
 		
 		if ( showConfToolInSeparateWindow ){
 			System.out.println("SHOW SEPERATE CONF TOOL");
-			toolFrame.setVisible(true);
-			mainGui.toogleConfTool(false);
+			_configToolFrame.setVisible(true);
+			_mainGui.toogleConfTool(false);
 		}else{
 			System.out.println("SHOW INTEGRATED CONF TOOL");
-			toolFrame.setVisible(false);
-			mainGui.toogleConfTool(true);
+			_configToolFrame.setVisible(false);
+			_mainGui.toogleConfTool(true);
 		}
 		
 		if ( showConfHelpInSeparateWindow ){
 			System.out.println("SHOW SEPERATE HELP TOOL");
-			helpFrame.setVisible(true);
-			mainGui.toogleHelpTool(false);
+			_helpToolFrame.setVisible(true);
+			_mainGui.toogleHelpTool(false);
 		}else{
 			System.out.println("SHOW INTEGRATED HELP TOOL");
-			helpFrame.setVisible(false);
-			mainGui.toogleHelpTool(true);
+			_helpToolFrame.setVisible(false);
+			_mainGui.toogleHelpTool(true);
 		}
 	}
 	
 	public void toogleConfTools(){
-		if ( toolFrame.isVisible() ){
-			toolFrame.setVisible(false);
-			mainGui.toogleConfTool(true);
+		if ( _configToolFrame.isVisible() ){
+			_configToolFrame.setVisible(false);
+			_mainGui.toogleConfTool(true);
 			UserConfigService.getInstance().setBool("SEPERATE_CONF_TOOL", false);
 			return;
 		}
-		toolFrame.setVisible(true);
-		toolFrame.init();
-		mainGui.toogleConfTool(false);
+		_configToolFrame.setVisible(true);
+		_configToolFrame.init();
+		_mainGui.toogleConfTool(false);
 		UserConfigService.getInstance().setBool("SEPERATE_CONF_TOOL", true);
 	}
 
 	public void toogleHelpTools() {
-		if ( helpFrame.isVisible() ){
-			helpFrame.setVisible(false);
-			mainGui.toogleHelpTool(true);
+		if ( _helpToolFrame.isVisible() ){
+			_helpToolFrame.setVisible(false);
+			_mainGui.toogleHelpTool(true);
 			UserConfigService.getInstance().setBool("SEPERATE_HELP_TOOL", false);
 			return;
 		}
-		helpFrame.setVisible(true);
-		helpFrame.init();
-		mainGui.toogleHelpTool(false);
+		_helpToolFrame.setVisible(true);
+		_helpToolFrame.init();
+		_mainGui.toogleHelpTool(false);
 		UserConfigService.getInstance().setBool("SEPERATE_HELP_TOOL", true);
 		
 	}

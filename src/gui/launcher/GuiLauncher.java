@@ -37,15 +37,7 @@ public class GuiLauncher {
 			}
 		}
 
-		// spawn tool window
-		// @SuppressWarnings("unused")
-		// ToolFrame toolFrame = ToolFrame.getInstance();
-		
-		// spawn main window
-		//@SuppressWarnings("unused")
-		//MainGui mainGui = MainGui.getInstance();
-		
+		// 
 		GuiService.getInstance();
-		// spawn help window
 	}
 }

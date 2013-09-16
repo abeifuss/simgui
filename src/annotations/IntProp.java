@@ -4,20 +4,20 @@ import javax.swing.JOptionPane;
 
 public class IntProp extends SimProp{
 
-	int value;
-	int minValue;
-	int maxValue;
+	private int _value;
+	private int _minValue;
+	private int _maxValue;
 
 	@Override
 	public Object getValue() {
-		return value;
+		return _value;
 	}
 
 	@Override
 	public void setValue(Object o) {
 		int tmp = (int)(o);
 		if (tmp <= getMaxValue() && tmp >= getMinValue() ){
-			value = tmp;
+			_value = tmp;
 			return;
 		}
 		
@@ -33,19 +33,19 @@ public class IntProp extends SimProp{
 	}
 	
 	public int getMinValue() {
-		return minValue;
+		return _minValue;
 	}
 
 	public void setMinValue(int minValue) {
-		this.minValue = minValue;
+		this._minValue = minValue;
 	}
 
 	public int getMaxValue() {
-		return maxValue;
+		return _maxValue;
 	}
 
 	public void setMaxValue(int maxValue) {
-		this.maxValue = maxValue;
+		this._maxValue = maxValue;
 	}
 
 }

@@ -4,13 +4,13 @@ import javax.swing.JOptionPane;
 
 public class FloatProp extends SimProp{
 
-	float value;
-	float minValue;
-	float maxValue;
+	private float _value;
+	private float _minValue;
+	private float _maxValue;
 
 	@Override
 	public Object getValue() {
-		return value;
+		return _value;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class FloatProp extends SimProp{
 		}
 		
 		if (tmp <= getMaxValue() && tmp >= getMinValue() ){
-			value = tmp;
+			_value = tmp;
 			return;
 		}
 		
@@ -42,18 +42,18 @@ public class FloatProp extends SimProp{
 	}
 	
 	public float getMinValue() {
-		return minValue;
+		return _minValue;
 	}
 
 	public void setMinValue(float minValue) {
-		this.minValue = minValue;
+		this._minValue = minValue;
 	}
 
 	public float getMaxValue() {
-		return maxValue;
+		return _maxValue;
 	}
 
 	public void setMaxValue(float maxValue) {
-		this.maxValue = maxValue;
+		this._maxValue = maxValue;
 	}
 }

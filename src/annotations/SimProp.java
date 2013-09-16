@@ -3,11 +3,11 @@ package annotations;
 // pojo
 public abstract class SimProp {
 
-	String id;
-	String name;
-	String description;
-	String tooltip;
-	String category;
+	private String _id;
+	private String _name;
+	private String _description;
+	private String _tooltip;
+	private String _category;
 	
 	// dependencies
 	boolean enabled;
@@ -32,49 +32,49 @@ public abstract class SimProp {
 	}
 
 	public String getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this._id = id;
 	}
 
 	public String getName() {
-		return name;
+		return _name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this._name = name;
 	}
 
 	public String getDescription() {
-		return description;
+		return _description;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this._description = description;
 	}
 
 	public String getTooltip() {
-		return tooltip;
+		return _tooltip;
 	}
 
 	public void setTooltip(String tooltip) {
-		this.tooltip = tooltip;
+		this._tooltip = tooltip;
 	}
 
 	public String getCategory() {
-		return category;
+		return _category;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategory(String category) { 
+		this._category = category;
 	}
 
 	public void printOut() {
-		System.out.println("ID(" + id + ") aka. " + name + " has");
-		System.out.println("Description: " + description);
-		System.out.println("Tooltip: " + tooltip);
+		System.out.println("ID(" + _id + ") aka. " + _name + " has");
+		System.out.println("Description: " + _description);
+		System.out.println("Tooltip: " + _tooltip);
 		System.out.println("Its value type is " + getValueType());
 		System.out.println("==================================");
 	}
@@ -91,6 +91,11 @@ public abstract class SimProp {
 	public abstract Class<?> getValueType();
 	public abstract Object getValue();
 	public abstract void setValue(Object value);
+
+	public String getPlugin() {
+		// TODO Implement
+		return "DummyPlugin";
+	}
 
 
 

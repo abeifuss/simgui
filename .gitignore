@@ -39,3 +39,4 @@ log/*
 
 # # PDT-specific
 .buildpath
+/bin

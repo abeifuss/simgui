@@ -1,23 +1,18 @@
 package gui.console;
 
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class ConsolePanel extends JTextArea{
 
-	JTextField console;
-	String log;
-	JScrollBar vbar;
-	
+	private String _log;
 	private static ConsolePanel instance = null;
 
 	private ConsolePanel() {
 		
 		this.setEditable(false);
 		
-		log = "";
+		_log = "";
 		initConsole();
 	}
 	public static ConsolePanel getInstance() {
@@ -34,12 +29,12 @@ public class ConsolePanel extends JTextArea{
 	}
 	
 	public void update() {
-		this.setText(log);
+		this.setText(_log);
 		this.setCaretPosition(10);
 	}
 	
 	public void append(String msg) {
-		log = msg + "\n" + log;
+		_log = msg + "\n" + _log;
 		this.update();
 	}
 }
