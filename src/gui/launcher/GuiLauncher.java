@@ -9,11 +9,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class GuiLauncher {
 
 	public static void main(String[] args) {
-		
-		
+
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
 		gcr.scan();
-		
+
 		// initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(gcr);
 
@@ -37,7 +36,7 @@ public class GuiLauncher {
 			}
 		}
 
-		// 
+		//
 		GuiService.getInstance();
 	}
 }
