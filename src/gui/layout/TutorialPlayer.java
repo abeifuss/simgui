@@ -57,11 +57,11 @@ public class TutorialPlayer extends JFrame{
 	
 	private void createPlayerAndShowComponents(URL url) throws IOException, NoPlayerException, CannotRealizeException{
 		
-		MediaLocator ml;
-		ml = new MediaLocator( "file://home/alex/repos/simgui/etc/tutorials/video1.avi" );
+//		MediaLocator ml;
+//		ml = new MediaLocator( "file://home/alex/repos/simgui/etc/tutorials/video1.avi" );
 		
-//		_player = Manager.createRealizedPlayer( url );
-		_player = Manager.createRealizedPlayer( ml );
+		_player = Manager.createRealizedPlayer( url );
+//		_player = Manager.createRealizedPlayer( ml );
 		
 		Component comp;
 		if ( (comp = _player.getVisualComponent()) != null ){
