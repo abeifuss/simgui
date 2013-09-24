@@ -3,9 +3,12 @@ package conf.service;
 import gui.pluginRegistry.SimPropRegistry;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -26,8 +29,33 @@ public class SimulationConfigService {
 	}
 
 	public void loadConfig(File file) {
-		// TODO Auto-generated method stub
-
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				.format(Calendar.getInstance().getTime());
+		this.writeConfig(new File("etc/conf/config.dump." + timeStamp));
+		Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "File not found.");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Could not read from file.");
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(null, "Could not read from file.");
+		}
+		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
+			if (s.getValue().getValueType() == String.class) {
+				s.getValue().setValue((props.get(s.getKey())));
+			} else if (s.getValue().getValueType() == Integer.class) {
+				s.getValue().setValue(
+						Integer.parseInt((String) props.get(s.getKey())));
+			} else if (s.getValue().getValueType() == Float.class) {
+				s.getValue().setValue(
+						Float.parseFloat((String) props.get(s.getKey())));
+			} else if (s.getValue().getValueType() == Boolean.class) {
+				s.getValue().setValue(
+						Boolean.parseBoolean((String) props.get(s.getKey())));
+			}
+		}
 	}
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
