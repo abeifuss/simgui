@@ -1,6 +1,10 @@
 package gui.service;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import gui.layout.MainGui;
+import gui.layout.TutorialPlayer;
 import gui.layout.frames.HelpFrame;
 import gui.layout.frames.ToolFrame;
 import conf.service.UserConfigService;
@@ -21,6 +25,10 @@ public class GuiService {
 			_helpToolFrame = HelpFrame.getInstance();
 			
 			loadOldWinConf();
+			
+			JFrame jf = new TutorialPlayer("TEST");
+			jf.setVisible(true);
+			jf.setBounds(400, 400, 640, 480);
 	}
 
 	public static GuiService getInstance() {

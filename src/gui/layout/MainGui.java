@@ -4,8 +4,6 @@ import gui.console.ConsolePanel;
 import gui.customElements.SimConfigPanel;
 import gui.layout.frames.HelpFrame;
 import gui.layout.menu.MainMenu;
-import gui.service.GuiService;
-
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -128,7 +126,7 @@ public class MainGui extends JFrame {
 	}
 
 	protected void init() {
-
+		
 		_horrizontalSplitPlane = new JSplitPane();
 		_horrizontalSplitPlane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		_horrizontalSplitPlane.setOneTouchExpandable(true);

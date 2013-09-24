@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import gui.customElements.accordion.Accordion;
 
+import javax.swing.GroupLayout.Group;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 public class SimConfigPanel extends JPanel {
 
 	private Accordion _accordian;
+
 	private static SimConfigPanel _instance = null;
 	
 	private SimConfigPanel(){
