@@ -1,5 +1,7 @@
 package conf.service;
 
+import gui.customElements.SimConfigPanel;
+import gui.pluginRegistry.DependencyChecker;
 import gui.pluginRegistry.SimPropRegistry;
 
 import java.io.File;
@@ -56,6 +58,8 @@ public class SimulationConfigService {
 						Boolean.parseBoolean((String) props.get(s.getKey())));
 			}
 		}
+		DependencyChecker.checkAll(this.simPropRegistry);
+		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
