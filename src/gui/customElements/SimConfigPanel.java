@@ -14,6 +14,11 @@ import javax.swing.JPanel;
 public class SimConfigPanel extends JPanel {
 
 	private Accordion _accordian;
+	private JButton loadButton;
+	private JPanel buttonBar;
+	private PlugInSelection plugInSelection;
+	private JButton saveButton;
+	private JButton resetButton;
 
 	private static SimConfigPanel _instance = null;
 
@@ -23,6 +28,10 @@ public class SimConfigPanel extends JPanel {
 		}
 		return _instance;
 	}
+	
+	public static void setStatusofSaveButton(Boolean enabled) {
+		getInstance().saveButton.setEnabled(enabled);
+	}
 
 	private SimConfigPanel() {
 		this.init();
@@ -31,19 +40,19 @@ public class SimConfigPanel extends JPanel {
 	private void init() {
 
 		this._accordian = new Accordion();
-		PlugInSelection plugInSelection = new PlugInSelection();
+		plugInSelection = new PlugInSelection();
 
-		JPanel buttonBar = new JPanel();
+		buttonBar = new JPanel();
 
-		JButton loadButton = new JButton("Load");
+		loadButton = new JButton("Load");
 		loadButton.addActionListener(new LoadButtonAction());
 		buttonBar.add(loadButton, BorderLayout.SOUTH);
-
-		JButton saveButton = new JButton("Save");
+		saveButton = new JButton("Save");
 		saveButton.addActionListener(new SaveButtonAction());
 		buttonBar.add(saveButton, BorderLayout.SOUTH);
+		
 
-		JButton resetButton = new JButton("Reset");
+		resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ResetButtonAction());
 		buttonBar.add(resetButton, BorderLayout.SOUTH);
 

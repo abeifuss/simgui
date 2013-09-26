@@ -1,5 +1,6 @@
 package gui.customElements.accordion;
 
+import gui.customElements.SimConfigPanel;
 import gui.pluginRegistry.DependencyChecker;
 import gui.pluginRegistry.SimPropRegistry;
 
@@ -86,6 +87,9 @@ public class AccordionModel implements TableModel {
 		_spr.setValue(id, arg0);
 		
 		DependencyChecker.checkAll(_spr);
+		if (DependencyChecker.errorsInConfig){
+			SimConfigPanel.setStatusofSaveButton(DependencyChecker.errorsInConfig);
+		}
 	}
 
 	public List<Entry<String, String>> getProperties() {
