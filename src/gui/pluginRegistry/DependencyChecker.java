@@ -8,7 +8,10 @@ import annotations.SimProp;
 
 public class DependencyChecker {
 
+	public static Boolean errorsInConfig;
 	public static void checkAll(SimPropRegistry gcr) {
+		errorsInConfig = false;
+		
 		Set<Entry<String, SimProp>> allSimProps = gcr.getAllSimProps();
 
 		Requirement enableRequirement = null;

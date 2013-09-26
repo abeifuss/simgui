@@ -2,6 +2,7 @@ package annotations;
 
 import javax.swing.JOptionPane;
 
+import gui.pluginRegistry.DependencyChecker;
 import gui.pluginRegistry.SimPropRegistry;
 
 public abstract class Requirement {
@@ -62,6 +63,7 @@ public abstract class Requirement {
 		    "New Max Value is lower than current value. Please change value of option " + option +" to a value lower or equal than" +newMax,
 		    "Warning",
 		    JOptionPane.WARNING_MESSAGE);
+		DependencyChecker.errorsInConfig = true;
 	}
 	}
 	
@@ -79,6 +81,7 @@ public abstract class Requirement {
 		    "New Min Value is greater than current value. Please change value of option " + option +" to a higher or equal than" +newMin,
 		    "Warning",
 		    JOptionPane.WARNING_MESSAGE);
+			DependencyChecker.errorsInConfig = true;
 	}
 	}
 }
