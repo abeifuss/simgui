@@ -31,6 +31,7 @@ public class SimConfigPanel extends JPanel {
 	
 	public static void setStatusofSaveButton(Boolean enabled) {
 		getInstance().saveButton.setEnabled(enabled);
+		getInstance()._accordian.repaint();
 	}
 
 	private SimConfigPanel() {

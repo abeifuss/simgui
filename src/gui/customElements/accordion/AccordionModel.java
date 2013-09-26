@@ -87,9 +87,7 @@ public class AccordionModel implements TableModel {
 		_spr.setValue(id, arg0);
 		
 		DependencyChecker.checkAll(_spr);
-		if (DependencyChecker.errorsInConfig){
-			SimConfigPanel.setStatusofSaveButton(DependencyChecker.errorsInConfig);
-		}
+			SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}
 
 	public List<Entry<String, String>> getProperties() {
