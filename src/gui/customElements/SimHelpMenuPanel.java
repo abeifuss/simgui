@@ -1,5 +1,7 @@
 package gui.customElements;
 
+import gui.layout.TutorialPlayer;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Point;
@@ -10,6 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.InputStream;
 
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
@@ -144,8 +147,15 @@ public class SimHelpMenuPanel extends JPanel implements HyperlinkListener{
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getInputEvent().getModifiers() == InputEvent.BUTTON1_MASK){
-			SimHelpContentPanel.getInstance().loadURL(e.getDescription()+"index.html");
-			Logger.Log(LogLevel.DEBUG, "Hyperlink Event for " + e.getDescription());
+			if ( e.getDescription().equals("VIDEO1") ){
+				JFrame jf = new TutorialPlayer("TEST");
+				jf.setVisible(true);
+				jf.setBounds(400, 400, 640, 480);
+				Logger.Log(LogLevel.DEBUG, "VIDEO Event for " + e.getDescription());
+			}else{
+				SimHelpContentPanel.getInstance().loadURL(e.getDescription()+"index.html");
+				Logger.Log(LogLevel.DEBUG, "Hyperlink Event for " + e.getDescription());
+			}
 		}
 	}
 

@@ -15,8 +15,8 @@ public class NavigationService {
 				"<title> Navigation </title>\n"+
 				"</head>\n"+
 				"<body>\n"+
-				"<h1>Navigation</h1>";
-		
+				"<h1>Navigation</h1>\n"+
+				"<a href=\"VIDEO1\">VIDEOTUTORIAL_TEST</a><br/>";
 		String tail = "</p>\n"+
 				"</body>\n"+
 				"</html>";

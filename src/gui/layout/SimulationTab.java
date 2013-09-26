@@ -1,6 +1,5 @@
 package gui.layout;
 
-import gui.console.ConsolePanel;
 import gui.results.LineJFreeChartCreator;
 
 import java.awt.BorderLayout;
