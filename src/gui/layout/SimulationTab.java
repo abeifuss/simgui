@@ -1,6 +1,7 @@
 package gui.layout;
 
 import gui.results.LineJFreeChartCreator;
+import gui.results.ResultPanelFactory;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -100,7 +101,7 @@ public class SimulationTab extends JPanel implements ActionListener{
 	            
 	    	   @SuppressWarnings("unused")
 				gMixBinding callSimulation = new gMixBinding(params);
-	    	   	_bottom.addTab("Results_"+_resultCounter, new ChartPanel(LineJFreeChartCreator.createAChart()));
+	    	   	_bottom.addTab("Results_"+_resultCounter, ResultPanelFactory.getResultPanel());
 	   			_resultCounter++;	    	   
 	    	   }
 	        }
