@@ -23,6 +23,7 @@ import gnu.trove.TDoubleArrayList;
 
 import framework.core.config.Paths;
 import framework.core.config.Settings;
+import framework.core.launcher.CommandLineParameters;
 import framework.core.launcher.GMixTool;
 import framework.core.util.Util;
 
@@ -53,6 +54,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	public static boolean DEBUG_ON = false;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
+	private static CommandLineParameters commandLineParameters;
 	private PriorityQueue<Event> eventQueue = new PriorityQueue<Event>();
 	private HashMap<String, AbstractClient> clients;
 	private HashMap<String, Mix> mixes;
@@ -70,13 +72,13 @@ public class Simulator extends GMixTool implements Identifiable {
 	private TrafficSource trafficSource;
 	
 	
-	public Simulator(/*XMLResource generalConfig*/) {
-		//Simulator.generalConfig = generalConfig;
+	public Simulator(CommandLineParameters params) {
+		Simulator.commandLineParameters = params;
 		now = 0;
 		numericIdentifier = IdGenerator.getId();
 		if (firstRun) {
 			firstRun = false;
-			/*if (commandLineParameters.globalConfigFile != null) {
+			if (commandLineParameters.globalConfigFile != null) {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +commandLineParameters.globalConfigFile);
 				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
@@ -84,19 +86,19 @@ public class Simulator extends GMixTool implements Identifiable {
 				Statistics.setSimulator(this);
 				Simulator.trafficSourceStatistics = new Statistics(this);
 				performExperiment(Simulator.settings);
-			} else {*/
-			Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
-			String desiredExperiments = settings.getProperty("EXPERIMENTS_TO_PERFORM");
-			Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
-			for (String desiredExperiment: desiredExperiments.split(",")) {
+			} else {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
-				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +desiredExperiment);
-				Simulator.currentSimulator = this;
-				Statistics.setSimulator(this);
-				Simulator.trafficSourceStatistics = new Statistics(this);
-				performExperiment(Simulator.settings);
+				String desiredExperiments = settings.getProperty("EXPERIMENTS_TO_PERFORM");
+				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
+				for (String desiredExperiment: desiredExperiments.split(",")) {
+					Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
+					Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +desiredExperiment);
+					Simulator.currentSimulator = this;
+					Statistics.setSimulator(this);
+					Simulator.trafficSourceStatistics = new Statistics(this);
+					performExperiment(Simulator.settings);
+				}
 			}
-			//}
 		} else {
 			Statistics.setSimulator(this);
 			Simulator.trafficSourceStatistics = new Statistics(this);
@@ -317,7 +319,7 @@ public class Simulator extends GMixTool implements Identifiable {
 
 				System.out.println("### STARTING RUN " +(j+1) +"/" +ep.runs);
 
-				simulator = new Simulator(/*generalConfig*/);
+				simulator = new Simulator(commandLineParameters);
 				simulator.executeSimulationScript(ep.simulationScript);
 				
 				long start = System.currentTimeMillis();
@@ -379,8 +381,12 @@ public class Simulator extends GMixTool implements Identifiable {
 	}
 	
 	
+	/**
+	 * Comment
+	 *
+	 * @param args Not used.
+	 */
 	public static void main(String[] args) {
-		
-		new Simulator(/*new CommandLineParameters(args)*/);
+		new Simulator(new CommandLineParameters(args));
 	}
 }
