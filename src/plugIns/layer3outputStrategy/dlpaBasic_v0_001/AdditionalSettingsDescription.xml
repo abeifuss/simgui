@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for dlpaBasic</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>DLPA_BASIC_DEFAULT_SLOT_SIZE</name>
+					<location type="textcontent">/plugIn/dlpaBasicDefaultSlotSize</location>
+					<content>
+						<int preset="100" min="1" max="1000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>DLPA_BASIC_MAX_REQUEST_DELAY</name>
+					<location type="textcontent">/plugIn/dlpaBasicMaxRequestDelay</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>DLPA_BASIC_MAX_REPLY_DELAY</name>
+					<location type="textcontent">/plugIn/dlpaBasicMaxReplyDelay</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

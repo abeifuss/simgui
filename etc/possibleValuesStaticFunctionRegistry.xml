@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guiInfo>
+	<possibleGuiValues>
+		<rootNode>staticFunction</rootNode>
+		<mainBranch>
+			<name>General Settings</name>
+			<settingsGroups>
+				<settingGroup>
+					<name>Name and ID</name>
+					<description>Specify the name and unique ID of this static function
+					</description>
+					<settings>
+						<singleSetting>
+							<name>Layer</name>
+							<description>Choose layer of this static function</description>
+							<location type="@layer">/staticFunction</location>
+							<content>
+								<int min="1" max="5" preset="1"  immutable="true"/>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Name</name>
+							<description>The name of this static function</description>
+							<location type="textcontent">/staticFunction/name</location>
+							<content>
+								<string pattern=".+" preset="Static Function XY" />
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>ID</name>
+							<description>The unique ID of this static function</description>
+							<location type="@id">/staticFunction</location>
+							<content>
+								<string pattern="[a-zA-Z0-9_-]+" preset="NameOfPlugInXY" immutable="true"/>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Path to home dir</name>
+							<description>Path to the home of this static function</description>
+							<location type="@home">/staticFunction</location>
+							<content>
+								<string pattern="[a-zA-Z0-9_/\\]*[a-zA-Z0-9_]" preset="src/staticFunctions/layer/name" immutable="true"/>
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+				<settingGroup>
+					<name>Method and Function</name>
+					<description/>
+					<settings>
+						<singleSetting>
+							<name>Qualified Class</name>
+							<description>The full qualified class name</description>
+							<location type="textcontent">/staticFunction/class</location>
+							<content>
+								<string pattern="[a-zA-Z0-9_/]*[a-zA-Z0-9_]\.java" preset="src/staticFunctions/layer/name/class.java" />
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Method</name>
+							<description>The method of the specified class.</description>
+							<location type="textcontent">/staticFunction/method</location>
+							<content>
+								<string pattern="[a-zA-Z][a-zA-Z0-9]*" preset="exampleDoSth" />
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+			</settingsGroups>
+		</mainBranch>
+	</possibleGuiValues>
+</guiInfo>

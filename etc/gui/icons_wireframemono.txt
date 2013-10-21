@@ -1,0 +1,50 @@
+####################################################################
+#        Wireframe Mono      by http://www.gentleface.com/         #
+#                                                                  #
+#           Creative Commons Attribution-NonCommercial             #
+#                                                                  #
+# Be careful! Use this unix separator: / regardless of the system! #
+####################################################################
+
+### Paths to the icons
+export = wm/doc_export_icon&48.png
+save = wm/save_icon&48.png
+open = wm/folder_open_icon&48.png
+add = wm/round_plus_icon&48.png
+delete = wm/trash_icon&48.png
+console = wm/app_window_black&48.png
+info = wm/info_icon&48.png
+edit = wm/doc_edit_icon&48.png
+start = wm/playback_play_icon&48.png
+settings = wm/wrench_plus_2_icon&48.png
+stop = wm/playback_stop_icon&48.png
+script = wm/doc_empty_icon&48.png
+webpage = wm/globe_3_icon&48.png
+error = wm/fire_icon&48.png.png
+plugin = wm/cube_icon&48.png
+function = wm/shapes_icon&48.png
+valid = wm/checkmark_icon&48.png
+ok = wm/checkmark_icon&48.png
+cancel = wm/cancel_icon&48.png
+invalid = wm/fire_icon&48.png
+refresh = wm/refresh_icon&48.png
+copyLocation = wm/clipboard_copy_icon&48.png
+lightOn = wm/rnd_br_next_icon&48.png
+lightOff = wm/round_icon&48.png
+filter = wm/filter_icon&48.png
+source = wm/rnd_br_next_icon&48.png
+
+### Icons for tools
+toolSelectorIcon = wm/cube_icon&48.png
+configIcon = wm/cogs_icon&48.png
+pluginRegistryIcon = wm/doc_plus_icon&48.png
+
+### Paths to GUI Tray icons
+icon128 = icon128.png
+icon64 = icon64.png
+icon32 = icon32.png
+icon16 = icon16.png
+
+### Logos
+logo = logosw.png
+background = gmix_bg_grey.png

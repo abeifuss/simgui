@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer5application/loadGeneratorPlugIn_v0_001/mix" id="loadGeneratorMix" layer="5" type="MIX">
+  <package>plugIns.layer5application.loadGeneratorPlugIn_v0_001</package>
+  <plugInSettings>
+    <globalCapabilites>
+      <topology>
+        <mix>FREE_ROUTE</mix>
+        <client>FREE_ROUTE</client>
+      </topology>
+      <duplex>
+        <mix>TRUE</mix>
+        <client>TRUE</client>
+      </duplex>
+    </globalCapabilites>
+  </plugInSettings>
+  <servicePort1>1213</servicePort1>
+  <name>Load Generator (Mix) v0.001</name>
+</plugIn>

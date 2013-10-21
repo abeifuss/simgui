@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for Cottrell Timed Pool</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>COTTRELL_TIMED_POOL_DEFAULT_POOL_SIZE</name>
+					<location type="textcontent">/plugIn/cottrellTimedPoolDefaultPoolSize</location>
+					<content>
+						<int preset="100" min="1" max="1000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>COTTRELL_TIMED_POOL_SENDING_RATE</name>
+					<location type="textcontent">/plugIn/cottrellTimedPoolSendingRate</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>COTTRELL_TIMED_POOL_MIN_POOL_SIZE</name>
+					<location type="textcontent">/plugIn/cottrellTimedPoolMinPoolSize</location>
+					<content>
+						<int preset="10" min="1" max="100" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>COTTRELL_TIMED_POOL_PRNG_ALGORITHM</name>
+					<location type="textcontent">/plugIn/cottrellTimedPoolPrngAlgorithm</location>
+					<content>
+						<string preset="SHA1PRNG" pattern="[A-Za-z0-9\-_]+" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

@@ -1,0 +1,17 @@
+# specify which experiments shall be performed when the simulator is run
+# a seperate property file must exist for each experiment
+# specify the filenames of the property files here
+# (property files must be in folder "./inputOutput/simulator/experimentDefinitions")
+# EXPERIMENTS_TO_PERFORM = lgpaper_dlpaDummyPercentagePoi.txt
+# EXPERIMENTS_TO_PERFORM = lgpaper_dlpaDummyPercentage.txt
+# EXPERIMENTS_TO_PERFORM = lgpaper_mixMessageSendingRateClients.txt
+# EXPERIMENTS_TO_PERFORM = lgpaper_aduSize.txt
+EXPERIMENTS_TO_PERFORM = lgpaper_throughputZero.txt
+#
+# GNUPLOT_FOLDER
+GNUPLOT_FOLDER = /opt/local/bin/
+#
+# DEBUG_OUTPUT
+# possible values: OFF, ON
+# Default value: OFF
+DEBUG_OUTPUT = OFF

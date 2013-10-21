@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer2recodingScheme/noDelay_v0_001/client" id="noDelayClient" layer="2" type="CLIENT">
+  <plugInSettings>
+    <globalCapabilites>
+      <topology>
+        <mix>FREE_ROUTE,FIXED_ROUTE</mix>
+        <client>FREE_ROUTE,FIXED_ROUTE</client>
+      </topology>
+      <duplex>
+        <client>TRUE</client>
+        <mix>TRUE</mix>
+      </duplex>
+    </globalCapabilites>
+  </plugInSettings>
+  <name>No Delay (Client) v0.001</name>
+  <package>plugIns.layer2recodingScheme.noDelay_v0_001</package>
+</plugIn>

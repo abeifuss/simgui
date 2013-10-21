@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer2recodingScheme/RSA_AES_Channel_v0_001/client" id="rsaAesChannelClient" layer="2" type="CLIENT">
+  <pseudonymLenght>16</pseudonymLenght>
+  <nameOfSymKeyGenerator>AES</nameOfSymKeyGenerator>
+  <addressLength>16</addressLength>
+  <prngSeedLength>32</prngSeedLength>
+  <macAlgorithm>HMac-SHA256</macAlgorithm>
+  <nameOfAsymKeyGenerator>RSA</nameOfAsymKeyGenerator>
+  <asymCryptographyAlgorithm>RSA</asymCryptographyAlgorithm>
+  <prngAlgorithm>SHA1PRNG</prngAlgorithm>
+  <macLength>32</macLength>
+  <ivLength>16</ivLength>
+  <lengthHeaderLength>4</lengthHeaderLength>
+  <name>RSA AES Channel Client (v0.001)</name>
+  <plugInSettings>
+    <globalCapabilites>
+      <topology>
+        <mix>FREE_ROUTE</mix>
+        <client>FREE_ROUTE</client>
+      </topology>
+      <duplex>
+        <client>TRUE</client>
+        <mix>TRUE</mix>
+      </duplex>
+    </globalCapabilites>
+  </plugInSettings>
+  <package>plugIns.layer2recodingScheme.RSA_AES_Channel_v0_001</package>
+  <symCryptographyAlgorithm>AES</symCryptographyAlgorithm>
+  <symKeyLength>16</symKeyLength>
+  <macKeyLength>32</macKeyLength>
+  <asymKeyLength>256</asymKeyLength>
+  <rsThreadQueueLength>10</rsThreadQueueLength>
+</plugIn>

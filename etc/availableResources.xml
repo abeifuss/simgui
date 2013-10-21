@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><availableResources>
+  <availablePlugIns>
+    <plugIn id="cascadeTCPclient" source="src/plugIns/layer1network/cascade_TCP_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="cascadeTCPmix" source="src/plugIns/layer1network/cascade_TCP_v0_001/mix/PlugInSettings.xml"/>
+    <plugIn id="noDelayClient" source="src/plugIns/layer2recodingScheme/noDelay_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="noDelayMix" source="src/plugIns/layer2recodingScheme/noDelay_v0_001/PlugInSettings.xml"/>
+    <plugIn id="basicBatch" source="src/plugIns/layer3outputStrategy/basicBatch_v0_001/PlugInSettings.xml"/>
+    <plugIn id="loadGeneratorClient" source="src/plugIns/layer5application/loadGeneratorPlugIn_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="loadGeneratorMix" source="src/plugIns/layer5application/loadGeneratorPlugIn_v0_001/mix/PlugInSettings.xml"/>
+    <plugIn id="cascadeUDPclient" source="src/plugIns/layer1network/cascade_UDP_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="rsaAesChannelClient" source="src/plugIns/layer2recodingScheme/RSA_AES_Channel_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="rsaAesLossTolerantChannelClient" source="src/plugIns/layer2recodingScheme/RSA_AES_LossTolerantChannel_v0_001/client/PlugInSettings.xml"/>
+    <plugIn id="noDelay3mix" source="src/plugIns/layer3outputStrategy/noDelay_v0_001/PlugInSettings.xml"/>
+    <plugIn id="sendImmediately" source="src/plugIns/layer3outputStrategy/sendImmediately_v0_001/PlugInSettings.xml"/>
+  </availablePlugIns>
+  <availableStaticFunctions>
+    <staticFunction id="basicReplayDetection" source="src/staticFunctions/layer2recodingScheme/basicReplayDetection_v0_001/StaticFunctionSettings.xml"/>
+    <staticFunction id="statisticsRecorder" source="src/staticFunctions/layer5application/statisticsRecorder_v0_001/StaticFunctionSettings.xml"/>
+  </availableStaticFunctions>
+</availableResources>

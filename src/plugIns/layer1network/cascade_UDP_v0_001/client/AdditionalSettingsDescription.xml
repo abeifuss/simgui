@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Cascade UDP specific Settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Connection Handler</name>
+			<settings>
+				<singleSetting>
+					<name>Client Connection Handler class</name>
+					<location type="textcontent">/plugIn/connectionHandler/clientConnectionHandler</location>
+					<content>
+						<string pattern=".+" preset="test.java"></string>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Previous Mix Connection Handler</name>
+					<location type="textcontent">/plugIn/connectionHandler/previousMixConnectionHandler</location>
+					<content>
+						<string pattern=".+" preset="test.java"></string>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Next Mix Connection Handler</name>
+					<location type="textcontent">/plugIn/connectionHandler/nextMixConnectionHandler</location>
+					<content>
+						<string pattern=".+" preset="test.java"></string>
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+		<settingGroup>
+			<name>Buffer Sizes etc</name>
+			<settings>
+				<singleSetting>
+					<name>Max Request Length</name>
+					<location type="textcontent">/plugIn/maxRequestLength</location>
+					<content>
+						<int preset="4096" min="0" max="100000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Client Request Buffer Size</name>
+					<location type="textcontent">/plugIn/clientRequestBufferSize</location>
+					<content>
+						<int preset="16000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Queue Block Size</name>
+					<location type="textcontent">/plugIn/clientRequestBufferSize</location>
+					<content>
+						<int preset="8" min="1" max="500"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Connections</name>
+					<location type="textcontent">/plugIn/maxConnections</location>
+					<content>
+						<int preset="1000"  min="1" max="5000"/>
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

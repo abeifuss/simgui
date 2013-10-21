@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for Stop-And-Go (MIX)</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>STOP_AND_GO_USE_TIMESTAMPS</name>
+					<location type="textcontent">/plugIn/stopAndGoUseTimestamps</location>
+					<content>
+						<boolean preset="false" />
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>
+<!-- /gMixConfiguration/composition/layer3/mix/ -->

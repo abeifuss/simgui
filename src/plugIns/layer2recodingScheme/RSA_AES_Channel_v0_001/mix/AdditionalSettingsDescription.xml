@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>RSA AES specific Settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Parameters</name>
+			<settings>
+				<singleSetting>
+					<name>ASYM_CRYPTOGRAPHY_ALGORITHM</name>
+					<description>RSA/NONE/OAEPWithSHA256AndMGF1Padding</description>
+					<location type="textcontent">/plugIn/asymCryptographyAlgorithm</location>
+					<content>
+						<string preset="RSA" pattern="[A-Za-z0-9_]+" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>SYM_CRYPTOGRAPHY_ALGORITHM</name>
+					<description>AES/OFB/NoPadding</description>
+					<location type="textcontent">/plugIn/symCryptographyAlgorithm</location>
+					<content>
+						<string preset="AES" pattern="[A-Za-z0-9_]+" />
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+		<settingGroup>
+			<name>AES/OFB/PKCS7Padding</name>
+			<settings>
+				<singleSetting>
+					<name>MAC_ALGORITHM</name>
+					<location type="textcontent">/plugIn/macAlgorithm</location>
+					<content>
+						<string preset="HMac-SHA256" pattern="[A-Za-z0-9_\-]+" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>NAME_OF_SYM_KEY_GENERATOR</name>
+					<location type="textcontent">/plugIn/nameOfSymKeyGenerator</location>
+					<content>
+						<string preset="AES" pattern="[A-Za-z0-9_]+" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>NAME_OF_ASYM_KEY_GENERATOR</name>
+					<location type="textcontent">/plugIn/nameOfAsymKeyGenerator</location>
+					<content>
+						<string preset="RSA" pattern="[A-Za-z0-9_]+" />
+					</content>
+				</singleSetting> 
+				<singleSetting>
+					<name>ASYM_KEY_LENGTH</name>
+					<location type="textcontent">/plugIn/asymKeyLength</location>
+					<content>
+						<int preset="256" max="8192" min="1" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>SYM_KEY_LENGTH</name>
+					<location type="textcontent">/plugIn/symKeyLength</location>
+					<content>
+						<int preset="16"  min="1" max="1024"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>IV_LENGTH</name>
+					<location type="textcontent">/plugIn/ivLength</location>
+					<content>
+						<int preset="16"  min="1" max="1024"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MAC_KEY_LENGTH</name>
+					<location type="textcontent">/plugIn/macKeyLength</location>
+					<content>
+						<int preset="32"  min="1" max="2048"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MAC_LENGTH</name>
+					<location type="textcontent">/plugIn/macLength</location>
+					<content>
+						<int preset="32" min="1" max="4096"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>LENGTH_HEADER_LENGTH</name>
+					<location type="textcontent">/plugIn/lengthHeaderLength</location>
+					<content>
+						<int preset="4"  min="1" max="256"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>PRNG_ALGORITHM</name>
+					<location type="textcontent">/plugIn/prngAlgorithm</location>
+					<content>
+						<string preset="SHA1PRNG" pattern="[A-Za-z0-9_]+" />
+					</content>
+				</singleSetting> 
+				<singleSetting>
+					<name>PRNG_SEED_LENGTH</name>
+					<location type="textcontent">/plugIn/prngSeedLength</location>
+					<content>
+						<int preset="32"  min="1" max="4096"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>PSEUDONYM_LENGTH</name>
+					<location type="textcontent">/plugIn/pseudonymLenght</location>
+					<content>
+						<int preset="16"  min="1" max="1024"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>ADDRESS_LENGTH</name>
+					<location type="textcontent">/plugIn/addressLength</location>
+					<content>
+						<int preset="16"  min="1" max="1024"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>RS_THREAD_QUEUE_LENGTH</name>
+					<location type="textcontent">/plugIn/rsThreadQueueLength</location>
+					<content>
+						<int preset="10" min="1" max="100"/>
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

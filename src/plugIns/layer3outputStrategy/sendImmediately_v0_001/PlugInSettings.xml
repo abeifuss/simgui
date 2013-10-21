@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer3outputStrategy/sendImmediately_v0_001" id="sendImmediately" layer="3" type="CLIENT">
+  <plugInSettings>
+    <globalCapabilites>
+      <duplex>
+        <client>TRUE</client>
+        <mix>TRUE</mix>
+      </duplex>
+      <topology>
+        <client>FREE_ROUTE</client>
+        <mix>FREE_ROUTE</mix>
+      </topology>
+    </globalCapabilites>
+  </plugInSettings>
+  <name>Send Immediately Client L3</name>
+  <package>plugIns.layer3outputStrategy.sendImmediately_v0_001</package>
+</plugIn>

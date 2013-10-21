@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for Cottrell Radom Delay</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>COTTRELL_RANDOM_DELAY_PRNG_ALGORITHM</name>
+					<location type="textcontent">/plugIn/cottrellRandomDelayPrngAlgorithm</location>
+					<content>
+						<string preset="SHA1PRNG" pattern="[0-9A-Za-z\-_]+" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>COTTRELL_RANDOM_DELAY_MAX_DELAY</name>
+					<location type="textcontent">/plugIn/cottrellRandomDelayMaxDelay</location>
+					<content>
+						<int preset="100" min="1" max="1000" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

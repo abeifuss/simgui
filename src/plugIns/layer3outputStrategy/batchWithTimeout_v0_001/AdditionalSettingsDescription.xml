@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Batch with Timeout-specific settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>BATCH_WITH_TIMEOUT_TIMEOUT</name>
+					<location type="textcontent">/plugIn/batchWithTimeoutTimeout</location>
+					<content>
+						<int preset="100" min="1" max="600" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>BATCH_WITH_TIMEOUT_BATCH_SIZE</name>
+					<location type="textcontent">/plugIn/batchWithTimeoutBatchSize</location>
+					<content>
+						<int preset="10" min="1" max="100" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

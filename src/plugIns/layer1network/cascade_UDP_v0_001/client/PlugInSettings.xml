@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer1network/cascade_UDP_v0_001/client" id="cascadeUDPclient" layer="1" type="MIX">
+  <connectionHandler>
+    <previousMixConnectionHandler>test.java</previousMixConnectionHandler>
+    <clientConnectionHandler>test.java</clientConnectionHandler>
+    <nextMixConnectionHandler>test.java</nextMixConnectionHandler>
+  </connectionHandler>
+  <maxConnections>1000</maxConnections>
+  <maxRequestLength>4096</maxRequestLength>
+  <plugInSettings>
+    <globalCapabilites>
+      <topology>
+        <client>FREE_ROUTE</client>
+        <mix>FREE_ROUTE</mix>
+      </topology>
+      <duplex>
+        <client>TRUE</client>
+        <mix>TRUE</mix>
+      </duplex>
+    </globalCapabilites>
+  </plugInSettings>
+  <name>Plug-in XY</name>
+  <clientRequestBufferSize>816000</clientRequestBufferSize>
+  <package>plugIns.layer1network.cascade_UDP_v0_001</package>
+</plugIn>

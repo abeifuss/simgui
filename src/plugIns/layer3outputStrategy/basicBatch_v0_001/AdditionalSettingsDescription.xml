@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>BasicBatch-specific settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Batch Size</name>
+			<settings>
+				<singleSetting>
+					<name>BasicBatch Batch-Size</name>
+					<location type="textcontent">/plugIn/basicBatchBatchSize</location>
+					<content>
+						<int preset="10" min="1" max="50" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

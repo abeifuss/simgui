@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guiInfo>
+	<possibleGuiValues>
+		<rootNode>plugIn</rootNode>
+		<mainBranch>
+			<name>General Settings</name>
+			<filePath /> <!-- no separate files allowed -->
+			<settingsGroups>
+				<settingGroup>
+					<name>Main Properties</name>
+					<description>Specify the name and unique ID of this plug-in
+					</description>
+					<settings>
+						<singleSetting>
+							<name>Name</name>
+							<description>The name of this plug-in</description>
+							<location type="textcontent">/plugIn/name</location>
+							<content>
+								<string pattern=".+" preset="Plug-in XY" />
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>ID</name>
+							<description>The unique ID of this plug-in</description>
+							<location type="@id">/plugIn</location>
+							<content>
+								<string pattern="[a-zA-Z0-9_-]+" preset="NameOfPlugInXY" immutable="true"/>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Type</name>
+							<location type="@type">/plugIn</location>
+							<content>
+								<list>
+									<value>MIX</value>
+									<value>CLIENT</value>
+								</list>
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+				<settingGroup>
+					<name>Other general settings</name>
+					<description/>
+					<settings>
+						<singleSetting>
+							<name>Layer</name>
+							<description>Choose layer of this Plug-in</description>
+							<location type="@layer">/plugIn</location>
+							<content>
+								<int min="0" max="6" preset="1"  immutable="true"/>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Path to home directory</name>
+							<description>Path to the home of this PlugIn</description>
+							<location type="@home">/plugIn</location>
+							<content>
+								<string pattern="[a-zA-Z0-9/\\_]*[a-zA-Z0-9]" preset="src/plugIns/layerX/nameOfPluginXY" />
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Package</name>
+							<location type="textcontent">/plugIn/package</location>
+							<content>
+								<string pattern="[a-zA-Z0-9_.]*[a-zA-Z0-9]" preset="plugIns.layerXnetwork.nameOfPluginXY" />
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+			</settingsGroups>
+		</mainBranch>
+		<mainBranch>
+			<name>Global Capabilities</name>
+			<description>This is what this framework is able to do.</description>
+			<settingsGroups>
+				<settingGroup>
+					<name>Topology</name>
+					<settings>
+						<singleSetting>
+							<name>Topology (Client)</name>
+							<location type="textcontent">/plugIn/plugInSettings/globalCapabilites/topology/client</location>
+							<content>
+								<list>
+									<value>FREE_ROUTE</value>
+									<value>FIXED_ROUTE</value>
+									<value>FREE_ROUTE,FIXED_ROUTE</value>
+								</list>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Topology (Mix)</name>
+							<location type="textcontent">/plugIn/plugInSettings/globalCapabilites/topology/mix</location>
+							<content>
+								<list>
+									<value>FREE_ROUTE</value>
+									<value>FIXED_ROUTE</value>
+									<value>FREE_ROUTE,FIXED_ROUTE</value>
+								</list>
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+				<settingGroup>
+					<name>Duplex Capability</name>
+					<settings>
+						<singleSetting>
+							<name>Duplex (Client)</name>
+							<location type="textcontent">/plugIn/plugInSettings/globalCapabilites/duplex/client</location>
+							<content>
+								<list>
+									<value>TRUE</value>
+									<value>FALSE</value>
+								</list>
+							</content>
+						</singleSetting>
+						<singleSetting>
+							<name>Duplex (Mix)</name>
+							<location type="textcontent">/plugIn/plugInSettings/globalCapabilites/duplex/mix</location>
+							<content>
+								<list>
+									<value>TRUE</value>
+									<value>FALSE</value>
+								</list>
+							</content>
+						</singleSetting>
+					</settings>
+				</settingGroup>
+			</settingsGroups>			
+		</mainBranch>
+		<!-- static function Requirements are added automatically -->
+		<!-- Static functions are added automatically -->
+	</possibleGuiValues>
+</guiInfo>

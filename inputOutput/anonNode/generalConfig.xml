@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><gMixConfiguration>
+  <composition>
+    <layer5>
+      <client>
+        <plugIn id="loadGeneratorClient" source="src/plugIns/layer5application/loadGeneratorPlugIn_v0_001/client/PlugInSettings.xml"/>
+      </client>
+      <mix>
+        <plugIn id="loadGeneratorMix" source="src/plugIns/layer5application/loadGeneratorPlugIn_v0_001/mix/PlugInSettings.xml"/>
+      </mix>
+    </layer5>
+    <layer1>
+      <client>
+        <plugIn id="cascadeTCPclient" source="src/plugIns/layer1network/cascade_TCP_v0_001/client/PlugInSettings.xml"/>
+      </client>
+      <mix>
+        <plugIn id="cascadeTCPmix" source="src/plugIns/layer1network/cascade_TCP_v0_001/mix/PlugInSettings.xml"/>
+      </mix>
+    </layer1>
+    <layer2>
+      <client>
+        <plugIn id="noDelayClient" source="src/plugIns/layer2recodingScheme/noDelay_v0_001/client/PlugInSettings.xml"/>
+      </client>
+      <mix>
+        <plugIn id="noDelayMix" source="src/plugIns/layer2recodingScheme/noDelay_v0_001/PlugInSettings.xml"/>
+      </mix>
+    </layer2>
+    <layer3>
+      <mix>
+        <plugIn id="noDelay3mix" source="src/plugIns/layer3outputStrategy/noDelay_v0_001/PlugInSettings.xml"/>
+      </mix>
+      <client>
+        <plugIn id="sendImmediately" source="src/plugIns/layer3outputStrategy/sendImmediately_v0_001/PlugInSettings.xml"/>
+      </client>
+    </layer3>
+  </composition>
+  <general>
+    <loadGenerator>
+      <alAfapNumberOfClients>10</alAfapNumberOfClients>
+      <mplPoissonAveragePacketsPerPulse>5.0</mplPoissonAveragePacketsPerPulse>
+      <scheduleAhead>1000</scheduleAhead>
+      <alPoissonAverageSendOperationsPerPulse>5</alPoissonAverageSendOperationsPerPulse>
+      <mplMode>POISSON</mplMode>
+      <alMode>AFAP</alMode>
+      <generateLoad>APPLICATION_LEVEL</generateLoad>
+      <alConstantRateMessagesPerPeriod>0.5</alConstantRateMessagesPerPeriod>
+      <alTraceFileReadAhead>1000</alTraceFileReadAhead>
+      <mplConstantRatePeriod>1.0</mplConstantRatePeriod>
+      <alTraceFileUseDynamicSchedule>false</alTraceFileUseDynamicSchedule>
+      <alPoissonReplyDelay>0.1</alPoissonReplyDelay>
+      <alTraceFileName>mixed/trace.dat</alTraceFileName>
+      <alPoissonAverageRequestPayloadSize>auto</alPoissonAverageRequestPayloadSize>
+      <alPoissonPulseLenght>1</alPoissonPulseLenght>
+      <mplConstantRatePacketPerPeriod>2.0</mplConstantRatePacketPerPeriod>
+      <tolerance>2500</tolerance>
+      <mplConstantRateNumberOfClients>2</mplConstantRateNumberOfClients>
+      <alConstantRateNumberOfClients>2</alConstantRateNumberOfClients>
+      <alPoissonAverageReplyPayloadSize>auto</alPoissonAverageReplyPayloadSize>
+      <alConstantRatePeriod>1</alConstantRatePeriod>
+      <mplAfapNumberOfClients>10</mplAfapNumberOfClients>
+      <alConstantRateRequestPayloadSize>auto</alConstantRateRequestPayloadSize>
+      <alPoissonNumberOfClients>4</alPoissonNumberOfClients>
+      <mplPoissonPulseLength>1.0</mplPoissonPulseLength>
+      <alConstantRateReplyPayloadSize>auto</alConstantRateReplyPayloadSize>
+      <mplPoissonNumberOfClients>4</mplPoissonNumberOfClients>
+      <alConstantRateReplyDelay>0.1</alConstantRateReplyDelay>
+    </loadGenerator>
+    <globalIsMode>CASCADE</globalIsMode>
+    <queueBlockSize>2</queueBlockSize>
+    <globalServerSocketQueueSize>100</globalServerSocketQueueSize>
+    <globalRoutingMode>CASCADE</globalRoutingMode>
+    <numberOfUsers>100</numberOfUsers>
+    <globalRequestOutputQueueSize>5</globalRequestOutputQueueSize>
+    <infoService>
+      <orderPreserving>true</orderPreserving>
+      <reliable>true</reliable>
+      <duplex>true</duplex>
+      <address>localhost</address>
+      <port>22002</port>
+      <connectionBased>true</connectionBased>
+    </infoService>
+    <globalDebugModeOn>true</globalDebugModeOn>
+    <globalFreeRouteLength>3</globalFreeRouteLength>
+    <socketMixBackendQueueSize>5</socketMixBackendQueueSize>
+    <numberOfMixes>3</numberOfMixes>
+    <timeBetweenClockSynchronizations>100000</timeBetweenClockSynchronizations>
+    <layer4MixInputStreamReplyBufferSize>auto</layer4MixInputStreamReplyBufferSize>
+    <globalServerSocketBacklog>5</globalServerSocketBacklog>
+    <cryptoProvider>BC</cryptoProvider>
+    <globalReplyOutputQueueSize>5</globalReplyOutputQueueSize>
+    <globalReplyInputQueueSize>5</globalReplyInputQueueSize>
+    <is>
+      <backlog>5</backlog>
+      <displayIsTransactions>false</displayIsTransactions>
+    </is>
+    <globalLayer1LinksMessages>true</globalLayer1LinksMessages>
+    <maxPayload>512</maxPayload>
+    <useSynchronizedClock>false</useSynchronizedClock>
+    <globalReplyDetectionOn>false</globalReplyDetectionOn>
+    <layer4ClientInputStreamReplyBufferSize>auto</layer4ClientInputStreamReplyBufferSize>
+    <globalRsDebugOutputOn>true</globalRsDebugOutputOn>
+    <globalDisplayRouteInfo>false</globalDisplayRouteInfo>
+    <mixBindPort>auto</mixBindPort>
+    <timeServerHost>10.1.1.1</timeServerHost>
+    <mixBindAddress>AUTO</mixBindAddress>
+    <globalRequestInputQueueSize>5</globalRequestInputQueueSize>
+    <timeToWaitForFurtherData>0</timeToWaitForFurtherData>
+    <numberOfThreads>2</numberOfThreads>
+    <globalLocalModeOn>true</globalLocalModeOn>
+    <validateConfig>false</validateConfig>
+    <globalRecordStatisticsOn>true</globalRecordStatisticsOn>
+  </general>
+  <availableResources>
+    <availableStaticFunctions>
+      <staticFunction id="basicReplayDetection" source="src/staticFunctions/layer2recodingScheme/basicReplayDetection_v0_001/StaticFunctionSettings.xml"/>
+      <staticFunction id="statisticsRecorder" source="src/staticFunctions/layer5application/statisticsRecorder_v0_001/StaticFunctionSettings.xml"/>
+    </availableStaticFunctions>
+  </availableResources>
+</gMixConfiguration>

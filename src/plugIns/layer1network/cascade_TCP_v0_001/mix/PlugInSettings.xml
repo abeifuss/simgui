@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer1network/cascade_TCP_v0_001/mix" id="cascadeTCPmix" layer="1" type="MIX">
+  <requestBufferSize>16000</requestBufferSize>
+  <maxMessagesInIoh>100</maxMessagesInIoh>
+  <maxReplyLength>5000</maxReplyLength>
+  <plugInSettings>
+    <globalCapabilites>
+      <duplex>
+        <client>TRUE</client>
+        <mix>TRUE</mix>
+      </duplex>
+      <topology>
+        <mix>FIXED_ROUTE</mix>
+        <client>FIXED_ROUTE</client>
+      </topology>
+    </globalCapabilites>
+  </plugInSettings>
+  <maxConnections>101</maxConnections>
+  <multiplexedReplyBufferSize>16000</multiplexedReplyBufferSize>
+  <multiplexedRequestBufferSize>16000</multiplexedRequestBufferSize>
+  <connectionHandler>
+    <nextMixConnectionHandler>NextMixHandler_TCP_multiplexed_sync.java</nextMixConnectionHandler>
+    <clientConnectionHandler>ClientHandler_TCP_RR_sync.java</clientConnectionHandler>
+    <previousMixConnectionHandler>PrevMixHandler_TCP_multiplexed_sync.java</previousMixConnectionHandler>
+  </connectionHandler>
+  <soTimeout>30000</soTimeout>
+  <name>Cascade TCP v0.001 (Mix)</name>
+  <clientRequestBufferSize>16000</clientRequestBufferSize>
+  <clientConnectionTimeout>30000</clientConnectionTimeout>
+  <package>plugIns.layer1network.cascade_TCP_v0_001</package>
+  <backlog>5</backlog>
+  <maxRequestLength>5000</maxRequestLength>
+  <maxHeadsInArow>1</maxHeadsInArow>
+  <replyBufferSize>16000</replyBufferSize>
+  <clientReplyBufferSize>16000</clientReplyBufferSize>
+</plugIn>

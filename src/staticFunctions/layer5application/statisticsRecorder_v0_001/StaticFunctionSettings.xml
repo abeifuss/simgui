@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><staticFunction home="src/staticFunctions/layer5application/statisticsRecorder_v0_001" id="statisticsRecorder" layer="5">
+  <displayThroughput>true</displayThroughput>
+  <displayMessageDwellTimes>false</displayMessageDwellTimes>
+  <displayQueueStatus>false</displayQueueStatus>
+  <displayStatsPerUser>false</displayStatsPerUser>
+  <method>exampleDoSth</method>
+  <name>Statistics Recorder</name>
+  <class>/gMixGui/src/staticFunctions/layer5application/statisticsRecorder_v0_001/StatisticsRecorder.java</class>
+  <displayStatPeriod>1000</displayStatPeriod>
+</staticFunction>

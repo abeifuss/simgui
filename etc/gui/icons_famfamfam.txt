@@ -1,0 +1,51 @@
+####################################################################
+#       Famfamfam by Mar James http://www.famfamfam.com/           #
+#                                                                  #
+#              Licenced under Creative Commons 2.5                 #
+#          http://creativecommons.org/licenses/by/2.5/             #
+#                                                                  #
+# Be careful! Use this unix separator: / regardless of the system! #
+####################################################################
+
+### Paths to the icons
+export = famfamfam/page_white_go.png
+save = famfamfam/disk_multiple.png
+open = famfamfam/folder_magnify.png
+add = famfamfam/add.png
+delete = famfamfam/bin.png
+console = famfamfam/application_osx_terminal.png
+info = famfamfam/information.png
+edit = famfamfam/table_edit.png
+start = famfamfam/application_go.png
+settings = famfamfam/wrench.png
+stop = famfamfam/stop.png
+script = famfamfam/script.png
+webpage = famfamfam/page_world.png
+error = famfamfam/cancel.png
+plugin = famfamfam/plugin.png
+function = famfamfam/page_white_lightning.png
+valid = famfamfam/accept.png
+ok = famfamfam/accept.png
+cancel = famfamfam/cancel.png
+invalid = famfamfam/exclamation.png
+refresh = famfamfam/arrow_refresh.png
+copyLocation = famfamfam/paste_plain.png
+lightOn = famfamfam/lightbulb.png
+lightOff = famfamfam/lightbulb_off.png
+filter = famfamfam/sitemap.png
+source = famfamfam/arrow_divide.png
+
+### Icons for tools
+toolSelectorIcon = famfamfam/script_lightning.png
+configIcon = famfamfam/wrench.png
+pluginRegistryIcon = famfamfam/plugin_edit.png
+
+### Paths to GUI Tray icons
+icon128 = icon128.png
+icon64 = icon64.png
+icon32 = icon32.png
+icon16 = icon16.png
+
+### Logos
+logo = logosw.png
+background = gmix_bg_blue.jpg

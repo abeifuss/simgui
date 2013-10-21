@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for Stop-And-Go (CLIENT)</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>STOP_AND_GO_USE_TIMESTAMPS</name>
+					<location type="textcontent">/plugIn/stopAndGoUseTimestamps</location>
+					<content>
+						<boolean preset="false" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_SECURITY_PARAMETER_MU</name>
+					<location type="textcontent">/plugIn/stopAndGoSecurityParameterMu</location>
+					<content>
+						<float preset="0.1689" min="0" max="1" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_MIN_INTER_MIX_DELAY</name>
+					<location type="textcontent">/plugIn/stopAndGoMinInterMixDelay</location>
+					<content>
+						<int preset="5" min="1" max="100" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_MAX_INTER_MIX_DELAY</name>
+					<location type="textcontent">/plugIn/stopAndGoMaxInterMixDelay</location>
+					<content>
+						<int preset="500" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_MIN_CLIENT_MIX_DELAY</name>
+					<location type="textcontent">/plugIn/stopAndGoMinClientMixDelay</location>
+					<content>
+						<int preset="5" min="1" max="100" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_MAX_CLIENT_MIX_DELAY</name>
+					<location type="textcontent">/plugIn/stopAndGoMaxClientMixDelay</location>
+					<content>
+						<int preset="500" min="0" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>STOP_AND_GO_MAX_CLOCK_DEVITION</name>
+					<location type="textcontent">/plugIn/stopAndGoMaxClockDevition</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>
+<!-- /gMixConfiguration/composition/layer3/mix/ -->

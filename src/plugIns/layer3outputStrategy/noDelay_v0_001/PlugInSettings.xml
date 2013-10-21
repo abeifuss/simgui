@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><plugIn home="src/plugIns/layer3outputStrategy/noDelay_v0_001" id="noDelay3mix" layer="3" type="MIX">
+  <name>No Delay (Mix, Layer 3)</name>
+  <plugInSettings>
+    <globalCapabilites>
+      <duplex>
+        <mix>TRUE</mix>
+        <client>TRUE</client>
+      </duplex>
+      <topology>
+        <mix>FREE_ROUTE</mix>
+        <client>FREE_ROUTE</client>
+      </topology>
+    </globalCapabilites>
+    <staticFunctionCapabilities>
+      <staticFunction id="basicReplayDetection"/>
+    </staticFunctionCapabilities>
+  </plugInSettings>
+  <package>plugIns.layer3outputStrategy.noDelay_v0_001</package>
+</plugIn>

@@ -1,0 +1,46 @@
+####################################################################
+# Be careful! Use this unix separator: / regardless of the system! #
+####################################################################
+
+### Paths to the icons
+export = mono/boxupload32.png
+save = mono/boxdownload32.png
+open = mono/search32.png
+add = mono/plus32.png
+delete = mono/stop32.png
+console = mono/monitor32.png
+info = mono/questionbook32.png
+edit = mono/pencil32.png
+start = mono/circleright32.png
+settings = mono/spanner32.png
+stop = mono/stop32.png
+script = mono/linedpaper32.png
+webpage = mono/home32.png
+error = mono/stop32.png
+plugin = mono/box32.png
+function = mono/paper32.png
+valid = mono/check32.png
+ok = mono/check32.png
+cancel = mono/block32.png
+invalid = mono/stop32.png
+refresh = mono/exchange32.png
+copyLocation = mono/upload32.png
+lightOn = mono/lightbulb_yellow32.png
+lightOff = mono/lightbulb32.png
+filter = mono/linedpaperminus32.png
+source = mono/circleright32.png
+
+### Icons for tools
+toolSelectorIcon = mono/users32.png
+configIcon = mono/spanner32.png
+pluginRegistryIcon = mono/notepencil32.png
+
+### Paths to GUI Tray icons
+icon128 = icon128.png
+icon64 = icon64.png
+icon32 = icon32.png
+icon16 = icon16.png
+
+### Logos
+logo = logosw.png
+background = gmix_bg_grey.png

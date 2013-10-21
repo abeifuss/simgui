@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for mixminion</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>MIXMINION_DEFAULT_POOL_SIZE</name>
+					<location type="textcontent">/plugIn/mixminionDefaultPoolSize</location>
+					<content>
+						<int preset="100" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MIXMINION_PRNG_ALGORITHM</name>
+					<location type="textcontent">/plugIn/mixminionPrngAlgorithm</location>
+					<content>
+						<string preset="SHA1PRNG" pattern="[A-Za-z0-9\-_]+" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MIXMINION_INTERVAL (ms)</name>
+					<location type="textcontent">/plugIn/mixminionInterval</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MIXMINION_MIN_POOL</name>
+					<location type="textcontent">/plugIn/mixminionMinPool</location>
+					<content>
+						<int preset="6" min="1" max="100" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MIXMINION_SEND_RATE</name>
+					<location type="textcontent">/plugIn/mixminionSendRate</location>
+					<content>
+						<float preset="0.7" min="0" max="1" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>MIXMINION_MIN_SEND</name>
+					<location type="textcontent">/plugIn/mixminionMinSend</location>
+					<content>
+						<int preset="1" min="1" max="100" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

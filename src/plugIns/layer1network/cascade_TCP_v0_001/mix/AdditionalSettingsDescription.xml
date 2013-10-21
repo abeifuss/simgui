@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Cascade TCP specific Settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Connection Handler</name>
+			<settings>
+			<!-- /gMixConfiguration/general/mixBindAddress -->
+			<!-- /gMixConfiguration/composition/layer1/mix/plugIn/ -->
+				<singleSetting>
+					<name>Client Connection Handler class</name>
+					<location type="textcontent">/plugIn/connectionHandler/clientConnectionHandler</location>
+					<content>
+						<string pattern=".*" preset="test.java"></string>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Previous Mix Connection Handler</name>
+					<location type="textcontent">/plugIn/connectionHandler/previousMixConnectionHandler</location>
+					<content>
+						<string pattern=".*" preset="test.java"></string>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Next Mix Connection Handler</name>
+					<location type="textcontent">/plugIn/connectionHandler/nextMixConnectionHandler</location>
+					<content>
+						<string pattern=".*" preset="test.java"></string>
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+		<settingGroup>
+			<name>Buffer Sizes etc</name>
+			<settings>
+				<singleSetting>
+					<name>Client Request Buffer Size</name>
+					<location type="textcontent">/plugIn/clientRequestBufferSize</location>
+					<content>
+						<int preset="16000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Client Reply Buffer Size</name>
+					<location type="textcontent">/plugIn/clientReplyBufferSize</location>
+					<content>
+						<int preset="16000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Client Connection Timeout (ms)</name>
+					<location type="textcontent">/plugIn/clientConnectionTimeout</location>
+					<content>
+						<int preset="30000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Multiplexed Request Buffer Size</name>
+					<location type="textcontent">/plugIn/multiplexedRequestBufferSize</location>
+					<content>
+						<int preset="16000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Multiplexed Reply Buffer Size</name>
+					<location type="textcontent">/plugIn/multiplexedReplyBufferSize</location>
+					<content>
+						<int preset="16000" min="0" max="100000"/>
+					</content>
+				</singleSetting> 
+				<singleSetting>
+					<name>Backlog</name>
+					<location type="textcontent">/plugIn/backlog</location>
+					<content>
+						<int preset="5" max="10000" min="1" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>SO Timeout</name>
+					<location type="textcontent">/plugIn/soTimeout</location>
+					<content>
+						<int preset="30000"  min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Connections</name>
+					<location type="textcontent">/plugIn/maxConnections</location>
+					<content>
+						<int preset="101"  min="1" max="200"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Request Length</name>
+					<location type="textcontent">/plugIn/maxRequestLength</location>
+					<content>
+						<int preset="5000"  min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Reply Length</name>
+					<location type="textcontent">/plugIn/maxReplyLength</location>
+					<content>
+						<int preset="5000" min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Messages in IOH</name>
+					<location type="textcontent">/plugIn/maxMessagesInIoh</location>
+					<content>
+						<int preset="100"  min="0" max="1000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Request Buffer Size</name>
+					<location type="textcontent">/plugIn/requestBufferSize</location>
+					<content>
+						<int preset="16000"  min="0" max="100000"/>
+					</content>
+				</singleSetting> 
+				<singleSetting>
+					<name>Reply Buffer Size</name>
+					<location type="textcontent">/plugIn/replyBufferSize</location>
+					<content>
+						<int preset="16000"  min="0" max="100000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Max Heads in a row</name>
+					<location type="textcontent">/plugIn/maxHeadsInArow</location>
+					<content>
+						<int preset="1"  min="1" max="10"/>
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

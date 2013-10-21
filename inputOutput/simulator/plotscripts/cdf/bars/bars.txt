@@ -1,0 +1,47 @@
+# BEGIN do not modify section
+varTitle = "effect of NUMBER_OF_CLIENTS_TO_SIMULATE on utilization"
+varXLabel = "NUMBER_OF_CLIENTS_TO_SIMULATE"
+varYLabel = "utilization in %"
+varInputFile = "orig5MinAuck8dlpa.txt"
+# END do not modify section
+
+
+# BEGIN modify output for screen
+set title varTitle
+set xlabel varXLabel
+set ylabel varYLabel
+
+set autoscale
+set key top left
+set pointsize 1.5
+set grid
+# END modify output for screen
+
+set style data histogram
+set style histogram cluster gap 1
+set style histogram errorbars linewidth 1
+set style fill solid border -1
+set boxwidth 0.7
+set bars front
+#set xtic rotate by -45
+
+
+# BEGIN do not modify section
+
+plot 'orig5MinAuck8dlpa.txt' using 2:3:4:xtic(1) ti 'test1', '' u 5:6:7 ti 'test2', '' u 8:9:10 ti 'test3'
+
+
+
+# END do not modify section
+
+
+# BEGIN modify output for file
+set terminal postscript color eps 
+
+# END modify output for file
+
+
+# BEGIN do not modify section
+set output "last-diagram-utilization.eps"
+plot 'orig5MinAuck8dlpa.txt' using 2:3:4:xtic(1) ti 'test1', '' u 3:2:4 ti 'test2', '' u 2:3:4 ti 'test3', '' u 2:3:4 ti 'test4'
+# END do not modify section

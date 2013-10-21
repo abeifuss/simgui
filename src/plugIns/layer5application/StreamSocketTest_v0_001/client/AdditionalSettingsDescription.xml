@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>StatisticsPlugIn specific settings</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>Service Port 1</name>
+					<location type="textcontent">/plugIn/servicePort1</location>
+					<content>
+						<int preset="1213" min="0" max="5000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>Number of parallel connections</name>
+					<location type="textcontent">/plugIn/numberOfParallelConnections</location>
+					<content>
+						<int preset="1" min="1" max="50" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

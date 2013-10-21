@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for constantRate</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>CONSTANT_RATE_SEND_RATE</name>
+					<location type="textcontent">/plugIn/constantRateSendRate</location>
+					<content>
+						<int preset="1000" min="1" max="10000" />
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>CONSTANT_RATE_QUEUE_SIZE</name>
+					<location type="textcontent">/plugIn/constantRateQueueSize</location>
+					<content>
+						<int preset="1" min="1" max="100" />
+					</content>
+				</singleSetting>
+			</settings>			
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>

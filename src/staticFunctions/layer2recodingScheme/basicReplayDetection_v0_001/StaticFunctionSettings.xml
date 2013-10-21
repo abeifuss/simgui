@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><staticFunction home="src/staticFunctions/layer2recodingScheme/basicReplayDetection_v0_001" id="basicReplayDetection" layer="2">
+  <replayDbCapacity>5000</replayDbCapacity>
+  <name>Basic Replay Detection</name>
+  <dbLoadFactor>0.75</dbLoadFactor>
+  <method>exampleDoSth</method>
+  <class>/gMixGui/src/staticFunctions/layer2recodingScheme/basicReplayDetection_v0_001/ReplayDetectionBasic.java</class>
+</staticFunction>

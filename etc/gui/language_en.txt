@@ -1,0 +1,164 @@
+### gMix General Values
+version = Version x.x
+copyright = (c) 2011-2012
+
+### Standards
+cancel = Cancel
+no = No
+ok = OK
+yes = Yes
+cut = cut
+copy = copy
+paste = paste
+true = true
+false = false
+openFile = choose file
+save = save
+saveAs = save as ...
+error = Error
+edit = edit
+nestedException = Nested exception is:
+IOError = There was an error during access to the file system.
+IOErrorShort = Input/Output Error
+client = Client
+mix = Mix
+requirements = Requirements
+capabilities = Capabilities
+duplex = Duplex
+topology = Topology
+
+
+### Description of the layers
+layer = Layer
+layer1 = Layer 1 (Network)
+layer1Path = src/plugIns/layer1network/
+layer1staticFunctionPath = src/staticFunctions/layer1network/
+layer1Description = Description of Layer 1 (Network)
+layer2 = Layer 2 (Recoding Scheme)
+layer2Path = src/plugIns/layer2recodingScheme/
+layer2staticFunctionPath = src/staticFunctions/layer2recodingScheme/
+layer2Description = Description of Layer 2 (Recoding Scheme)
+layer3 = Layer 3 (Output Strategy)
+layer3Path = src/plugIns/layer3outputStrategy/
+layer3staticFunctionPath = src/staticFunctions/layer3outputStrategy/
+layer3Description = Description of Layer 3 (Output Strategy)
+layer4 = Layer 4 (Transport)
+layer4Path = src/plugIns/layer4transport/
+layer4staticFunctionPath = src/staticFunctions/layer4transport/
+layer4Description = Description of Layer 4 (Transport)
+layer5 = Layer 5 (Application)
+layer5Path = src/plugIns/layer5application/
+layer5staticFunctionPath = src/staticFunctions/layer5application/
+layer5Description = Description of Layer 5 (Application)
+staticFunctionSettingsXml = StaticFunctionSettings.xml
+plugInSettingsXml = PlugInSettings.xml
+
+### Some important xPaths
+pathToPlugInRequirements = /plugIn/plugInSettings/staticFunctionRequirements/staticFunction
+pathToPlugInCapabilities = /plugIn/plugInSettings/staticFunctionCapabilities/staticFunction
+
+### Strings for the StartUp GUI
+mainWindowTitle = gMIX Framework - StartUp GUI
+guiInitFinished = GUI initialization finished.
+
+### The strings for the generic configuration tool
+configurationGuiTitle = gMix Configuration
+SettingsPathHeadline = Separate file settings
+saveBranchSeparately = Save this branch in a separate file?
+accept = Only files with %1-extension are allowed in this case.
+rangeRestriction = (%1 - %2)
+stringPattern = has to match: %1
+loadConfiguration = Load existing configuration 
+copyLocation = Click to copy the location of this setting into the system's clip board.
+copiedToClipboard = "%1" successfully copied to clip board.
+configSavedError = The configuration could not be saved. The error was: %1
+configSaved = The configuration was saved successfully at: %1
+newValuesLoaded = Successfully loaded %1 new values.
+
+### The strings for the tool selector GUI
+toolSelectorGuiTitle = Tool Selector
+consoleTitle = gMix - Console
+consoleTooltip = shows the console
+toggleConsole = show/hide console
+infoPlaceHolder = The gMix framework is an open source (GPLv3) Java software framework for Mix implementations. It is structured in abstraction layers and uses a Plug-in mechanism to load individual mix implementations. gMix is targeted at researchers who want to evaluate new ideas and developers interested in building practical mix systems.\n\nDrag mouse over a button item to display the description of that function.
+commandLineSettingsTitle = gMix Configuration
+key = XPath-Expression
+value = Value
+addRow = add replacement
+clearConsole = clear
+gMix = gMix
+gMixSubtitle= A generic Open Source Framework for Mixes
+cantLoadWebsite = The requested page could not be loaded. Try and open %1 on your own.
+cantLoadWebsiteShort = Error opening web site.
+startTool = Start selected tool
+tool = Tool
+config = Configuration file
+overwrite = Overwrite
+tempChanges = Temporary Configuration Replacements
+globalConfig = This is the path to your GeneralConfig-file. Standard is: inputOutput/anonNode/generalConfig.xml
+globalConfigStandardFile = inputOutput/anonNode/generalConfig.xml
+overwriteParameters = Any parameter set here will overwrite the matching parameter in the existing or global configuration.
+configInvalidDependencies = The configuration is invalid due to\nincompatibility of the selected plug-ins.\nCheck the composition in the configuration tab. 
+changesCount = %1 changes
+noConfig = You have no configuration file specified.
+
+### The Strings for the Plug-in-Registry GUI
+pluginRegistryGuiTitle = Plug-in Registry
+availablePlugins = Plug-ins
+availableStaticFunctions = Static functions
+addPlugin = Describe a new resource.
+resourceId = Unique Resource ID 
+deletePlugin = Delete the selected resource.
+refreshPluginRegistry = refresh (scan for changes in XML-Files)
+nothingSelected = No editable item has been selected.
+pluginSpecificSettings = Plug-in specific settings
+staticFunctionAlreadyRegistered = The static function %1 is already registered.
+staticFunctionNotRegistered = The static function %1 is not registered yet.
+plugInAlreadyRegistered = The plug-in %1 is already registered.
+plugInNotRegistered = The plug-in %1 is not registered yet.
+successfullyRegistered = The resource %1 (%2) was successfully registered.
+successfullyUnregistered = The resource %1 (%2) was successfully removed from the available resources.
+failedRegister = The resource %1 (%2) could not be registered.
+failedToUnregister = The resource %1 (%2) could not be unregistered.
+registerPlugIn = Register plug-in
+unregisterPlugIn = Unregister plug-in
+registerStaticFunction = Register function
+unregisterStaticFunction = Unregister function
+newResource = Create new Resource
+pathToSettingsDocument = Path to the settings document
+settingsImmutable = Attention! Once set, some of these settings are immutable.
+editingPlugInX = You are now editing the plug-in "%1".
+editingStaticFunctionX = You are now editing the static function "%1".
+xmlCreationFailed = Could not create XML Description File
+xmlCreationFailedDetail = There was an error on creating the XML descriptor. The nested exception was: %1
+deleteResource = Delete Resource?
+deleteResourceDetail = Do you really want to delete the selected Resource? \nName: %1\nType: %2 \nThis action can not be undone. 
+unableToDeleteFile = Unable to delete File.
+unableToDeleteFileDetail = The file \n"%1"\ could not be deleted. \nPlease delete it via the file system or try again.  
+unableToUnregister = Unable to unregister resource
+unableToUnregisterDetail = The system was unable to unregister the resource:\n%1\n Please delete the corresponding lines in the availableResources in:\n%2
+successfullySaved = %1 saved successfully at: %2
+failedSave = Could not save %1 in %2
+fileCorrupt = Corrupt file
+couldNotGetOrStoreItems = Could not get or store values extracted from: \n%1\n The Error is:\n%2
+staticFunctionCapabilities = Static Function Capabilities
+staticFunctionRequirements = Static Function Requirements
+reloadCurrentAvailableStaticFunction = Reload the currently registered static functions.
+configValidStaticFunction = Configuration is valid. All selected StaticFunctions are available.
+configInvalid = Configuration invalid
+configInvalidRemovedStaticFunctions = The Configuration is invalid! %1 selected StaticFunctions aren't available anymore.\n They had to be removed.
+
+### Strings for the DependencyBranch GUI
+composition = Plug-in Composition
+noMatchingPlugin = No matching registered plug-in
+enableFilter = Enable or disable this filter.
+compositionFilter = Composition Filter
+
+### Tool descriptions
+localTestDescription = The local test starts mixes, clients, the information service and the load generator in a single Java VM. All components communicate via localhost/loopback.
+infoServiceDescription = This starts the information service that is used by clients and mixes for discovery and exchanging public data like IP addresses or public keys.
+mixDescription = This starts a mix.
+clientDescription = This starts a client.
+p2pDescription = This starts both a mix and client.
+loadGeneratorDescription = This starts the load generator, that can be used to start and simulate the behavior of several clients for testing or performance evaluation.
+simulatorDescription = This starts a discrete event simulator.

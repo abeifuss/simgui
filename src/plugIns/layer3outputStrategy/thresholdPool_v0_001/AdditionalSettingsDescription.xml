@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificSettings>
+	<name>Settings for thresholdPool</name>
+	<settingsGroups>
+		<settingGroup>
+			<name>Specific Settings</name>
+			<settings>
+				<singleSetting>
+					<name>THRESHOLD_POOL_POOL_SIZE</name>
+					<location type="textcontent">/plugIn/thresholdPoolPoolSize</location>
+					<content>
+						<int preset="100" min="1" max="10000"/>
+					</content>
+				</singleSetting>
+				<singleSetting>
+					<name>THRESHOLD_POOL_THRESHOLD</name>
+					<location type="textcontent">/plugIn/thresholdPoolThreshold</location>
+					<content>
+						<int preset="10" min="1" max="100000"/>
+					</content>
+				</singleSetting>
+			</settings>
+		</settingGroup>
+	</settingsGroups>
+</specificSettings>
+<!-- /gMixConfiguration/composition/layer3/mix/ -->
