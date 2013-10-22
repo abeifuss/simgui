@@ -18,19 +18,18 @@
 package evaluation.loadGenerator.asFastAsPossible;
 
 import evaluation.loadGenerator.LoadGenerator;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 
 public abstract class AFAP_LoadGenerator {
 
 	protected LoadGenerator owner;
-	protected XMLResource loadGeneratorConfig;
-	protected XMLResource generalConfig;
+	protected Settings settings;
+
 	
 	protected AFAP_LoadGenerator(LoadGenerator owner) {
 		this.owner = owner;
-		this.loadGeneratorConfig = owner.settings;
-		this.generalConfig = owner.settings;
+		this.settings = owner.settings;
 	}
 	
 	

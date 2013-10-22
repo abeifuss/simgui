@@ -49,11 +49,11 @@ public class ClientHandler_TCP_FCFS_sync_multithread_2 extends SubImplementation
 	public void constructor() {
 		if (anonNode.IS_DUPLEX)
 			throw new RuntimeException("not supported"); 
-		this.bindAddress = settings.getPropertyAsInetAddress("/gMixConfiguration/general/mixBindAddress");
-		this.port = settings.getPropertyAsInt("/gMixConfiguration/general/mixBindPort");
-		this.backlog = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/backlog");
-		this.requestBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/requestBufferSize");
-		this.maxRequestLength = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/maxRequestLength");
+		this.bindAddress = settings.getPropertyAsInetAddress("GLOBAL_MIX_BIND_ADDRESS");
+		this.port = settings.getPropertyAsInt("GLOBAL_MIX_BIND_PORT");
+		this.backlog = settings.getPropertyAsInt("BACKLOG");
+		this.requestBufferSize = settings.getPropertyAsInt("REQUEST_BUFFER_SIZE");
+		this.maxRequestLength = settings.getPropertyAsInt("MAX_REQUEST_LENGTH");
 		//this.maxRequestLength = anonNode.getRecodingLayerControllerMix().getMaxSizeOfNextRequest(); // settings.getPropertyAsInt("MAX_REQUEST_LENGTH");
 		//this.queueBlockSize = settings.getPropertyAsInt("QUEUE_BLOCK_SIZE");
 		

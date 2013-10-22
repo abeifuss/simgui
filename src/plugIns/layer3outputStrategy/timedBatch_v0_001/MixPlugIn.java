@@ -40,8 +40,8 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.SENDING_RATE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/timedBatchSendingRate");
-		this.DEFAULT_BATCH_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/timedBatchDefaultBatchSize");
+		this.SENDING_RATE = settings.getPropertyAsInt("TIMED_BATCH_SENDING_RATE");
+		this.DEFAULT_BATCH_SIZE = settings.getPropertyAsInt("TIMED_BATCH_DEFAULT_BATCH_SIZE");
 		this.requestBatch = new SimplexTimedBatch(true);
 		this.replyBatch = new SimplexTimedBatch(false);
 	}
@@ -78,6 +78,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 		private boolean isFirstMessage = true;
 		private Timer timer = new Timer();
 		
+		
 		public SimplexTimedBatch(boolean isRequestPool) {
 			this.collectedMessages = new Vector<MixMessage>(DEFAULT_BATCH_SIZE);
 			this.isRequestPool = isRequestPool;
@@ -85,7 +86,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 		
 		
 		public void addMessage(MixMessage mixMessage) {
-			synchronized (this) {
+			synchronized (timer) {
 				if (isFirstMessage) {
 					isFirstMessage = false;
 					timer.scheduleAtFixedRate(new TimeoutTask(this), SENDING_RATE, SENDING_RATE);
@@ -96,13 +97,15 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 
 		
 		public void putOutMessages() {
-			synchronized (this) {
-				Collections.sort(collectedMessages);
-				if (isRequestPool)
-					anonNode.putOutRequests(collectedMessages.toArray(new Request[0]));
-				else
-					anonNode.putOutReplies(collectedMessages.toArray(new Reply[0]));
-				this.collectedMessages = new Vector<MixMessage>(DEFAULT_BATCH_SIZE);
+			synchronized (timer) {
+				if (collectedMessages.size() > 0) {
+					Collections.sort(collectedMessages);
+					if (isRequestPool)
+						anonNode.putOutRequests(collectedMessages.toArray(new Request[0]));
+					else
+						anonNode.putOutReplies(collectedMessages.toArray(new Reply[0]));
+					this.collectedMessages = new Vector<MixMessage>(DEFAULT_BATCH_SIZE);
+				}
 			}	
 		}
 	

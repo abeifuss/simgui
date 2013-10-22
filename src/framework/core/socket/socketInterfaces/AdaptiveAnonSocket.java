@@ -20,16 +20,16 @@ package framework.core.socket.socketInterfaces;
 import java.util.Random;
 
 import framework.core.AnonNode;
+import framework.core.config.Settings;
 import framework.core.controller.Layer1NetworkClientController;
 import framework.core.controller.Layer2RecodingSchemeClientController;
 import framework.core.controller.Layer3OutputStrategyClientController;
-import framework.core.gui.model.XMLResource;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
-import framework.core.interfaces.ThreePhaseStart;
 import framework.core.message.Request;
 import framework.core.routing.RoutingMode;
+import framework.core.interfaces.ThreePhaseStart;
 
 
 //TODO: ioexception instead of throw new RuntimeException(where possible); 
@@ -56,7 +56,7 @@ public abstract class AdaptiveAnonSocket implements AnonSocket, AnonSocketOption
 	protected Layer2RecodingSchemeClient layer2;
 	protected Layer3OutputStrategyClient layer3;
 	protected AnonNode owner;
-	protected XMLResource settings;
+	protected Settings settings;
 	
 	//protected ArrayBlockingQueue<AnonMessage> receivedDatagrams = null;
 	private ConcurrentCapacityAwareMixMessageQueue<Request> receivedRequests = null;

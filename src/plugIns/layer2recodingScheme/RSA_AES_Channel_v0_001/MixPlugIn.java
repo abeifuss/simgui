@@ -23,7 +23,6 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
 import framework.core.controller.Implementation;
-import framework.core.gui.model.PlugInType;
 import framework.core.interfaces.Layer2RecodingSchemeMix;
 import framework.core.message.Reply;
 import framework.core.message.Request;
@@ -52,7 +51,7 @@ public class MixPlugIn extends Implementation implements Layer2RecodingSchemeMix
 	public void constructor() {
 		if (anonNode.ROUTING_MODE == RoutingMode.FREE_ROUTE_DYNAMIC_ROUTING) 
 			throw new RuntimeException("RoutingMode FREE_ROUTE_DYNAMIC_ROUTING not supported, only CASADE and FREE_ROUTE_SOURCE_ROUTING"); 
-		this.config = new RSA_AES_Channel_Config(anonNode, PlugInType.MIX);
+		this.config = new RSA_AES_Channel_Config(anonNode, false);
 		this.channelsWithRequestsReady = new ArrayBlockingQueue<ChannelData>(config.NUMBER_OF_THREADS * 5);
 		this.requestWorkerThreads = new RequestWorkerThread[config.NUMBER_OF_THREADS];
 		this.requestDistributorThread = new RequestDistributorThread();

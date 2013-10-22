@@ -1,6 +1,6 @@
 /*
  * gMix open source project - https://svs.informatik.uni-hamburg.de/gmix/
- * Copyright (C) 2011  Karl-Peter Fuchs
+ * Copyright (C) 2012  Karl-Peter Fuchs
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package framework.core.launcher;
 
-import framework.core.gui.userInterfaces.mainGui.MainGuiService;
+import framework.core.gui.ToolSelectorCommandLine;
+import framework.core.gui.ToolSelectorGUI;
 
+
+// main class of the project/framework
 public class GlobalLauncher {
-    
-      public static void main(String[] args) {
-    	  new MainGuiService();
-      }
+
+	
+	public static void main(String[] args) {
+		CommandLineParameters params = new CommandLineParameters(args);
+		System.out.println(params); // TODO: remove
+		if (params.gMixTool != null && params.gMixTool != ToolName.NOT_SET) // start desired tool directly
+			ToolName.execute(params);
+		else if (params.useGui) // no tool specified; GUI mode on
+			new ToolSelectorGUI(params);
+		else // no tool specified; GUI mode off
+			new ToolSelectorCommandLine(params);
+	} 
+
 }

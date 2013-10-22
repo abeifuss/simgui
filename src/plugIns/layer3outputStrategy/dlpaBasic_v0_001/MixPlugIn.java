@@ -40,10 +40,8 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.maxRequestDelay = settings.getPropertyAsInt("dlpaBasicMaxRequestDelay");
-		this.maxReplyDelay = settings.getPropertyAsInt("dlpaBasicMaxReplyDelay");
-		settings.resetTemporaryPrefix();
+		this.maxRequestDelay = settings.getPropertyAsInt("DLPA_BASIC_MAX_REQUEST_DELAY");
+		this.maxReplyDelay = settings.getPropertyAsInt("DLPA_BASIC_MAX_REPLY_DELAY");
 	}
 	
 	

@@ -23,7 +23,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import framework.core.controller.Implementation;
-import framework.core.gui.model.PlugInType;
 import framework.core.interfaces.Layer2RecodingSchemeMix;
 import framework.core.message.Reply;
 import framework.core.message.Request;
@@ -47,7 +46,7 @@ public class MixPlugIn extends Implementation implements Layer2RecodingSchemeMix
 	public void constructor() {
 		if (anonNode.ROUTING_MODE != RoutingMode.CASCADE)
 			throw new RuntimeException("not supported"); // TODO: support it...
-		this.config = new RSA_AES_LossTolerantChannel_Config(anonNode, PlugInType.MIX);
+		this.config = new RSA_AES_LossTolerantChannel_Config(anonNode, false);
 		this.requestWorkerThreads = new RequestWorkerThread[config.NUMBER_OF_THREADS];
 
 		if (anonNode.IS_DUPLEX) {

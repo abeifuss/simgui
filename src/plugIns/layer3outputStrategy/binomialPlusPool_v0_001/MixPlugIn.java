@@ -47,14 +47,12 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("binomialPlusPoolDefaultPoolSize");
-		this.SEND_INTERVAL = settings.getPropertyAsInt("binomiaPlusPoolSendInterval");
-		this.MIN_POOL_SIZE = settings.getPropertyAsFloat("binomialPlusPoolMinPoolSize");
-		this.K = settings.getPropertyAsFloat("binomialPlusPoolK");
+		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("BINOMIAL_PLUS_POOL_DEFAULT_POOL_SIZE");
+		this.SEND_INTERVAL = settings.getPropertyAsInt("BINOMIAL_PLUS_POOL_SEND_INTERVAL");
+		this.MIN_POOL_SIZE = settings.getPropertyAsDouble("BINOMIAL_PLUS_POOL_MIN_POOL_SIZE");
+		this.K = settings.getPropertyAsDouble("BINOMIAL_PLUS_POOL_K");
 		this.requestPool = new SimplexBinomialPool(true);
 		this.replyPool = new SimplexBinomialPool(false);
-		settings.resetTemporaryPrefix();
 	}
 	
 	

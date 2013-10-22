@@ -40,10 +40,10 @@ public class AFAP_ThreadBased_LoadGenerator extends AFAP_LoadGenerator {
 		System.out.println("LOAD_GENERATOR: start at " +System.currentTimeMillis());
 		
 		// create client
-		owner.tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.settings, ToolName.CLIENT);
+		owner.commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.commandLineParameters);
 		
-		int numberOfConnections = loadGeneratorConfig.getPropertyAsInt("AL-AFAP-NUMBER_OF_CLIENTS");
+		int numberOfConnections = settings.getPropertyAsInt("AL-AFAP-NUMBER_OF_CLIENTS");
 		for (int i=0; i<numberOfConnections; i++)
 			new RequestThread().start();
 	}
@@ -58,7 +58,7 @@ public class AFAP_ThreadBased_LoadGenerator extends AFAP_LoadGenerator {
 			CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
 			StreamAnonSocket socket = client.createStreamSocket(cm, false);
 			try {
-				socket.connect(loadGeneratorConfig.getPropertyAsInt("SERVICE_PORT1"));
+				socket.connect(settings.getPropertyAsInt("SERVICE_PORT1"));
 				if (client.IS_DUPLEX)
 					new ReplyThread(socket).start();
 				OutputStream outputStream = socket.getOutputStream();

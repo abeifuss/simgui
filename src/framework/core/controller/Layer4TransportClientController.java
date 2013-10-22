@@ -19,25 +19,32 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer4TransportClient;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer4TransportClientController extends Controller implements Layer4TransportClient {
 
-	public Layer4TransportClientController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	public Layer4TransportClientController(AnonNode anonNode,
+			Settings settings, UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
-		/*
-		 * LocalClassLoader.instantiateImplementation( "plugIns.layer4transport."
-		 * +settings.getProperty("LAYER_4_PLUG-IN_CLIENT"), "ClientPlugIn.java", this,
-		 * Layer4TransportClient.class );
-		 */
+		/*LocalClassLoader.instantiateImplementation(
+				"plugIns.layer4transport." +settings.getProperty("LAYER_4_PLUG-IN_CLIENT"), 
+				"ClientPlugIn.java",
+				this,
+				Layer4TransportClient.class
+				);*/
 	}
+
+	
 
 }

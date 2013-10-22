@@ -19,12 +19,12 @@ package evaluation.loadGenerator.fixedSchedule;
 
 import evaluation.loadGenerator.LoadGenerator;
 import evaluation.loadGenerator.LoadGenerator.InsertLevel;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 public abstract class FixedScheduleLoadGenerator {
 
 	protected LoadGenerator owner;
-	protected XMLResource settings;
+	protected Settings settings;
 	
 	
 	

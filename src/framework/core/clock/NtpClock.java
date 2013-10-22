@@ -25,7 +25,7 @@ import java.net.SocketException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 
 public class NtpClock {
@@ -47,11 +47,11 @@ public class NtpClock {
 	
 	/** Indicates whether to synchronize clock (with SNTP server) or not. */
 	private static boolean useSynchronizedClock;
-
-	private XMLResource settings;
+	
+	private Settings settings;
 	
 	
-	public NtpClock(XMLResource settings) {
+	public NtpClock(Settings settings) {
 		this.settings = settings;
 		clockSync();
 	}
@@ -127,15 +127,15 @@ public class NtpClock {
 				synchronizeClocks();
 			}
 		}
-		useSynchronizedClock = settings.getPropertyAsBoolean("/gMixConfiguration/general/useSynchronizedClock");
+		useSynchronizedClock = settings.getPropertyAsBoolean("USE_SYNCHRONIZED_CLOCK");
 		if (useSynchronizedClock) {
 			try {
 				timeServerSocket = new DatagramSocket();
-				timeServerHost = settings.getPropertyAsInetAddress("/gMixConfiguration/general/timeServerHost");
+				timeServerHost = settings.getPropertyAsInetAddress("TIME_SERVER_HOST");
 				// synchronize clocks for the first time
 				synchronizeClocks();
 				// synchronize clocks every "updateRate" ms
-				long updateRate = settings.getPropertyAsLong("/gMixConfiguration/general/timeBetweenClockSynchronizations"); // time between clock synchronizations
+				long updateRate = settings.getPropertyAsLong("TIME_BETWEEN_CLOCK_SYNCHRONIZATIONS"); // time between clock synchronizations
 				if (updateRate != 0)
 					new Timer().schedule(new SynchronizationTask(), updateRate, updateRate); 
 			} catch (SocketException e) {

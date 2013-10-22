@@ -46,8 +46,8 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.TIMEOUT = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/batchWithTimeoutTimeout");
-		this.BATCH_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/batchWithTimeoutBatchSize");
+		this.TIMEOUT = settings.getPropertyAsInt("BATCH_WITH_TIMEOUT_TIMEOUT");
+		this.BATCH_SIZE = settings.getPropertyAsInt("BATCH_WITH_TIMEOUT_BATCH_SIZE");
 		this.requestBatch = new SimplexBatchWithTimeout(true);
 		this.replyBatch = new SimplexBatchWithTimeout(false);
 	}

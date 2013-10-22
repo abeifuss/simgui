@@ -18,7 +18,6 @@
 package plugIns.layer2recodingScheme.sphinx_v0_001;
 
 import framework.core.controller.Implementation;
-import framework.core.gui.model.PlugInType;
 import framework.core.interfaces.Layer2RecodingSchemeMix;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
@@ -38,7 +37,7 @@ public class MixPlugIn extends Implementation implements Layer2RecodingSchemeMix
 	public void constructor() {
 		if (anonNode.ROUTING_MODE == RoutingMode.FREE_ROUTE_DYNAMIC_ROUTING)
 			throw new RuntimeException("not supported");
-		this.config = new Sphinx_Config(anonNode, PlugInType.MIX);
+		this.config = new Sphinx_Config(anonNode, false);
 		this.messageCreator = new Sphinx(anonNode, config);
 		this.requestThreads = new RequestThread[config.NUMBER_OF_THREADS];
 		//if (anonNode.IS_DUPLEX)

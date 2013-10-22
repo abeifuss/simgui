@@ -30,7 +30,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import plugIns.layer2recodingScheme.RSA_AES_Channel_v0_001.MixPlugIn.ChannelData;
+
 import framework.core.AnonNode;
+import framework.core.config.Settings;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
@@ -42,6 +44,7 @@ public class RSA_AES_Channel {
 
 	private AnonNode owner;
 	private RSA_AES_Channel_Config config;
+	private Settings settings;
 	private Cipher asymmetricCipher;
 	private Cipher asymmetricCiphers[];
 	private KeyGenerator symKeyGenerator;
@@ -60,6 +63,8 @@ public class RSA_AES_Channel {
 	public RSA_AES_Channel(AnonNode owner, RSA_AES_Channel_Config config) {
 		this.owner = owner;
 		this.config = config;
+		this.settings = owner.getSettings();
+		
 	}
 	
 	
@@ -322,7 +327,7 @@ public class RSA_AES_Channel {
 		// generate keys, init ciphers etc.
 		for (int i=config.routeLength-1; i>=0; i--) {
 			try {
-				this.asymmetricCiphers[i] = Cipher.getInstance(config.ASYM_CRYPTOGRAPHY_ALGORITHM, owner.CRYPTO_PROVIDER);
+				this.asymmetricCiphers[i] = Cipher.getInstance(settings.getProperty("ASYM_CRYPTOGRAPHY_ALGORITHM"), owner.CRYPTO_PROVIDER);
 				if (owner.ROUTING_MODE == RoutingMode.CASCADE)
 					this.asymmetricCiphers[i].init(Cipher.ENCRYPT_MODE, config.publicKeysOfMixes[i]);
 				else {
@@ -334,14 +339,14 @@ public class RSA_AES_Channel {
 				byte[] ivReq = new byte[sessionKeysForRequestChannel[i].getEncoded().length];
 				secureRandom.nextBytes(ivReq);
 				this.sessionIVsForRequestChannel[i] = new IvParameterSpec(ivReq);
-				this.symmetricEncryptCiphers[i] = Cipher.getInstance(config.SYM_CRYPTOGRAPHY_ALGORITHM, owner.CRYPTO_PROVIDER);
+				this.symmetricEncryptCiphers[i] = Cipher.getInstance(settings.getProperty("SYM_CRYPTOGRAPHY_ALGORITHM"), owner.CRYPTO_PROVIDER);
 				this.symmetricEncryptCiphers[i].init(Cipher.ENCRYPT_MODE, sessionKeysForRequestChannel[i], sessionIVsForRequestChannel[i]);             				
 				if (owner.IS_DUPLEX) {
 					this.sessionKeysForReplyChannel[i] = symKeyGenerator.generateKey();
 					byte[] ivRep = new byte[sessionKeysForReplyChannel[i].getEncoded().length];
 					secureRandom.nextBytes(ivRep);
 					this.sessionIVsForReplyChannel[i] = new IvParameterSpec(ivRep);
-					this.symmetricDecryptCiphers[i] = Cipher.getInstance(config.SYM_CRYPTOGRAPHY_ALGORITHM, owner.CRYPTO_PROVIDER);
+					this.symmetricDecryptCiphers[i] = Cipher.getInstance(settings.getProperty("SYM_CRYPTOGRAPHY_ALGORITHM"), owner.CRYPTO_PROVIDER);
 					this.symmetricDecryptCiphers[i].init(Cipher.DECRYPT_MODE, sessionKeysForReplyChannel[i], sessionIVsForReplyChannel[i]);          
 				}
 			} catch (Exception e) {

@@ -22,16 +22,16 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import evaluation.loadGenerator.ClientTrafficScheduleWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ReplyReceiver;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ApplicationLevelMessage;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.randomVariable.FakeRandom;
 import evaluation.loadGenerator.randomVariable.RandomVariable;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -39,7 +39,7 @@ import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMod
 
 public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<ApplicationLevelMessage> {
 
-	private XMLResource settings;
+	private Settings settings;
 	private ScheduleTarget<ApplicationLevelMessage> scheduleTarget;
 	private ALRR_ClientWrapper[] clientsArray;
 	private long experimentStart; // in nanosec
@@ -57,28 +57,28 @@ public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<Applicat
 	public ALM_FS_ConstantRate(AL_FixedScheduleLoadGenerator owner) {
 		this.settings = owner.getSettings();
 		this.experimentStart = owner.getScheduler().now() + TimeUnit.SECONDS.toNanos(2);
-		int numberOfClients = settings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/alConstantRateNumberOfClients");
-		float float_periodLength = settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/alConstantRateNumberOfClients");
-		float float_messagesPerPeriod = settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/alConstantRateMessagesPerPeriod");
+		int numberOfClients = settings.getPropertyAsInt("AL-CONSTANT_RATE-NUMBER_OF_CLIENTS");
+		float float_periodLength = settings.getPropertyAsFloat("AL-CONSTANT_RATE-PERIOD");
+		float float_messagesPerPeriod = settings.getPropertyAsFloat("AL-CONSTANT_RATE-MESSAGES_PER_PERIOD");
 		float float_timeBetweenSends = (float_periodLength*1000000000f) / (float_messagesPerPeriod * (float)numberOfClients);
 		if (float_timeBetweenSends < 1f)
 			this.TIME_BETWEEN_SENDS = 1;
 		else
 			this.TIME_BETWEEN_SENDS = Math.round(float_timeBetweenSends);
-		String str_constantRateReplyDelay = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alConstantRateReplyDelay");
+		String str_constantRateReplyDelay = settings.getProperty("AL-CONSTANT_RATE-REPLY_DELAY");
 		if (RandomVariable.isRandomVariable(str_constantRateReplyDelay))
 			this.REPLY_DELAY = RandomVariable.createRandomVariable(str_constantRateReplyDelay);
 		else
 			this.REPLY_DELAY = new FakeRandom(Double.parseDouble(str_constantRateReplyDelay));
 		System.out.println("LOAD_GENERATOR: start at " +experimentStart);
 		// create client
-		owner.getLoadGenerator().tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.getLoadGenerator().settings, ToolName.CLIENT);
+		owner.getLoadGenerator().commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.getLoadGenerator().commandLineParameters);
 		this.scheduleTarget = new ALRR_BasicWriter(this, client.IS_DUPLEX);
 		// determine number of clients and lines; create ClientWrapper objects etc
 		this.clientsArray = new ALRR_ClientWrapper[numberOfClients];
 		CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
-		int port = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
 		for (int i=0; i<numberOfClients; i++) {
 			clientsArray[i] = new ALRR_ClientWrapper(i);
@@ -92,7 +92,7 @@ public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<Applicat
 				e.printStackTrace();
 			}
 		}
-		String str_requestPayloadSize = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alConstantRateRequestPayloadSize");
+		String str_requestPayloadSize = settings.getProperty("AL-CONSTANT_RATE-REQUEST_PAYLOAD_SIZE");
 		if (RandomVariable.isRandomVariable(str_requestPayloadSize)) {
 			this.REQUEST_PAYLOAD_SIZE = RandomVariable.createRandomVariable(str_requestPayloadSize);
 		} else {
@@ -101,7 +101,7 @@ public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<Applicat
 			else
 				this.REQUEST_PAYLOAD_SIZE = new FakeRandom(Integer.parseInt(str_requestPayloadSize));
 		}
-		String str_replyPayloadSize = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alConstantRateReplyPayloadSize");
+		String str_replyPayloadSize = settings.getProperty("AL-CONSTANT_RATE-REPLY_PAYLOAD_SIZE");
 		if (RandomVariable.isRandomVariable(str_replyPayloadSize)) {
 			this.REPLY_PAYLOAD_SIZE = RandomVariable.createRandomVariable(str_replyPayloadSize);
 		} else {

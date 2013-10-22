@@ -21,7 +21,7 @@ import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.message.Request;
 import framework.core.userDatabase.User;
 import framework.core.userDatabase.UserAttachment;
@@ -38,6 +38,7 @@ public class StatisticsRecorder {
 	
 	private static int DISPLAY_STAT_PERIOD;
 	private static UserDatabase userDatabase;
+	private static Settings settings;
 	private static boolean initDone = false;
 	private static Object synchronizer = new Object();
 	private static long sumOfRequestDataReceivedInPriod = 0;
@@ -56,9 +57,6 @@ public class StatisticsRecorder {
 	
 	// TODO: change to "register(AnonNode)" and allow recording statistics of multiple anonNodes (add parameter "AnonNode" to addRecord()-methods) 
 	public static void init(AnonNode owner) {
-		XMLResource res = owner.getSettings();
-		res.setTemporaryPrefix("/gMixConfiguration/availableResources/availableStaticFunctions/staticFunction[@id='statisticsRecorder']/");
-		
 		if (owner.IS_CLIENT)
 			clients.add(owner);
 		if (owner.IS_MIX)
@@ -67,14 +65,13 @@ public class StatisticsRecorder {
 			return;
 		initDone = true;
 		userDatabase = owner.getUserDatabase();
-		res = owner.getSettings();
+		settings = owner.getSettings();
 		
-		DISPLAY_STAT_PERIOD = res.getPropertyAsInt("displayStatPeriod");
-		DISPLAY_THROUGHPUT = res.getPropertyAsBoolean("displayThroughput");
-		DISPLAY_STATS_PER_USER = res.getPropertyAsBoolean("displayStatsPerUser");
-		DISPLAY_QUEUE_STATUS = res.getPropertyAsBoolean("displayQueueStatus");
-		DISPLAY_MESSAGE_DWELL_TIMES = res.getPropertyAsBoolean("displayMessageDwellTimes");
-		res.resetTemporaryPrefix();
+		DISPLAY_STAT_PERIOD = settings.getPropertyAsInt("DISPLAY_STAT_PERIOD");
+		DISPLAY_THROUGHPUT = settings.getPropertyAsBoolean("DISPLAY_THROUGHPUT");
+		DISPLAY_STATS_PER_USER = settings.getPropertyAsBoolean("DISPLAY_STATS_PER_USER");
+		DISPLAY_QUEUE_STATUS = settings.getPropertyAsBoolean("DISPLAY_QUEUE_STATUS");
+		DISPLAY_MESSAGE_DWELL_TIMES = settings.getPropertyAsBoolean("DISPLAY_MESSAGE_DWELL_TIMES");
 		new DisplayThread().start();
 	}
 	

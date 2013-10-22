@@ -37,17 +37,18 @@ public class AFAP_RR_LoadGenerator extends AFAP_LoadGenerator {
 	private AnonNode client;
 
 	
+	
 	protected AFAP_RR_LoadGenerator(LoadGenerator owner) {
 		super(owner);
 		System.out.println("LOAD_GENERATOR (AFAP): start at " +System.currentTimeMillis());
 		// create client
-		owner.tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.settings, ToolName.CLIENT);
+		owner.commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.commandLineParameters);
 		int numberOfConnections;
 		if (owner.INSERT_LEVEL == InsertLevel.APPLICATION_LEVEL)
-			numberOfConnections = loadGeneratorConfig.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/alAfapNumberOfClients");
+			numberOfConnections = settings.getPropertyAsInt("AL-AFAP-NUMBER_OF_CLIENTS");
 		else if (owner.INSERT_LEVEL == InsertLevel.MIX_PACKET_LEVEL)
-			numberOfConnections = loadGeneratorConfig.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/mplAfapNumberOfClients");
+			numberOfConnections = settings.getPropertyAsInt("MPL-AFAP-NUMBER_OF_CLIENTS");
 		else
 			throw new RuntimeException("unknown mode: " +owner.INSERT_LEVEL); 
 		
@@ -81,7 +82,7 @@ public class AFAP_RR_LoadGenerator extends AFAP_LoadGenerator {
 				CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
 				for (int i=0; i<sockets.length; i++) {
 					sockets[i] = client.createStreamSocket(cm, client.ROUTING_MODE != RoutingMode.CASCADE);
-					sockets[i].connect(loadGeneratorConfig.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1"));
+					sockets[i].connect(settings.getPropertyAsInt("SERVICE_PORT1"));
 					outputStreams[i] = sockets[i].getOutputStream();
 					if (client.IS_DUPLEX)
 						inputStreams[i] = sockets[i].getInputStream();	

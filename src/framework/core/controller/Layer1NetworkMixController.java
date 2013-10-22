@@ -19,22 +19,29 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer1NetworkMix;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer1NetworkMixController extends Controller implements Layer1NetworkMix {
 
-	public Layer1NetworkMixController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase, Clock clock,
+	
+	public Layer1NetworkMixController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
 			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
 		LocalClassLoader.instantiateImplementation(
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer1/mix/plugIn/package"), "MixPlugIn.java", this,
-				Layer1NetworkMix.class);
+				"plugIns.layer1network." +settings.getProperty("LAYER_1_PLUG-IN_MIX"), 
+				"MixPlugIn.java",
+				this,
+				Layer1NetworkMix.class
+				);
 	}
 }

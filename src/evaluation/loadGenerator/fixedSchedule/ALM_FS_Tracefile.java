@@ -26,16 +26,16 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import evaluation.loadGenerator.ClientTrafficScheduleWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ReplyReceiver;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ApplicationLevelMessage;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.EndOfFileReachedException;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import framework.core.AnonNode;
 import framework.core.config.Paths;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -43,7 +43,7 @@ import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMod
 
 public class ALM_FS_Tracefile implements ClientTrafficScheduleWriter<ApplicationLevelMessage> {
 
-	private XMLResource settings;
+	private Settings settings;
 	private ScheduleTarget<ApplicationLevelMessage> scheduleTarget;
 	private HashMap<Integer, ALRR_ClientWrapper> clientReferences;
 	private ALRR_ClientWrapper[] clientsArray;
@@ -63,12 +63,12 @@ public class ALM_FS_Tracefile implements ClientTrafficScheduleWriter<Application
 		
 		// try to load trace-file:
 		System.out.println("TRACE_READER: loading trace file"); 
-		String traceFilePath = Paths.getPathByName("LG_TRACE_FILE_PATH") + settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alTraceFileName");
+		String traceFilePath = Paths.getProperty("LG_TRACE_FILE_PATH") + settings.getProperty("AL-TRACE_FILE-NAME");
 		resetReader(traceFilePath);
 				
 		// create client
-		owner.getLoadGenerator().tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.getLoadGenerator().settings, ToolName.CLIENT);
+		owner.getLoadGenerator().commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.getLoadGenerator().commandLineParameters);
 		this.scheduleTarget = new ALRR_BasicWriter(this, client.IS_DUPLEX);
 		
 		// determine number of clients and lines; create ClientWrapper objects:
@@ -103,7 +103,7 @@ public class ALM_FS_Tracefile implements ClientTrafficScheduleWriter<Application
 		for (ALRR_ClientWrapper cw: clientsArray) // generate sockets
 			cw.socket = client.createStreamSocket(cm, client.ROUTING_MODE != RoutingMode.CASCADE);
 		// connect sockets:
-		int port = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
 		for (ALRR_ClientWrapper cw: clientsArray) 
 			try {

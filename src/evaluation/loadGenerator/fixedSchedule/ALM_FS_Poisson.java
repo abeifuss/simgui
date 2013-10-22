@@ -26,16 +26,16 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.math.random.RandomDataImpl;
 
 import evaluation.loadGenerator.ClientTrafficScheduleWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ReplyReceiver;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ApplicationLevelMessage;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_BasicWriter;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.randomVariable.FakeRandom;
 import evaluation.loadGenerator.randomVariable.RandomVariable;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -43,7 +43,7 @@ import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMod
 
 public class ALM_FS_Poisson implements ClientTrafficScheduleWriter<ApplicationLevelMessage> {
 
-	private XMLResource settings;
+	private Settings settings;
 	private ScheduleTarget<ApplicationLevelMessage> scheduleTarget;
 	private ALRR_ClientWrapper[] clientsArray;
 	private long experimentStart; // in nanosec
@@ -63,8 +63,8 @@ public class ALM_FS_Poisson implements ClientTrafficScheduleWriter<ApplicationLe
 		this.settings = owner.getSettings();
 		this.experimentStart = owner.getScheduler().now() + TimeUnit.SECONDS.toNanos(2);
 		this.startOfPeriod = experimentStart;
-		int numberOfClients = settings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/alPoissonNumberOfClients");
-		String str_avgSendsPerPulse = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alPoissonAverageSendOperationsPerPulse");
+		int numberOfClients = settings.getPropertyAsInt("AL-POISSON-NUMBER_OF_CLIENTS");
+		String str_avgSendsPerPulse = settings.getProperty("AL-POISSON-AVERAGE_SEND_OPERATIONS_PER_PULSE");
 		if (RandomVariable.isRandomVariable(str_avgSendsPerPulse)) {
 			this.AVG_SENDS_PER_PERIOD = RandomVariable.createRandomVariable(str_avgSendsPerPulse);
 		} else {
@@ -75,24 +75,24 @@ public class ALM_FS_Poisson implements ClientTrafficScheduleWriter<ApplicationLe
 			else
 				this.AVG_SENDS_PER_PERIOD = new FakeRandom(Math.round(float_avgSendsPerPulse));
 		}
-		String str_ReplyDelay = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alPoissonReplyDelay");
+		String str_ReplyDelay = settings.getProperty("AL-POISSON-REPLY_DELAY");
 		if (RandomVariable.isRandomVariable(str_ReplyDelay))
 			this.REPLY_DELAY = RandomVariable.createRandomVariable(str_ReplyDelay);
 		else
 			this.REPLY_DELAY = new FakeRandom(Double.parseDouble(str_ReplyDelay));
-		this.PULSE_LENGTH = (long) (settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/alPoissonPulseLenght")*1000000000f);
+		this.PULSE_LENGTH = (long) (settings.getPropertyAsFloat("AL-POISSON-PULSE_LENGTH")*1000000000f);
 		this.random = new SecureRandom();
 		this.randomDataImpl = new RandomDataImpl();
 		this.randomDataImpl.reSeed(this.random.nextLong());
 		System.out.println("LOAD_GENERATOR: start at " +experimentStart);
 		// create client
-		owner.getLoadGenerator().tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.getLoadGenerator().settings, ToolName.CLIENT);
+		owner.getLoadGenerator().commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.getLoadGenerator().commandLineParameters);
 		this.scheduleTarget = new ALRR_BasicWriter(this, client.IS_DUPLEX);
 		// determine number of clients and lines; create ClientWrapper objects etc
 		this.clientsArray = new ALRR_ClientWrapper[numberOfClients];
 		CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
-		int port = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
 		for (int i=0; i<numberOfClients; i++) {
 			clientsArray[i] = new ALRR_ClientWrapper(i);
@@ -105,7 +105,7 @@ public class ALM_FS_Poisson implements ClientTrafficScheduleWriter<ApplicationLe
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}String str_requestPayloadSize = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alPoissonAverageRequestPayloadSize");
+		}String str_requestPayloadSize = settings.getProperty("AL-POISSON-REQUEST_PAYLOAD_SIZE");
 		if (RandomVariable.isRandomVariable(str_requestPayloadSize)) {
 			this.REQUEST_PAYLOAD_SIZE = RandomVariable.createRandomVariable(str_requestPayloadSize);
 		} else {
@@ -114,7 +114,7 @@ public class ALM_FS_Poisson implements ClientTrafficScheduleWriter<ApplicationLe
 			else
 				this.REQUEST_PAYLOAD_SIZE = new FakeRandom(Integer.parseInt(str_requestPayloadSize));
 		}
-		String str_replyPayloadSize = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alPoissonAverageReplyPayloadSize");
+		String str_replyPayloadSize = settings.getProperty("AL-POISSON-REPLY_PAYLOAD_SIZE");
 		if (RandomVariable.isRandomVariable(str_replyPayloadSize)) {
 			this.REPLY_PAYLOAD_SIZE = RandomVariable.createRandomVariable(str_replyPayloadSize);
 		} else {

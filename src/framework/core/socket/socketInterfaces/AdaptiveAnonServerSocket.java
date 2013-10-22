@@ -20,8 +20,8 @@ package framework.core.socket.socketInterfaces;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import framework.core.AnonNode;
+import framework.core.config.Settings;
 import framework.core.controller.Layer3OutputStrategyMixController;
-import framework.core.gui.model.XMLResource;
 import framework.core.message.Request;
 import framework.core.util.Util;
 
@@ -44,7 +44,7 @@ public abstract class AdaptiveAnonServerSocket implements AnonServerSocket, Anon
 	protected boolean isFreeRoute = false;
 	
 	protected AnonNode owner;
-	protected XMLResource setting;
+	protected Settings setting;
 	
 	protected ArrayBlockingQueue<Request> receivedRequests = null;
 	protected Layer3OutputStrategyMixController layer3;

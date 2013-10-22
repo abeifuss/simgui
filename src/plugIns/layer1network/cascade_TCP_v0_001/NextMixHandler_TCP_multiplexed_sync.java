@@ -66,8 +66,8 @@ public class NextMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 		this.replyThread = new ReplyThread();
 		this.thisToNextMixIDs = new  HashMap<User,Integer>((int)Math.round((double)anonNode.EXPECTED_NUMBER_OF_USERS * 1.3d));
 		this.nextMixToThisIDs = new  HashMap<Integer,User>((int)Math.round((double)anonNode.EXPECTED_NUMBER_OF_USERS * 1.3d));
-		this.requestBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/multiplexedRequestBufferSize");
-		this.replyBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/multiplexedReplyBufferSize");
+		this.requestBufferSize = settings.getPropertyAsInt("MULTIPLEXED_REQUEST_BUFFER_SIZE");
+		this.replyBufferSize = settings.getPropertyAsInt("MULTIPLEXED_REPLY_BUFFER_SIZE");
 	}
 
 	

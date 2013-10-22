@@ -19,27 +19,34 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer3OutputStrategyClient;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer3OutputStrategyClientController extends Controller {
 
-	public Layer3OutputStrategyClientController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+
+	public Layer3OutputStrategyClientController(AnonNode anonNode,
+			Settings settings, UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
 		// not needed for client-side controllers
 	}
+	
 
 	public Layer3OutputStrategyClient loadClientPluginInstance() {
-		String packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer3/client/plugIn/package");
 		return LocalClassLoader.instantiateImplementation(
-				packag,
-				"ClientPlugIn.java", this, Layer3OutputStrategyClient.class);
+				"plugIns.layer3outputStrategy." +settings.getProperty("LAYER_3_PLUG-IN_CLIENT"), 
+				"ClientPlugIn.java",
+				this,
+				Layer3OutputStrategyClient.class
+				);
 	}
 }

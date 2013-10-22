@@ -19,7 +19,7 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer2RecodingSchemeMix;
 import framework.core.message.Reply;
 import framework.core.message.Request;
@@ -27,46 +27,59 @@ import framework.core.userDatabase.User;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer2RecodingSchemeMixController extends Controller implements Layer2RecodingSchemeMix {
 
 	private Layer2RecodingSchemeMix implementation;
-
-	public Layer2RecodingSchemeMixController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	
+	public Layer2RecodingSchemeMixController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
 		this.implementation = LocalClassLoader.instantiateImplementation(
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer2/mix/plugIn/package"), "MixPlugIn.java", this,
-				Layer2RecodingSchemeMix.class);
+				"plugIns.layer2recodingScheme." +settings.getProperty("LAYER_2_PLUG-IN_MIX"), 
+				"MixPlugIn.java",
+				this,
+				Layer2RecodingSchemeMix.class
+				);
 	}
+
 
 	@Override
 	public int getMaxSizeOfNextReply() {
 		return this.implementation.getMaxSizeOfNextReply();
 	}
 
+
 	@Override
 	public int getMaxSizeOfNextRequest() {
 		return this.implementation.getMaxSizeOfNextRequest();
 	}
+
 
 	@Override
 	public Request generateDummy(int[] route, User user) {
 		return this.implementation.generateDummy(route, user);
 	}
 
+
 	@Override
 	public Request generateDummy(User user) {
 		return this.implementation.generateDummy(user);
 	}
 
+
 	@Override
 	public Reply generateDummyReply(int[] route, User user) {
 		return this.implementation.generateDummyReply(route, user);
 	}
+
 
 	@Override
 	public Reply generateDummyReply(User user) {

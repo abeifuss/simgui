@@ -17,7 +17,7 @@
  */
 package evaluation.loadGenerator.mixPacketLevelTraffic;
 
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 
 public class MPL_ReplyReceiver extends Thread {
@@ -25,9 +25,9 @@ public class MPL_ReplyReceiver extends Thread {
 	private MPL_ClientWrapper[] clientsArray;
 	
 	
-	public MPL_ReplyReceiver(MPL_ClientWrapper[] clientsArray, XMLResource settings) {
+	public MPL_ReplyReceiver(MPL_ClientWrapper[] clientsArray, Settings settings) {
 		this.clientsArray = clientsArray;
-		//MPL_ClientWrapper.init(settings.getPropertyAsInt("/gMixConfiguration/general/numberOfUsers"));
+		//MPL_ClientWrapper.init(settings.getPropertyAsInt("GLOBAL_EXPECTED_NUMBER_OF_USERS"));
 	}
 
 	

@@ -41,8 +41,8 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.POOL_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/proportionalMethodPoolSize");
-		this.DEFAULT_QUEUE_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/proportionalMethodDefaultQueueSize");
+		this.POOL_SIZE = settings.getPropertyAsInt("PROPORTIONAL_METHOD_POOL_SIZE");
+		this.DEFAULT_QUEUE_SIZE = settings.getPropertyAsInt("PROPORTIONAL_METHOD_DEFAULT_QUEUE_SIZE");
 		this.requestPool = new SimplexPmPool(true);
 		this.replyPool = new SimplexPmPool(false);
 	}

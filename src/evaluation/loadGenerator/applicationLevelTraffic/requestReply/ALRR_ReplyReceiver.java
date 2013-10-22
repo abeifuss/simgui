@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import evaluation.loadGenerator.LoadGenerator;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.util.IOTester;
 import framework.core.util.Util;
 
@@ -33,7 +33,7 @@ public class ALRR_ReplyReceiver extends Thread {
 	private ALRR_ClientWrapper[] clientsArray;
 	
 	
-	public ALRR_ReplyReceiver(ALRR_ClientWrapper[] clientsArray, XMLResource settings) {
+	public ALRR_ReplyReceiver(ALRR_ClientWrapper[] clientsArray, Settings settings) {
 		this.clientsArray = clientsArray;
 		this.observers = new Vector<ApplicationLevelReplyReceivedObserver>();
 		ALRR_ClientWrapper.init(settings.getPropertyAsInt("GLOBAL_EXPECTED_NUMBER_OF_USERS"));

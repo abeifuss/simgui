@@ -50,11 +50,9 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 	
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.requestQueue = new ArrayBlockingQueue<Request>(settings.getPropertyAsInt("waitForReplyRequestQueueSize"));
-		this.replyQueue = new ArrayBlockingQueue<Reply>(settings.getPropertyAsInt("waitForReplyReplyQueueSize"));
-		this.delay = TimeUnit.MICROSECONDS.toNanos(settings.getPropertyAsLong("waitForReplyDelay"));
-		settings.resetTemporaryPrefix();
+		this.requestQueue = new ArrayBlockingQueue<Request>(settings.getPropertyAsInt("WAIT_FOR_REPLY_REQUEST_QUEUE_SIZE"));
+		this.replyQueue = new ArrayBlockingQueue<Reply>(settings.getPropertyAsInt("WAIT_FOR_REPLY_REPLY_QUEUE_SIZE"));
+		this.delay = TimeUnit.MICROSECONDS.toNanos(settings.getPropertyAsLong("WAIT_FOR_REPLY_DELAY"));
 	}
 
 	

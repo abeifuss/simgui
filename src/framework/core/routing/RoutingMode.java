@@ -17,7 +17,7 @@
  */
 package framework.core.routing;
 
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 public enum RoutingMode {
 
@@ -26,8 +26,8 @@ public enum RoutingMode {
 	FREE_ROUTE_DYNAMIC_ROUTING;
 	
 	
-	public static RoutingMode getMode(XMLResource settings) {
-		String modeAsString = settings.getPropertyAsString("globalRoutingMode");
+	public static RoutingMode getMode(Settings settings) {
+		String modeAsString = settings.getProperty("GLOBAL_ROUTING_MODE");
 		if (modeAsString.equals("CASCADE"))
 			return RoutingMode.CASCADE;
 		else if (modeAsString.equals("FREE_ROUTE_SOURCE_ROUTING"))
@@ -35,7 +35,7 @@ public enum RoutingMode {
 		else if (modeAsString.equals("FREE_ROUTE_DYNAMIC_ROUTING"))
 			return RoutingMode.FREE_ROUTE_DYNAMIC_ROUTING;
 		else
-			throw new RuntimeException("unkown \"globalRoutingMode\" mode specified");
+			throw new RuntimeException("unkown GLOBAL_ROUTING_MODE mode specified");
 	}
 	
 }

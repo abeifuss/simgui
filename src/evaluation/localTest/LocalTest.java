@@ -17,33 +17,33 @@
  */
 package evaluation.localTest;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import evaluation.loadGenerator.LoadGenerator;
 import framework.core.AnonNode;
-import framework.core.config.Paths;
-import framework.core.gui.model.PlugInType;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
+import framework.core.launcher.CommandLineParameters;
 import framework.core.launcher.GMixTool;
 import framework.core.launcher.ToolName;
 import framework.infoService.EipEventListener;
 import framework.infoService.InfoServiceClient;
 import framework.infoService.InfoServiceServer;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 
 public class LocalTest extends GMixTool implements EipEventListener {
 
 	private InfoServiceClient infoService;
-	private XMLResource settings;
+	private Settings settings;
 	
-	public LocalTest(XMLResource generalConfig) {
-		this.settings = generalConfig;
-		new InfoServiceServer(generalConfig);
+	
+	public LocalTest(CommandLineParameters params) {
+		new InfoServiceServer(params);
+		this.settings = params.generateSettingsObject();
 		try {
 			infoService = new InfoServiceClient(
 					InetAddress.getByName("localhost"), 
-					settings.getPropertyAsInt("/gMixConfiguration/general/infoService/port"));
+					settings.getPropertyAsInt("GLOBAL_INFO_SERVICE_PORT"));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +74,7 @@ public class LocalTest extends GMixTool implements EipEventListener {
 	
 	
 	public void startMixes() {
+		
 		int numberOfMixes = infoService.getNumberOfMixes();
 		MixStarter[] mixStarters = new MixStarter[numberOfMixes];
 		// set up mix cascade
@@ -95,41 +96,36 @@ public class LocalTest extends GMixTool implements EipEventListener {
 	public void startClients() {
 		System.out.println("all mixes up");
 		System.out.println("starting clients");
-		
-		//XMLResource clientSettings = settings.clone();
-		
-		new LoadGenerator(settings, ToolName.LOCAL_TEST);
+		CommandLineParameters params = new CommandLineParameters(new String[0]);
+		params.overwriteParameters = "LAYER_5_PLUG-IN_CLIENT=loadGeneratorPlugIn_v0_001";
+		params.gMixTool = ToolName.LOCAL_TEST;
+		new LoadGenerator(params);
 	}
 
 	
 	class MixStarter extends Thread {
-		/*
-		 * 	params.gMixTool = ToolName.MIX;
-params.overwriteParameters = "GLOBAL_INFO_SERVICE_ADDRESS=localhost,GLOBAL_LOCAL_MODE_ON=TRUE,LAYER_5_PLUG-IN_MIX=loadGeneratorPlugIn_v0_001";
-(non-Javadoc)
-		 */
 		
 		public void run() {
-			XMLResource temporarySettings = settings.clone();
-			temporarySettings.addTemporaryValue("/gMixConfiguration/general/infoService/address", "localhost");
-			temporarySettings.addTemporaryValue("globalLocalModeOn", "true");
-			//settings.addTemporaryValue(LAYER_5_PLUG-IN_MIX=loadGeneratorPlugIn_v0_001);
-			//temporarySettings.setPlugIn("loadGeneratorClient", 5, PlugInType.CLIENT);
-			//temporarySettings.get
-			System.out.println(temporarySettings.getRootNode()); // TODO: removeme
-			System.out.println(temporarySettings.getTemporaryPrefix()); // TODO: removeme
-			
-			//temporarySettings.setPlugIn("basicBatch", 3, PlugInType.MIX); // TODO: remove me
-			
-			//temporarySettings.printDocument(); 
-			//System.out.println("setting layer 3 to basicBatch"); 
-			//temporarySettings = XmlResourcePluginExchange.setPlugIn(temporarySettings, "basicBatch", 3, PlugInType.MIX); // TODO: remove me
-			
-			//temporarySettings.addTemporaryValue("/gMixConfiguration/composition/layer3/mix/plugIn@id", "basicBatch"); // TODO: remove me 
-			//temporarySettings.addTemporaryValue("/gMixConfiguration/composition/layer3/mix/plugIn@source", "src/plugIns/layer3outputStrategy/basicBatch_v0_001/mix/PlugInSettings.xml"); // TODO: remove me
-			//System.out.println("#\n#\n#\n#\n#"); 
-			//temporarySettings.printDocument(); 
-			new AnonNode(temporarySettings, ToolName.MIX);
+			CommandLineParameters params = new CommandLineParameters(new String[0]);
+			params.gMixTool = ToolName.MIX;
+			params.overwriteParameters = "GLOBAL_INFO_SERVICE_ADDRESS=localhost,GLOBAL_LOCAL_MODE_ON=TRUE,LAYER_5_PLUG-IN_MIX=loadGeneratorPlugIn_v0_001";
+			new AnonNode(params);
 		}
+		
 	}
+	
+	
+	/**
+	 * Comment
+	 *
+	 * @param args Not used.
+	 */
+	public static void main(String[] args) {
+		CommandLineParameters params = new CommandLineParameters(args);
+		params.gMixTool = ToolName.LOCAL_TEST;
+		new LocalTest(params);
+	}
+	
+
 }
+

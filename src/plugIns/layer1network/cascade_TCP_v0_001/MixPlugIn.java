@@ -32,8 +32,6 @@ public class MixPlugIn extends Implementation implements Layer1NetworkMix {
 	public SubImplementation clientComHandler;
 	public SubImplementation nextMixHandler;
 	public SubImplementation prevMixHandler;
-	
-	private String packag;
 	private Vector<SubImplementation> implementations = new Vector<SubImplementation>();
 	
 	
@@ -41,8 +39,6 @@ public class MixPlugIn extends Implementation implements Layer1NetworkMix {
 	public void constructor() {
 		if (anonNode.ROUTING_MODE != RoutingMode.CASCADE)
 			throw new RuntimeException("free route not supported");
-		
-		packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer1/mix/plugIn/package");
 		
 		switch (this.getPosition()) {
 			case FIRST_MIX_OF_CASCADE:
@@ -81,8 +77,8 @@ public class MixPlugIn extends Implementation implements Layer1NetworkMix {
 	
 	private void instantiateClientComHandler() {
 		this.clientComHandler = LocalClassLoader.instantiateSubImplementation(
-				packag, 
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer1/mix/plugIn/connectionHandler/clientConnectionHandler"),
+				"plugIns.layer1network." +settings.getProperty("LAYER_1_PLUG-IN_MIX"), 
+				settings.getProperty("CLIENT_CONNECTION_HANDLER"),
 				anonNode
 				);
 		implementations.add(clientComHandler);
@@ -91,8 +87,8 @@ public class MixPlugIn extends Implementation implements Layer1NetworkMix {
 	
 	private void instantiateNextMixComHandler() {
 		this.nextMixHandler = LocalClassLoader.instantiateSubImplementation(
-				packag, 
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer1/mix/plugIn/connectionHandler/nextMixConnectionHandler"),
+				"plugIns.layer1network." +settings.getProperty("LAYER_1_PLUG-IN_MIX"), 
+				settings.getProperty("NEXT_MIX_CONNECTION_HANLDER"),
 				anonNode
 				);
 		implementations.add(nextMixHandler);
@@ -101,8 +97,8 @@ public class MixPlugIn extends Implementation implements Layer1NetworkMix {
 
 	private void instantiatePrevMixComHandler() {
 		this.prevMixHandler = LocalClassLoader.instantiateSubImplementation(
-				packag, 
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer1/mix/plugIn/connectionHandler/previousMixConnectionHandler"),
+				"plugIns.layer1network." +settings.getProperty("LAYER_1_PLUG-IN_MIX"), 
+				settings.getProperty("PREVIOUS_MIX_CONNECTION_HANLDER"),
 				anonNode
 				);
 		implementations.add(prevMixHandler);

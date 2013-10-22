@@ -19,22 +19,34 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer5ApplicationClient;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer5ApplicationClientController extends Controller implements Layer5ApplicationClient {
 
-	public Layer5ApplicationClientController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	public Layer5ApplicationClientController(AnonNode anonNode,
+			Settings settings, UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
-		String packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer5/client/plugIn/package");
-		LocalClassLoader.instantiateImplementation(packag, "ClientPlugIn.java", this, Layer5ApplicationClient.class);
+		if (settings.getProperty("LAYER_5_PLUG-IN_CLIENT").contains(","))
+			throw new RuntimeException("only one client-side layer 5 plug-in allowed"); 
+		if (!settings.getProperty("LAYER_5_PLUG-IN_CLIENT").equals("")) {
+			LocalClassLoader.instantiateImplementation(
+				"plugIns.layer5application." +settings.getProperty("LAYER_5_PLUG-IN_CLIENT"), 
+				"ClientPlugIn.java",
+				this,
+				Layer5ApplicationClient.class
+				);
+		}
 	}
 
 }

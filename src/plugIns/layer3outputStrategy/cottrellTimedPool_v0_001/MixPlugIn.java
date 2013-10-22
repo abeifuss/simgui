@@ -44,18 +44,16 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
 		try {
-			MixPlugIn.secureRandom = SecureRandom.getInstance(settings.getPropertyAsString("cottrellTimedPoolPrngAlgorithm"));
+			MixPlugIn.secureRandom = SecureRandom.getInstance(settings.getProperty("COTTRELL_TIMED_POOL_PRNG_ALGORITHM"));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new RuntimeException("could not init secureRandom"); 
 		}
-		this.SENDING_RATE = settings.getPropertyAsInt("cottrellTimedPoolSendingRate");
-		this.MIN_POOL_SIZE = settings.getPropertyAsInt("cottrellTimedPoolMinPoolSize"); 
+		this.SENDING_RATE = settings.getPropertyAsInt("COTTRELL_TIMED_POOL_SENDING_RATE");
+		this.MIN_POOL_SIZE = settings.getPropertyAsInt("COTTRELL_TIMED_POOL_MIN_POOL_SIZE"); 
 		this.requestPool = new SimplexCottrellTimedPool(true);
 		this.replyPool = new SimplexCottrellTimedPool(false);
-		settings.resetTemporaryPrefix();
 	}
 	
 	

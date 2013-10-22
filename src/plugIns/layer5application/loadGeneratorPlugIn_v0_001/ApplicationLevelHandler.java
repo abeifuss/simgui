@@ -1,5 +1,5 @@
 /*
-  * gMix open source project - https://svs.informatik.uni-hamburg.de/gmix/
+ * gMix open source project - https://svs.informatik.uni-hamburg.de/gmix/
  * Copyright (C) 2012  Karl-Peter Fuchs
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -40,13 +40,13 @@ public class ApplicationLevelHandler {
 	private ExitNodeRequestReceiver requestReceiver;
 	
 	
-	public ApplicationLevelHandler(AnonNode owner, int servicePort1) {
+	public ApplicationLevelHandler(AnonNode owner) {
 		System.out.println("ApplicationLevelHandler started"); 
 		this.clients = new Vector<ClientData>(owner.EXPECTED_NUMBER_OF_USERS);
 		this.newClients = new Vector<ClientData>(50);
 		this.requestThread = new RequestThread();
 		CommunicationMode cm = owner.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_RECEIVER;
-		this.serverSocket = owner.createStreamAnonServerSocket(servicePort1, cm, owner.ROUTING_MODE != RoutingMode.CASCADE);
+		this.serverSocket = owner.createStreamAnonServerSocket(owner.getSettings().getPropertyAsInt("SERVICE_PORT1"), cm, owner.ROUTING_MODE != RoutingMode.CASCADE);
 		this.requestReceiver = LoadGenerator.createExitNodeRequestReceiver(owner);
 		new AcceptorThread().start(); 
 		this.requestThread.start(); 

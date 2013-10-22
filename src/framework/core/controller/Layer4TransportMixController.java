@@ -19,26 +19,34 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer4TransportMix;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer4TransportMixController extends Controller implements Layer4TransportMix {
 
-	public Layer4TransportMixController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	public Layer4TransportMixController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
-		/*
-		 * LocalClassLoader.instantiateImplementation( "plugIns.layer4transport."
-		 * +settings.getProperty("LAYER_4_PLUG-IN_MIX"), "MixPlugIn.java", this,
-		 * Layer4TransportMix.class ); settings.addProperties("./src/plugIns/layer4transport/"
-		 * +settings.getProperty("LAYER_4_PLUG-IN_MIX") +"/PlugInSettings.txt");
-		 */
+		/*LocalClassLoader.instantiateImplementation(
+				"plugIns.layer4transport." +settings.getProperty("LAYER_4_PLUG-IN_MIX"), 
+				"MixPlugIn.java",
+				this,
+				Layer4TransportMix.class
+				);
+		settings.addProperties("./src/plugIns/layer4transport/" 
+				+settings.getProperty("LAYER_4_PLUG-IN_MIX") 
+				+"/PlugInSettings.txt");*/
 	}
+
 
 }

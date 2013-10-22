@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
 import framework.core.util.Util;
 
 
@@ -46,13 +45,10 @@ public class ReplayDetectionBasic {
 	
 	
 	private ReplayDetectionBasic(AnonNode owner) {
-		XMLResource res = owner.getSettings();
-		res.setTemporaryPrefix("/gMixConfiguration/availableResources/availableStaticFunctions/staticFunction[@id='basicReplayDetection']/");
-		this.DB_CAPACITY = owner.getSettings().getPropertyAsInt("replayDbCapacity");
-		this.DB_LOAD_FACTOR = owner.getSettings().getPropertyAsFloat("dbLoadFactor");
+		this.DB_CAPACITY = owner.getSettings().getPropertyAsInt("REPLAY_DB_CAPACITY");
+		this.DB_LOAD_FACTOR = owner.getSettings().getPropertyAsFloat("DB_LOAD_FACTOR");
 		this.replayDatabase = 
-			new Hashtable<Integer, byte[]>(DB_CAPACITY, DB_LOAD_FACTOR);
-			res.resetTemporaryPrefix();
+			new Hashtable<Integer, byte[]>(DB_CAPACITY, DB_LOAD_FACTOR);	
 	}
 	
 

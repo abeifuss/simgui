@@ -25,8 +25,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 import staticFunctions.layer2recodingScheme.basicReplayDetection_v0_001.ReplayDetectionBasic;
 import framework.core.AnonNode;
-import framework.core.gui.model.PlugInType;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.routing.RoutingMode;
 import framework.infoService.InfoServiceClient;
 
@@ -65,10 +64,10 @@ public class RSA_AES_Channel_Config {
 	public ReplayDetectionBasic replayDetection;
 	
 	private InfoServiceClient infoService;
-	private XMLResource settings;
+	private Settings settings;
 	
-	//legacy parameter conversion: true => PlugInType.CLIENT, false => PlugInType.MIX
-	public RSA_AES_Channel_Config(AnonNode owner, PlugInType clientMix) {
+	
+	public RSA_AES_Channel_Config(AnonNode owner, boolean isClientConfigObject) {
 		this.settings = owner.getSettings();
 		this.infoService = owner.getInfoService();
 		
@@ -77,27 +76,26 @@ public class RSA_AES_Channel_Config {
 		this.PERFORM_REPLY_DETECTION = owner.REPLY_DETECTION_ON;
 		this.CRYPTO_PROVIDER = owner.CRYPTO_PROVIDER;
 		
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer2/" + clientMix.toString() + "/plugIn/");
-		this.ASYM_CRYPTOGRAPHY_ALGORITHM = settings.getPropertyAsString("asymCryptographyAlgorithm");
-		this.SYM_CRYPTOGRAPHY_ALGORITHM = settings.getPropertyAsString("symCryptographyAlgorithm");
-		this.MAC_ALGORITHM = settings.getPropertyAsString("macAlgorithm");
-		this.NAME_OF_SYM_KEY_GENERATOR = settings.getPropertyAsString("nameOfSymKeyGenerator");
-		this.NAME_OF_ASYM_KEY_GENERATOR = settings.getPropertyAsString("nameOfAsymKeyGenerator");
-		this.ASYM_KEY_LENGTH = settings.getPropertyAsInt("asymKeyLength"); // in byte
-		this.SYM_KEY_LENGTH = settings.getPropertyAsInt("symKeyLength"); // in byte
-		this.IV_LENGTH = settings.getPropertyAsInt("ivLength"); // in byte
-		this.MAC_KEY_LENGTH = settings.getPropertyAsInt("macKeyLength"); // in byte
-		this.MAC_LENGTH = settings.getPropertyAsInt("macLength"); // in byte
-		this.LENGTH_HEADER_LENGTH = settings.getPropertyAsInt("lengthHeaderLength"); // in byte
-		this.RS_THREAD_QUEUE_LENGTH = settings.getPropertyAsInt("rsThreadQueueLength");
+		this.ASYM_CRYPTOGRAPHY_ALGORITHM = settings.getProperty("ASYM_CRYPTOGRAPHY_ALGORITHM");
+		this.SYM_CRYPTOGRAPHY_ALGORITHM = settings.getProperty("SYM_CRYPTOGRAPHY_ALGORITHM");
+		this.MAC_ALGORITHM = settings.getProperty("MAC_ALGORITHM");
+		this.NAME_OF_SYM_KEY_GENERATOR = settings.getProperty("NAME_OF_SYM_KEY_GENERATOR");
+		this.NAME_OF_ASYM_KEY_GENERATOR = settings.getProperty("NAME_OF_ASYM_KEY_GENERATOR");
+		this.ASYM_KEY_LENGTH = settings.getPropertyAsInt("ASYM_KEY_LENGTH"); // in byte
+		this.SYM_KEY_LENGTH = settings.getPropertyAsInt("SYM_KEY_LENGTH"); // in byte
+		this.IV_LENGTH = settings.getPropertyAsInt("IV_LENGTH"); // in byte
+		this.MAC_KEY_LENGTH = settings.getPropertyAsInt("MAC_KEY_LENGTH"); // in byte
+		this.MAC_LENGTH = settings.getPropertyAsInt("MAC_LENGTH"); // in byte
+		this.LENGTH_HEADER_LENGTH = settings.getPropertyAsInt("LENGTH_HEADER_LENGTH"); // in byte
+		this.RS_THREAD_QUEUE_LENGTH = settings.getPropertyAsInt("RS_THREAD_QUEUE_LENGTH");
 				
 		// settings for reply block
-		this.PRNG_ALGORITHM = settings.getPropertyAsString("prngAlgorithm"); // used to derive keys for reply packages
-		this.PRNG_SEED_LENGTH = settings.getPropertyAsInt("prngSeedLength"); // in byte
-		this.PSEUDONYM_LENGTH = settings.getPropertyAsInt("pseudonymLength"); // in byte
-		this.ADDRESS_LENGTH = settings.getPropertyAsInt("addressLength"); // in byte (address of the client)
+		this.PRNG_ALGORITHM = settings.getProperty("PRNG_ALGORITHM"); // used to derive keys for reply packages
+		this.PRNG_SEED_LENGTH = settings.getPropertyAsInt("PRNG_SEED_LENGTH"); // in byte
+		this.PSEUDONYM_LENGTH = settings.getPropertyAsInt("PSEUDONYM_LENGTH"); // in byte
+		this.ADDRESS_LENGTH = settings.getPropertyAsInt("ADDRESS_LENGTH"); // in byte (address of the client)
 		
-		if (clientMix == PlugInType.CLIENT) {
+		if (isClientConfigObject) {
 			this.publicKeysOfMixes = getPublicKeysOfAllMixes();
 			this.numberOfMixes = publicKeysOfMixes.length;
 			if (owner.ROUTING_MODE == RoutingMode.CASCADE)
@@ -112,8 +110,6 @@ public class RSA_AES_Channel_Config {
 				this.replayDetection = ReplayDetectionBasic.getInstance(owner);
 			this.NUMBER_OF_THREADS = owner.NUMBER_OF_THREADS;
 		}
-		
-		settings.resetTemporaryPrefix();
 	}
 	
 	

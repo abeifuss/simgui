@@ -36,7 +36,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.useTimeStamps = settings.getPropertyAsBoolean("/gMixConfiguration/composition/layer3/mix/plugIn/stopAndGoUseTimestamps");
+		this.useTimeStamps = settings.getPropertyAsBoolean("STOP_AND_GO_USE_TIMESTAMPS");
 	}
 
 	

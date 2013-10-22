@@ -26,7 +26,7 @@ import evaluation.loadGenerator.mixPacketLevelTraffic.MPL_FS_Poisson;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import evaluation.loadGenerator.scheduler.ThreadPoolScheduler;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 
 public class MPL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
@@ -44,7 +44,7 @@ public class MPL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
 	// TODO: use more than one scheduler (distribute events round robin-like to schedulers unless two or more events belong to the same client-socket; in that case, schedule all for the same scheduler as sending through a single socket cant be parallelized)
 	public MPL_FixedScheduleLoadGenerator(LoadGenerator owner) {
 		super(owner);
-		this.scheduler = new ThreadPoolScheduler<MPL_ClientWrapper>(settings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/tolerance")); // TODO: offer further schedulers
+		this.scheduler = new ThreadPoolScheduler<MPL_ClientWrapper>(settings.getPropertyAsInt("TOLERANCE")); // TODO: offer further schedulers
 		this.scheduleWriterThread = new ScheduleWriterThread();
 		
 		// create suiting ClientTrafficScheduleWriter:
@@ -67,7 +67,7 @@ public class MPL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
 	}
 	
 	
-	public XMLResource getSettings() {
+	public Settings getSettings() {
 		return this.settings;
 	}
 	

@@ -50,9 +50,9 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 	
 	@Override
 	public void constructor() {
-		this.requestBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/clientRequestBufferSize");
-		this.replyBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/clientReplyBufferSize");
-		this.timeout = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/clientConnectionTimeout");
+		this.requestBufferSize = settings.getPropertyAsInt("CLIENT_REQUEST_BUFFER_SIZE");
+		this.replyBufferSize = settings.getPropertyAsInt("CLIENT_REPLY_BUFFER_SIZE");
+		this.timeout = settings.getPropertyAsInt("CLIENT_CONNECTION_TIMEOUT");
 	}
 	
 
@@ -174,7 +174,7 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 			}
 			byte[] message = Util.forceRead(mixInputStream, replyLength);
 			//System.out.println("habe empfangen auf layer 0 (" +anonNode.toString() +"): " +Util.md5(message));
-			replyLength = Util.NOT_SET;
+			replyLength = Util.NOT_SET; 
 			return MixMessage.getInstanceReply(message);
 		} catch (IOException e) {
 			System.err.println("connection lost... try again"); 

@@ -56,12 +56,10 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 	
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.rate = settings.getPropertyAsInt("constantRateSendRate");
-		this.requestQueue = new ArrayBlockingQueue<Request>(settings.getPropertyAsInt("constantRateQueueSize"));
+		this.rate = settings.getPropertyAsInt("CONSTANT_RATE_SEND_RATE");
+		this.requestQueue = new ArrayBlockingQueue<Request>(settings.getPropertyAsInt("CONSTANT_RATE_QUEUE_SIZE"));
 		this.scheduler = new ScheduledThreadPoolExecutor(1);
 		ClientPlugIn.warning = new OutputCap(this.getClass().getCanonicalName() +" cannont send messages as fast as specified (" +rate +")", 2000);
-		settings.resetTemporaryPrefix();
 	}
 
 	
@@ -173,7 +171,7 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 			layer1.sendMessage(dummy);
 		} else {
 			try {
-				sendMessage(requestQueue.take());
+				layer1.sendMessage(requestQueue.take());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				sendMessage();

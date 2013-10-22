@@ -52,7 +52,7 @@ public class MixPlugIn extends Implementation implements Layer5ApplicationMix {
 		if (anonNode.IS_LAST_MIX) {
 			System.out.println("StatisticsPlugInStreamSocket_v0_001 loaded"); 
 			CommunicationMode cm = anonNode.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_RECEIVER;
-			this.serverSocket = anonNode.createStreamAnonServerSocket(settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/client/plugIn/servicePort1"), cm, anonNode.ROUTING_MODE != RoutingMode.CASCADE);
+			this.serverSocket = anonNode.createStreamAnonServerSocket(settings.getPropertyAsInt("SERVICE_PORT1"), cm, anonNode.ROUTING_MODE != RoutingMode.CASCADE);
 			new AcceptorThread().start(); 
 		}
 	}

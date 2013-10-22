@@ -40,14 +40,12 @@ public class MixPlugIn extends Implementation implements Layer5ApplicationMix {
 
 	@Override
 	public void begin() {
-		System.out.println("loadGeneratorPlugIn_v0_001 loaded");
-		int servicePort1 = anonNode.getSettings().getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
-		
+		System.out.println("loadGeneratorPlugIn_v0_001 loaded"); 
 		if (anonNode.ROUTING_MODE == RoutingMode.CASCADE) {
 			if (anonNode.IS_LAST_MIX) {
 				InsertLevel insertLevel = LoadGenerator.getInsertLevel(anonNode);
 				if (insertLevel == InsertLevel.APPLICATION_LEVEL) {
-					new ApplicationLevelHandler(anonNode, servicePort1);
+					new ApplicationLevelHandler(anonNode);
 				} else if (insertLevel == InsertLevel.MIX_PACKET_LEVEL) {
 					new MixPacketLevelHandler(anonNode);
 				} else
@@ -56,7 +54,7 @@ public class MixPlugIn extends Implementation implements Layer5ApplicationMix {
 		} else {
 			InsertLevel insertLevel = LoadGenerator.getInsertLevel(anonNode);
 			if (insertLevel == InsertLevel.APPLICATION_LEVEL) {
-				new ApplicationLevelHandler(anonNode, servicePort1);
+				new ApplicationLevelHandler(anonNode);
 			} else if (insertLevel == InsertLevel.MIX_PACKET_LEVEL) {
 				new MixPacketLevelHandler(anonNode);
 			} else

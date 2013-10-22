@@ -19,43 +19,54 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer3OutputStrategyMix;
 import framework.core.message.Reply;
 import framework.core.message.Request;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer3OutputStrategyMixController extends Controller implements Layer3OutputStrategyMix {
 
 	private Layer3OutputStrategyMix implementation;
-
-	public Layer3OutputStrategyMixController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	
+	public Layer3OutputStrategyMixController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
 		this.implementation = LocalClassLoader.instantiateImplementation(
-				settings.getPropertyAsString("/gMixConfiguration/composition/layer3/mix/plugIn/package"), "MixPlugIn.java", this,
-				Layer3OutputStrategyMix.class);
+				"plugIns.layer3outputStrategy." +settings.getProperty("LAYER_3_PLUG-IN_MIX"), 
+				"MixPlugIn.java",
+				this,
+				Layer3OutputStrategyMix.class
+				);
 	}
+
 
 	@Override
 	public void addRequest(Request request) {
 		this.implementation.addRequest(request);
 	}
 
+
 	@Override
 	public void addReply(Reply reply) {
 		this.implementation.addReply(reply);
 	}
 
+
 	@Override
 	public int getMaxSizeOfNextReply() {
 		return implementation.getMaxSizeOfNextReply();
 	}
+
 
 	@Override
 	public int getMaxSizeOfNextRequest() {

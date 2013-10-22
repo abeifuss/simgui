@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import evaluation.loadGenerator.ExitNodeRequestReceiver;
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.socket.socketInterfaces.StreamAnonSocketMix;
 import framework.core.userDatabase.User;
 
@@ -30,7 +30,7 @@ public class AFAP_Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceive
 
 	
 	protected AnonNode anonNode;
-	protected XMLResource settings;
+	protected Settings settings;
 	
 	
 	protected AFAP_Echo_ExitNodeRequestReceiver(AnonNode anonNode) {

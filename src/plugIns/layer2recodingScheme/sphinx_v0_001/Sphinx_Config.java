@@ -22,9 +22,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import staticFunctions.layer2recodingScheme.basicReplayDetection_v0_001.ReplayDetectionBasic;
+
 import framework.core.AnonNode;
-import framework.core.gui.model.PlugInType;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.routing.MixList;
 import framework.core.routing.RoutingMode;
 import framework.core.util.Util;
@@ -62,10 +62,10 @@ public class Sphinx_Config {
 	public MixList mixList;
 
 	private InfoServiceClient infoService;
-	private XMLResource settings;
+	private Settings settings;
 
 	
-	public Sphinx_Config(AnonNode owner, PlugInType clientMix) {
+	public Sphinx_Config(AnonNode owner, boolean isClientConfigObject) {
 		this.settings = owner.getSettings();
 		this.infoService = owner.getInfoService();
 		
@@ -85,9 +85,9 @@ public class Sphinx_Config {
 		this.GAMMA_SIZE = 16;
 		this.DELTA_SIZE = MAX_PAYLOAD + 1 + 16; // 1 = overhead for padding info in delta (delta=payload); 16 overhead for mac in delta (delta=payload)
 		
-		this.PRNG_ALGORITHM = settings.getPropertyAsString("/gMixConfiguration/composition/layer2/" + clientMix.name().toLowerCase() + "/plugIn/prngAlgorithm");
+		this.PRNG_ALGORITHM = settings.getProperty("PRNG_ALGORITHM");
 		
-		if (clientMix == PlugInType.CLIENT) {
+		if (isClientConfigObject) {
 			this.id = Sphinx.generateClientId(this);
 			try {
 				infoService.postValue(new String(id, "UTF-8"), Util.intToByteArray(owner.PUBLIC_PSEUDONYM));

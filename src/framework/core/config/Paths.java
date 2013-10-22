@@ -1,6 +1,6 @@
 /*
  * gMix open source project - https://svs.informatik.uni-hamburg.de/gmix/
- * Copyright (C) 2011  Karl-Peter Fuchs
+ * Copyright (C) 2012  Karl-Peter Fuchs
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package framework.core.config;
 
 import java.io.FileInputStream;
@@ -37,10 +36,6 @@ public class Paths {
 		}
 	}
 	
-	public static String getPathByName(String name) {
-		return properties.getProperty(name);
-	}
-	
 	// info service
 	public final static String IS_PROPERTY_FILE_PATH = properties.getProperty("IS_PROPERTY_FILE_PATH");
 	
@@ -60,13 +55,10 @@ public class Paths {
 	// loadGenerator
 	public final static String LG_PROPERTY_FILE_PATH = properties.getProperty("LG_PROPERTY_FILE_PATH");
 	
+	// general config (mix/client etc.)
 	public static final String GENERAL_CONFIG_PROPERTY_FILE_PATH = properties.getProperty("GENERAL_CONFIG_PROPERTY_FILE_PATH");
-	
-	public static final String GENERAL_CONFIG_XML_FILE_PATH = "inputOutput/anonNode/generalConfig.xml";
-	public static final String AVAILABLE_RESOURCES_XML_FILE_PATH = "etc/availableResources.xml";
-	public static final String GENERAL_CONFIG_GUI_DESCRIPTOR_XML_FILE_PATH = "etc/possibleValues.xml";
-	public static final String PLUGIN_REGISTRY_GUI_DESCRIPTOR_XML_FILE_PATH = "etc/possibleValuesPlugInRegistry.xml";
-	public static final String STATIC_FUNCTION_REGISTRY_GUI_DESCRIPTOR_XML_FILE_PATH = "etc/possibleValuesStaticFunctionRegistry.xml";
-	public static final String COLOR_SCHEME_FILE_PATH = "etc/gui/colors.txt";
 
+	public static String getProperty(String key) {
+		return properties.getProperty(key); 
+	}
 }

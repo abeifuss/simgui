@@ -17,18 +17,20 @@
  */
 package framework.core.clock;
 
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
+
 
 /**
- * Provides a clock, which can be synchronized with a SNTP server (See RFC 2030 for further
- * information).
+ * Provides a clock, which can be synchronized with a SNTP server (See RFC 
+ * 2030 for further information).
  * <p>
- * Can retrieve SNTP messages from a SNTP server at regular intervals and calculate the local
- * clock's offset each time. The local clock's offset calculation is implemented according to the
- * SNTP algorithm specified in RFC 2030.
+ * Can retrieve SNTP messages from a SNTP server at regular intervals and 
+ * calculate the local clock's offset each time. The local clock's offset 
+ * calculation is implemented according to the SNTP algorithm specified in RFC 
+ * 2030.  
  * <p>
- * The method <code>getTime()</code> can be used to generate timestamps (The typical accuracy of a
- * SNTP client/server exchange is fractions of a second).
+ * The method <code>getTime()</code> can be used to generate timestamps (The 
+ * typical accuracy of a SNTP client/server exchange is fractions of a second).
  * <p>
  * The System's time is never changed.
  * <p>
@@ -40,18 +42,20 @@ public class Clock {
 
 	private boolean useSNTPclock;
 	private NtpClock ntpClock;
-
-	public Clock(XMLResource settings) {
-		this.useSNTPclock = settings.getPropertyAsBoolean("/gMixConfiguration/general/useSynchronizedClock");
+	
+	
+	public Clock(Settings settings) {
+		this.useSNTPclock = settings.getPropertyAsBoolean("USE_SYNCHRONIZED_CLOCK");
 		if (useSNTPclock)
 			this.ntpClock = new NtpClock(settings);
 	}
-
+	
+	
 	/**
-	 * Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT from a (synchronized)
-	 * clock.
+	 * Returns the number of milliseconds since January 1, 1970, 00:00:00 
+	 * GMT from a (synchronized) clock.
 	 * 
-	 * @return The number of milliseconds since January 1, 1970, 00:00:00 GMT.
+	 * @return	The number of milliseconds since January 1, 1970, 00:00:00 GMT.
 	 */
 	public long getTime() {
 		if (useSNTPclock)
@@ -59,5 +63,5 @@ public class Clock {
 		else
 			return System.currentTimeMillis();
 	}
-
+	
 }

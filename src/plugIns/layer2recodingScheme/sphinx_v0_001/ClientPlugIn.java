@@ -18,7 +18,6 @@
 package plugIns.layer2recodingScheme.sphinx_v0_001;
 
 import framework.core.controller.Implementation;
-import framework.core.gui.model.PlugInType;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
@@ -34,7 +33,7 @@ public class ClientPlugIn extends Implementation implements Layer2RecodingScheme
 	
 	@Override
 	public void constructor() {
-		this.config = new Sphinx_Config(anonNode, PlugInType.CLIENT);
+		this.config = new Sphinx_Config(anonNode, true);
 		this.messageCreator = new Sphinx(anonNode, config);
 		this.messageCreator.initAsClient();
 	}

@@ -42,8 +42,8 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/logPoolDefaultPoolSize");
-		this.SEND_INTERVAL = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/logPoolSendInterval");
+		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("LOG_POOL_DEFAULT_POOL_SIZE");
+		this.SEND_INTERVAL = settings.getPropertyAsInt("LOG_POOL_SEND_INTERVAL");
 		this.requestPool = new SimplexBinomialPool(true);
 		this.replyPool = new SimplexBinomialPool(false);
 	}

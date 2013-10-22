@@ -85,20 +85,18 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("timedDynamicPoolDefaultPoolSize");
-		this.MIX_INTERVAL = settings.getPropertyAsInt("timedDynamicPoolMixInterval");
-		this.POOL_SIZE = settings.getPropertyAsInt("timedDynamicPoolPoolSize");
-		this.MAX_REPLACEMENT_RATE = settings.getPropertyAsFloat("timedDynamicPoolMaxReplacementRate");
+		this.DEFAULT_POOL_SIZE = settings.getPropertyAsInt("TIMED_DYNAMIC_POOL_DEFAULT_POOL_SIZE");
+		this.MIX_INTERVAL = settings.getPropertyAsInt("TIMED_DYNAMIC_POOL_MIX_INTERVAL");
+		this.POOL_SIZE = settings.getPropertyAsInt("TIMED_DYNAMIC_POOL_POOL_SIZE");
+		this.MAX_REPLACEMENT_RATE = settings.getPropertyAsDouble("TIMED_DYNAMIC_POOL_MAX_REPLACEMENT_RATE");
 		this.requestPool = new SimplexTimedDynamicPool(true);
 		this.replyPool = new SimplexTimedDynamicPool(false);
 		try {
-			this.secureRandom = SecureRandom.getInstance(settings.getPropertyAsString("timedDynamicPoolPrngAlgorithm"));
+			this.secureRandom = SecureRandom.getInstance(settings.getProperty("TIMED_DYNAMIC_POOL_PRNG_ALGORITHM"));
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new RuntimeException("could not init secureRandom"); 
 		}
-		settings.resetTemporaryPrefix();
 	}
 	
 	

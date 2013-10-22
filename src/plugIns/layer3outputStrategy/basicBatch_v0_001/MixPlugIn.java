@@ -35,8 +35,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-//		this.BATCH_SIZE = settings.getPropertyAsInt("BASIC_BATCH_BATCH_SIZE");
-		this.BATCH_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/basicBatchBatchSize");
+		this.BATCH_SIZE = settings.getPropertyAsInt("BASIC_BATCH_BATCH_SIZE");
 		this.requestBatch = new SimplexBatch(true);
 		this.replyBatch = new SimplexBatch(false);
 	}
@@ -56,8 +55,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void addRequest(Request request) {
-		System.out.println("basic batch"); // TODO: remove me 
-		requestBatch.addMessage((MixMessage)request);
+		requestBatch.addMessage(request);
 	}
 
 
@@ -71,24 +69,27 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 		
 		private boolean isRequestBatch;
 		private MixMessage[] collectedMessages;
-		private int nextFreeSlot = 0;
+		private int nextFreeSlot = -1;
 		
 		
 		public SimplexBatch(boolean isRequestBatch) {
 			this.isRequestBatch = isRequestBatch;
-			this.collectedMessages = new MixMessage[BATCH_SIZE];	
+			this.collectedMessages = isRequestBatch ? new Request[BATCH_SIZE]: new Reply[BATCH_SIZE];	
 		}
 		
 		
 		public synchronized void addMessage(MixMessage mixMessage) {
-			collectedMessages[nextFreeSlot++] = mixMessage;
+			nextFreeSlot++;
 			if (nextFreeSlot == BATCH_SIZE) {
 				Arrays.sort(collectedMessages);
 				if (isRequestBatch)
 					anonNode.putOutRequests((Request[])collectedMessages);
 				else
 					anonNode.putOutReplies((Reply[])collectedMessages);
+				this.collectedMessages = isRequestBatch ? new Request[BATCH_SIZE]: new Reply[BATCH_SIZE];
+				nextFreeSlot = 0;
 			}
+			collectedMessages[nextFreeSlot] = mixMessage;
 		}
 	}
 	

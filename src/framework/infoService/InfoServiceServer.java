@@ -29,7 +29,8 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
+import framework.core.launcher.CommandLineParameters;
 import framework.core.routing.MixList;
 import framework.core.util.Util;
 
@@ -63,27 +64,37 @@ public class InfoServiceServer {
 	private HashMap<Integer, HashMap<String, byte[]>> mixData = new HashMap<Integer, HashMap<String, byte[]>>();
 	private HashMap<Integer, HashMap<String, byte[]>> clientData = new HashMap<Integer, HashMap<String, byte[]>>();
 	private HashMap<String, byte[]> anonData = new HashMap<String, byte[]>();
-	//private XMLResource settings;
+	private Settings settings;
 	
 	
-	public InfoServiceServer(XMLResource settings) {
-		//this.settings = settings;
+	public InfoServiceServer(CommandLineParameters commandLineParameters) {
+		settings = commandLineParameters.generateSettingsObject();
 		
-		settings.setTemporaryPrefix("/gMixConfiguration/general/");
-		ProtocolPrimitives.DEBUG = settings.getPropertyAsBoolean("is/displayIsTransactions");
-		this.LOCAL_MODE_ON = settings.getPropertyAsBoolean("globalLocalModeOn");
+		ProtocolPrimitives.DEBUG = settings.getPropertyAsBoolean("IS_DISPLAY_TRANSACTIONS");
+		this.LOCAL_MODE_ON = settings.getPropertyAsBoolean("GLOBAL_LOCAL_MODE_ON");
 		if (!LOCAL_MODE_ON)
 			System.err.println("WARNING: LOCAL_MODE is set to FALSE; Mixes and Information Service will be available via Network; Only safe for trusted networks!"); 
-		this.DEBUG_MODE_ON = settings.getPropertyAsBoolean("globalDebugModeOn");
-		this.DUPLEX_ON = settings.getPropertyAsBoolean("globalIsMode");
-		this.NUMBER_OF_MIXES = settings.getPropertyAsInt("numberOfMixes");
-		this.PORT = settings.getPropertyAsInt("infoService/port");
-		this.ADDRESS = settings.getPropertyAsString("infoService/address");
-		this.BACKLOG = settings.getPropertyAsInt("is/backlog");
-		settings.resetTemporaryPrefix();
+		this.DEBUG_MODE_ON = settings.getPropertyAsBoolean("GLOBAL_DEBUG_MODE_ON");
+		this.DUPLEX_ON = settings.getPropertyAsBoolean("GLOBAL_IS_DUPLEX");
+		this.NUMBER_OF_MIXES = settings.getPropertyAsInt("GLOBAL_NUMBER_OF_MIXES");
+		this.PORT = settings.getPropertyAsInt("GLOBAL_INFO_SERVICE_PORT");
+		this.ADDRESS = settings.getProperty("GLOBAL_INFO_SERVICE_ADDRESS");
+		this.BACKLOG = settings.getPropertyAsInt("IS_BACKLOG");
+		
 		begin();
 	}
 
+	
+	/**
+	 * Comment
+	 *
+	 * @param args Not used.
+	 */
+	public static void main(String[] args) {
+		new InfoServiceServer(new CommandLineParameters(args));
+	}
+	
+	
 	private void begin() {
 		try {
 			if (LOCAL_MODE_ON)

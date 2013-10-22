@@ -30,7 +30,7 @@ import evaluation.loadGenerator.randomVariable.RandomVariable;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -38,7 +38,7 @@ import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMod
 
 public class MPL_FS_Poisson implements ClientTrafficScheduleWriter<MPL_ClientWrapper> {
 
-	private XMLResource settings;
+	private Settings settings;
 	private ScheduleTarget<MPL_ClientWrapper> scheduleTarget;
 	private MPL_ClientWrapper[] clientsArray;
 	private long experimentStart; // in nanosec
@@ -55,9 +55,9 @@ public class MPL_FS_Poisson implements ClientTrafficScheduleWriter<MPL_ClientWra
 		this.settings = owner.getSettings();
 		this.experimentStart = owner.getScheduler().now() + TimeUnit.SECONDS.toNanos(2);
 		this.startOfPeriod = experimentStart;
-		int numberOfClients = settings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/mplPoissonNumberOfClients");
+		int numberOfClients = settings.getPropertyAsInt("MPL-POISSON-NUMBER_OF_CLIENTS");
 		
-		String str_avgSendsPerPulse = settings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/mplPoissonAveragePacketsPerPulse");
+		String str_avgSendsPerPulse = settings.getProperty("MPL-POISSON-AVERAGE_PACKETS_PER_PULSE");
 		if (RandomVariable.isRandomVariable(str_avgSendsPerPulse)) {
 			this.AVG_SENDS_PER_PERIOD = RandomVariable.createRandomVariable(str_avgSendsPerPulse);
 		} else {
@@ -68,16 +68,16 @@ public class MPL_FS_Poisson implements ClientTrafficScheduleWriter<MPL_ClientWra
 			else
 				this.AVG_SENDS_PER_PERIOD = new FakeRandom(Math.round(float_avgSendsPerPulse));
 		}
-		this.PULSE_LENGTH = (long) (settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/mplPoissonPulseLength")*1000000000f);
+		this.PULSE_LENGTH = (long) (settings.getPropertyAsFloat("MPL-POISSON-PULSE_LENGTH")*1000000000f);
 		this.random = new SecureRandom();
 		this.randomDataImpl = new RandomDataImpl();
 		this.randomDataImpl.reSeed(this.random.nextLong());
 		System.out.println("LOAD_GENERATOR: start at " +experimentStart);
 		
 		// create client
-		owner.getLoadGenerator().tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.getLoadGenerator().settings, ToolName.CLIENT);
-		int dstPort = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		owner.getLoadGenerator().commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.getLoadGenerator().commandLineParameters);
+		int dstPort = settings.getPropertyAsInt("SERVICE_PORT1");
 		this.scheduleTarget = new MPL_BasicWriter(this, client.IS_DUPLEX, dstPort);
 		// determine number of clients and lines; create ClientWrapper objects etc
 		this.clientsArray = new MPL_ClientWrapper[numberOfClients];

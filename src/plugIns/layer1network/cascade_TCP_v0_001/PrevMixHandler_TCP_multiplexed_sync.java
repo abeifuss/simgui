@@ -59,14 +59,14 @@ public class PrevMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 	@Override
 	public void constructor() {
 		//this.queueBlockSize = settings.getPropertyAsInt("QUEUE_BLOCK_SIZE");
-		this.bindAddress = settings.getPropertyAsInetAddress("/gMixConfiguration/general/mixBindAddress");
-		this.port = settings.getPropertyAsInt("/gMixConfiguration/general/mixBindPort");
-		this.maxRequestLength = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn[@id='cascadeTCPmix']/maxRequestLength");
-		thisToPrevMixIDs = new HashMap<User,Integer>((int)Math.round((double)settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/maxConnections") * 1.3d));
+		this.bindAddress = settings.getPropertyAsInetAddress("GLOBAL_MIX_BIND_ADDRESS");
+		this.port = settings.getPropertyAsInt("GLOBAL_MIX_BIND_PORT");
+		this.maxRequestLength = settings.getPropertyAsInt("MAX_REQUEST_LENGTH");
+		thisToPrevMixIDs = new HashMap<User,Integer>((int)Math.round((double)settings.getPropertyAsInt("MAX_CONNECTIONS") * 1.3d));
 		this.requestThread = new RequestThread();
 		this.replyThread = new ReplyThread();
-		this.requestBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/multiplexedRequestBufferSize");
-		this.replyBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/multiplexedReplyBufferSize");
+		this.requestBufferSize = settings.getPropertyAsInt("MULTIPLEXED_REQUEST_BUFFER_SIZE");
+		this.replyBufferSize = settings.getPropertyAsInt("MULTIPLEXED_REPLY_BUFFER_SIZE");
 	}
 	
 
@@ -178,6 +178,8 @@ public class PrevMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 							System.out.println(anonNode +" no id for " +replies[i].getOwner() +" available" );
 							continue;
 						}	
+						//System.out.println("id: " +id +", len: " +replies[i].getByteMessage().length); 
+						assert replies[i].getByteMessage().length > 0;
 						previousMixOutputStream.write(Util.intToByteArray(id));
 						previousMixOutputStream.write(Util.intToByteArray(replies[i].getByteMessage().length));
 						previousMixOutputStream.write(replies[i].getByteMessage());

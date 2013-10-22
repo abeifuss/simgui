@@ -45,7 +45,7 @@ public class ClientPlugIn extends Implementation implements Layer5ApplicationCli
 
 	@Override
 	public void begin() {
-		int numberOfConnections = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/client/plugIn/numberOfParallelConnections");
+		int numberOfConnections = settings.getPropertyAsInt("NUMBER_OF_PARALLEL_CONNECTIONS");
 		System.out.println("generating load for " +numberOfConnections +" users"); 
 		for (int i=0; i<numberOfConnections; i++)
 			new RequestThread().start();
@@ -64,7 +64,7 @@ public class ClientPlugIn extends Implementation implements Layer5ApplicationCli
 			
 			long ct = 0;
 			try {
-				socket.connect(settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/client/plugIn/servicePort1"));
+				socket.connect(settings.getPropertyAsInt("SERVICE_PORT1"));
 				if (anonNode.IS_DUPLEX)
 					new ReplyThread(socket).start();
 				OutputStream outputStream = socket.getOutputStream();

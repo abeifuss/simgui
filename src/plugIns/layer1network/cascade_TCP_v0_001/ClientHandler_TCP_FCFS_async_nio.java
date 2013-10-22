@@ -76,13 +76,13 @@ public class ClientHandler_TCP_FCFS_async_nio extends SubImplementation implemen
 	
 	@Override
 	public void constructor() {
-		this.bindAddress = settings.getPropertyAsInetAddress("/gMixConfiguration/general/mixBindAddress");
-		this.port = settings.getPropertyAsInt("/gMixConfiguration/general/mixBindPort");
-		this.backlog = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/backlog");
-		this.soTimeout = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/soTimeout");
-		this.maxConnections = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/maxConnections");
-		this.maxRequestLength = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/maxRequestLength");
-		this.maxMessages = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/mix/plugIn/maxMessagesInIoh");
+		this.bindAddress = settings.getPropertyAsInetAddress("GLOBAL_MIX_BIND_ADDRESS");
+		this.port = settings.getPropertyAsInt("GLOBAL_MIX_BIND_PORT");
+		this.backlog = settings.getPropertyAsInt("BACKLOG");
+		this.soTimeout = settings.getPropertyAsInt("SO_TIMEOUT");
+		this.maxConnections = settings.getPropertyAsInt("MAX_CONNECTIONS");
+		this.maxRequestLength = settings.getPropertyAsInt("MAX_REQUEST_LENGTH");
+		this.maxMessages = settings.getPropertyAsInt("MAX_MESSAGES_IN_IOH");
 		//this.queueBlockSize = settings.getPropertyAsInt("QUEUE_BLOCK_SIZE");
 		
 		anonNode.getUserDatabase().registerEventListener(this);

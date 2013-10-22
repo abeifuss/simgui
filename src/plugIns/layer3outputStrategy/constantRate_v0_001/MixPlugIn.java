@@ -40,7 +40,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.TIMEOUT = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/constantRateBatchTimeout");
+		this.TIMEOUT = settings.getPropertyAsInt("CONSTANT_RATE_BATCH_TIMEOUT");
 		this.requestBatch = new SimplexSynchronousBatch(true);
 		this.replyBatch = new SimplexSynchronousBatch(false);
 	}
@@ -60,13 +60,13 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void addRequest(Request request) {
-		requestBatch.addMessage((MixMessage) request);
+		requestBatch.addMessage(request);
 	}
 
 	
 	@Override
 	public void addReply(Reply reply) {
-		replyBatch.addMessage((MixMessage) reply);
+		replyBatch.addMessage(reply);
 	}
 
 	

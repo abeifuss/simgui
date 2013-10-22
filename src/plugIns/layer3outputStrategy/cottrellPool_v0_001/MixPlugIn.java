@@ -41,7 +41,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void constructor() {
-		this.POOL_SIZE = settings.getPropertyAsInt("/gMixConfiguration/composition/layer3/mix/plugIn/cottrellPoolPoolSize");
+		this.POOL_SIZE = settings.getPropertyAsInt("COTTRELL_POOL_POOL_SIZE");
 		this.requestPool = new SimplexCottrellPool(true);
 		this.replyPool = new SimplexCottrellPool(false);
 	}

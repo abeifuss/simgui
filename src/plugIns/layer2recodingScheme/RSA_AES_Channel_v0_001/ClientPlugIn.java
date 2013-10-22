@@ -18,7 +18,6 @@
 package plugIns.layer2recodingScheme.RSA_AES_Channel_v0_001;
 
 import framework.core.controller.Implementation;
-import framework.core.gui.model.PlugInType;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
@@ -37,7 +36,7 @@ public class ClientPlugIn extends Implementation implements Layer2RecodingScheme
 	public void constructor() {
 		if (anonNode.ROUTING_MODE == RoutingMode.FREE_ROUTE_DYNAMIC_ROUTING) 
 			throw new RuntimeException("RoutingMode FREE_ROUTE_DYNAMIC_ROUTING not supported, only CASADE and FREE_ROUTE_SOURCE_ROUTING"); 
-		this.config = new RSA_AES_Channel_Config(anonNode, PlugInType.CLIENT);
+		this.config = new RSA_AES_Channel_Config(anonNode, true);
 		this.messageCreator = new RSA_AES_Channel(anonNode, config);
 		this.messageCreator.initAsClient();
 	}

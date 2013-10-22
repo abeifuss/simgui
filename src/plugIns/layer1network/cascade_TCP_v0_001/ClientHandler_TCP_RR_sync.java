@@ -57,16 +57,14 @@ public class ClientHandler_TCP_RR_sync extends SubImplementation {
 	@Override
 	public void constructor() {
 		if (anonNode.ROUTING_MODE != RoutingMode.CASCADE)
-			throw new RuntimeException("this is a cascade plug-in; ROUTING_MODE is not set to CASCADE -> will exit now");
-
-		this.bindAddress = settings.getPropertyAsInetAddress("/gMixConfiguration/general/mixBindAddress");
-		this.port = settings.getPropertyAsInt("/gMixConfiguration/general/mixBindPort");
-		this.backlog = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/backlog");
-		this.maxRequestLength = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/maxRequestLength");
+			throw new RuntimeException("this is a cascade plug-in; ROUTING_MODE is not set to CASCADE -> will exit now"); 
+		this.bindAddress = settings.getPropertyAsInetAddress("GLOBAL_MIX_BIND_ADDRESS");
+		this.port = settings.getPropertyAsInt("GLOBAL_MIX_BIND_PORT");
+		this.backlog = settings.getPropertyAsInt("BACKLOG");
+		this.maxRequestLength = settings.getPropertyAsInt("MAX_REQUEST_LENGTH");
 		//this.maxReplyLength = settings.getPropertyAsInt("MAX_REPLY_LENGTH");
-		this.requestBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/requestBufferSize");
-		System.out.println("requestBufferSize: " +requestBufferSize); // TODO: remove
-		this.replyBufferSize = settings.getPropertyAsInt("/gMixConfiguration/composition/layer1/client/plugIn/replyBufferSize");
+		this.requestBufferSize = settings.getPropertyAsInt("REQUEST_BUFFER_SIZE");
+		this.replyBufferSize = settings.getPropertyAsInt("REPLY_BUFFER_SIZE");
 		this.expectedConnections = anonNode.EXPECTED_NUMBER_OF_USERS;
 		//this.queueBlockSize = settings.getPropertyAsInt("QUEUE_BLOCK_SIZE");
 		this.channels = new Vector<ChannelData>(expectedConnections);
@@ -184,7 +182,7 @@ public class ClientHandler_TCP_RR_sync extends SubImplementation {
 									assert read == 4; // should not be different due to buffered stream; check anyways...
 									ch.requestLength = Util.byteArrayToInt(len);
 									if (ch.requestLength > maxRequestLength) {
-										System.err.println("warning: user " +ch.user +" sent a too large message");
+										System.err.println("warning: user " +ch.user +" sent a too large message: " +ch.requestLength +">" +maxRequestLength);
 									}
 								} else {
 									break;

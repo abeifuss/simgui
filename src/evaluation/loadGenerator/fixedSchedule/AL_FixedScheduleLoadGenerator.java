@@ -24,7 +24,7 @@ import evaluation.loadGenerator.applicationLevelTraffic.requestReply.Application
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import evaluation.loadGenerator.scheduler.ThreadPoolScheduler;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 
 
 public class AL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
@@ -67,7 +67,7 @@ public class AL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
 	}
 	
 	
-	public XMLResource getSettings() {
+	public Settings getSettings() {
 		return this.settings;
 	}
 	

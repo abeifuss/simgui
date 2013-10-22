@@ -19,7 +19,7 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
@@ -28,7 +28,7 @@ import framework.infoService.InfoServiceClient;
 public class Layer2RecodingSchemeClientController extends Controller {
 
 	
-	public Layer2RecodingSchemeClientController(AnonNode anonNode, XMLResource settings,
+	public Layer2RecodingSchemeClientController(AnonNode anonNode, Settings settings,
 			UserDatabase userDatabase, Clock clock,
 			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
@@ -42,9 +42,8 @@ public class Layer2RecodingSchemeClientController extends Controller {
 	
 	
 	public Layer2RecodingSchemeClient loadClientPluginInstance() {
-		String packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer2/client/plugIn/package");
 		return LocalClassLoader.instantiateImplementation(
-				packag, 
+				"plugIns.layer2recodingScheme." +settings.getProperty("LAYER_2_PLUG-IN_CLIENT"), 
 				"ClientPlugIn.java",
 				this,
 				Layer2RecodingSchemeClient.class

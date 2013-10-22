@@ -17,30 +17,38 @@
  */
 package framework.core.controller;
 
+
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer1NetworkClientController extends Controller {
 
-	public Layer1NetworkClientController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+
+	public Layer1NetworkClientController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
 		// not needed for client-side controllers
 	}
 
+	
 	public Layer1NetworkClient loadClientPluginInstance() {
-		String packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer1/client/plugIn/package");
 		return LocalClassLoader.instantiateImplementation(
-				packag, "ClientPlugIn.java",
-				this, Layer1NetworkClient.class);
+				"plugIns.layer1network." +settings.getProperty("LAYER_1_PLUG-IN_CLIENT"), 
+				"ClientPlugIn.java",
+				this,
+				Layer1NetworkClient.class
+				);
 	}
 
 }

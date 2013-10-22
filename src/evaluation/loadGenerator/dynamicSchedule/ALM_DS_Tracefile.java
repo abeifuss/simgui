@@ -27,15 +27,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 import evaluation.loadGenerator.LoadGenerator;
-import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ApplicationLevelMessage;
+import evaluation.loadGenerator.applicationLevelTraffic.requestReply.ALRR_ClientWrapper;
 import evaluation.loadGenerator.applicationLevelTraffic.requestReply.EndOfFileReachedException;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import evaluation.loadGenerator.scheduler.ThreadPoolScheduler;
 import framework.core.AnonNode;
 import framework.core.config.Paths;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -45,7 +45,7 @@ import framework.core.util.Util;
 
 public class ALM_DS_Tracefile {
 
-	private XMLResource loadGeneratorSettings;
+	private Settings settings;
 	private HashMap<Integer, ALRR_ClientWrapper> clientReferences;
 	private ALRR_ClientWrapper[] clientsArray;
 	private long experimentStart; // in nanosec
@@ -64,23 +64,23 @@ public class ALM_DS_Tracefile {
 	
 	
 	public ALM_DS_Tracefile(LoadGenerator owner) {
-		this.loadGeneratorSettings = owner.settings;
-		this.scheduler = new ThreadPoolScheduler<ALRR_ClientWrapper>(loadGeneratorSettings.getPropertyAsInt("TOLERANCE")); // TODO: offer further schedulers
+		this.settings = owner.settings;
+		this.scheduler = new ThreadPoolScheduler<ALRR_ClientWrapper>(settings.getPropertyAsInt("TOLERANCE")); // TODO: offer further schedulers
 		this.traceFileReaderThread = new TraceFileReaderThread();
 		this.replyReceiverThread = new ReplyReceiverThread();
 		this.requestSender = new RequestSender();
 		this.experimentStart = scheduler.now() + TimeUnit.SECONDS.toNanos(2);
-		this.READ_AHEAD = loadGeneratorSettings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/alTraceFileReadAhead");
+		this.READ_AHEAD = settings.getPropertyAsInt("AL-TRACE_FILE-READ_AHEAD");
 		System.out.println("LOAD_GENERATOR: start at " +experimentStart);
 		
 		// try to load trace-file:
 		System.out.println("TRACE_READER: loading trace file"); 
-		String traceFilePath = Paths.getPathByName("LG_TRACE_FILE_PATH") + loadGeneratorSettings.getPropertyAsString("/gMixConfiguration/general/loadGenerator/alTraceFileName");
+		String traceFilePath = Paths.getProperty("LG_TRACE_FILE_PATH") + settings.getProperty("AL-TRACE_FILE-NAME");
 		resetReader(traceFilePath);
 		
 		// create client
-		owner.tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.settings, ToolName.CLIENT);
+		owner.commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.commandLineParameters);
 		
 		// determine number of clients and lines; create ClientWrapper objects:
 		this.clientReferences = new HashMap<Integer, ALRR_ClientWrapper>(1000); // TODO: dynamic
@@ -116,7 +116,7 @@ public class ALM_DS_Tracefile {
 		for (ALRR_ClientWrapper cw: clientsArray) // generate sockets
 			cw.socket = client.createStreamSocket(CommunicationMode.DUPLEX, client.ROUTING_MODE != RoutingMode.CASCADE);
 		// connect sockets:
-		int port = loadGeneratorSettings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
 		for (ALRR_ClientWrapper cw: clientsArray) 
 			try {

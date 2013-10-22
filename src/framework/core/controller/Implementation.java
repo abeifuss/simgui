@@ -19,7 +19,7 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.ThreePhaseStart;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
@@ -29,7 +29,7 @@ public abstract class Implementation implements ThreePhaseStart {
 	
 	// references to framework classes
 	protected AnonNode anonNode;
-	protected XMLResource settings;
+	protected Settings settings;
 	protected UserDatabase userDatabase;
 	protected Clock clock;
 	protected InfoServiceClient infoService;

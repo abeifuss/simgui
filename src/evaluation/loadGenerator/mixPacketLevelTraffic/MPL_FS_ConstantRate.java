@@ -24,7 +24,7 @@ import evaluation.loadGenerator.fixedSchedule.MPL_FixedScheduleLoadGenerator;
 import evaluation.loadGenerator.scheduler.ScheduleTarget;
 import evaluation.loadGenerator.scheduler.Scheduler;
 import framework.core.AnonNode;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
@@ -32,7 +32,7 @@ import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMod
 
 public class MPL_FS_ConstantRate implements ClientTrafficScheduleWriter<MPL_ClientWrapper> {
 
-	private XMLResource settings;
+	private Settings settings;
 	private ScheduleTarget<MPL_ClientWrapper> scheduleTarget;
 	private MPL_ClientWrapper[] clientsArray;
 	private long experimentStart; // in nanosec
@@ -45,9 +45,9 @@ public class MPL_FS_ConstantRate implements ClientTrafficScheduleWriter<MPL_Clie
 	public MPL_FS_ConstantRate(MPL_FixedScheduleLoadGenerator owner) {
 		this.settings = owner.getSettings();
 		this.experimentStart = owner.getScheduler().now() + TimeUnit.SECONDS.toNanos(2);
-		int numberOfClients = settings.getPropertyAsInt("/gMixConfiguration/general/loadGenerator/mplConstantRateNumberOfClients");
-		float float_periodLength = settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/mplConstantRatePeriod");
-		float float_packetsPerPeriod = settings.getPropertyAsFloat("/gMixConfiguration/general/loadGenerator/mplConstantRatePacketPerPeriod");
+		int numberOfClients = settings.getPropertyAsInt("MPL-CONSTANT_RATE-NUMBER_OF_CLIENTS");
+		float float_periodLength = settings.getPropertyAsFloat("MPL-CONSTANT_RATE-PERIOD");
+		float float_packetsPerPeriod = settings.getPropertyAsFloat("MPL-CONSTANT_RATE-PACKET_PER_PERIOD");
 		float float_timeBetweenSends = (float_periodLength*1000000000f) / (float_packetsPerPeriod * (float)numberOfClients);
 		if (float_timeBetweenSends < 1f)
 			this.TIME_BETWEEN_SENDS = 1;
@@ -55,9 +55,9 @@ public class MPL_FS_ConstantRate implements ClientTrafficScheduleWriter<MPL_Clie
 			this.TIME_BETWEEN_SENDS = Math.round(float_timeBetweenSends);
 		System.out.println("LOAD_GENERATOR: start at " +experimentStart);
 		// create client
-		owner.getLoadGenerator().tool = ToolName.CLIENT;
-		this.client = new AnonNode(owner.getLoadGenerator().settings, ToolName.CLIENT);
-		int dstPort = settings.getPropertyAsInt("/gMixConfiguration/composition/layer5/mix/plugIn/servicePort1");
+		owner.getLoadGenerator().commandLineParameters.gMixTool = ToolName.CLIENT;
+		this.client = new AnonNode(owner.getLoadGenerator().commandLineParameters);
+		int dstPort = settings.getPropertyAsInt("SERVICE_PORT1");
 		this.scheduleTarget = new MPL_BasicWriter(this, client.IS_DUPLEX, dstPort);
 		// determine number of clients and lines; create ClientWrapper objects etc
 		this.clientsArray = new MPL_ClientWrapper[numberOfClients];

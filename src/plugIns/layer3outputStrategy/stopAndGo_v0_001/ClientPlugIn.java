@@ -55,16 +55,14 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 	
 	@Override
 	public void constructor() {
-		settings.setTemporaryPrefix("/gMixConfiguration/composition/layer3/mix/plugIn/");
-		this.SECURITY_PARAMETER_MU = settings.getPropertyAsFloat("stopAndGoSecurityParameterMu");
-		this.USE_TIMESTAMPS = settings.getPropertyAsBoolean("stopAndGoUseTimestamps");
-		this.MIN_INTER_MIX_DELAY = settings.getPropertyAsInt("stopAndGoMinInterMixDelay");
-		this.MAX_INTER_MIX_DELAY = settings.getPropertyAsInt("stopAndGoMaxInterMixDelay");
-		this.MIN_CLIENT_MIX_DELAY = settings.getPropertyAsInt("stopAndGoMinClientMixDelay");
-		this.MAX_CLIENT_MIX_DELAY = settings.getPropertyAsInt("stopAndGoMaxClientMixDelay");
-		this.MAX_CLOCK_DEVITION = settings.getPropertyAsInt("stopAndGoMaxClockDevition");
-		settings.resetTemporaryPrefix();
-		
+		this.SECURITY_PARAMETER_MU = settings.getPropertyAsDouble("STOP_AND_GO_SECURITY_PARAMETER_MU");
+		this.USE_TIMESTAMPS = settings.getPropertyAsBoolean("STOP_AND_GO_USE_TIMESTAMPS");
+		this.MIN_INTER_MIX_DELAY = settings.getPropertyAsInt("STOP_AND_GO_MIN_INTER_MIX_DELAY");
+		this.MAX_INTER_MIX_DELAY = settings.getPropertyAsInt("STOP_AND_GO_MAX_INTER_MIX_DELAY");
+		this.MAX_INTER_MIX_DELAY = settings.getPropertyAsInt("STOP_AND_GO_MAX_INTER_MIX_DELAY");
+		this.MIN_CLIENT_MIX_DELAY = settings.getPropertyAsInt("STOP_AND_GO_MIN_CLIENT_MIX_DELAY");
+		this.MAX_CLIENT_MIX_DELAY = settings.getPropertyAsInt("STOP_AND_GO_MAX_CLIENT_MIX_DELAY");
+		this.MAX_CLOCK_DEVITION = settings.getPropertyAsInt("STOP_AND_GO_MAX_CLOCK_DEVITION");
 		this.expDist = new ExponentialDistributionImpl(1d/SECURITY_PARAMETER_MU);
 	}
 

@@ -19,57 +19,66 @@ package framework.core.controller;
 
 import framework.core.AnonNode;
 import framework.core.clock.Clock;
-import framework.core.gui.model.XMLResource;
+import framework.core.config.Settings;
 import framework.core.interfaces.Layer5ApplicationMix;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
+
 public class Layer5ApplicationMixController extends Controller implements Layer5ApplicationMix {
 
 	private Implementation[] implementations;
-
-	public Layer5ApplicationMixController(AnonNode anonNode, XMLResource settings, UserDatabase userDatabase,
-			Clock clock, InfoServiceClient infoService) {
+	
+	
+	public Layer5ApplicationMixController(AnonNode anonNode, Settings settings,
+			UserDatabase userDatabase, Clock clock,
+			InfoServiceClient infoService) {
 		super(anonNode, settings, userDatabase, clock, infoService);
 	}
 
+	
 	@Override
 	public void instantiateSubclass() {
-		String packag = settings.getPropertyAsString("/gMixConfiguration/composition/layer5/client/plugIn/package");
-//		String[] plugInNames = settings.getPropertyAsString("LAYER_5_PLUG-IN_MIX").split(",");
-//		this.implementations = new Implementation[plugInNames.length];
-//		for (int i = 0; i < plugInNames.length; i++) { XXX THis doesn't work anymore.
-//			this.implementations[i] = (Implementation) LocalClassLoader.instantiateImplementation(
-//					"plugIns.layer5application." + plugInNames[i], "MixPlugIn.java", this, Layer5ApplicationMix.class);
-//		}
-		this.implementations = new Implementation[1];
-		this.implementations[0] = (Implementation) LocalClassLoader.instantiateImplementation(
-				packag, "MixPlugIn.java", this, Layer5ApplicationMix.class);
+		String[] plugInNames = settings.getProperty("LAYER_5_PLUG-IN_MIX").split(",");
+		this.implementations = new Implementation[plugInNames.length];
+		for (int i=0; i<plugInNames.length; i++) {
+			this.implementations[i] = (Implementation) LocalClassLoader.instantiateImplementation(
+					"plugIns.layer5application." +plugInNames[i], 
+					"MixPlugIn.java",
+					this,
+					Layer5ApplicationMix.class
+					);
+		}
 	}
-
+	
+	
 	@Override
 	public void initialize() {
 		assert implementations != null;
-		for (Implementation impl : implementations)
+		for (Implementation impl:implementations)
 			impl.constructor();
-		for (Implementation impl : implementations)
+		for (Implementation impl:implementations)
 			impl.callInitialize();
 	}
 
+
 	public void begin() {
 		assert implementations != null;
-		for (Implementation impl : implementations)
+		for (Implementation impl:implementations)
 			impl.callBegin();
 	}
+	
 
 	public void setImplementation(Implementation implementation) {
 
 	}
-
+	
+	
 	public Implementation getImplementation() {
-		throw new RuntimeException("not available for Layer5ApplicationMixController; use getImplementations() instead");
+		throw new RuntimeException("not available for Layer5ApplicationMixController; use getImplementations() instead"); 
 	}
-
+	
+	
 	public Implementation[] getImplementations() {
 		return this.implementations;
 	}
