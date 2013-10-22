@@ -12,15 +12,15 @@ public class SimulationEndRequirement extends Requirement {
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
 		boolean enableState = true;
 		
-		System.err.println( equals("CR::CFG_INT_1", "3") );
-		enableState &= equals("CR::CFG_INT_1", "3");
+		System.err.println( equals("CR::INT", "3") );
+		enableState &= equals("CR::INT", "3");
 		
 		if ( !enableState ){
-			gcr.getValue("CR::CFG_BOOL_1").setEnable(false);
+			gcr.getValue("CR::BOOL").setEnable(false);
 			return enableState;
 		}
 		
-		gcr.getValue("CR::CFG_BOOL_1").setEnable(true);
+		gcr.getValue("CR::BOOL").setEnable(true);
 		return enableState;
 	}
 

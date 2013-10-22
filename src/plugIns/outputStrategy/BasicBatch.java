@@ -7,16 +7,17 @@ import annotations.simulationProperty.IntSimulationProperty;
 @PluginAnnotation(name="BB", documentationURL="BBPlugin.html")
 public class BasicBatch {
 
-	@IntSimulationProperty(name = "AVG INT second", 
+	@IntSimulationProperty(name = "Packet Size (byte)",
+			propertykey = "PACKET_SIZE",
 			description = "Some text about Integers (int2)", 
 			tooltip = "2integer's tooltip",
 			valueType = Integer.class,
 			min = 0, 
 			max = 100, 
 			value = 50,
-			category = "TEST",
+			order = 1,
 			value_requirements = Test_Value_Requirement.class)
-	int CFG_INT_AVG;
+	int packetSize;
 	
 //	@BoolSimulationProperty(name = "Another Integer", 
 //			description = "Some other text about Integers (int2)", 

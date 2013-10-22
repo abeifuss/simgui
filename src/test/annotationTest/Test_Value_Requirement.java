@@ -9,12 +9,12 @@ public class Test_Value_Requirement extends Requirement {
 	boolean check() {
 
 		// Min und Max Setter
-		setIntegerMaxValueOfOption("CR::CFG_INT_MIN", getIntegerValueOfOption("CR::CFG_INT_MAX"));
-		setIntegerMaxValueOfOption("CR::CFG_INT_AVG", getIntegerValueOfOption("CR::CFG_INT_MAX"));
+		setIntegerMaxValueOfOption("CR::INT_MIN", getIntegerValueOfOption("CR::INT_MAX"));
+		setIntegerMaxValueOfOption("CR::INT_AVG", getIntegerValueOfOption("CR::INT_MAX"));
 		
 		
-		setIntegerMinValueOfOption("CR::CFG_INT_MAX", getIntegerValueOfOption("CR::CFG_INT_MIN"));
-		setIntegerMinValueOfOption("CR::CFG_INT_AVG", getIntegerValueOfOption("CR::CFG_INT_MIN"));
+		setIntegerMinValueOfOption("CR::INT_MAX", getIntegerValueOfOption("CR::INT_MIN"));
+		setIntegerMinValueOfOption("CR::INT_AVG", getIntegerValueOfOption("CR::INT_MIN"));
 		
 		return true;
 	}

@@ -16,7 +16,8 @@ public @interface IntSimulationProperty {
 	public String name() default "";
 	public String description() default "No Description available";
 	public String tooltip() default "No Tooltip available";
-	public String category() default "unknown";
+	public int order() default 0;
+	public String propertykey() default "";
 	
 	public Class<?> valueType() default Integer.class;
 	

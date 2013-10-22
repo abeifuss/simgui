@@ -8,7 +8,9 @@ public abstract class SimProp {
 	private String description;
 	private String tooltip;
 	private String pluginLayer;
+	private int order;
 	private String namespace;
+	private String propertykey;
 	
 	// dependencies
 	boolean enabled;
@@ -78,6 +80,22 @@ public abstract class SimProp {
 
 	public void setNamespace(String namespace) { 
 		this.namespace = namespace;
+	}
+	
+	public String getPropertyKey() {
+		return this.propertykey;
+	}
+
+	public void setPropertyKey(String key) { 
+		this.propertykey = key;
+	}
+	
+	public int getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(int order) { 
+		this.order = order;
 	}
 
 	public void printOut() {

@@ -109,103 +109,69 @@ public class SimPropRegistry {
 					for (int k = 0; k < a.length; k++) {
 						// System.out.println("Annotations " + a[k]);
 						if (a[k].annotationType() == BoolSimulationProperty.class) {
-							BoolSimulationProperty annotation = feld
-									.getAnnotation(BoolSimulationProperty.class);
+							BoolSimulationProperty annotation = feld.getAnnotation(BoolSimulationProperty.class);
 							property = new BoolProp();
 							if (annotation != null) {
 								// property.setId(f.getName());
-								property.setId(plugin.getName() + "::"
-										+ feld.getName());
+								property.setId(plugin.getName() + "::"+ annotation.propertykey());
 								property.setNamespace(plugin.getName());
 								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
+								property.setDescription(annotation.description());
 								property.setTooltip(annotation.tooltip());
 								property.setPluginLayer(category);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-
-								((BoolProp) property).setValue(annotation
-										.value());
-
+								property.setEnable_requirements(annotation.enable_requirements());
+								((BoolProp) property).setValue(annotation.value());
 								property.setEnable(true);
 							}
 							register(property);
 						} else if (a[k].annotationType() == IntSimulationProperty.class) {
-							IntSimulationProperty annotation = feld
-									.getAnnotation(IntSimulationProperty.class);
+							IntSimulationProperty annotation = feld.getAnnotation(IntSimulationProperty.class);
 							property = new IntProp();
 							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ feld.getName());
+								property.setId(plugin.getName() + "::"+ annotation.propertykey());
 								property.setNamespace(plugin.getName());
 								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
+								property.setDescription(annotation.description());
 								property.setTooltip(annotation.tooltip());
 								property.setPluginLayer(category);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								property.setValue_requirements(annotation
-										.value_requirements());
-
-								((IntProp) property).setMinValue(annotation
-										.min());
-								((IntProp) property).setMaxValue(annotation
-										.max());
+								property.setEnable_requirements(annotation.enable_requirements());
+								property.setValue_requirements(annotation.value_requirements());
+								((IntProp) property).setMinValue(annotation.min());
+								((IntProp) property).setMaxValue(annotation.max());
 								property.setValue(annotation.value());
-
 								property.setEnable(true);
 							}
 							register(property);
 						} else if (a[k].annotationType() == FloatSimulationProperty.class) {
-							FloatSimulationProperty annotation = feld
-									.getAnnotation(FloatSimulationProperty.class);
+							FloatSimulationProperty annotation = feld.getAnnotation(FloatSimulationProperty.class);
 							property = new FloatProp();
 							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ feld.getName());
+								property.setId(plugin.getName() + "::"+ annotation.propertykey());
 								property.setNamespace(plugin.getName());
 								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
+								property.setDescription(annotation.description());
 								property.setTooltip(annotation.tooltip());
 								property.setPluginLayer(category);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-
-								((FloatProp) property).setMinValue(annotation
-										.min());
-								((FloatProp) property).setMaxValue(annotation
-										.max());
-								((FloatProp) property).setValue(annotation
-										.value());
-
+								property.setEnable_requirements(annotation.enable_requirements());
+								((FloatProp) property).setMinValue(annotation.min());
+								((FloatProp) property).setMaxValue(annotation.max());
+								((FloatProp) property).setValue(annotation.value());
 								property.setEnable(true);
 							}
 							register(property);
 						} else if (a[k].annotationType() == StringSimulationProperty.class) {
-							StringSimulationProperty annotation = feld
-									.getAnnotation(StringSimulationProperty.class);
+							StringSimulationProperty annotation = feld.getAnnotation(StringSimulationProperty.class);
 							property = new StringProp();
 							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ feld.getName());
+								property.setId(plugin.getName() + "::"+ annotation.propertykey());
 								property.setNamespace(plugin.getName());
 								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
+								property.setDescription(annotation.description());
 								property.setTooltip(annotation.tooltip());
 								property.setPluginLayer(category);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-
-								((StringProp) property).setValue(annotation
-										.value());
-								((StringProp) property)
-										.setPossibleValues(annotation
-												.possibleValues());
-
+								property.setEnable_requirements(annotation.enable_requirements());
+								((StringProp) property).setValue(annotation.value());
+								((StringProp) property).setPossibleValues(annotation.possibleValues());
 								property.setEnable(true);
 							}
 							register(property);
