@@ -153,6 +153,7 @@ public class SimPropRegistry {
 						property.setEnable_requirements(annotation.enable_requirements());
 						
 						((StringProp)property).setValue(annotation.value());
+						((StringProp)property).setPossibleValues(annotation.possibleValues());
 						
 						property.setEnable(true);
 					}

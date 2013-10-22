@@ -18,7 +18,7 @@ public @interface BoolSimulationProperty {
 	public String tooltip() default "No Tooltip available";
 	public String category() default "unknown";
 	
-	public Class<?> valueType() default Integer.class;
+	public Class<?> valueType() default Boolean.class;
 	
 	// bool
 	public boolean value() default true;

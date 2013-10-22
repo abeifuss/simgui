@@ -3,6 +3,7 @@ package annotations;
 public class StringProp extends SimProp{
 
 	String value;
+	String possibleValues;
 
 	@Override
 	public Object getValue() {
@@ -11,11 +12,19 @@ public class StringProp extends SimProp{
 
 	@Override
 	public void setValue(Object o) {
-		value = (String)(o);
+		this.value = (String)(o);
 	}
 	
 	@Override
 	public Class<?> getValueType() {
 		return String.class;
+	}
+	
+	public String getPossibleValues() {
+		return possibleValues;
+	}
+
+	public void setPossibleValues(String values) {
+		this.possibleValues = values;
 	}
 }

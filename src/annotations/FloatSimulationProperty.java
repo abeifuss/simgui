@@ -18,7 +18,7 @@ public @interface FloatSimulationProperty {
 	public String tooltip() default "No Tooltip available";
 	public String category() default "unknown";
 	
-	public Class<?> valueType() default Integer.class;
+	public Class<?> valueType() default Float.class;
 	
 	// float
 	public float value() default 0.0f;

@@ -18,12 +18,13 @@ public @interface StringSimulationProperty {
 	public String tooltip() default "No Tooltip available";
 	public String category() default "unknown";
 	
-	public Class<?> valueType() default Integer.class;
+	public Class<?> valueType() default String.class;
 	
 	// string
 	public String value() default "";
 	
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
+	public String possibleValues() default "";
 	
 }

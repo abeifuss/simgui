@@ -55,7 +55,7 @@ public class ConstantRate {
 	@FloatSimulationProperty(name = "A Float", 
 			description = "Some text about Integers (int1)", 
 			tooltip = "1st integer's tooltip",
-			valueType = Integer.class,
+			valueType = Float.class,
 			min = 0.0f, 
 			max = 10.0f, 
 			value = 2.23f,
@@ -65,7 +65,7 @@ public class ConstantRate {
 	@BoolSimulationProperty(name = "A Bool", 
 			description = "Some text about Integers (int1)", 
 			tooltip = "1st integer's tooltip",
-			valueType = Integer.class,
+			valueType = Boolean.class,
 			value = true,
 			enable_requirements = {SimulationEndRequirement.class},
 			category = "TEST")
@@ -74,10 +74,17 @@ public class ConstantRate {
 	@StringSimulationProperty(name = "A String", 
 			description = "Some text about Integers (int1)", 
 			tooltip = "1st integer's tooltip",
-			valueType = Integer.class,
+			valueType = String.class,
+			value = "Predef",
+			possibleValues = "valOne, valTwo",
+			category = "TEST")
+	int CFG_STRING1;
+	
+	@StringSimulationProperty(name = "A String", 
+			description = "Some text about Integers (int1)", 
+			tooltip = "1st integer's tooltip",
+			valueType = String.class,
 			value = "String",
 			category = "TEST")
-	int CFG_STING1;
-	
-	
+	int CFG_STRING2;
 }
