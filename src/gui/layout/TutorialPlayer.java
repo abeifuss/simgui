@@ -1,22 +1,18 @@
 package gui.layout;
 
-import gui.service.GuiService;
-
-import javax.swing.JFrame;
-import java.awt.Component;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.media.Player;
+import javax.media.CannotRealizeException;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
-import javax.media.CannotRealizeException;
-
-import java.io.IOException;
+import javax.media.Player;
+import javax.swing.JFrame;
 
 import log.LogLevel;
 import log.Logger;

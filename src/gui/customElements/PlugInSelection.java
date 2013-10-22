@@ -17,6 +17,7 @@ public class PlugInSelection extends JPanel{
 	JComboBox<String> plugInLevel3List;
 	JComboBox<String> plugInLevel4List;
 	JComboBox<String> plugInLevel5List;
+	JComboBox<String> plugInLevel6List;
 				
 	public PlugInSelection() {
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
@@ -27,7 +28,8 @@ public class PlugInSelection extends JPanel{
 									PluginLayerMap[1].keySet().toArray(new String[PluginLayerMap[1].size()]),
 									PluginLayerMap[2].keySet().toArray(new String[PluginLayerMap[2].size()]),
 									PluginLayerMap[3].keySet().toArray(new String[PluginLayerMap[3].size()]),
-									PluginLayerMap[4].keySet().toArray(new String[PluginLayerMap[4].size()])
+									PluginLayerMap[4].keySet().toArray(new String[PluginLayerMap[4].size()]),
+									PluginLayerMap[5].keySet().toArray(new String[PluginLayerMap[5].size()])
 								 };		
 				
 		plugInLevel1List = new JComboBox<String>(levelStrings[0]);		
@@ -35,11 +37,13 @@ public class PlugInSelection extends JPanel{
 		plugInLevel3List = new JComboBox<String>(levelStrings[2]);
 		plugInLevel4List = new JComboBox<String>(levelStrings[3]);
 		plugInLevel5List = new JComboBox<String>(levelStrings[4]);
+		plugInLevel6List = new JComboBox<String>(levelStrings[5]);
 		
 		plugInLevel2List.setEnabled(false);
 		plugInLevel3List.setEnabled(false);
 		plugInLevel4List.setEnabled(false);
 		plugInLevel5List.setEnabled(false);
+		plugInLevel6List.setEnabled(false);
 		
 		plugInLevel1List.addActionListener( new ActionListener() {
 			
@@ -73,12 +77,21 @@ public class PlugInSelection extends JPanel{
 			}
 		});
 		
+		plugInLevel5List.addActionListener( new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selectedL5PlugIn();
+			}
+		});
+		
 		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		this.add(plugInLevel1List);
 		this.add(plugInLevel2List);
 		this.add(plugInLevel3List);
 		this.add(plugInLevel4List);
 		this.add(plugInLevel5List);
+		this.add(plugInLevel6List);
 	}
 	
 	public void selectedL1PlugIn(){
@@ -102,6 +115,12 @@ public class PlugInSelection extends JPanel{
 	public void selectedL4PlugIn(){
 		if ((String)plugInLevel1List.getSelectedItem() != " ") {
 			plugInLevel5List.setEnabled(true);
+		}
+	}
+	
+	public void selectedL5PlugIn(){
+		if ((String)plugInLevel1List.getSelectedItem() != " ") {
+			plugInLevel6List.setEnabled(true);
 		}
 	}
 	

@@ -44,7 +44,7 @@ public class SimPropRegistry {
 	private Map<String, SimProp> _properties = new HashMap<String, SimProp>();
 
 	@SuppressWarnings("unchecked")
-	private Map<String, String>[] _pluginLayerMap = new HashMap[5];
+	private Map<String, String>[] _pluginLayerMap = new HashMap[6];
 
 	private static SimPropRegistry _instance = null;
 
@@ -241,16 +241,20 @@ public class SimPropRegistry {
 
 	public void scanPlugins() {
 		ClassPath classpath = new ClassPathFactory().createFromJVM();
-		RegExpResourceFilter regExpResourceFilter = new RegExpResourceFilter(
-				".*", ".*\\.class");
+		RegExpResourceFilter regExpResourceFilter = new RegExpResourceFilter(".*", ".*\\.class");
 		String[] resources = classpath.findResources("", regExpResourceFilter);
 
-		String[] plugInLayer = { "layer1network", "layer2recordingScheme",
-				"layer3outputStrategy", "layer4transport", "layer5application" };
+		String[] plugInLayer = { "clientSendStyle", 
+				"delayBox",
+				"mixSendStyle", 
+				"outputStrategy", 
+				"plotType", 
+				"trafficSource" };
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 
-			Pattern p = Pattern.compile("^plugIns/" + plugInLayer[i] + "/.+/.+");
+			// Pattern p = Pattern.compile("^plugIns/" + plugInLayer[i] + "/.+/.+");
+			Pattern p = Pattern.compile("^evaluation/simulator/plugins/" + plugInLayer[i] + "/.+");
 			_pluginLayerMap[i] = new HashMap<String, String>();
 
 			for (final String r : resources) {
@@ -258,13 +262,17 @@ public class SimPropRegistry {
 				if (p.matcher(r).matches()) {
 					String[] splitString = r.split("/");
 
-					if (splitString.length != 4) {
-						Logger.Log(log.LogLevel.ERROR, "Length != 4");
+					if (splitString.length != 5) {
+						Logger.Log(log.LogLevel.ERROR, "Length != 5");
 						System.exit(1);
 					}
 
-					String plugInName = splitString[2];
-					String plugInPath = splitString[0] + "/" + splitString[1]+ "/" + splitString[2] + "/";
+					String plugInName = splitString[4];
+					String plugInPath = splitString[0] + 
+							"/" + splitString[1] + 
+							"/" + splitString[2] + 
+							"/" + splitString[3] + "/";
+					
 					_pluginLayerMap[i].put(plugInName, plugInPath);
 
 //					Iterator<Entry<String, String>> iter = _pluginLayerMap[i].entrySet().iterator();
