@@ -1,15 +1,17 @@
-package plugIns.layer3outputStrategy.constantRate;
+package plugIns.outputStrategy;
 
 import test.annotationTest.SimulationEndRequirement;
-import annotations.BoolSimulationProperty;
-import annotations.FloatSimulationProperty;
 import test.annotationTest.Test_Value_Requirement;
-import annotations.IntSimulationProperty;
-import annotations.StringSimulationProperty;
+import annotations.plugin.PluginAnnotation;
+import annotations.simulationProperty.BoolSimulationProperty;
+import annotations.simulationProperty.FloatSimulationProperty;
+import annotations.simulationProperty.IntSimulationProperty;
+import annotations.simulationProperty.StringSimulationProperty;
 
+@PluginAnnotation(name="CR", documentationURL="CRPlugin.html")
 public class ConstantRate {
 
-	@IntSimulationProperty(name = "INT1", 
+	@IntSimulationProperty(name = "INT 1", 
 			description = "Some text about Integers (int2)", 
 			tooltip = "2integer's tooltip",
 			valueType = Integer.class,
@@ -69,7 +71,7 @@ public class ConstantRate {
 			value = true,
 			enable_requirements = {SimulationEndRequirement.class},
 			category = "TEST")
-	int CFG_BOOL1;
+	int CFG_BOOL_1;
 	
 	@StringSimulationProperty(name = "A String", 
 			description = "Some text about Integers (int1)", 
@@ -78,13 +80,13 @@ public class ConstantRate {
 			value = "Predef",
 			possibleValues = "valOne, valTwo",
 			category = "TEST")
-	int CFG_STRING1;
+	int CFG_STRING_1;
 	
-	@StringSimulationProperty(name = "A String", 
+	@StringSimulationProperty(name = "A second String", 
 			description = "Some text about Integers (int1)", 
 			tooltip = "1st integer's tooltip",
 			valueType = String.class,
 			value = "String",
 			category = "TEST")
-	int CFG_STRING2;
+	int CFG_STRING_2;
 }

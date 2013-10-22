@@ -3,8 +3,8 @@ package gui.pluginRegistry;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import annotations.Requirement;
-import annotations.SimProp;
+import annotations.simulationProperty.Requirement;
+import annotations.simulationProperty.SimProp;
 
 public class DependencyChecker {
 

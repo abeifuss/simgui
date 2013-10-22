@@ -14,7 +14,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import annotations.SimProp;
+import annotations.simulationProperty.SimProp;
 
 @SuppressWarnings("serial")
 public class Accordion extends JScrollPane{
@@ -50,7 +50,7 @@ public class Accordion extends JScrollPane{
 		
 		Iterator<SimProp> iter = listofAllSections.iterator();
 		while(iter.hasNext()){
-			String category = (String) iter.next().getCategory();
+			String category = (String) iter.next().getPluginLayer();
 			listOfAllCategories.add(category);
 		}
 		
@@ -64,7 +64,7 @@ public class Accordion extends JScrollPane{
 			Iterator<SimProp> iter1 = listofAllSections.iterator();
 			while(iter1.hasNext()){
 				SimProp propToCheck = iter1.next();
-				if (propToCheck.getCategory().equals(category))
+				if (propToCheck.getPluginLayer().equals(category))
 					listOfAllSectionsInACategory.add(propToCheck);
 			}
 			

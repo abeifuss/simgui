@@ -1,4 +1,4 @@
-package annotations;
+package annotations.simulationProperty;
 
 import javax.swing.JOptionPane;
 

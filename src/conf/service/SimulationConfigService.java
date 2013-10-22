@@ -16,7 +16,7 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
-import annotations.SimProp;
+import annotations.simulationProperty.SimProp;
 
 public class SimulationConfigService {
 

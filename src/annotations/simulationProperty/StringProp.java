@@ -1,4 +1,4 @@
-package annotations;
+package annotations.simulationProperty;
 
 public class StringProp extends SimProp{
 

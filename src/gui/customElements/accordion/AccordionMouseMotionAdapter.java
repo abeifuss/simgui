@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JTable;
 
-import annotations.SimProp;
+import annotations.simulationProperty.SimProp;
 
 public class AccordionMouseMotionAdapter implements MouseMotionListener {
 

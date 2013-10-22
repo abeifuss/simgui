@@ -1,13 +1,14 @@
-package annotations;
+package annotations.simulationProperty;
 
 // pojo
 public abstract class SimProp {
 
-	private String _id;
-	private String _name;
-	private String _description;
-	private String _tooltip;
-	private String _category;
+	private String id;
+	private String name;
+	private String description;
+	private String tooltip;
+	private String pluginLayer;
+	private String namespace;
 	
 	// dependencies
 	boolean enabled;
@@ -24,7 +25,7 @@ public abstract class SimProp {
 	
 
 	public Class<? extends Requirement>[] getValue_requirements() {
-		return value_requirements;
+		return this.value_requirements;
 	}
 
 	public void setValue_requirements(Class<? extends Requirement>[] value_requirements) {
@@ -32,49 +33,57 @@ public abstract class SimProp {
 	}
 
 	public String getId() {
-		return _id;
+		return this.id;
 	}
 
 	public void setId(String id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return _name;
+		return this.name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 
 	public String getDescription() {
-		return _description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
-		this._description = description;
+		this.description = description;
 	}
 
 	public String getTooltip() {
-		return _tooltip;
+		return this.tooltip;
 	}
 
 	public void setTooltip(String tooltip) {
-		this._tooltip = tooltip;
+		this.tooltip = tooltip;
 	}
 
-	public String getCategory() {
-		return _category;
+	public String getPluginLayer() {
+		return this.pluginLayer;
 	}
 
-	public void setCategory(String category) { 
-		this._category = category;
+	public void setPluginLayer(String pluginLayer) { 
+		this.pluginLayer = pluginLayer;
+	}
+	
+	public String getNamespace() {
+		return this.namespace;
+	}
+
+	public void setNamespace(String namespace) { 
+		this.namespace = namespace;
 	}
 
 	public void printOut() {
-		System.out.println("ID(" + _id + ") aka. " + _name + " has");
-		System.out.println("Description: " + _description);
-		System.out.println("Tooltip: " + _tooltip);
+		System.out.println("ID(" + id + ") aka. " + name + " has");
+		System.out.println("Description: " + description);
+		System.out.println("Tooltip: " + tooltip);
 		System.out.println("Its value type is " + getValueType());
 		System.out.println("==================================");
 	}

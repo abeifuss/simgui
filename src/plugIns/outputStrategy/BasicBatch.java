@@ -1,11 +1,13 @@
-package plugIns.layer3outputStrategy.basicBatch;
+package plugIns.outputStrategy;
 
 import test.annotationTest.Test_Value_Requirement;
-import annotations.IntSimulationProperty;
+import annotations.plugin.PluginAnnotation;
+import annotations.simulationProperty.IntSimulationProperty;
 
+@PluginAnnotation(name="BB", documentationURL="BBPlugin.html")
 public class BasicBatch {
 
-	@IntSimulationProperty(name = "AVG INT", 
+	@IntSimulationProperty(name = "AVG INT second", 
 			description = "Some text about Integers (int2)", 
 			tooltip = "2integer's tooltip",
 			valueType = Integer.class,

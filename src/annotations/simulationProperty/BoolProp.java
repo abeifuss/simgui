@@ -1,4 +1,4 @@
-package annotations;
+package annotations.simulationProperty;
 
 public class BoolProp extends SimProp{
 

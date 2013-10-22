@@ -1,4 +1,4 @@
-package annotations;
+package annotations.simulationProperty;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FloatSimulationProperty {
+public @interface BoolSimulationProperty {
 
 	// general
 	public String id() default "";
@@ -18,12 +18,10 @@ public @interface FloatSimulationProperty {
 	public String tooltip() default "No Tooltip available";
 	public String category() default "unknown";
 	
-	public Class<?> valueType() default Float.class;
+	public Class<?> valueType() default Boolean.class;
 	
-	// float
-	public float value() default 0.0f;
-	public float min() default 0.0f;
-	public float max() default 1.0f;
+	// bool
+	public boolean value() default true;
 	
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};

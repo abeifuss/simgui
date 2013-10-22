@@ -14,7 +14,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-import annotations.StringProp;
+import annotations.simulationProperty.StringProp;
 
 @SuppressWarnings("serial")
 public class AccordionCellEditor extends AbstractCellEditor implements TableCellEditor{
