@@ -23,8 +23,12 @@ import log.Logger;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
+import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+
+import plugIns.outputStrategy.ConstantRate;
 
 import annotations.plugin.AnnotatedPlugin;
 import annotations.plugin.PluginAnnotation;
@@ -41,6 +45,7 @@ import annotations.simulationProperty.StringSimulationProperty;
 import com.google.classpath.ClassPath;
 import com.google.classpath.ClassPathFactory;
 import com.google.classpath.RegExpResourceFilter;
+import com.google.common.collect.Sets;
 
 public class SimPropRegistry {
 
@@ -63,11 +68,12 @@ public class SimPropRegistry {
 	}
 
 	// Scans the simulation properties
+	@SuppressWarnings("unchecked")
 	public void scan() {
 
 		SimProp property;
 		AnnotatedPlugin plugin;
-		
+
 		Reflections reflectionsPlugins = new Reflections(
 				ClasspathHelper.forPackage("gui.layout"),
 				new TypeAnnotationsScanner());
@@ -82,14 +88,10 @@ public class SimPropRegistry {
 			plugin.setId(c.getName());
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
-			System.out.println(plugin.getId() + "," + plugin.getName() + "," + plugin.getDocumentationURL());
-			
-			String category = (plugin.getId()).split("\\.",3)[1];
-			
-			// TODO: Scans all packages :/
-			Reflections reflections = new Reflections(
-					ClasspathHelper.forPackage("gui.layout"),
-					new FieldAnnotationsScanner());
+			// System.out.println(plugin.getId() + "," + plugin.getName() + ","
+			// + plugin.getDocumentationURL());
+
+			String category = (plugin.getId()).split("\\.", 3)[1];
 
 			// FIXME: Class<? extends Annotation> does not work
 			Class<?>[] annotations = {
@@ -98,113 +100,124 @@ public class SimPropRegistry {
 					annotations.simulationProperty.IntSimulationProperty.class,
 					annotations.simulationProperty.StringSimulationProperty.class };
 
-			for (Class<?> item : annotations) {
+			try {
+				for (Field feld : Class.forName(c.getCanonicalName())
+						.getDeclaredFields()) {
+					// System.out.println(c.getCanonicalName()+":" +
+					// feld.getName());
+					Annotation[] a = feld.getAnnotations();
+					for (int k = 0; k < a.length; k++) {
+						// System.out.println("Annotations " + a[k]);
+						if (a[k].annotationType() == BoolSimulationProperty.class) {
+							BoolSimulationProperty annotation = feld
+									.getAnnotation(BoolSimulationProperty.class);
+							property = new BoolProp();
+							if (annotation != null) {
+								// property.setId(f.getName());
+								property.setId(plugin.getName() + "::"
+										+ feld.getName());
+								property.setNamespace(plugin.getName());
+								property.setName(annotation.name());
+								property.setDescription(annotation
+										.description());
+								property.setTooltip(annotation.tooltip());
+								property.setPluginLayer(category);
+								property.setEnable_requirements(annotation
+										.enable_requirements());
 
-				@SuppressWarnings("unchecked")
-				Set<Field> fields = reflections
-						.getFieldsAnnotatedWith((Class<? extends Annotation>) item);
+								((BoolProp) property).setValue(annotation
+										.value());
 
-				Iterator<Field> field = fields.iterator();
+								property.setEnable(true);
+							}
+							register(property);
+						} else if (a[k].annotationType() == IntSimulationProperty.class) {
+							IntSimulationProperty annotation = feld
+									.getAnnotation(IntSimulationProperty.class);
+							property = new IntProp();
+							if (annotation != null) {
+								property.setId(plugin.getName() + "::"
+										+ feld.getName());
+								property.setNamespace(plugin.getName());
+								property.setName(annotation.name());
+								property.setDescription(annotation
+										.description());
+								property.setTooltip(annotation.tooltip());
+								property.setPluginLayer(category);
+								property.setEnable_requirements(annotation
+										.enable_requirements());
+								property.setValue_requirements(annotation
+										.value_requirements());
 
-				while (field.hasNext()) {
+								((IntProp) property).setMinValue(annotation
+										.min());
+								((IntProp) property).setMaxValue(annotation
+										.max());
+								property.setValue(annotation.value());
 
-					Field f = field.next();
+								property.setEnable(true);
+							}
+							register(property);
+						} else if (a[k].annotationType() == FloatSimulationProperty.class) {
+							FloatSimulationProperty annotation = feld
+									.getAnnotation(FloatSimulationProperty.class);
+							property = new FloatProp();
+							if (annotation != null) {
+								property.setId(plugin.getName() + "::"
+										+ feld.getName());
+								property.setNamespace(plugin.getName());
+								property.setName(annotation.name());
+								property.setDescription(annotation
+										.description());
+								property.setTooltip(annotation.tooltip());
+								property.setPluginLayer(category);
+								property.setEnable_requirements(annotation
+										.enable_requirements());
 
-					if (item == BoolSimulationProperty.class) { // Boolean
-						BoolSimulationProperty annotation = f
-								.getAnnotation(BoolSimulationProperty.class);
-						property = new BoolProp();
-						if (annotation != null) {
-							//property.setId(f.getName());
-							property.setId(plugin.getName()+"::"+f.getName());
-							property.setNamespace(plugin.getName());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.tooltip());
-							property.setPluginLayer(category);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
+								((FloatProp) property).setMinValue(annotation
+										.min());
+								((FloatProp) property).setMaxValue(annotation
+										.max());
+								((FloatProp) property).setValue(annotation
+										.value());
 
-							((BoolProp) property).setValue(annotation.value());
+								property.setEnable(true);
+							}
+							register(property);
+						} else if (a[k].annotationType() == StringSimulationProperty.class) {
+							StringSimulationProperty annotation = feld
+									.getAnnotation(StringSimulationProperty.class);
+							property = new StringProp();
+							if (annotation != null) {
+								property.setId(plugin.getName() + "::"
+										+ feld.getName());
+								property.setNamespace(plugin.getName());
+								property.setName(annotation.name());
+								property.setDescription(annotation
+										.description());
+								property.setTooltip(annotation.tooltip());
+								property.setPluginLayer(category);
+								property.setEnable_requirements(annotation
+										.enable_requirements());
 
-							property.setEnable(true);
+								((StringProp) property).setValue(annotation
+										.value());
+								((StringProp) property)
+										.setPossibleValues(annotation
+												.possibleValues());
+
+								property.setEnable(true);
+							}
+							register(property);
+						} else {
+							Logger.Log(LogLevel.ERROR,
+									"GuiConfigRegistry - bad type");
+							continue;
 						}
-						register(property);
-					} else if (item == FloatSimulationProperty.class) { // Float
-						FloatSimulationProperty annotation = f
-								.getAnnotation(FloatSimulationProperty.class);
-						property = new FloatProp();
-						if (annotation != null) {
-							property.setId(plugin.getName()+"::"+f.getName());
-							property.setNamespace(plugin.getName());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.tooltip());
-							property.setPluginLayer(category);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-
-							((FloatProp) property)
-									.setMinValue(annotation.min());
-							((FloatProp) property)
-									.setMaxValue(annotation.max());
-							((FloatProp) property).setValue(annotation.value());
-
-							property.setEnable(true);
-						}
-						register(property);
-					} else if (item == IntSimulationProperty.class) { // Integer
-						IntSimulationProperty annotation = f
-								.getAnnotation(IntSimulationProperty.class);
-						property = new IntProp();
-						if (annotation != null) {
-							property.setId(plugin.getName()+"::"+f.getName());
-							property.setNamespace(plugin.getName());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.tooltip());
-							property.setPluginLayer(category);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							property.setValue_requirements(annotation
-									.value_requirements());
-
-							((IntProp) property).setMinValue(annotation.min());
-							((IntProp) property).setMaxValue(annotation.max());
-							property.setValue(annotation.value());
-
-							property.setEnable(true);
-						}
-						register(property);
-					} else if (item == StringSimulationProperty.class) { // String
-						StringSimulationProperty annotation = f
-								.getAnnotation(StringSimulationProperty.class);
-						property = new StringProp();
-						if (annotation != null) {
-							property.setId(plugin.getName()+"::"+f.getName());
-							property.setNamespace(plugin.getName());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.tooltip());
-							property.setPluginLayer(category);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-
-							((StringProp) property)
-									.setValue(annotation.value());
-							((StringProp) property)
-									.setPossibleValues(annotation
-											.possibleValues());
-
-							property.setEnable(true);
-						}
-						register(property);
-					} else {
-						Logger.Log(LogLevel.ERROR,
-								"GuiConfigRegistry - bad type");
-						continue;
 					}
 				}
+			} catch (SecurityException | ClassNotFoundException e) {
+				e.printStackTrace();
 			}
 
 		}
