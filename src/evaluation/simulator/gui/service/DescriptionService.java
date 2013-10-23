@@ -6,17 +6,9 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class DescriptionService extends Observable{
+public class DescriptionService extends Observable {
 
-	private String _description;
-	private List<Observer> _observers;
-	
 	private static DescriptionService _instance = null;
-
-	private DescriptionService() {
-		super();
-		_observers = new LinkedList<Observer>();
-	}
 
 	public static DescriptionService getInstance() {
 		if (_instance == null) {
@@ -24,21 +16,32 @@ public class DescriptionService extends Observable{
 		}
 		return _instance;
 	}
-	
-	public void addObserver(Observer o){
-		_observers.add(o);
+
+	private String _description;
+
+	private final List<Observer> _observers;
+
+	private DescriptionService() {
+		super();
+		this._observers = new LinkedList<Observer>();
 	}
-	
-	public void notifyObservers(){
-		Iterator<Observer> iter = _observers.iterator();
+
+	@Override
+	public void addObserver(Observer o) {
+		this._observers.add(o);
+	}
+
+	@Override
+	public void notifyObservers() {
+		Iterator<Observer> iter = this._observers.iterator();
 		while (iter.hasNext()) {
-			iter.next().update(this, _description);
+			iter.next().update(this, this._description);
 		}
 	}
-	
-	public void setDescription(String descr){
-		_description = descr;
-		notifyObservers();
+
+	public void setDescription(String descr) {
+		this._description = descr;
+		this.notifyObservers();
 	}
 
 }

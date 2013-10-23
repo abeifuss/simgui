@@ -1,9 +1,9 @@
 package evaluation.simulator.gui.service;
+
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
-
 
 public class GuiService {
 

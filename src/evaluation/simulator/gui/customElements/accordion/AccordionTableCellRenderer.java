@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import evaluation.simulator.annotations.SimProp;
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 
 @SuppressWarnings("serial")
 public class AccordionTableCellRenderer extends DefaultTableCellRenderer {

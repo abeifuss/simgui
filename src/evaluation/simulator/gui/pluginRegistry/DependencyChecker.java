@@ -3,8 +3,8 @@ package evaluation.simulator.gui.pluginRegistry;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import evaluation.simulator.annotations.Requirement;
-import evaluation.simulator.annotations.SimProp;
+import evaluation.simulator.annotations.simulationProperty.Requirement;
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 
 public class DependencyChecker {
 

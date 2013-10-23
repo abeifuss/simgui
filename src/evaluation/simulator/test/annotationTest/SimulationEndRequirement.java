@@ -1,6 +1,6 @@
 package evaluation.simulator.test.annotationTest;
 
-import evaluation.simulator.annotations.Requirement;
+import evaluation.simulator.annotations.simulationProperty.Requirement;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 public class SimulationEndRequirement extends Requirement {
@@ -11,15 +11,15 @@ public class SimulationEndRequirement extends Requirement {
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
 		boolean enableState = true;
 
-		System.err.println(this.equals("CFG_INT_1", "3"));
-		enableState &= this.equals("CFG_INT_1", "3");
+		System.err.println(this.equals("CR::INT", "3"));
+		enableState &= this.equals("CR::INT", "3");
 
 		if (!enableState) {
-			gcr.getValue("CFG_BOOL1").setEnable(false);
+			gcr.getValue("CR::BOOL").setEnable(false);
 			return enableState;
 		}
 
-		gcr.getValue("CFG_BOOL1").setEnable(true);
+		gcr.getValue("CR::BOOL").setEnable(true);
 		return enableState;
 	}
 

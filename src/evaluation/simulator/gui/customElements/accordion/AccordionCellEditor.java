@@ -6,11 +6,13 @@ import java.util.Map.Entry;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
+import evaluation.simulator.annotations.simulationProperty.StringProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -19,8 +21,11 @@ public class AccordionCellEditor extends AbstractCellEditor implements
 
 	private final JCheckBox _cbox = new JCheckBox();
 	private Class<?> _class;
+	private final JComboBox<String> _combobox = new JComboBox<>();
 	private final JSpinner _spinner = new JSpinner();
+
 	private final JTextField _textfield = new JTextField();
+	private boolean predefined;
 
 	@Override
 	public Object getCellEditorValue() {
@@ -32,6 +37,9 @@ public class AccordionCellEditor extends AbstractCellEditor implements
 		} else if (this._class == Float.class) {
 			return this._textfield.getText();
 		} else if (this._class == String.class) {
+			if (this.predefined) {
+				return this._combobox.getSelectedItem();
+			}
 			return this._textfield.getText();
 		}
 
@@ -57,6 +65,19 @@ public class AccordionCellEditor extends AbstractCellEditor implements
 		} else if (this._class == Boolean.class) {
 			this._cbox.setSelected((boolean) value);
 			return this._cbox;
+		} else if (this._class == String.class) {
+			String possibleValues = ((StringProp) (spr.getValue(list.get(row)
+					.getKey()))).getPossibleValues();
+			if (!possibleValues.equals("")) {
+				this.predefined = true;
+				this._combobox.removeAllItems();
+				String[] valueArray = possibleValues.split(",");
+				for (String element : valueArray) {
+					this._combobox.addItem(element.replace(" ", ""));
+				}
+				return this._combobox;
+			}
+			this.predefined = false;
 		}
 
 		this._textfield.setText((String) value);

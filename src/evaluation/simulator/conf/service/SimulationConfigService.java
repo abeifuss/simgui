@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
-import evaluation.simulator.annotations.SimProp;
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;

@@ -6,9 +6,8 @@ import org.jfree.chart.ChartPanel;
 
 public class ResultPanelFactory {
 
-	public static JPanel getResultPanel()
-	{
+	public static JPanel getResultPanel() {
 		return new ChartPanel(LineJFreeChartCreator.createAChart());
-	}	
-	
+	}
+
 }

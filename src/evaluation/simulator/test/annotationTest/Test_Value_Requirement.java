@@ -1,6 +1,6 @@
 package evaluation.simulator.test.annotationTest;
 
-import evaluation.simulator.annotations.Requirement;
+import evaluation.simulator.annotations.simulationProperty.Requirement;
 
 public class Test_Value_Requirement extends Requirement {
 
@@ -8,15 +8,15 @@ public class Test_Value_Requirement extends Requirement {
 	public boolean check() {
 
 		// Min und Max Setter
-		setIntegerMaxValueOfOption("CFG_INT_MIN",
-				getIntegerValueOfOption("CFG_INT_MAX"));
-		setIntegerMaxValueOfOption("CFG_INT_AVG",
-				getIntegerValueOfOption("CFG_INT_MAX"));
+		setIntegerMaxValueOfOption("CR::INT_MIN",
+				getIntegerValueOfOption("CR::INT_MAX"));
+		setIntegerMaxValueOfOption("CR::INT_AVG",
+				getIntegerValueOfOption("CR::INT_MAX"));
 
-		setIntegerMinValueOfOption("CFG_INT_MAX",
-				getIntegerValueOfOption("CFG_INT_MIN"));
-		setIntegerMinValueOfOption("CFG_INT_AVG",
-				getIntegerValueOfOption("CFG_INT_MIN"));
+		setIntegerMinValueOfOption("CR::INT_MAX",
+				getIntegerValueOfOption("CR::INT_MIN"));
+		setIntegerMinValueOfOption("CR::INT_AVG",
+				getIntegerValueOfOption("CR::INT_MIN"));
 
 		return true;
 	}

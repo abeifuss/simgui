@@ -63,7 +63,9 @@ public class AccordionModel implements TableModel {
 	public Object getValueAt(int arg0, int arg1) {
 
 		if (arg1 == 0) {
-			return this._propertiesInThisCategory.get(arg0).getKey();
+			return this._spr.getValue(
+					this._propertiesInThisCategory.get(arg0).getKey())
+					.getName();
 		}
 
 		return this._spr.getValue(

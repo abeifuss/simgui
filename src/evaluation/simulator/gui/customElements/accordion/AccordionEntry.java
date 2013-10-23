@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import evaluation.simulator.annotations.SimProp;
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {

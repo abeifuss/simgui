@@ -13,16 +13,17 @@ public class NavigationService {
 
 		Map<String, String>[] plugins = gcr.getPlugIns();
 
-		String foo = "";
+		String menu = "";
 		for (Map<String, String> plugin : plugins) {
-			Set<Entry<String, String>> test = plugin.entrySet();
-			for (Entry<String, String> entry : test) {
-				foo += "<a href=\"src/" + entry.getValue() + "\">"
-						+ entry.getKey() + "</a><br/>\n";
+			Set<Entry<String, String>> pluginsInLayer = plugin.entrySet();
+			for (Entry<String, String> entry : pluginsInLayer) {
+				menu += "<a href=\"etc/html/plugins/"
+						+ entry.getKey().replaceAll("\\.class", "/") + "\">"
+						+ entry.getKey().split("\\.", 2)[0] + "</a><br/>\n";
 			}
 		}
 
-		return foo;
+		return menu;
 	}
 
 	public static String getMenu() {
