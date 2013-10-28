@@ -124,7 +124,7 @@ public class SimPropRegistry {
 		AnnotatedPlugin plugin;
 
 		Reflections reflectionsPlugins = new Reflections(
-				ClasspathHelper.forPackage("evaluation.simulator.gui.layout"),
+				ClasspathHelper.forPackage("evaluation.simulator.plugins"),
 				new TypeAnnotationsScanner());
 
 		Set<Class<?>> types = reflectionsPlugins
@@ -137,17 +137,11 @@ public class SimPropRegistry {
 			plugin.setId(c.getName());
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
-			// System.out.println(plugin.getId() + "," + plugin.getName() + ","
-			// + plugin.getDocumentationURL());
+			
+			System.out.println("BLA " + plugin.getId() + "," + plugin.getName() + ","
+			+ plugin.getDocumentationURL());
 
 			String category = (plugin.getId()).split("\\.", 3)[1];
-
-			// FIXME: Class<? extends Annotation> does not work
-			Class<?>[] annotations = {
-					evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty.class,
-					evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty.class,
-					evaluation.simulator.annotations.simulationProperty.IntSimulationProperty.class,
-					evaluation.simulator.annotations.simulationProperty.StringSimulationProperty.class };
 
 			try {
 				for (Field feld : Class.forName(c.getCanonicalName())
@@ -274,7 +268,7 @@ public class SimPropRegistry {
 		String[] resources = classpath.findResources("", regExpResourceFilter);
 
 		String[] plugInLayer = { "clientSendStyle", "delayBox", "mixSendStyle",
-				"outputStrategy", "plotType", "trafficSource" };
+				"outputStrategy", "plotType", "topology", "trafficSource" };
 
 		for (int i = 0; i < 6; i++) {
 

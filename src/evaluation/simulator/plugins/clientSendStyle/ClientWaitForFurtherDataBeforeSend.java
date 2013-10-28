@@ -28,14 +28,16 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "CWFFDBS")
+@PluginAnnotation(name = "ClientWaitForFurtherDataBeforeSend")
 public class ClientWaitForFurtherDataBeforeSend extends ClientSendStyleImpl
 		implements EventExecutor {
 
 	private MixMessage mixMessage;
 	private Event timeoutEvent;
 
-	@IntSimulationProperty(name = "Time to wait for further data from user (in ms)")
+	@IntSimulationProperty(
+			name = "Time to wait for further data from user (in ms)", 
+			propertykey = "TIME_TO_WAIT_FOR_FURTHER_DATA_FROM_USER")
 	private final int timeToWaitForFurtherDataFromUser;
 
 	public ClientWaitForFurtherDataBeforeSend(AbstractClient owner,

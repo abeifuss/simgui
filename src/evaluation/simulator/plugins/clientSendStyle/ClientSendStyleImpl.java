@@ -27,12 +27,10 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.statistics.Statistics;
 
-@PluginAnnotation(name = "CSSI")
 public abstract class ClientSendStyleImpl implements EventExecutor {
 
 	protected AbstractClient owner;
 
-	@BoolSimulationProperty(name = "Simulate Reply Channel (Duplex)")
 	protected boolean simulateReplyChannel;
 	protected Simulator simulator;
 	protected Statistics statistics;

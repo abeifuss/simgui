@@ -28,16 +28,16 @@ import evaluation.simulator.pluginRegistry.MixSendStyle;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
-@PluginAnnotation(name = "B")
 // batch as described by chaum 1981; Dingledine 2002: "Threhold Mix"
 // collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random
 // order)
+
+@PluginAnnotation(name = "Batch")
 public class Batch extends OutputStrategyImpl {
 
 	public class SimplexBatch {
 
-		@IntSimulationProperty(name = "Batch size (in byte)")
 		private final int batchSize;
 		private final MixMessage[] collectedMessages;
 		private final boolean isRequestBatch;
@@ -76,10 +76,17 @@ public class Batch extends OutputStrategyImpl {
 	private final SimplexBatch replyBatch;
 
 	private final SimplexBatch requestBatch;
+	
+	@IntSimulationProperty(
+			name = "Batch size",
+			propertykey = "BATCH_SIZE"
+	)
+	private int batchSize;
 
 	public Batch(Mix mix, Simulator simulator) {
 
 		super(mix, simulator);
+		
 		int batchSize = Simulator.settings.getPropertyAsInt("BATCH_SIZE");
 		this.requestBatch = new SimplexBatch(batchSize, true);
 		this.replyBatch = new SimplexBatch(batchSize, false);

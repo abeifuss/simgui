@@ -38,7 +38,6 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendWithoutMixes;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
-@PluginAnnotation(name = "BSB")
 // 1991: Andreas Pfitzmann, Birgit Pfitzmann, Michael Waidner: ISDN-MIXes:
 // Untraceable Communication with Very Small Bandwidth Overhead
 // simplified version; no broadcast; no anonymity for servers
@@ -47,6 +46,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // (blocks until every client has sent a message!)
 // will put out a reply batch every "replyRate" ms
 // (creates dummies if no data available)
+@PluginAnnotation(name = "BasicSynchronousBatch")
 public class BasicSynchronousBatch extends OutputStrategyImpl implements
 		EventExecutor {
 
@@ -84,7 +84,11 @@ public class BasicSynchronousBatch extends OutputStrategyImpl implements
 
 	private Map<String, Vector<TransportMessage>> clientReplyWaitingQueues;
 	private SimplexSynchronousBatch replyBatch;
-	@IntSimulationProperty(name = "Reply interval (in ms)")
+	
+	@IntSimulationProperty(
+			name = "Reply interval (in ms)", 
+			propertykey = "BASIC_SYNCHRONOUS_REPLY_INTERVAL_IN_MS"
+	)
 	private int replyInterval;
 
 	private final SimplexSynchronousBatch requestBatch;

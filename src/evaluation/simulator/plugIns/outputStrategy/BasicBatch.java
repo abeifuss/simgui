@@ -4,7 +4,7 @@ import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.test.annotationTest.Test_Value_Requirement;
 
-@PluginAnnotation(name = "BB", documentationURL = "BBPlugin.html")
+// @PluginAnnotation(name = "BB", documentationURL = "BBPlugin.html")
 public class BasicBatch {
 
 	@IntSimulationProperty(name = "Packet Size (byte)", propertykey = "PACKET_SIZE", description = "Some text about Integers (int2)", tooltip = "2integer's tooltip", valueType = Integer.class, min = 0, max = 100, value = 50, order = 1, value_requirements = Test_Value_Requirement.class)

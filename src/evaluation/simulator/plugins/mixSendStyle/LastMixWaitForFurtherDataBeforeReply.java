@@ -28,14 +28,17 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 
-@PluginAnnotation(name = "LMWFFDBR")
+@PluginAnnotation(name = "LastMixWaitForFurtherDataBeforeReply")
 public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 		implements EventExecutor {
 
 	private MixMessage[] replies;
 	private boolean setupComplete = false;
 	private Event[] timeoutEvents;
-	@IntSimulationProperty(name = "Time to wait for further data from distant proxy (in ms)")
+	@IntSimulationProperty(
+			name = "Time to wait for further data from distant proxy (in ms)", 
+			propertykey="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY"
+	)
 	private final int timeToWaitForFurtherDataFromDistantProxy;
 
 	public LastMixWaitForFurtherDataBeforeReply(NetworkNode owner,

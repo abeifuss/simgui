@@ -24,6 +24,8 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -39,20 +41,46 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // "a timed pool mix that tosses coins and uses a probability function that 
 // depends on the number of messages inside the mix at the time of flushing"
 // -> normal cumulative distribution
+
+@PluginAnnotation(name = "BinomialPool")
 public class BinomialPool extends OutputStrategyImpl {
 
 	private SimplexBinomialPool requestBatch;
 	private SimplexBinomialPool replyBatch;
 	private static SecureRandom secureRandom = new SecureRandom();
 	
+	@IntSimulationProperty(
+			name = "Sending interval (ms)",
+			propertykey = "BINOMIAL_POOL_SENDING_INTERVAL_IN_MS"
+	)
+	private int sendingInterval;
+	
+	@IntSimulationProperty(
+			name = "Maximum output fraction",
+			propertykey = "BINOMIAL_POOL_MAX_OUTPUT_FRACTION"
+	)
+	private double maxOutputFraction;
+	
+	@IntSimulationProperty(
+			name = "Mean",
+			propertykey = "BINOMIAL_POOL_MEAN"
+	)
+	private double mean;
+	
+	@IntSimulationProperty(
+			name = "Standard deviation",
+			propertykey = "BINOMIAL_POOL_STANDARD_DEVIATION"
+	)
+	private double stdDev;
+	
 	
 	public BinomialPool(Mix mix, Simulator simulator) {
 
 		super(mix, simulator);
-		int sendingInterval = Simulator.settings.getPropertyAsInt("BINOMIAL_POOL_SENDING_INTERVAL_IN_MS");
-		double maxOutputFraction = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_MAX_OUTPUT_FRACTION");
-		double mean = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_MEAN");
-		double stdDev = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_STANDARD_DEVIATION");
+		sendingInterval = Simulator.settings.getPropertyAsInt("BINOMIAL_POOL_SENDING_INTERVAL_IN_MS");
+		maxOutputFraction = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_MAX_OUTPUT_FRACTION");
+		mean = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_MEAN");
+		stdDev = Simulator.settings.getPropertyAsDouble("BINOMIAL_POOL_STANDARD_DEVIATION");
 		this.requestBatch = new SimplexBinomialPool(true, sendingInterval, maxOutputFraction, mean, stdDev);
 		this.replyBatch = new SimplexBinomialPool(false, sendingInterval, maxOutputFraction, mean, stdDev);
 	}

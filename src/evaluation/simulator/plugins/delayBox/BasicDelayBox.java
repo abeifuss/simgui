@@ -22,7 +22,7 @@ import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "BDB")
+@PluginAnnotation(name = "BasicDelayBox")
 public class BasicDelayBox extends DelayBoxImpl {
 
 	private class SimplexDelayBox {
@@ -34,7 +34,11 @@ public class BasicDelayBox extends DelayBoxImpl {
 		private boolean isBusy;
 		private long lastPulse = NOT_SET;
 		private final int latency; // in ms
-		@IntSimulationProperty(name = "Packet Size (byte)")
+		
+		@IntSimulationProperty(
+				name = "Packet Size (byte)", 
+				propertykey = "NETWORK_PACKET_PAYLOAD_SIZE"
+		)
 		private int packetSize = new Integer(
 				Simulator.settings.getProperty("NETWORK_PACKET_PAYLOAD_SIZE"));
 

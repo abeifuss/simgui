@@ -25,7 +25,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "CSI")
+@PluginAnnotation(name = "ClientSendImmediately")
 public class ClientSendImmediately extends ClientSendStyleImpl {
 
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {

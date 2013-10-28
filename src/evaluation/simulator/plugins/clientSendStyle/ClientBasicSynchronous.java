@@ -30,14 +30,14 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "CBS")
+@PluginAnnotation(name = "ClientBasicSynchronous")
 public class ClientBasicSynchronous extends ClientSendStyleImpl implements
 		EventExecutor {
 
 	private final Vector<TransportMessage> requestWaitingQueue = new Vector<TransportMessage>(
 			10, 10);
 
-	@IntSimulationProperty(name = "Basic synchronous send interval in ms", propertykey = "SEND_INTERVAL", description = "", tooltip = "Basic synchronous send interval in ms", valueType = Integer.class)
+	@IntSimulationProperty(name = "Basic synchronous send interval in ms", propertykey = "BASIC_SYNCHRONOUS_SEND_INTERVAL_IN_MS", tooltip = "Basic synchronous send interval in ms", valueType = Integer.class)
 	int sendInterval;
 
 	public ClientBasicSynchronous(AbstractClient owner, Simulator simulator) {

@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -31,19 +32,33 @@ import evaluation.simulator.pluginRegistry.MixSendStyle;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
-@PluginAnnotation(name = "BWT")
 // Dingledine 2002: Timed Mix
 // collects messages until "batchSize" messages are reached or a timeout occurs
 // the timeout timer is started when the first message is added to the batch
 // and gets canceled as the batch is put out (due to reaching the batch size)
 // see also: "ThresholdOrTimedBatch.java"
+
+@PluginAnnotation(name = "BatchWithTimeout")
 public class BatchWithTimeout extends OutputStrategyImpl {
 
+	@IntSimulationProperty(
+			name = "Timeout (in ms)",
+			propertykey = "TIMEOUT_IN_MS"
+	)
+	private int timeout;
+	
+	@IntSimulationProperty(
+			name = "Batch size",
+			propertykey = "BATCH_SIZE"
+	)
+	private int batchSize;
+	
 	public class SimplexBatchWithTimeout implements EventExecutor {
 
 		private final int batchSize;
 		private Vector<MixMessage> collectedMessages;
 		private final boolean isRequestBatch;
+	
 		private final int timeout;
 		private Event timeoutEvent;
 
@@ -126,8 +141,8 @@ public class BatchWithTimeout extends OutputStrategyImpl {
 	public BatchWithTimeout(Mix mix, Simulator simulator) {
 
 		super(mix, simulator);
-		int timeout = Simulator.settings.getPropertyAsInt("TIMEOUT_IN_MS");
-		int batchSize = Simulator.settings.getPropertyAsInt("BATCH_SIZE");
+		timeout = Simulator.settings.getPropertyAsInt("TIMEOUT_IN_MS");
+		batchSize = Simulator.settings.getPropertyAsInt("BATCH_SIZE");
 		this.requestBatch = new SimplexBatchWithTimeout(true, timeout,
 				batchSize);
 		this.replyBatch = new SimplexBatchWithTimeout(false, timeout, batchSize);

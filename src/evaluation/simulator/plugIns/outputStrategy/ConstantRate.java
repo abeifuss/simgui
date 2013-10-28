@@ -8,7 +8,7 @@ import evaluation.simulator.annotations.simulationProperty.StringSimulationPrope
 import evaluation.simulator.test.annotationTest.SimulationEndRequirement;
 import evaluation.simulator.test.annotationTest.Test_Value_Requirement;
 
-@PluginAnnotation(name = "CR", documentationURL = "CRPlugin.html")
+// @PluginAnnotation(name = "CR", documentationURL = "CRPlugin.html")
 public class ConstantRate {
 
 	@BoolSimulationProperty(name = "A Bool", propertykey = "BOOL", description = "Some text about Integers (int1)", tooltip = "1st integer's tooltip", valueType = Boolean.class, value = true, enable_requirements = { SimulationEndRequirement.class }, order = 6)
