@@ -18,48 +18,60 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-
+@PluginAnnotation(name = "CSI")
 public class ClientSendImmediately extends ClientSendStyleImpl {
 
-	
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {
 		super(owner, simulator);
 	}
-
-
-	@Override
-	public void incomingRequestFromUser(TransportMessage request) {
-		MixMessage mixMessage = MixMessage.getInstance(true, owner, simulator.getDistantProxy(), owner, Simulator.getNow(), false);
-		if (mixMessage.getFreeSpace() >= request.getLength()) { // incomingData fits in mixMessage
-			mixMessage.addPayloadObject(request);
-			owner.sendRequest(mixMessage);	
-		} else { // incomingData does not fit in mixMessage -> fragment incomingData
-			while (request.hasNextFragment()) {
-				MessageFragment fragment = request.getFragment(mixMessage.getFreeSpace());
-				mixMessage.addPayloadObject(fragment);
-				if (fragment.isLastFragment()) { // last fragment -> send message (even if it is not "full")
-					owner.sendRequest(mixMessage);
-				} else if (mixMessage.getFreeSpace() == 0) { // still data to send, but no more space -> send last and create new mixMessage
-					owner.sendRequest(mixMessage);
-					mixMessage = MixMessage.getInstance(true, owner, simulator.getDistantProxy(), owner, Simulator.getNow(), false);
-				}
-			}
-		}	
-	}
-
 
 	@Override
 	public void incomingDecryptedReply(NetworkMessage reply) {
 
 	}
-	
-	
+
+	@Override
+	public void incomingRequestFromUser(TransportMessage request) {
+		MixMessage mixMessage = MixMessage.getInstance(true, this.owner,
+				this.simulator.getDistantProxy(), this.owner,
+				Simulator.getNow(), false);
+		if (mixMessage.getFreeSpace() >= request.getLength()) { // incomingData
+																// fits in
+																// mixMessage
+			mixMessage.addPayloadObject(request);
+			this.owner.sendRequest(mixMessage);
+		} else { // incomingData does not fit in mixMessage -> fragment
+					// incomingData
+			while (request.hasNextFragment()) {
+				MessageFragment fragment = request.getFragment(mixMessage
+						.getFreeSpace());
+				mixMessage.addPayloadObject(fragment);
+				if (fragment.isLastFragment()) { // last fragment -> send
+													// message (even if it is
+													// not "full")
+					this.owner.sendRequest(mixMessage);
+				} else if (mixMessage.getFreeSpace() == 0) { // still data to
+																// send, but no
+																// more space ->
+																// send last and
+																// create new
+																// mixMessage
+					this.owner.sendRequest(mixMessage);
+					mixMessage = MixMessage.getInstance(true, this.owner,
+							this.simulator.getDistantProxy(), this.owner,
+							Simulator.getNow(), false);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void messageReachedServer(TransportMessage request) {
 

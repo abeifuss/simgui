@@ -18,6 +18,8 @@
 package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MessageFragment;
@@ -26,94 +28,140 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 
+@PluginAnnotation(name = "LMWFFDBR")
+public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
+		implements EventExecutor {
 
-public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl implements EventExecutor {
-
-	private int timeToWaitForFurtherDataFromDistantProxy;
-	private boolean setupComplete = false;
 	private MixMessage[] replies;
+	private boolean setupComplete = false;
 	private Event[] timeoutEvents;
-	
- 	
-	public LastMixWaitForFurtherDataBeforeReply(NetworkNode owner, Simulator simulator, ReplyReceiver replyReceiver) {
-		
+	@IntSimulationProperty(name = "Time to wait for further data from distant proxy (in ms)")
+	private final int timeToWaitForFurtherDataFromDistantProxy;
+
+	public LastMixWaitForFurtherDataBeforeReply(NetworkNode owner,
+			Simulator simulator, ReplyReceiver replyReceiver) {
+
 		super(owner, simulator, replyReceiver);
-		this.timeToWaitForFurtherDataFromDistantProxy = new Integer(Simulator.settings.getProperty("TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY")); // in ms
-		
-	}
-	
-	
-	@Override
-	public void incomingDataFromServer(TransportMessage noneMixMessage) {
-		
-		if (!setupComplete)
-			setup();
-		
-		if (replies[noneMixMessage.getOwner().getClientId()] == null) {
-			
-			replies[noneMixMessage.getOwner().getClientId()] = MixMessage.getInstance(false, owner, noneMixMessage.getOwner(), noneMixMessage.getOwner(), Simulator.getNow(), false);
-			timeoutEvents[noneMixMessage.getOwner().getClientId()] = new Event(this, Simulator.getNow() + timeToWaitForFurtherDataFromDistantProxy, ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY);
-			timeoutEvents[noneMixMessage.getOwner().getClientId()].setAttachment(noneMixMessage.getOwner().getClientId());
-			simulator.scheduleEvent(timeoutEvents[noneMixMessage.getOwner().getClientId()], this);
-		
-		}
-		
-		if (replies[noneMixMessage.getOwner().getClientId()].getFreeSpace() >= noneMixMessage.getLength()) { // incomingData fits in mixMessage
-			
-			replies[noneMixMessage.getOwner().getClientId()].addPayloadObject(noneMixMessage);
-			
-			if (replies[noneMixMessage.getOwner().getClientId()].getFreeSpace() == 0) {
-				simulator.unscheduleEvent(timeoutEvents[noneMixMessage.getOwner().getClientId()]);
-				replyReceiver.incomingReply(replies[noneMixMessage.getOwner().getClientId()]);
-				replies[noneMixMessage.getOwner().getClientId()] = null;
-				
-			}
-			
-		} else { // incomingData does not fit in mixMessage -> fragment incomingData
-		
-			while (noneMixMessage.hasNextFragment()) {
-				
-				MessageFragment fragment = noneMixMessage.getFragment(replies[noneMixMessage.getOwner().getClientId()].getFreeSpace());
-				replies[noneMixMessage.getOwner().getClientId()].addPayloadObject(fragment);
-				
-				if (replies[noneMixMessage.getOwner().getClientId()].getFreeSpace() == 0) { // still data to send, but no more space -> send last and create new mixMessage
-					simulator.unscheduleEvent(timeoutEvents[noneMixMessage.getOwner().getClientId()]);
-					replyReceiver.incomingReply(replies[noneMixMessage.getOwner().getClientId()]);
-					replies[noneMixMessage.getOwner().getClientId()] = MixMessage.getInstance(false, owner, noneMixMessage.getOwner(), noneMixMessage.getOwner(), Simulator.getNow(), false);
-					timeoutEvents[noneMixMessage.getOwner().getClientId()] = new Event(this, Simulator.getNow() + timeToWaitForFurtherDataFromDistantProxy, ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY);
-					timeoutEvents[noneMixMessage.getOwner().getClientId()].setAttachment(noneMixMessage.getOwner().getClientId());
-					simulator.scheduleEvent(timeoutEvents[noneMixMessage.getOwner().getClientId()], this);
-				
-				}
-				
-			}
-			
-		}
-		
-	}
-
-	
-	protected void setup() {
-		
-		setupComplete = true;
-		replies = new MixMessage[simulator.getNumberOfClients()];
-		timeoutEvents = new Event[simulator.getNumberOfClients()];
+		this.timeToWaitForFurtherDataFromDistantProxy = new Integer(
+				Simulator.settings
+						.getProperty("TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY")); // in
+																					// ms
 
 	}
-	
 
 	@Override
 	public void executeEvent(Event event) {
-		
-		if ((ClientSendStyleEvent)event.getEventType() == ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY) {
-			
-			MixMessage mixMessage = replies[(Integer)event.getAttachment()];
-			replies[(Integer)event.getAttachment()] = null;
-			replyReceiver.incomingReply(mixMessage);
 
-		} else 
-			throw new RuntimeException("ERROR: LastMixWaitForFurtherDataBeforeReply received unknown Event: " +event.toString());
-		
+		if ((ClientSendStyleEvent) event.getEventType() == ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY) {
+
+			MixMessage mixMessage = this.replies[(Integer) event
+					.getAttachment()];
+			this.replies[(Integer) event.getAttachment()] = null;
+			this.replyReceiver.incomingReply(mixMessage);
+
+		} else {
+			throw new RuntimeException(
+					"ERROR: LastMixWaitForFurtherDataBeforeReply received unknown Event: "
+							+ event.toString());
+		}
+
 	}
-	
+
+	@Override
+	public void incomingDataFromServer(TransportMessage noneMixMessage) {
+
+		if (!this.setupComplete) {
+			this.setup();
+		}
+
+		if (this.replies[noneMixMessage.getOwner().getClientId()] == null) {
+
+			this.replies[noneMixMessage.getOwner().getClientId()] = MixMessage
+					.getInstance(false, this.owner, noneMixMessage.getOwner(),
+							noneMixMessage.getOwner(), Simulator.getNow(),
+							false);
+			this.timeoutEvents[noneMixMessage.getOwner().getClientId()] = new Event(
+					this, Simulator.getNow()
+							+ this.timeToWaitForFurtherDataFromDistantProxy,
+					ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY);
+			this.timeoutEvents[noneMixMessage.getOwner().getClientId()]
+					.setAttachment(noneMixMessage.getOwner().getClientId());
+			this.simulator.scheduleEvent(this.timeoutEvents[noneMixMessage
+					.getOwner().getClientId()], this);
+
+		}
+
+		if (this.replies[noneMixMessage.getOwner().getClientId()]
+				.getFreeSpace() >= noneMixMessage.getLength()) { // incomingData
+																	// fits in
+																	// mixMessage
+
+			this.replies[noneMixMessage.getOwner().getClientId()]
+					.addPayloadObject(noneMixMessage);
+
+			if (this.replies[noneMixMessage.getOwner().getClientId()]
+					.getFreeSpace() == 0) {
+				this.simulator
+						.unscheduleEvent(this.timeoutEvents[noneMixMessage
+								.getOwner().getClientId()]);
+				this.replyReceiver.incomingReply(this.replies[noneMixMessage
+						.getOwner().getClientId()]);
+				this.replies[noneMixMessage.getOwner().getClientId()] = null;
+
+			}
+
+		} else { // incomingData does not fit in mixMessage -> fragment
+					// incomingData
+
+			while (noneMixMessage.hasNextFragment()) {
+
+				MessageFragment fragment = noneMixMessage
+						.getFragment(this.replies[noneMixMessage.getOwner()
+								.getClientId()].getFreeSpace());
+				this.replies[noneMixMessage.getOwner().getClientId()]
+						.addPayloadObject(fragment);
+
+				if (this.replies[noneMixMessage.getOwner().getClientId()]
+						.getFreeSpace() == 0) { // still data to send, but no
+												// more space -> send last and
+												// create new mixMessage
+					this.simulator
+							.unscheduleEvent(this.timeoutEvents[noneMixMessage
+									.getOwner().getClientId()]);
+					this.replyReceiver
+							.incomingReply(this.replies[noneMixMessage
+									.getOwner().getClientId()]);
+					this.replies[noneMixMessage.getOwner().getClientId()] = MixMessage
+							.getInstance(false, this.owner,
+									noneMixMessage.getOwner(),
+									noneMixMessage.getOwner(),
+									Simulator.getNow(), false);
+					this.timeoutEvents[noneMixMessage.getOwner().getClientId()] = new Event(
+							this,
+							Simulator.getNow()
+									+ this.timeToWaitForFurtherDataFromDistantProxy,
+							ClientSendStyleEvent.TIMEOUT_SEND_CURRENT_MIX_REPLY);
+					this.timeoutEvents[noneMixMessage.getOwner().getClientId()]
+							.setAttachment(noneMixMessage.getOwner()
+									.getClientId());
+					this.simulator.scheduleEvent(
+							this.timeoutEvents[noneMixMessage.getOwner()
+									.getClientId()], this);
+
+				}
+
+			}
+
+		}
+
+	}
+
+	protected void setup() {
+
+		this.setupComplete = true;
+		this.replies = new MixMessage[this.simulator.getNumberOfClients()];
+		this.timeoutEvents = new Event[this.simulator.getNumberOfClients()];
+
+	}
+
 }

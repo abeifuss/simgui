@@ -18,38 +18,34 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-
+@PluginAnnotation(name = "CSWM")
 public class ClientSendWithoutMixes extends ClientSendStyleImpl {
-	
-	
+
 	public ClientSendWithoutMixes(AbstractClient owner, Simulator simulator) {
-		
+
 		super(owner, simulator);
-		
+
 	}
 
-	
-	@Override
-	public void incomingRequestFromUser(TransportMessage request) {
-		owner.sendRequest(request);
-		
-	}
-
-	
 	@Override
 	public void incomingDecryptedReply(NetworkMessage reply) {
-		
+
 	}
 
+	@Override
+	public void incomingRequestFromUser(TransportMessage request) {
+		this.owner.sendRequest(request);
+
+	}
 
 	@Override
 	public void messageReachedServer(TransportMessage request) {
 
 	}
-	
 
 }

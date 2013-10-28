@@ -124,7 +124,7 @@ public class SimPropRegistry {
 		AnnotatedPlugin plugin;
 
 		Reflections reflectionsPlugins = new Reflections(
-				ClasspathHelper.forPackage("gui.layout"),
+				ClasspathHelper.forPackage("evaluation.simulator.gui.layout"),
 				new TypeAnnotationsScanner());
 
 		Set<Class<?>> types = reflectionsPlugins

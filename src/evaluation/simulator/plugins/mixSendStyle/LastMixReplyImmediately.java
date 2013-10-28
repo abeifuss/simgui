@@ -18,63 +18,86 @@
 package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.Mix;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-
+@PluginAnnotation(name = "LMRI")
 public class LastMixReplyImmediately extends MixSendStyleImpl {
 
-	
-	public LastMixReplyImmediately(NetworkNode owner, Simulator simulator, ReplyReceiver replyReceiver) {
-		
+	public LastMixReplyImmediately(NetworkNode owner, Simulator simulator,
+			ReplyReceiver replyReceiver) {
+
 		super(owner, simulator, replyReceiver);
-		
+
 	}
 
-	
 	// must call mix.addReply(MixMessage mixMessage)
 	@Override
 	public void incomingDataFromServer(TransportMessage transportMessage) {
-		
-		if (owner instanceof Mix && !((Mix)owner).isLastMix())
-			throw new RuntimeException("ERROR: only supports TransportMessage as reply from distant proxy! " +transportMessage); 
-		
-		MixMessage mixMessage = MixMessage.getInstance(false, owner, transportMessage.getOwner(), transportMessage.getOwner(), Simulator.getNow(), false);
-		
-		if (mixMessage.getFreeSpace() >= transportMessage.getLength()) { // transportMessage fits in mixMessage completely
-			
+
+		if ((this.owner instanceof Mix) && !((Mix) this.owner).isLastMix()) {
+			throw new RuntimeException(
+					"ERROR: only supports TransportMessage as reply from distant proxy! "
+							+ transportMessage);
+		}
+
+		MixMessage mixMessage = MixMessage.getInstance(false, this.owner,
+				transportMessage.getOwner(), transportMessage.getOwner(),
+				Simulator.getNow(), false);
+
+		if (mixMessage.getFreeSpace() >= transportMessage.getLength()) { // transportMessage
+																			// fits
+																			// in
+																			// mixMessage
+																			// completely
+
 			mixMessage.addPayloadObject(transportMessage);
-			replyReceiver.incomingReply(mixMessage);
-			
+			this.replyReceiver.incomingReply(mixMessage);
+
 		} else {
 			MessageFragment fragment = null;
 			assert transportMessage.hasNextFragment();
-			
+
 			while (transportMessage.hasNextFragment()) {
-				
-				fragment = transportMessage.getFragment(mixMessage.getFreeSpace());
-				//System.out.println("adding fragment to mix message " +fragment); 
+
+				fragment = transportMessage.getFragment(mixMessage
+						.getFreeSpace());
+				// System.out.println("adding fragment to mix message "
+				// +fragment);
 				mixMessage.addPayloadObject(fragment);
-				
-				if (fragment.isLastFragment()) { // last fragment -> send message (even if it is not "full")
-					
-					replyReceiver.incomingReply(mixMessage);
-					
-				} else if (mixMessage.getFreeSpace() == 0) { // still data to send, but no more space -> send last and create new mixMessage
-					
-					replyReceiver.incomingReply(mixMessage);
-					mixMessage = MixMessage.getInstance(false, owner, transportMessage.getOwner(), transportMessage.getOwner(), Simulator.getNow(), false);
-					
+
+				if (fragment.isLastFragment()) { // last fragment -> send
+													// message (even if it is
+													// not "full")
+
+					this.replyReceiver.incomingReply(mixMessage);
+
+				} else if (mixMessage.getFreeSpace() == 0) { // still data to
+																// send, but no
+																// more space ->
+																// send last and
+																// create new
+																// mixMessage
+
+					this.replyReceiver.incomingReply(mixMessage);
+					mixMessage = MixMessage.getInstance(false, this.owner,
+							transportMessage.getOwner(),
+							transportMessage.getOwner(), Simulator.getNow(),
+							false);
+
 				}
 
 			}
-			assert fragment.isLastFragment() : ""+fragment.getAssociatedTransportMessage().reltedEndToEndMessage.getPayload().getTransactionId();
-				
+			assert fragment.isLastFragment() : ""
+					+ fragment.getAssociatedTransportMessage().reltedEndToEndMessage
+							.getPayload().getTransactionId();
+
 		}
-		
+
 	}
-	
+
 }

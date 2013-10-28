@@ -17,8 +17,9 @@
  */
 package evaluation.simulator.plugins.outputStrategy;
 
-
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -27,85 +28,82 @@ import evaluation.simulator.pluginRegistry.MixSendStyle;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
-
+@PluginAnnotation(name = "B")
 // batch as described by chaum 1981; Dingledine 2002: "Threhold Mix"
 // collects messages until "batchSize" messages are reached
-// when "batchSize" messages are reached, all messages are sent (in random order)
+// when "batchSize" messages are reached, all messages are sent (in random
+// order)
 public class Batch extends OutputStrategyImpl {
 
-	private SimplexBatch requestBatch;
-	private SimplexBatch replyBatch;
-	
-	
+	public class SimplexBatch {
+
+		@IntSimulationProperty(name = "Batch size (in byte)")
+		private final int batchSize;
+		private final MixMessage[] collectedMessages;
+		private final boolean isRequestBatch;
+		private int nextFreeSlot = 0;
+
+		public SimplexBatch(int batchSize, boolean isRequestBatch) {
+
+			this.batchSize = batchSize;
+			this.isRequestBatch = isRequestBatch;
+			this.collectedMessages = new MixMessage[batchSize];
+
+		}
+
+		public void addMessage(MixMessage mixMessage) {
+
+			this.collectedMessages[this.nextFreeSlot++] = mixMessage;
+
+			if (this.nextFreeSlot == this.batchSize) {
+
+				for (MixMessage m : this.collectedMessages) {
+					if (this.isRequestBatch) {
+						Batch.this.mix.putOutRequest(m);
+					} else {
+						Batch.this.mix.putOutReply(m);
+					}
+				}
+
+				this.nextFreeSlot = 0;
+
+			}
+
+		}
+
+	}
+
+	private final SimplexBatch replyBatch;
+
+	private final SimplexBatch requestBatch;
+
 	public Batch(Mix mix, Simulator simulator) {
 
 		super(mix, simulator);
 		int batchSize = Simulator.settings.getPropertyAsInt("BATCH_SIZE");
 		this.requestBatch = new SimplexBatch(batchSize, true);
 		this.replyBatch = new SimplexBatch(batchSize, false);
-		
-	}
-	
-	
-	@Override
-	public void incomingRequest(MixMessage mixMessage) {
-		requestBatch.addMessage(mixMessage);
-	}
 
-
-	@Override
-	public void incomingReply(MixMessage mixMessage) {
-		replyBatch.addMessage(mixMessage);
 	}
-	
-	
-	public class SimplexBatch {
-		
-		private boolean isRequestBatch;
-		private int batchSize;
-		private MixMessage[] collectedMessages;
-		private int nextFreeSlot = 0;
-		
-		
-		public SimplexBatch(int batchSize, boolean isRequestBatch) {
-			
-			this.batchSize = batchSize;	
-			this.isRequestBatch = isRequestBatch;
-			this.collectedMessages = new MixMessage[batchSize];
-				
-		}
-		
-		
-		public void addMessage(MixMessage mixMessage) {
-			
-			collectedMessages[nextFreeSlot++] = mixMessage;
-			
-			if (nextFreeSlot == batchSize) {
-				
-				for (MixMessage m: collectedMessages)
-					if (isRequestBatch)
-						mix.putOutRequest(m);
-					else
-						mix.putOutReply(m);
-				
-				nextFreeSlot = 0;
-				
-			}
-			
-		}
-		
-	}
-
 
 	@Override
 	public ClientSendStyleImpl getClientSendStyle(AbstractClient client) {
 		return ClientSendStyle.getInstance(client);
 	}
 
-
 	@Override
 	public MixSendStyleImpl getMixSendStyle() {
-		return MixSendStyle.getInstance(mix, mix);
+		return MixSendStyle.getInstance(this.mix, this.mix);
 	}
-	
+
+	@Override
+	public void incomingReply(MixMessage mixMessage) {
+		this.replyBatch.addMessage(mixMessage);
+	}
+
+	@Override
+	public void incomingRequest(MixMessage mixMessage) {
+		this.requestBatch.addMessage(mixMessage);
+	}
+
 }

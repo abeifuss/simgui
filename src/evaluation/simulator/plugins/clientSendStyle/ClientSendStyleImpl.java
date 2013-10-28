@@ -18,6 +18,8 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.NetworkMessage;
@@ -25,48 +27,46 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.statistics.Statistics;
 
-
+@PluginAnnotation(name = "CSSI")
 public abstract class ClientSendStyleImpl implements EventExecutor {
 
 	protected AbstractClient owner;
+
+	@BoolSimulationProperty(name = "Simulate Reply Channel (Duplex)")
+	protected boolean simulateReplyChannel;
 	protected Simulator simulator;
 	protected Statistics statistics;
-	protected boolean simulateReplyChannel; 
-	
-	
+
 	protected ClientSendStyleImpl(AbstractClient owner, Simulator simulator) {
 		this.simulator = simulator;
 		this.owner = owner;
 		this.statistics = owner.getStatistics();
-		this.simulateReplyChannel = Simulator.settings.getProperty("COMMUNICATION_MODE").equals("SIMPLEX_REPLY") || Simulator.settings.getProperty("COMMUNICATION_MODE").equals("DUPLEX");
-	}
-	
-	
-	// must call owner.sendRequest(NetworkMessage);
-	public abstract void incomingRequestFromUser(TransportMessage request);
-	
-	
-	public abstract void messageReachedServer(TransportMessage request);
-	
-	
-	public abstract void incomingDecryptedReply(NetworkMessage reply);
-
-	
-	
-	public void setOwner(AbstractClient owner) {
-		this.owner = owner;
+		this.simulateReplyChannel = Simulator.settings.getProperty(
+				"COMMUNICATION_MODE").equals("SIMPLEX_REPLY")
+				|| Simulator.settings.getProperty("COMMUNICATION_MODE").equals(
+						"DUPLEX");
 	}
 
-
-	public AbstractClient getOwner() {
-		return owner;
-	}
-	
-	
 	// overwrite in subclass if needed
+	@Override
 	public void executeEvent(Event e) {
 		throw new RuntimeException("Not Implemented");
-		
+
+	}
+
+	public AbstractClient getOwner() {
+		return this.owner;
+	}
+
+	public abstract void incomingDecryptedReply(NetworkMessage reply);
+
+	// must call owner.sendRequest(NetworkMessage);
+	public abstract void incomingRequestFromUser(TransportMessage request);
+
+	public abstract void messageReachedServer(TransportMessage request);
+
+	public void setOwner(AbstractClient owner) {
+		this.owner = owner;
 	}
 
 }
