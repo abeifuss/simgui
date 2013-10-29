@@ -15,6 +15,14 @@ import javax.swing.JScrollPane;
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention
+ * 
+ * 
+ *         DEPRECATED
+ * 
+ * 
+ */
 @SuppressWarnings("serial")
 public class Accordion extends JScrollPane {
 
@@ -49,7 +57,7 @@ public class Accordion extends JScrollPane {
 
 		Iterator<SimProp> iter = listofAllSections.iterator();
 		while (iter.hasNext()) {
-			String category = (String) iter.next().getPluginLayer();
+			String category = iter.next().getPluginLayer();
 			listOfAllCategories.add(category);
 		}
 
@@ -57,7 +65,7 @@ public class Accordion extends JScrollPane {
 		Iterator<String> iter2 = listOfAllCategories.iterator();
 		while (iter2.hasNext()) {
 			String category = iter2.next();
-
+			System.err.println(category);
 			// Create the list of all elements in a category
 			List<SimProp> listOfAllSectionsInACategory = new LinkedList<SimProp>();
 			Iterator<SimProp> iter1 = listofAllSections.iterator();
@@ -67,9 +75,9 @@ public class Accordion extends JScrollPane {
 					listOfAllSectionsInACategory.add(propToCheck);
 				}
 			}
-
+			// TODO nicht benutzen!!!!!
 			acordition = new AccordionEntry(category,
-					listOfAllSectionsInACategory);
+					listOfAllSectionsInACategory, null);
 			this._panel.add(acordition, gbc);
 		}
 
@@ -91,7 +99,7 @@ public class Accordion extends JScrollPane {
 
 		Iterator<Entry<String, SimProp>> iter = e.iterator();
 		while (iter.hasNext()) {
-			Entry<?, ?> entry = (Entry<?, ?>) iter.next();
+			Entry<?, ?> entry = iter.next();
 			list.add((SimProp) entry.getValue());
 		}
 

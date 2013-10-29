@@ -137,10 +137,11 @@ public class SimPropRegistry {
 			plugin.setId(c.getName());
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
-			
-			// System.out.println("TEST " + plugin.getId() + "," + plugin.getName() + "," + plugin.getDocumentationURL());
 
-			String category = (plugin.getId()).split("\\.", 3)[1];
+			// System.out.println("TEST " + plugin.getId() + "," +
+			// plugin.getName() + "," + plugin.getDocumentationURL());
+
+			String category = (plugin.getId()).split("\\.", 5)[3];
 
 			try {
 				for (Field feld : Class.forName(c.getCanonicalName())
@@ -264,6 +265,7 @@ public class SimPropRegistry {
 		ClassPath classpath = new ClassPathFactory().createFromJVM();
 		RegExpResourceFilter regExpResourceFilter = new RegExpResourceFilter(
 				".*", ".*\\.class");
+
 		String[] resources = classpath.findResources("", regExpResourceFilter);
 
 		String[] plugInLayer = { "clientSendStyle", "delayBox", "mixSendStyle",
@@ -276,7 +278,7 @@ public class SimPropRegistry {
 			Pattern p = Pattern.compile("^evaluation/simulator/plugins/"
 					+ plugInLayer[i] + "/.+");
 			this._pluginLayerMap[i] = new HashMap<String, String>();
-
+			System.err.println(p.toString());
 			for (final String r : resources) {
 
 				if (p.matcher(r).matches()) {

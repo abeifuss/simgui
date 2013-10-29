@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import evaluation.simulator.gui.actionListeners.LoadButtonAction;
 import evaluation.simulator.gui.actionListeners.ResetButtonAction;
 import evaluation.simulator.gui.actionListeners.SaveButtonAction;
-import evaluation.simulator.gui.customElements.accordion.Accordion;
 
 @SuppressWarnings("serial")
 public class SimConfigPanel extends JPanel {
@@ -24,17 +23,16 @@ public class SimConfigPanel extends JPanel {
 
 	public static void setStatusofSaveButton(Boolean enabled) {
 		getInstance().saveButton.setEnabled(enabled);
-		getInstance()._accordian.repaint();
+		// getInstance()._accordian.repaint();
 	}
 
-	private Accordion _accordian;
+	// private Accordion _accordian;
 	private JPanel buttonBar;
 	private JButton loadButton;
 
-	private PlugInSelection plugInSelection;
+	private PluginPanel pluginPanel;
 
 	private JButton resetButton;
-
 	private JButton saveButton;
 
 	private SimConfigPanel() {
@@ -43,8 +41,10 @@ public class SimConfigPanel extends JPanel {
 
 	private void init() {
 
-		this._accordian = new Accordion();
-		this.plugInSelection = new PlugInSelection();
+		// this._accordian = new Accordion();
+		// this.plugInSelection = new PlugInSelection();
+
+		this.pluginPanel = new PluginPanel();
 
 		this.buttonBar = new JPanel();
 
@@ -60,8 +60,10 @@ public class SimConfigPanel extends JPanel {
 		this.buttonBar.add(this.resetButton, BorderLayout.SOUTH);
 
 		this.setLayout(new BorderLayout());
-		this.add(this.plugInSelection, BorderLayout.NORTH);
-		this.add(this._accordian, BorderLayout.CENTER);
+		// this.add(this.plugInSelection, BorderLayout.NORTH);
+		// this.add(this._accordian, BorderLayout.CENTER);
+
+		this.add(this.pluginPanel, BorderLayout.NORTH);
 		this.add(this.buttonBar, BorderLayout.SOUTH);
 	};
 }

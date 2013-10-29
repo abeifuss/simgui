@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -19,22 +20,21 @@ import evaluation.simulator.annotations.simulationProperty.SimProp;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
-
-	private JButton _entryButton;
-	private JTable _entryTable;
+	private JButton entryButton;
+	private JTable entryTable;
 
 	public AccordionEntry(String name,
-			List<SimProp> listOfAllSectionsInACategory) {
-
+			List<SimProp> listOfAllSectionsInACategory,
+			final JComboBox<String> jComboBox) {
 		this.setLayout(new BorderLayout(0, 0));
 
-		this._entryButton = new JButton(name, new ImageIcon(
+		this.entryButton = new JButton(name, new ImageIcon(
 				"etc/img/icons/green/arrow-144-24.png"));
-		this._entryButton.setForeground(Color.BLACK);
-		this._entryButton.setHorizontalAlignment(SwingConstants.LEFT);
-		this._entryButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+		this.entryButton.setForeground(Color.BLACK);
+		this.entryButton.setHorizontalAlignment(SwingConstants.LEFT);
+		this.entryButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-		this._entryTable = new JTable(new AccordionModel(name)) {
+		this.entryTable = new JTable(new AccordionModel(name)) {
 
 			// This takes care that the non-editable cells are grayed out.
 			@Override
@@ -48,41 +48,44 @@ public class AccordionEntry extends JPanel {
 			}
 		};
 
-		this._entryTable
-				.addMouseMotionListener(new AccordionMouseMotionAdapter(
-						listOfAllSectionsInACategory, this._entryTable));
-		this._entryTable.setDefaultRenderer(Object.class,
+		this.entryTable.addMouseMotionListener(new AccordionMouseMotionAdapter(
+				listOfAllSectionsInACategory, this.entryTable));
+		this.entryTable.setDefaultRenderer(Object.class,
 				new AccordionTableCellRenderer(listOfAllSectionsInACategory));
-		this._entryTable.setVisible(false);
+		this.entryTable.setVisible(false);
 
-		TableColumn col = this._entryTable.getColumnModel().getColumn(1);
+		TableColumn col = this.entryTable.getColumnModel().getColumn(1);
 		col.setCellEditor(new AccordionCellEditor());
 
-		ActionListener al = new ActionListener() {
+		ActionListener actionListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this.toggleVisibility(e.getSource());
+				AccordionEntry.this.toggleVisibility(e.getSource(), jComboBox);
 			}
 		};
 
-		this._entryButton.addActionListener(al);
-		this._entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		this._entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.entryButton.addActionListener(actionListener);
+		this.entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		this.add(this._entryButton, BorderLayout.NORTH);
-		this.add(this._entryTable, BorderLayout.CENTER);
+		this.add(this.entryButton, BorderLayout.NORTH);
+		jComboBox.setVisible(false);
+		this.add(jComboBox, BorderLayout.CENTER);
+		this.add(this.entryTable, BorderLayout.SOUTH);
 	}
 
-	private void toggleVisibility(Object source) {
+	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
 
 		JButton btn = (JButton) source;
-		if (!this._entryTable.isVisible()) {
+		if (!this.entryTable.isVisible()) {
 			btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 		} else {
 			btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 		}
-		this._entryTable.setVisible(!this._entryTable.isVisible());
+
+		jComboBox.setVisible(!jComboBox.isVisible());
+		this.entryTable.setVisible(!this.entryTable.isVisible());
 
 	}
 }
