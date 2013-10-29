@@ -18,12 +18,13 @@
 package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-
+@PluginAnnotation(name = "Poisson")
 public class PoissonModel extends TrafficSourceImplementation implements EventExecutor {
 
 	private PoissonClient[] clients;

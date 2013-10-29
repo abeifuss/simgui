@@ -22,6 +22,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -38,6 +39,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // messages, chosen uniformly at random from all the messages, is retained in 
 // the mix. (Consider these messages as feedback into the mix.) The other n 
 // are forwarded on.
+@PluginAnnotation(name = "ThresholdPool")
 public class ThresholdPool extends OutputStrategyImpl {
 
 	private static SecureRandom secureRandom = new SecureRandom();

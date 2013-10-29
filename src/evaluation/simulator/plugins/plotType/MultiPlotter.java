@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.plotType;
 
 import java.util.HashMap;
 
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
 import evaluation.simulator.core.statistics.plotEngine.PlotScript;
@@ -28,7 +29,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import gnu.trove.TDoubleArrayList;
 
-
+@PluginAnnotation(name = "MultiPlotter")
 public class MultiPlotter extends Plotter {
 
 	public enum PlotStyle {LINE_CHART_ABS, HISTOGRAM};

@@ -23,11 +23,12 @@ import java.nio.channels.Channels;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;
 
-
+@PluginAnnotation(name = "TraceFileModel")
 public class TraceFileModel extends TrafficSourceImplementation {
 
 	private TraceReplayClient[] clients;
