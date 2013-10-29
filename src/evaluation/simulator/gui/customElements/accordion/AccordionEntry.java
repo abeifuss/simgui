@@ -71,6 +71,10 @@ public class AccordionEntry extends JPanel {
 
 		this.add(this.entryButton, BorderLayout.NORTH);
 		jComboBox.setVisible(false);
+		jComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxx"); // for
+																// automatically
+																// resizing the
+																// JComboBox
 		this.add(jComboBox, BorderLayout.CENTER);
 		this.add(this.entryTable, BorderLayout.SOUTH);
 	}
