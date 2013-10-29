@@ -46,6 +46,8 @@ public class MainGui extends JFrame {
 	private int _mainGuiYPos;
 
 	private JTabbedPane _mainView;
+	private HomeTab _homeTab;
+	private boolean _homeTabStatus;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -154,7 +156,9 @@ public class MainGui extends JFrame {
 		right.add(verticalSplitPlane, BorderLayout.CENTER);
 
 		this._mainView = new JTabbedPane();
-		this._mainView.addTab("Home", new HomeTab());
+		_homeTab = new HomeTab();
+		this._mainView.addTab("Home", _homeTab);
+		this._homeTabStatus = true;
 		this._mainView.addTab("Simulator", new SimulationTab());
 
 		JPanel bottom = new JPanel();
@@ -214,4 +218,21 @@ public class MainGui extends JFrame {
 			this._mainView.remove(this._helpToolView);
 		}
 	}
+	
+	// Close/Open the home frame
+		public void toogleHomeTab(boolean b) {
+			if (b) {
+				this._mainView.addTab("Home", _homeTab);
+				this._homeTabStatus = true;
+			} else {
+				this._mainView.remove(_homeTab);
+				this._homeTabStatus = false;
+			}
+		}	
+
+
+	public boolean hTisShown() {		
+		return this._homeTabStatus;
+	}
+
 }
