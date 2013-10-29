@@ -18,15 +18,20 @@
 package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-
+@PluginAnnotation(name = "RequestReply")
 public class RequestReplyClient extends AbstractClient {
 
+	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )
 	private int REQUEST_SIZE;
+	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE" )
 	private int REPLY_SIZE;
+	@IntSimulationProperty( name = "Resolve time", propertykey = "RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
 	
 	

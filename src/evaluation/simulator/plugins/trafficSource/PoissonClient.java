@@ -22,18 +22,25 @@ import java.security.SecureRandom;
 import org.apache.commons.math.random.RandomDataImpl;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-
+@PluginAnnotation(name = "Poisson")
 public class PoissonClient extends AbstractClient {
 
+	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )
 	private int REQUEST_SIZE;
+	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE" )
 	private int REPLY_SIZE;
+	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
+	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
 	private double LAMBDA;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();

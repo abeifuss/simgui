@@ -119,7 +119,7 @@ public class SimHelpMenuPanel extends JPanel implements HyperlinkListener {
 
 			this.setLayout(new BorderLayout());
 			this.setBackground(Color.WHITE);
-			System.out.println(navigation);
+			// System.out.println(navigation);
 
 			this.add(new JScrollPane(_htmlPane), BorderLayout.CENTER);
 		} catch (Exception ex) {
