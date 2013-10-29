@@ -131,6 +131,7 @@ public class PluginPanel extends JScrollPane {
 			Iterator<SimProp> iter1 = listofAllSections.iterator();
 			while (iter1.hasNext()) {
 				SimProp propToCheck = iter1.next();
+
 				if (propToCheck.getPluginLayer().equals(category)) {
 					listOfAllSectionsInACategory.add(propToCheck);
 				}

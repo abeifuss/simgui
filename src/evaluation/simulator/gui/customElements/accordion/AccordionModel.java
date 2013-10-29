@@ -18,7 +18,6 @@ public class AccordionModel implements TableModel {
 	private final SimPropRegistry _spr;
 
 	public AccordionModel(String category) {
-
 		this._spr = SimPropRegistry.getInstance();
 		this._propertiesInThisCategory = this._spr.getCategoryItems(category);
 	}
