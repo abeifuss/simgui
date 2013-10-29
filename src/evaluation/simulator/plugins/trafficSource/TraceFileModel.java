@@ -24,6 +24,9 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;
@@ -33,12 +36,18 @@ public class TraceFileModel extends TrafficSourceImplementation {
 
 	private TraceReplayClient[] clients;
 	
+	@StringSimulationProperty( name = "Path to trace", propertykey = "PATH_TO_TRACE" )
+	private String pathToTrace;
+	@BoolSimulationProperty( name = "Limit client number", propertykey = "LIMIT_CLIENT_NUMBER" )
+	private boolean limitClients;
+	@IntSimulationProperty( name = "Client limit", propertykey = "CLIENT_LIMIT" )
+	private int limit;
 	
 	@Override
 	public AbstractClient[] createClientsArray() {
-		String pathToTrace = Simulator.settings.getProperty("PATH_TO_TRACE");
-		boolean limitClients = Simulator.settings.getPropertyAsBoolean("LIMIT_CLIENT_NUMBER");
-		int limit = limitClients ? Simulator.settings.getPropertyAsInt("CLIENT_LIMIT") : 0;
+		this.pathToTrace = Simulator.settings.getProperty("PATH_TO_TRACE");
+		this.limitClients = Simulator.settings.getPropertyAsBoolean("LIMIT_CLIENT_NUMBER");
+		this.limit = limitClients ? Simulator.settings.getPropertyAsInt("CLIENT_LIMIT") : 0;
 		Vector<TraceReplayClient> clients = new Vector<TraceReplayClient>(1000);
 		try {
 			FlowReader flowReader = new FlowReader(pathToTrace, null, false);
