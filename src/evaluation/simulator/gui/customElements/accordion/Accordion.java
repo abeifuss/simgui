@@ -26,8 +26,8 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 @SuppressWarnings("serial")
 public class Accordion extends JScrollPane {
 
-	private final JPanel _panel;
-	private final SimPropRegistry _spr = SimPropRegistry.getInstance();
+	private final JPanel jPanel;
+	private final SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
 	public Accordion() {
 
@@ -35,19 +35,19 @@ public class Accordion extends JScrollPane {
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		this._panel = new JPanel();
-		GridBagLayout gbl = new GridBagLayout();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.weightx = 1;
-		gbc.weighty = 0;
-		gbc.gridx = GridBagConstraints.RELATIVE;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbl.setConstraints(this._panel, gbc);
-		this._panel.setLayout(gbl);
+		this.jPanel = new JPanel();
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		GridBagConstraints gridBagConstraint = new GridBagConstraints();
+		gridBagConstraint.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraint.anchor = GridBagConstraints.NORTH;
+		gridBagConstraint.weightx = 1;
+		gridBagConstraint.weighty = 0;
+		gridBagConstraint.gridx = GridBagConstraints.RELATIVE;
+		gridBagConstraint.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayout.setConstraints(this.jPanel, gridBagConstraint);
+		this.jPanel.setLayout(gridBagLayout);
 
-		this.setViewportView(this._panel);
+		this.setViewportView(this.jPanel);
 		// End Layout
 
 		AccordionEntry acordition;
@@ -62,31 +62,31 @@ public class Accordion extends JScrollPane {
 		}
 
 		// Select the categories
-		Iterator<String> iter2 = listOfAllCategories.iterator();
-		while (iter2.hasNext()) {
-			String category = iter2.next();
+		Iterator<String> categoryIterator = listOfAllCategories.iterator();
+		while (categoryIterator.hasNext()) {
+			String category = categoryIterator.next();
 			System.err.println(category);
+			
 			// Create the list of all elements in a category
 			List<SimProp> listOfAllSectionsInACategory = new LinkedList<SimProp>();
-			Iterator<SimProp> iter1 = listofAllSections.iterator();
-			while (iter1.hasNext()) {
-				SimProp propToCheck = iter1.next();
+			Iterator<SimProp> sectionIterator = listofAllSections.iterator();
+			while (sectionIterator.hasNext()) {
+				SimProp propToCheck = sectionIterator.next();
 				if (propToCheck.getPluginLayer().equals(category)) {
 					listOfAllSectionsInACategory.add(propToCheck);
 				}
 			}
 			// TODO nicht benutzen!!!!!
-			acordition = new AccordionEntry(category,
-					listOfAllSectionsInACategory, null);
-			this._panel.add(acordition, gbc);
+			acordition = new AccordionEntry(category,listOfAllSectionsInACategory, null);
+			this.jPanel.add(acordition, gridBagConstraint);
 		}
 
-		gbc.weighty = 1;
+		gridBagConstraint.weighty = 1;
 
 		// Spring element to push all other elements to the top
 		// needed for alignment
 		JPanel jp = new JPanel();
-		this._panel.add(jp, gbc);
+		this.jPanel.add(jp, gridBagConstraint);
 
 		this.setVisible(true);
 	}
@@ -95,7 +95,7 @@ public class Accordion extends JScrollPane {
 	private List<SimProp> getSections() {
 		List<SimProp> list = new LinkedList<SimProp>();
 
-		Set<Entry<String, SimProp>> e = this._spr.getAllSimProps();
+		Set<Entry<String, SimProp>> e = this.simPropRegistry.getAllSimProps();
 
 		Iterator<Entry<String, SimProp>> iter = e.iterator();
 		while (iter.hasNext()) {

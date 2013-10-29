@@ -19,7 +19,7 @@ package evaluation.simulator.plugins.delayBox;
 
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
 
-@PluginAnnotation(name = "NoDelayDelayBox")
+@PluginAnnotation(name = "NO_DELAY")
 public class NoDelayDelayBox extends DelayBoxImpl {
 	
 	

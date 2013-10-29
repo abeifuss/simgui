@@ -31,7 +31,7 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;
 
-@PluginAnnotation(name = "TraceFileModel")
+@PluginAnnotation(name = "TRACE_FILE")
 public class TraceFileModel extends TrafficSourceImplementation {
 
 	private TraceReplayClient[] clients;

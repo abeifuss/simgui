@@ -33,7 +33,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // when "batchSize" messages are reached, all messages are sent (in random
 // order)
 
-@PluginAnnotation(name = "Batch")
+@PluginAnnotation(name = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
 	public class SimplexBatch {

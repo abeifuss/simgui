@@ -23,7 +23,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "ClientSendWithoutMixes")
+@PluginAnnotation(name = "SEND_WITHOUT_MIXES")
 public class ClientSendWithoutMixes extends ClientSendStyleImpl {
 
 	public ClientSendWithoutMixes(AbstractClient owner, Simulator simulator) {

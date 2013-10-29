@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "ClientWaitForFurtherDataBeforeSend")
+@PluginAnnotation(name = "WAIT_FOR_FURTHER_DATA")
 public class ClientWaitForFurtherDataBeforeSend extends ClientSendStyleImpl
 		implements EventExecutor {
 

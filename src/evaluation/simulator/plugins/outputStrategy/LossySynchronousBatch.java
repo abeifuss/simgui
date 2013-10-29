@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MessageFragment;
@@ -43,7 +44,7 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-@PluginAnnotation(name = "LossySynchronousBatch")
+@PluginAnnotation(name = "LOSSY_SYNCHRONOUS_BATCH")
 public class LossySynchronousBatch extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;
@@ -52,13 +53,15 @@ public class LossySynchronousBatch extends OutputStrategyImpl implements Identif
 	private SimplexLossySynchronousBatch replyBatch;
 	private Map<String, Vector<TransportMessage>> clientReplyWaitingQueues;
 	
+	@DoubleSimulationProperty( name = "Request rate", propertykey = "LSB_REQUEST_RATE" )
+	private double requestRate;
 	
 	public LossySynchronousBatch(Mix mix, Simulator simulator) {
 		super(mix, simulator);
 		this.statistics = new Statistics(this);
 		this.numericIdentifier = IdGenerator.getId();
 		int numberOfClients = Simulator.getSimulator().getNumberOfClients();
-		double requestRate = Simulator.settings.getPropertyAsDouble("LSB_REQUEST_RATE");
+		this.requestRate = Simulator.settings.getPropertyAsDouble("LSB_REQUEST_RATE");
 		this.requestBatch = new SimplexLossySynchronousBatch(true, requestRate, numberOfClients);
 		if (Simulator.settings.getProperty("COMMUNICATION_MODE").equals("SIMPLEX_REPLY") || Simulator.settings.getProperty("COMMUNICATION_MODE").equals("DUPLEX")) {
 			double replyRate = Simulator.settings.getPropertyAsDouble("LSB_REPLY_RATE");

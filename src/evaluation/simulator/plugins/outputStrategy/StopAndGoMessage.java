@@ -30,7 +30,7 @@ import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-@PluginAnnotation(name = "StopAndGoMessage")
+@PluginAnnotation(name = "STOP_AND_GO")
 public class StopAndGoMessage extends BasicMixMessage {
 
 	private long[] tsMin; // 0: first mix; 1: second mix...
