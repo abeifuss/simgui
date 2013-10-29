@@ -90,4 +90,17 @@ public class GuiService {
 		UserConfigService.getInstance().setBool("SEPERATE_HELP_TOOL", true);
 
 	}
+	
+	public void toogleHomeTab() {
+		
+		if (MainGui.getInstance().hTisShown()) {			
+			this._mainGui.toogleHomeTab(false);
+			UserConfigService.getInstance()
+					.setBool("TOGGLE_HOME_TAB", false);
+			return;
+		}		
+		this._mainGui.toogleHomeTab(true);
+		UserConfigService.getInstance().setBool("TOGGLE_HOME_TAB", true);		
+		
+	}
 }
