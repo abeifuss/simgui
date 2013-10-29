@@ -142,7 +142,8 @@ public class SimPropRegistry {
 			
 			// System.out.println("TEST " + plugin.getId() + "," + plugin.getName() + "," + plugin.getDocumentationURL());
 
-			String category = (plugin.getId()).split("\\.", 3)[1];
+			// This is a string of the plugin-layer
+			String category = (plugin.getId()).split("\\.", 5)[3];
 
 			try {
 				for (Field feld : Class.forName(c.getCanonicalName())
