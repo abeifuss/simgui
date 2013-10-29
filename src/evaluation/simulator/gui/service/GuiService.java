@@ -40,6 +40,8 @@ public class GuiService {
 				.getBool("SEPERATE_CONF_TOOL");
 		boolean showConfHelpInSeparateWindow = UserConfigService.getInstance()
 				.getBool("SEPERATE_HELP_TOOL");
+		boolean showHomeTab = UserConfigService.getInstance()
+				.getBool("TOGGLE_HOME_TAB");
 
 		if (showConfToolInSeparateWindow) {
 			System.out.println("SHOW SEPERATE CONF TOOL");
@@ -59,6 +61,14 @@ public class GuiService {
 			System.out.println("SHOW INTEGRATED HELP TOOL");
 			this._helpToolFrame.setVisible(false);
 			this._mainGui.toogleHelpTool(true);
+		}
+		
+		if (showHomeTab) {
+			System.out.println("SHOW HOME TAB");
+			this._mainGui.toggleHomeTab(true);
+		} else {
+			System.out.println("HIDE HOME TAB");
+			this._mainGui.toggleHomeTab(false);
 		}
 	}
 
@@ -91,15 +101,15 @@ public class GuiService {
 
 	}
 	
-	public void toogleHomeTab() {
+	public void toggleHomeTab() {
 		
 		if (MainGui.getInstance().hTisShown()) {			
-			this._mainGui.toogleHomeTab(false);
+			this._mainGui.toggleHomeTab(false);
 			UserConfigService.getInstance()
 					.setBool("TOGGLE_HOME_TAB", false);
 			return;
 		}		
-		this._mainGui.toogleHomeTab(true);
+		this._mainGui.toggleHomeTab(true);
 		UserConfigService.getInstance().setBool("TOGGLE_HOME_TAB", true);		
 		
 	}

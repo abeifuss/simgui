@@ -96,7 +96,7 @@ public class MainMenu extends JMenuBar {
 		this._toggleHomeTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				GuiService.getInstance().toogleHomeTab();
+				GuiService.getInstance().toggleHomeTab();
 			}
 		});
 	}

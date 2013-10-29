@@ -220,7 +220,7 @@ public class MainGui extends JFrame {
 	}
 	
 	// Close/Open the home frame
-		public void toogleHomeTab(boolean b) {
+		public void toggleHomeTab(boolean b) {
 			if (b) {
 				this._mainView.addTab("Home", _homeTab);
 				this._homeTabStatus = true;

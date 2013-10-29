@@ -83,7 +83,7 @@ public class HomeTab extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource() == this._closeButton) {
-			GuiService.getInstance().toogleHomeTab();
+			GuiService.getInstance().toggleHomeTab();
 		}
 	}
 
