@@ -10,11 +10,11 @@ public class GuiLauncher {
 
 	public static void main(String[] args) {
 
-		SimPropRegistry gcr = SimPropRegistry.getInstance();
-		gcr.scan();
+		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		// simPropRegistry.scan();
 
 		// initial dependency-check for per plugin configurations
-		DependencyChecker.checkAll(gcr);
+		DependencyChecker.checkAll(simPropRegistry);
 
 		// Change Look and Feel to GTK
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
