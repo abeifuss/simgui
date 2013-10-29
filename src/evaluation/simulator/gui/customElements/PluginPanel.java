@@ -85,6 +85,7 @@ public class PluginPanel extends JScrollPane {
 				PluginLayerMap[5].keySet().toArray(
 						new String[PluginLayerMap[5].size()]) };
 
+		// CLIENT_SEND_STYLE
 		JComboBox<String> plugInLevel1List = new JComboBox<String>(
 				levelStrings[0]);
 
