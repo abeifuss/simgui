@@ -55,13 +55,14 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
 		gridBagConstraints.weightx = 1;
-		gridBagConstraints.weighty = 0;
+		gridBagConstraints.weightx = 0;
 		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayout.setConstraints(this._panel, gridBagConstraints);
 		this._panel.setLayout(gridBagLayout);
 
 		this.setViewportView(this._panel);
+
 		// End Layout
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
@@ -102,12 +103,6 @@ public class PluginPanel extends JScrollPane {
 		JComboBox<String> plugInLevel6List = new JComboBox<String>(
 				levelStrings[5]);
 		this.pluginListsMap.put("trafficSource", plugInLevel6List);
-
-		// this.plugInLevel2List.setEnabled(false);
-		// this.plugInLevel3List.setEnabled(false);
-		// this.plugInLevel4List.setEnabled(false);
-		// this.plugInLevel5List.setEnabled(false);
-		// this.plugInLevel6List.setEnabled(false);
 
 		AccordionEntry accordionElement;
 

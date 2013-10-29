@@ -86,6 +86,6 @@ public class AccordionEntry extends JPanel {
 
 		jComboBox.setVisible(!jComboBox.isVisible());
 		this.entryTable.setVisible(!this.entryTable.isVisible());
-
+		this.repaint();
 	}
 }

@@ -63,7 +63,7 @@ public class SimConfigPanel extends JPanel {
 		// this.add(this.plugInSelection, BorderLayout.NORTH);
 		// this.add(this._accordian, BorderLayout.CENTER);
 
-		this.add(this.pluginPanel, BorderLayout.NORTH);
+		this.add(this.pluginPanel, BorderLayout.CENTER);
 		this.add(this.buttonBar, BorderLayout.SOUTH);
 	};
 }
