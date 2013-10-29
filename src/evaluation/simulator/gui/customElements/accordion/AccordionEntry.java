@@ -107,7 +107,8 @@ public class AccordionEntry extends JPanel {
 			this.entryTable.setVisible(true);
 			this.updateUI();
 		} else {
-			this.entryTable.setVisible(false);
+			this.remove(this.entryTable);
+			this.updateUI();
 		}
 	}
 
