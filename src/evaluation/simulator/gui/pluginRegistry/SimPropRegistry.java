@@ -53,11 +53,12 @@ public class SimPropRegistry {
 	}
 
 	@SuppressWarnings("unchecked")
-	private final Map<String, String>[] _pluginLayerMap = new HashMap[6];
+	private final Map<String, String>[] pluginLayerMap = new HashMap[7];
 
-	private final Map<String, SimProp> _properties = new HashMap<String, SimProp>();
+	private final Map<String, SimProp> properties = new HashMap<String, SimProp>();
 
 	private SimPropRegistry() {
+		this.scan();
 		this.scanPlugins();
 	}
 
@@ -66,14 +67,14 @@ public class SimPropRegistry {
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
-		return this._properties.entrySet();
+		return this.properties.entrySet();
 	}
 
 	public List<Entry<String, String>> getCategoryItems(String category) {
 
 		List<Entry<String, String>> hm = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = this._properties.entrySet()
+		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet()
 				.iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
@@ -87,17 +88,17 @@ public class SimPropRegistry {
 	}
 
 	public Map<String, String>[] getPlugIns() {
-		return this._pluginLayerMap;
+		return this.pluginLayerMap;
 	}
 
 	public SimProp getValue(String key) {
 
-		return this._properties.get(key);
+		return this.properties.get(key);
 	}
 
 	public void register(SimProp s) {
 		System.out.println("Register: " + s.getId());
-		if (this._properties.containsKey(s.getId())) {
+		if (this.properties.containsKey(s.getId())) {
 
 			GraphicsDevice gd = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -114,7 +115,7 @@ public class SimPropRegistry {
 			d.setVisible(true);
 
 		} else {
-			this._properties.put(s.getId(), s);
+			this.properties.put(s.getId(), s);
 		}
 	}
 
@@ -140,7 +141,7 @@ public class SimPropRegistry {
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
 
-			String category = (plugin.getId()).split("\\.", 5)[3];
+			String plugInLayer = (plugin.getId()).split("\\.", 5)[3];
 
 			try {
 				for (Field feld : Class.forName(c.getCanonicalName())
@@ -163,7 +164,7 @@ public class SimPropRegistry {
 								property.setDescription(annotation
 										.description());
 								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(category);
+								property.setPluginLayer(plugInLayer);
 								property.setEnable_requirements(annotation
 										.enable_requirements());
 								((BoolProp) property).setValue(annotation
@@ -183,7 +184,7 @@ public class SimPropRegistry {
 								property.setDescription(annotation
 										.description());
 								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(category);
+								property.setPluginLayer(plugInLayer);
 								property.setEnable_requirements(annotation
 										.enable_requirements());
 								property.setValue_requirements(annotation
@@ -208,7 +209,7 @@ public class SimPropRegistry {
 								property.setDescription(annotation
 										.description());
 								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(category);
+								property.setPluginLayer(plugInLayer);
 								property.setEnable_requirements(annotation
 										.enable_requirements());
 								((FloatProp) property).setMinValue(annotation
@@ -232,7 +233,7 @@ public class SimPropRegistry {
 								property.setDescription(annotation
 										.description());
 								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(category);
+								property.setPluginLayer(plugInLayer);
 								property.setEnable_requirements(annotation
 										.enable_requirements());
 								((DoubleProp) property).setMinValue(annotation
@@ -256,7 +257,7 @@ public class SimPropRegistry {
 								property.setDescription(annotation
 										.description());
 								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(category);
+								property.setPluginLayer(plugInLayer);
 								property.setEnable_requirements(annotation
 										.enable_requirements());
 								((StringProp) property).setValue(annotation
@@ -285,52 +286,37 @@ public class SimPropRegistry {
 	}
 
 	public void scanPlugins() {
-		ClassPath classpath = new ClassPathFactory().createFromJVM();
-		RegExpResourceFilter regExpResourceFilter = new RegExpResourceFilter(
-				".*", ".*\\.class");
-
-		String[] resources = classpath.findResources("", regExpResourceFilter);
-
+		
+		for (int i = 0; i < 7; i++) {
+			this.pluginLayerMap[i] = new HashMap<String, String>();
+		}
+		
 		String[] plugInLayer = { "clientSendStyle", "delayBox", "mixSendStyle",
 				"outputStrategy", "plotType", "topology", "trafficSource" };
 
-		for (int i = 0; i < 6; i++) {
-
-			// Pattern p = Pattern.compile("^plugIns/" + plugInLayer[i] +
-			// "/.+/.+");
-			Pattern p = Pattern.compile("^evaluation/simulator/plugins/"
-					+ plugInLayer[i] + "/.+");
-			this._pluginLayerMap[i] = new HashMap<String, String>();
-			System.err.println(p.toString());
-			for (final String r : resources) {
-
-				if (p.matcher(r).matches()) {
-					String[] splitString = r.split("/");
-
-					if (splitString.length != 5) {
-						Logger.Log(LogLevel.ERROR, "Length != 5");
-						System.exit(1);
-					}
-
-					String plugInName = splitString[4];
-					String plugInPath = splitString[0] + "/" + splitString[1]
-							+ "/" + splitString[2] + "/" + splitString[3] + "/";
-
-					this._pluginLayerMap[i].put(plugInName, plugInPath);
-
-					// Iterator<Entry<String, String>> iter =
-					// _pluginLayerMap[i].entrySet().iterator();
-					//
-					// while (iter.hasNext()) {
-					// Entry<String, String> entry = iter.next();
-					// Logger.Log(
-					// log.LogLevel.DEBUG,
-					// "Name: " + entry.getKey() + "; Path: "
-					// + entry.getValue());
-					// }
-
-					continue;
-				}
+		System.err.println( this.properties.size() );
+		
+		for ( String key : properties.keySet() ) {
+			SimProp simProp = properties.get(key);
+			String layer = simProp.getPluginLayer();
+			String name = simProp.getNamespace();
+			System.err.println( "LAYER: " + layer + " NAME: " + name );
+			if ( layer.equals(plugInLayer[0]) ){
+				this.pluginLayerMap[0].put( name, layer );
+			}else if ( layer.equals(plugInLayer[1]) ){
+				this.pluginLayerMap[1].put( name, layer );
+			}else if ( layer.equals(plugInLayer[2]) ){
+				this.pluginLayerMap[2].put( name, layer );
+			}else if ( layer.equals(plugInLayer[3]) ){
+				this.pluginLayerMap[3].put( name, layer );
+			}else if ( layer.equals(plugInLayer[4]) ){
+				this.pluginLayerMap[4].put( name, layer );
+			}else if ( layer.equals(plugInLayer[5]) ){
+				this.pluginLayerMap[5].put( name, layer );
+			}else if ( layer.equals(plugInLayer[6]) ){
+				this.pluginLayerMap[6].put( name, layer );
+			}else {
+				System.err.println( "No such plugin layer: " + layer );
 			}
 		}
 	}
@@ -338,20 +324,20 @@ public class SimPropRegistry {
 	public void setValue(String key, Object arg0) {
 
 		if (arg0.getClass() == Boolean.class) {
-			System.out.println("Integer");
-			this._properties.get(key).setValue(arg0);
-
+			System.out.println("Boolean");
+			this.properties.get(key).setValue(arg0);
 		} else if (arg0.getClass() == Float.class) {
+			System.out.println("Float");
+			this.properties.get(key).setValue(arg0);
+		} else if (arg0.getClass() == Double.class) {
+			System.out.println("Double");
+			this.properties.get(key).setValue(arg0);
+		}else if (arg0.getClass() == Integer.class) {
 			System.out.println("Integer");
-			this._properties.get(key).setValue(arg0);
-
-		} else if (arg0.getClass() == Integer.class) {
-			System.out.println("Integer");
-			this._properties.get(key).setValue(arg0);
-
+			this.properties.get(key).setValue(arg0);
 		} else if (arg0.getClass() == String.class) {
-			System.out.println("Integer");
-			this._properties.get(key).setValue(arg0);
+			System.out.println("String");
+			this.properties.get(key).setValue(arg0);
 
 		} else {
 
