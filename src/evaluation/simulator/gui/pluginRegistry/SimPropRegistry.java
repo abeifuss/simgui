@@ -28,6 +28,8 @@ import evaluation.simulator.annotations.plugin.AnnotatedPlugin;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.BoolProp;
 import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.DoubleProp;
+import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.FloatProp;
 import evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.IntProp;
@@ -216,6 +218,30 @@ public class SimPropRegistry {
 								((FloatProp) property).setMaxValue(annotation
 										.max());
 								((FloatProp) property).setValue(annotation
+										.value());
+								property.setEnable(true);
+							}
+							this.register(property);
+						}else if (element.annotationType() == DoubleSimulationProperty.class) {
+							DoubleSimulationProperty annotation = feld
+									.getAnnotation(DoubleSimulationProperty.class);
+							property = new DoubleProp();
+							if (annotation != null) {
+								property.setId(plugin.getName() + "::"
+										+ annotation.propertykey());
+								property.setNamespace(plugin.getName());
+								property.setName(annotation.name());
+								property.setDescription(annotation
+										.description());
+								property.setTooltip(annotation.tooltip());
+								property.setPluginLayer(category);
+								property.setEnable_requirements(annotation
+										.enable_requirements());
+								((DoubleProp) property).setMinValue(annotation
+										.min());
+								((DoubleProp) property).setMaxValue(annotation
+										.max());
+								((DoubleProp) property).setValue(annotation
 										.value());
 								property.setEnable(true);
 							}
