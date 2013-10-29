@@ -140,9 +140,8 @@ public class SimPropRegistry {
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
 			
-			// System.out.println("TEST " + plugin.getId() + "," + plugin.getName() + "," + plugin.getDocumentationURL());
-
 			// This is a string of the plugin-layer
+			// Example: evaluation.simulator.plugins.<the layer we are interested>.any.class
 			String category = (plugin.getId()).split("\\.", 5)[3];
 
 			try {
