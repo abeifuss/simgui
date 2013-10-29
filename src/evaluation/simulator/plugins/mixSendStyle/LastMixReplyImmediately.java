@@ -25,7 +25,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.Mix;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-@PluginAnnotation(name = "LastMixReplyImmediately")
+@PluginAnnotation(name = "REPLY_IMMEDIATELY")
 public class LastMixReplyImmediately extends MixSendStyleImpl {
 
 	public LastMixReplyImmediately(NetworkNode owner, Simulator simulator,

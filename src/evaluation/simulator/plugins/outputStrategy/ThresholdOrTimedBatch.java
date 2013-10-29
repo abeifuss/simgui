@@ -38,7 +38,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //"The mix fires (flushes all messages) every t seconds or when n messages 
 // accumulate in the mix."
 // see also: "BatchWithTimeout.java"
-@PluginAnnotation(name = "ThresholdOrTimedBatch")
+@PluginAnnotation(name = "THRESHOLD_OR_TIMED_BATCH")
 public class ThresholdOrTimedBatch extends OutputStrategyImpl {
 
 	private SimplexThresholdOrTimedBatch requestBatch;

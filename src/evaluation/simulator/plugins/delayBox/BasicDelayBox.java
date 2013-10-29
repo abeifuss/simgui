@@ -22,7 +22,7 @@ import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "BasicDelayBox")
+@PluginAnnotation(name = "BASIC_DELAY_BOX")
 public class BasicDelayBox extends DelayBoxImpl {
 
 	private class SimplexDelayBox {

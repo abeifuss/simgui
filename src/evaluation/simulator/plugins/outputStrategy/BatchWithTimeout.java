@@ -38,7 +38,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // and gets canceled as the batch is put out (due to reaching the batch size)
 // see also: "ThresholdOrTimedBatch.java"
 
-@PluginAnnotation(name = "BatchWithTimeout")
+@PluginAnnotation(name = "BATCH_WITH_TIMEOUT")
 public class BatchWithTimeout extends OutputStrategyImpl {
 
 	@IntSimulationProperty(

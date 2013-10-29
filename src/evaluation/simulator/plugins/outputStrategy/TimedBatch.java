@@ -36,7 +36,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 // Dingledine 2002: Timed Mix
 // "The mix fires (flushes all messages) every t seconds"
-@PluginAnnotation(name = "TimedBatch")
+@PluginAnnotation(name = "TIMED_BATCH")
 public class TimedBatch extends OutputStrategyImpl {
 
 	private SimplexTimedMix requestBatch;

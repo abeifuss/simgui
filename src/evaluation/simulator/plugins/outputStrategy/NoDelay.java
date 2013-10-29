@@ -30,7 +30,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // forwards messages without delay (use for base line measurments)
-@PluginAnnotation(name = "NoDelay")
+@PluginAnnotation(name = "NO_DELAY")
 public class NoDelay extends OutputStrategyImpl {
 
 	

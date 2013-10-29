@@ -31,7 +31,7 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@PluginAnnotation(name = "Poisson")
+@PluginAnnotation(name = "POISSON")
 public class PoissonClient extends AbstractClient {
 
 	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )

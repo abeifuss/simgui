@@ -21,7 +21,7 @@ import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "SendConstant")
+@PluginAnnotation(name = "CONSTANT")
 public class SendConstantModel extends TrafficSourceImplementation {
 
 	private SendConstantClient[] clients;

@@ -28,7 +28,7 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "NMixCascadeTopology")
+// @PluginAnnotation(name = "NMixCascadeTopology")
 public class NMixCascadeTopology extends TopologyScript {
 	
 	private int numberOfMixes;

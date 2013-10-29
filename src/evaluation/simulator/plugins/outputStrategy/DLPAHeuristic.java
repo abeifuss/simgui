@@ -54,7 +54,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
  * 07: endif
  * 08: Go to step 01 until no more packet arrives."
 */
-@PluginAnnotation(name = "DLPAHeuristic")
+@PluginAnnotation(name = "DLPA_HEURISTIC")
 public class DLPAHeuristic extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;

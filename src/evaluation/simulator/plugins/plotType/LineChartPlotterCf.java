@@ -31,7 +31,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import framework.core.util.Util;
 
-@PluginAnnotation(name = "LineChartPlotterCf")
+@PluginAnnotation(name = "LINE_CHART_CF")
 public class LineChartPlotterCf extends Plotter {
 
 	@BoolSimulationProperty(name = "Calculate average", propertykey = "CALC_AVG_OF_RUNS")
