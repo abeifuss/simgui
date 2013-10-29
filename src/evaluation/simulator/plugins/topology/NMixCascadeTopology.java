@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -28,8 +29,11 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-// @PluginAnnotation(name = "NMixCascadeTopology")
+@PluginAnnotation(name = "NMixCascadeTopology")
 public class NMixCascadeTopology extends TopologyScript {
+	
+	@IntSimulationProperty( name = "dummy", propertykey = "DUMMY")
+	private int dummy;
 	
 	private int numberOfMixes;
 	private HashMap<String, AbstractClient> clients;

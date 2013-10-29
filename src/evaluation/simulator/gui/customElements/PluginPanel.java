@@ -83,27 +83,38 @@ public class PluginPanel extends JScrollPane {
 				PluginLayerMap[4].keySet().toArray(
 						new String[PluginLayerMap[4].size()]),
 				PluginLayerMap[5].keySet().toArray(
-						new String[PluginLayerMap[5].size()]) };
+						new String[PluginLayerMap[5].size()]),
+				PluginLayerMap[6].keySet().toArray(
+						new String[PluginLayerMap[6].size()])};
 
 		// CLIENT_SEND_STYLE
 		JComboBox<String> plugInLevel1List = new JComboBox<String>(
 				levelStrings[0]);
 		this.pluginListsMap.put("clientSendStyle", plugInLevel1List);
+
 		JComboBox<String> plugInLevel2List = new JComboBox<String>(
 				levelStrings[1]);
 		this.pluginListsMap.put("delayBox", plugInLevel2List);
+
 		JComboBox<String> plugInLevel3List = new JComboBox<String>(
 				levelStrings[2]);
 		this.pluginListsMap.put("mixSendStyle", plugInLevel3List);
+
 		JComboBox<String> plugInLevel4List = new JComboBox<String>(
 				levelStrings[3]);
 		this.pluginListsMap.put("outputStrategy", plugInLevel4List);
+
 		JComboBox<String> plugInLevel5List = new JComboBox<String>(
 				levelStrings[4]);
 		this.pluginListsMap.put("plotType", plugInLevel5List);
+
 		JComboBox<String> plugInLevel6List = new JComboBox<String>(
 				levelStrings[5]);
-		this.pluginListsMap.put("trafficSource", plugInLevel6List);
+		this.pluginListsMap.put("topology", plugInLevel6List);
+		
+		JComboBox<String> plugInLevel7List = new JComboBox<String>(
+				levelStrings[6]);
+		this.pluginListsMap.put("trafficSource", plugInLevel7List);
 
 		for (String chooseString : this.pluginListsMap.keySet()) {
 			this.pluginListsMap.get(chooseString).insertItemAt(
