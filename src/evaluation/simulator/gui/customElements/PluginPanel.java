@@ -48,6 +48,7 @@ public class PluginPanel extends JScrollPane {
 		// Start Layout
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		this.getVerticalScrollBar().setUnitIncrement(16);
 
 		this._panel = new JPanel();
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -55,7 +56,7 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
 		gridBagConstraints.weightx = 1;
-		gridBagConstraints.weightx = 0;
+		gridBagConstraints.weighty = 0;
 		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayout.setConstraints(this._panel, gridBagConstraints);
