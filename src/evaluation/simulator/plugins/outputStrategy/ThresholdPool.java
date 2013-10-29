@@ -22,6 +22,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -43,11 +44,15 @@ public class ThresholdPool extends OutputStrategyImpl {
 	private SimplexTresholdPool requestPool;
 	private SimplexTresholdPool replyPool;
 	
+	@IntSimulationProperty( name = "Pool size", propertykey = "THRESHOLD_POOL_MIN_POOL_SIZE")
+	private int poolSize;
+	@IntSimulationProperty( name = "Threshold", propertykey = "THRESHOLD_POOL_THRESHOLD")
+	private int threshold;
 	
 	public ThresholdPool(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		int poolSize = Simulator.settings.getPropertyAsInt("THRESHOLD_POOL_MIN_POOL_SIZE");
-		int threshold = Simulator.settings.getPropertyAsInt("THRESHOLD_POOL_THRESHOLD");
+		this.poolSize = Simulator.settings.getPropertyAsInt("THRESHOLD_POOL_MIN_POOL_SIZE");
+		this.threshold = Simulator.settings.getPropertyAsInt("THRESHOLD_POOL_THRESHOLD");
 		this.requestPool = new SimplexTresholdPool(true, poolSize, threshold);
 		this.replyPool = new SimplexTresholdPool(false, poolSize, threshold);
 	}

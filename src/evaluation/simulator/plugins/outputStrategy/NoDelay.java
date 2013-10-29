@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.outputStrategy;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -29,6 +30,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // forwards messages without delay (use for base line measurments)
+@PluginAnnotation(name = "NoDelay")
 public class NoDelay extends OutputStrategyImpl {
 
 	

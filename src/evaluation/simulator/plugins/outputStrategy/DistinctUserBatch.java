@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MessageFragment;
@@ -41,6 +43,7 @@ import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 // output strategy, that collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random order)
 // accepts only one message per participant for each batch
+@PluginAnnotation(name = "DistinctUserBatch")
 public class DistinctUserBatch extends OutputStrategyImpl implements EventExecutor {
 	
 	private boolean setupComplete;
@@ -49,6 +52,11 @@ public class DistinctUserBatch extends OutputStrategyImpl implements EventExecut
 	private MixMessage[] collectedReplies;
 	private int requestCounter = 0;
 	private int replyCounter = 0;
+	
+	@IntSimulationProperty(
+		name = "Maximum reply delay",
+		propertykey = "MAX_REPLY_DELAY_DISTINCT_USER_BATCH"
+	)
 	private int timeout;
 	private Event timeoutEvent = null;
 	private Map<String, Vector<TransportMessage>> clientReplyWaitingQueues;

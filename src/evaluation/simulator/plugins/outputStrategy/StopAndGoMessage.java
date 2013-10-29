@@ -23,11 +23,14 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-
+@PluginAnnotation(name = "StopAndGoMessage")
 public class StopAndGoMessage extends BasicMixMessage {
 
 	private long[] tsMin; // 0: first mix; 1: second mix...
@@ -41,6 +44,19 @@ public class StopAndGoMessage extends BasicMixMessage {
 	private int identifier;
 	private static int idCounter = 0;
 	
+	@FloatSimulationProperty ( name = "Security parameter mu", propertykey = "SGMIX_SECURITY_PARAMETER_MU" )
+	private double securityParameterMu;
+	@IntSimulationProperty( name = "Minimum inter mix delay", propertykey = "SGMIX_MIN_INTER_MIX_DELAY" )
+	private int minInterMixDelay;
+	@IntSimulationProperty( name = "Maximum inter mix delay", propertykey = "SGMIX_MAX_INTER_MIX_DELAY" )
+	private int maxInterMixDelay;
+	@IntSimulationProperty( name = "Minimum client mix delay", propertykey = "SGMIX_MIN_CLIENT_MIX_DELAY" )
+	private int minClientMixDelay;
+	@IntSimulationProperty( name = "Maximum client mix delay", propertykey = "SGMIX_MAX_CLIENT_MIX_DELAY" )
+	private int maxClientMixDelay;
+	@IntSimulationProperty( name = "Maximum clock deviation", propertykey = "SGMIX_MAX_CLOCK_DEVITION" )
+	private int maxClockDeviation;
+	
 	
 	public StopAndGoMessage(boolean isRequest, NetworkNode source,
 			NetworkNode destination, AbstractClient owner, long creationTime,
@@ -51,7 +67,7 @@ public class StopAndGoMessage extends BasicMixMessage {
 		this.identifier = idCounter++;
 		
 		// generate delays
-		double securityParameterMu = Simulator.settings.getPropertyAsDouble("SGMIX_SECURITY_PARAMETER_MU");
+		securityParameterMu = Simulator.settings.getPropertyAsDouble("SGMIX_SECURITY_PARAMETER_MU");
 		Simulator simulator = Simulator.getSimulator();
 		int numberOfMixes = simulator.getMixes().size();
 		this.delay = new int[numberOfMixes];
@@ -72,11 +88,11 @@ public class StopAndGoMessage extends BasicMixMessage {
 		
 		if (useTimeStamps) {
 			
-			int minInterMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MIN_INTER_MIX_DELAY");
-			int maxInterMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MAX_INTER_MIX_DELAY");
-			int minClientMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MIN_CLIENT_MIX_DELAY");
-			int maxClientMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MAX_CLIENT_MIX_DELAY");
-			int maxClockDeviation = Simulator.settings.getPropertyAsInt("SGMIX_MAX_CLOCK_DEVITION");
+			minInterMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MIN_INTER_MIX_DELAY");
+			maxInterMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MAX_INTER_MIX_DELAY");
+			minClientMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MIN_CLIENT_MIX_DELAY");
+			maxClientMixDelay = Simulator.settings.getPropertyAsInt("SGMIX_MAX_CLIENT_MIX_DELAY");
+			maxClockDeviation = Simulator.settings.getPropertyAsInt("SGMIX_MAX_CLOCK_DEVITION");
 			
 			tsMin = new long[numberOfMixes];
 			tsMax = new long[numberOfMixes];

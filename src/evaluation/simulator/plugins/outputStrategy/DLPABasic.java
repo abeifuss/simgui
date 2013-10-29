@@ -20,6 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.IdGenerator;
@@ -33,6 +34,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // DLP Algorithm (2008: Wei Wang, Mehul Motani, Vikram Srinivasan: Dependent Link Padding Algorithms for Low Latency Anonymity Systems)
+@PluginAnnotation(name = "DLPABasic")
 public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 
 	private int maxRequestDelay;

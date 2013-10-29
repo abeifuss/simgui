@@ -21,6 +21,8 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -36,16 +38,21 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //Dingledine 2002: Timed Mix
 // "fires (flushes all messages) every t seconds but only
 // when at least n messages have accumulated in the mix.
+@PluginAnnotation(name = "ThresholdAndTimedBatch")
 public class ThresholdAndTimedBatch extends OutputStrategyImpl {
 
 	private SimplexThresholdAndTimedBatch requestBatch;
 	private SimplexThresholdAndTimedBatch replyBatch;
 	
+	@IntSimulationProperty( name = "Sending Rate (ms)", propertykey = "THRESHOLD_AND_TIMED_BATCH_SENDING_RATE_IN_MS")
+	private int sendingRate;
+	@IntSimulationProperty( name = "Batch Size", propertykey = "THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE")
+	private int batchSize;
 	
 	public ThresholdAndTimedBatch(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		int sendingRate = Simulator.settings.getPropertyAsInt("THRESHOLD_AND_TIMED_BATCH_SENDING_RATE_IN_MS");
-		int batchSize = Simulator.settings.getPropertyAsInt("THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE");
+		this.sendingRate = Simulator.settings.getPropertyAsInt("THRESHOLD_AND_TIMED_BATCH_SENDING_RATE_IN_MS");
+		this.batchSize = Simulator.settings.getPropertyAsInt("THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE");
 		this.requestBatch = new SimplexThresholdAndTimedBatch(true, sendingRate,batchSize );
 		this.replyBatch = new SimplexThresholdAndTimedBatch(false, sendingRate, batchSize);
 	}

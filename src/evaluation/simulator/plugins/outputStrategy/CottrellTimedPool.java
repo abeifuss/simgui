@@ -23,6 +23,8 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -37,27 +39,37 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //Cottrell 1995 ("Mixmaster & Remailer Attacks")
 //every "outputRate" ms, send x (= "numberOfMessagesInPool" - "minPoolSize") 
 //randomly chosen messages (if x >= 1)
+@PluginAnnotation(name = "CottrellTimedPool")
 public class CottrellTimedPool extends OutputStrategyImpl {
 
 	private SimplexCottrellTimedPool requestBatch;
 	private SimplexCottrellTimedPool replyBatch;
 	private static SecureRandom secureRandom = new SecureRandom();
 	
+	@IntSimulationProperty(
+			name = "Sending Interval (ms)",
+			propertykey = "COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS"
+	)
+	private int sendingRate;
+	
+	@IntSimulationProperty(
+			name = "Minimum pool size",
+			propertykey = "COTTRELL_TIMED_POOL_MIN_POOL_SIZE"
+	)
+	private int poolSize;
 	
 	public CottrellTimedPool(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		int sendingRate = Simulator.settings.getPropertyAsInt("COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS");
-		int poolSize = Simulator.settings.getPropertyAsInt("COTTRELL_TIMED_POOL_MIN_POOL_SIZE");
+		this.sendingRate = Simulator.settings.getPropertyAsInt("COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS");
+		this.poolSize = Simulator.settings.getPropertyAsInt("COTTRELL_TIMED_POOL_MIN_POOL_SIZE");
 		this.requestBatch = new SimplexCottrellTimedPool(true, sendingRate, poolSize);
 		this.replyBatch = new SimplexCottrellTimedPool(false, sendingRate, poolSize);
 	}
-	
 	
 	@Override
 	public void incomingRequest(MixMessage mixMessage) {
 		requestBatch.addMessage(mixMessage);
 	}
-
 
 	@Override
 	public void incomingReply(MixMessage mixMessage) {

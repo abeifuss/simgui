@@ -21,6 +21,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -39,10 +40,13 @@ public class TimedBatch extends OutputStrategyImpl {
 	private SimplexTimedMix requestBatch;
 	private SimplexTimedMix replyBatch;
 	
+	@IntSimulationProperty( name = "Sending rate (ms)", propertykey = "TIMED_BATCH_SEND_INTERVAL_IN_MS" )
+	private int sendingRate;
+	
 	
 	public TimedBatch(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		int sendingRate = Simulator.settings.getPropertyAsInt("TIMED_BATCH_SEND_INTERVAL_IN_MS");
+		this.sendingRate = Simulator.settings.getPropertyAsInt("TIMED_BATCH_SEND_INTERVAL_IN_MS");
 		this.requestBatch = new SimplexTimedMix(true, sendingRate);
 		this.replyBatch = new SimplexTimedMix(false, sendingRate);
 	}

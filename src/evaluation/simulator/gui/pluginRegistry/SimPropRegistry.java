@@ -138,8 +138,7 @@ public class SimPropRegistry {
 			plugin.setName(pa.name());
 			plugin.setDocumentationURL(pa.documentationURL());
 			
-			System.out.println("BLA " + plugin.getId() + "," + plugin.getName() + ","
-			+ plugin.getDocumentationURL());
+			// System.out.println("TEST " + plugin.getId() + "," + plugin.getName() + "," + plugin.getDocumentationURL());
 
 			String category = (plugin.getId()).split("\\.", 3)[1];
 

@@ -21,6 +21,8 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -36,16 +38,21 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //"The mix fires (flushes all messages) every t seconds or when n messages 
 // accumulate in the mix."
 // see also: "BatchWithTimeout.java"
+@PluginAnnotation(name = "ThresholdOrTimedBatch")
 public class ThresholdOrTimedBatch extends OutputStrategyImpl {
 
 	private SimplexThresholdOrTimedBatch requestBatch;
 	private SimplexThresholdOrTimedBatch replyBatch;
 	
+	@IntSimulationProperty( name = "Sending Rate (ms)", propertykey = "THRESHOLD_OR_TIMED_BATCH_SENDING_RATE_IN_MS")
+	private int sendingRate;
+	@IntSimulationProperty( name = "Batch Size", propertykey = "THRESHOLD_OR_TIMED_BATCH_BATCH_SIZE")
+	private int batchSize;
 	
 	public ThresholdOrTimedBatch(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		int sendingRate = Simulator.settings.getPropertyAsInt("THRESHOLD_OR_TIMED_BATCH_SENDING_RATE_IN_MS");
-		int batchSize = Simulator.settings.getPropertyAsInt("THRESHOLD_OR_TIMED_BATCH_BATCH_SIZE");
+		this.sendingRate = Simulator.settings.getPropertyAsInt("THRESHOLD_OR_TIMED_BATCH_SENDING_RATE_IN_MS");
+		this.batchSize = Simulator.settings.getPropertyAsInt("THRESHOLD_OR_TIMED_BATCH_BATCH_SIZE");
 		this.requestBatch = new SimplexThresholdOrTimedBatch(true, sendingRate,batchSize );
 		this.replyBatch = new SimplexThresholdOrTimedBatch(false, sendingRate, batchSize);
 	}
