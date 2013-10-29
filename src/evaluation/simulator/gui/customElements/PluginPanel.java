@@ -87,7 +87,6 @@ public class PluginPanel extends JScrollPane {
 
 		JComboBox<String> plugInLevel1List = new JComboBox<String>(
 				levelStrings[0]);
-
 		this.pluginListsMap.put("clientSendStyle", plugInLevel1List);
 		JComboBox<String> plugInLevel2List = new JComboBox<String>(
 				levelStrings[1]);
@@ -104,6 +103,12 @@ public class PluginPanel extends JScrollPane {
 		JComboBox<String> plugInLevel6List = new JComboBox<String>(
 				levelStrings[5]);
 		this.pluginListsMap.put("trafficSource", plugInLevel6List);
+
+		for (String chooseString : this.pluginListsMap.keySet()) {
+			this.pluginListsMap.get(chooseString).insertItemAt(
+					"Choose your " + chooseString + " plugin...", 0);
+			this.pluginListsMap.get(chooseString).setSelectedIndex(0);
+		}
 
 		AccordionEntry accordionElement;
 
