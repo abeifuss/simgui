@@ -62,8 +62,8 @@ public class AccordionEntry extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this
-						.comboBoxChanged(listOfAllSectionsInACategory);
+				AccordionEntry.this.comboBoxChanged(jComboBox,
+						listOfAllSectionsInACategory);
 
 			}
 		});
@@ -74,32 +74,41 @@ public class AccordionEntry extends JPanel {
 		this.add(jComboBox, BorderLayout.CENTER);
 	}
 
-	private void comboBoxChanged(List<SimProp> listOfAllSectionsInACategory) {
-		this.entryTable = new JTable(new AccordionModel(this.localName)) {
+	private void comboBoxChanged(JComboBox<String> jComboBox,
+			List<SimProp> listOfAllSectionsInACategory) {
+		if (jComboBox.getSelectedIndex() != 0) {
+			this.entryTable = new JTable(new AccordionModel(this.localName)) {
 
-			// This takes care that the non-editable cells are grayed out.
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer,
-					int row, int column) {
-				Component c = super.prepareRenderer(renderer, row, column);
-				if ((column == 1) && !this.isCellEditable(row, column)) {
-					c.setBackground(new Color(255, 200, 200));
+				// This takes care that the non-editable cells are grayed out.
+				@Override
+				public Component prepareRenderer(TableCellRenderer renderer,
+						int row, int column) {
+					Component c = super.prepareRenderer(renderer, row, column);
+					if ((column == 1) && !this.isCellEditable(row, column)) {
+						c.setBackground(new Color(255, 200, 200));
+					}
+					return c;
 				}
-				return c;
-			}
-		};
-		this.entryTable.addMouseMotionListener(new AccordionMouseMotionAdapter(
-				listOfAllSectionsInACategory, this.entryTable));
-		this.entryTable.setDefaultRenderer(Object.class,
-				new AccordionTableCellRenderer(listOfAllSectionsInACategory));
-		this.entryTable.setVisible(true);
+			};
 
-		TableColumn col = this.entryTable.getColumnModel().getColumn(1);
-		col.setCellEditor(new AccordionCellEditor());
-		this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
-		this.add(this.entryTable, BorderLayout.SOUTH);
-		this.entryTable.setVisible(true);
-		this.updateUI();
+			this.entryTable
+					.addMouseMotionListener(new AccordionMouseMotionAdapter(
+							listOfAllSectionsInACategory, this.entryTable));
+			this.entryTable
+					.setDefaultRenderer(Object.class,
+							new AccordionTableCellRenderer(
+									listOfAllSectionsInACategory));
+			this.entryTable.setVisible(true);
+
+			TableColumn col = this.entryTable.getColumnModel().getColumn(1);
+			col.setCellEditor(new AccordionCellEditor());
+			this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
+			this.add(this.entryTable, BorderLayout.SOUTH);
+			this.entryTable.setVisible(true);
+			this.updateUI();
+		} else {
+			this.entryTable.setVisible(false);
+		}
 	}
 
 	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
