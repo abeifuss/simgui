@@ -14,12 +14,12 @@ import evaluation.simulator.log.Logger;
 
 public class AccordionModel implements TableModel {
 
-	private final List<Entry<String, String>> _propertiesInThisCategory;
-	private final SimPropRegistry _spr;
+	private final List<Entry<String, String>> properties;
+	private final SimPropRegistry simPropRegistry;
 
 	public AccordionModel(String category) {
-		this._spr = SimPropRegistry.getInstance();
-		this._propertiesInThisCategory = this._spr.getCategoryItems(category);
+		this.simPropRegistry = SimPropRegistry.getInstance();
+		this.properties = this.simPropRegistry.getPluginItems( (String) category);
 	}
 
 	@Override
@@ -50,32 +50,32 @@ public class AccordionModel implements TableModel {
 	}
 
 	public List<Entry<String, String>> getProperties() {
-		return this._propertiesInThisCategory;
+		return this.properties;
 	}
 
 	@Override
 	public int getRowCount() {
-		return this._propertiesInThisCategory.size();
+		return this.properties.size();
 	}
 
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
 
 		if (arg1 == 0) {
-			return this._spr.getValue(
-					this._propertiesInThisCategory.get(arg0).getKey())
+			return this.simPropRegistry.getValue(
+					this.properties.get(arg0).getKey())
 					.getName();
 		}
 
-		return this._spr.getValue(
-				this._propertiesInThisCategory.get(arg0).getKey()).getValue();
+		return this.simPropRegistry.getValue(
+				this.properties.get(arg0).getKey()).getValue();
 	}
 
 	@Override
 	public boolean isCellEditable(int arg0, int arg1) {
 		if ((arg1 == 1)
-				&& this._spr.getValue(
-						this._propertiesInThisCategory.get(arg0).getKey())
+				&& this.simPropRegistry.getValue(
+						this.properties.get(arg0).getKey())
 						.getEnable()) {
 			return true;
 		}
@@ -90,11 +90,11 @@ public class AccordionModel implements TableModel {
 	@Override
 	public void setValueAt(Object arg0, int arg1, int arg2) {
 
-		String id = this._propertiesInThisCategory.get(arg1).getKey();
+		String id = this.properties.get(arg1).getKey();
 		Logger.Log(LogLevel.DEBUG, "Changed " + id);
-		this._spr.setValue(id, arg0);
+		this.simPropRegistry.setValue(id, arg0);
 
-		DependencyChecker.checkAll(this._spr);
+		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}
 

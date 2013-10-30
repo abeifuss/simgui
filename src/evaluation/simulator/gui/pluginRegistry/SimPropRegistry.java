@@ -11,18 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Pattern;
-
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
-
-import com.google.classpath.ClassPath;
-import com.google.classpath.ClassPathFactory;
-import com.google.classpath.RegExpResourceFilter;
 
 import evaluation.simulator.annotations.plugin.AnnotatedPlugin;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
@@ -70,21 +64,19 @@ public class SimPropRegistry {
 		return this.properties.entrySet();
 	}
 
-	public List<Entry<String, String>> getCategoryItems(String category) {
+	public List<Entry<String, String>> getPluginItems(String pluginName) {
 
-		List<Entry<String, String>> hm = new LinkedList<Entry<String, String>>();
+		List<Entry<String, String>> mapIdToName = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet()
-				.iterator();
+		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet().iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
-			if (category.equals(entry.getPluginLayer())) {
-				hm.add(new ListEntry<String, String>(entry.getId(), entry
-						.getName()));
+			if (pluginName.equals(entry.getNamespace())) {
+				mapIdToName.add(new ListEntry<String, String>(entry.getId(), entry.getName()));
 			}
 		}
 
-		return hm;
+		return mapIdToName;
 	}
 
 	public Map<String, String>[] getPlugIns() {
@@ -120,7 +112,6 @@ public class SimPropRegistry {
 	}
 
 	// Scans the simulation properties
-	@SuppressWarnings("unchecked")
 	public void scan() {
 
 		SimProp property;
@@ -293,14 +284,12 @@ public class SimPropRegistry {
 		
 		String[] plugInLayer = { "clientSendStyle", "delayBox", "mixSendStyle",
 				"outputStrategy", "plotType", "topology", "trafficSource" };
-
-		System.err.println( this.properties.size() );
 		
 		for ( String key : properties.keySet() ) {
 			SimProp simProp = properties.get(key);
 			String layer = simProp.getPluginLayer();
 			String name = simProp.getNamespace();
-			System.err.println( "LAYER: " + layer + " NAME: " + name );
+
 			if ( layer.equals(plugInLayer[0]) ){
 				this.pluginLayerMap[0].put( name, layer );
 			}else if ( layer.equals(plugInLayer[1]) ){
@@ -342,6 +331,20 @@ public class SimPropRegistry {
 		} else {
 
 		}
+	}
 
+	public List<SimProp> getSimPropertiesByNamespace(String pluginNamespace) {
+		
+		List<SimProp> simPropertiesInANamespace = new LinkedList<SimProp>();
+		
+		for ( String key : properties.keySet() ) {
+			SimProp simProp = properties.get(key);
+			
+			if ( simProp.getNamespace().equals(pluginNamespace) ){
+				simPropertiesInANamespace.add( simProp );
+			}
+		}
+		
+		return simPropertiesInANamespace;
 	}
 }

@@ -12,12 +12,12 @@ import evaluation.simulator.gui.service.DescriptionService;
 
 public class AccordionMouseMotionAdapter implements MouseMotionListener {
 
-	private final List<SimProp> _listOfCategoryEntries;
-	private final JTable _table;
+	private final List<SimProp> simulationProperties;
+	private final JTable table;
 
 	public AccordionMouseMotionAdapter(List<SimProp> l, JTable t) {
-		this._table = t;
-		this._listOfCategoryEntries = l;
+		this.table = t;
+		this.simulationProperties = l;
 	}
 
 	@Override
@@ -28,9 +28,9 @@ public class AccordionMouseMotionAdapter implements MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent event) {
 		Point point = event.getPoint();
-		int row = this._table.rowAtPoint(point);
+		int row = this.table.rowAtPoint(point);
 		DescriptionService ds = DescriptionService.getInstance();
-		ds.setDescription(this._listOfCategoryEntries.get(row).getDescription());
+		ds.setDescription(this.simulationProperties.get(row).getDescription());
 	}
 
 }
