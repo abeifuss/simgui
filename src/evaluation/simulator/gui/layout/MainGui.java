@@ -106,19 +106,19 @@ public class MainGui extends JFrame {
 			this.mainGuiHeight = 750;
 		}
 
-		 try {
-		 this.horizontalSplitPlaneDeviderLocation = UserConfigService
-		 .getInstance().getInteger("HSPLIT_DEVIDER_LOCATION");
-		 } catch (Exception e) {
-		this.horizontalSplitPlaneDeviderLocation = 150;
-		 }
+		try {
+			this.horizontalSplitPlaneDeviderLocation = UserConfigService
+					.getInstance().getInteger("HSPLIT_DEVIDER_LOCATION");
+		} catch (Exception e) {
+			this.horizontalSplitPlaneDeviderLocation = 150;
+		}
 
-		 try {
-		 this.consoleHeight = UserConfigService
-		 .getInstance().getInteger("VSPLIT_DEVIDER_LOCATION");
-		 } catch (Exception e) {
-		this.consoleHeight = 650;
-		 }
+		try {
+			this.consoleHeight = UserConfigService.getInstance().getInteger(
+					"CONSOLE_HEIGHT");
+		} catch (Exception e) {
+			this.consoleHeight = 650;
+		}
 
 		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth,
 				this.mainGuiHeight);
@@ -216,7 +216,8 @@ public class MainGui extends JFrame {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						horizontalSplitPlaneDeviderLocation = horizontalSplitPlane.getDividerLocation();
+						horizontalSplitPlaneDeviderLocation = horizontalSplitPlane
+								.getDividerLocation();
 					}
 				});
 
@@ -226,7 +227,8 @@ public class MainGui extends JFrame {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						consoleHeight = verticalSplitPlane.getSize().height - verticalSplitPlane.getDividerLocation();
+						consoleHeight = verticalSplitPlane.getSize().height
+								- verticalSplitPlane.getDividerLocation();
 					}
 				});
 
@@ -234,21 +236,25 @@ public class MainGui extends JFrame {
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
-				horizontalSplitPlane.setDividerLocation(horizontalSplitPlaneDeviderLocation);
-				verticalSplitPlane.setDividerLocation( verticalSplitPlane.getSize().height - consoleHeight);
+				horizontalSplitPlane
+						.setDividerLocation(horizontalSplitPlaneDeviderLocation);
+				verticalSplitPlane.setDividerLocation(verticalSplitPlane
+						.getSize().height - consoleHeight);
 			}
 
 			@Override
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
-				horizontalSplitPlane.setDividerLocation(horizontalSplitPlaneDeviderLocation);
-				verticalSplitPlane.setDividerLocation( verticalSplitPlane.getSize().height - consoleHeight);
+				horizontalSplitPlane
+						.setDividerLocation(horizontalSplitPlaneDeviderLocation);
+				verticalSplitPlane.setDividerLocation(verticalSplitPlane
+						.getSize().height - consoleHeight);
 			}
 		});
 	}
 
 	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("VSPLIT_DEVIDER_LOCATION",
+		UserConfigService.getInstance().setInteger("CONSOLE_HEIGHT",
 				this.consoleHeight);
 		UserConfigService.getInstance().setInteger("HSPLIT_DEVIDER_LOCATION",
 				this.horizontalSplitPlaneDeviderLocation);
