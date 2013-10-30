@@ -65,7 +65,6 @@ public class Accordion extends JScrollPane {
 		Iterator<String> categoryIterator = listOfAllCategories.iterator();
 		while (categoryIterator.hasNext()) {
 			String category = categoryIterator.next();
-			System.err.println(category);
 			
 			// Create the list of all elements in a category
 			List<SimProp> listOfAllSectionsInACategory = new LinkedList<SimProp>();
@@ -77,7 +76,7 @@ public class Accordion extends JScrollPane {
 				}
 			}
 			// TODO nicht benutzen!!!!!
-			acordition = new AccordionEntry(category,listOfAllSectionsInACategory, null);
+			acordition = new AccordionEntry(category, null);
 			this.jPanel.add(acordition, gridBagConstraint);
 		}
 

@@ -18,8 +18,6 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.NetworkMessage;

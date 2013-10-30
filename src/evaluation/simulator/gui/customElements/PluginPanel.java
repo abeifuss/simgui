@@ -19,6 +19,7 @@ import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+@SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
 
 	private JPanel _panel;
@@ -124,34 +125,21 @@ public class PluginPanel extends JScrollPane {
 
 		AccordionEntry accordionElement;
 
-		List<SimProp> listofAllSections = this.getSections();
-		Set<String> listOfAllCategories = new HashSet<String>();
+		List<SimProp> listofAllSimProperties = this.getSections();
+		Set<String> listOfAllPluginLayers = new HashSet<String>();
 
-		Iterator<SimProp> iter = listofAllSections.iterator();
-		while (iter.hasNext()) {
-			String category = iter.next().getPluginLayer();
-			listOfAllCategories.add(category);
+		Iterator<SimProp> simPropertyIterator = listofAllSimProperties.iterator();
+		while (simPropertyIterator.hasNext()) {
+			String plugInName = simPropertyIterator.next().getPluginLayer();
+			listOfAllPluginLayers.add(plugInName);
 		}
 
 		// Select the categories
-		Iterator<String> iter2 = listOfAllCategories.iterator();
-		while (iter2.hasNext()) {
-			String category = iter2.next();
+		Iterator<String> plugInNameIterator = listOfAllPluginLayers.iterator();
+		while (plugInNameIterator.hasNext()) {
+			String plugInName = plugInNameIterator.next();
 
-			// Create the list of all elements in a category
-			List<SimProp> listOfAllSectionsInACategory = new LinkedList<SimProp>();
-			Iterator<SimProp> iter1 = listofAllSections.iterator();
-			while (iter1.hasNext()) {
-				SimProp propToCheck = iter1.next();
-
-				if (propToCheck.getPluginLayer().equals(category)) {
-					listOfAllSectionsInACategory.add(propToCheck);
-				}
-			}
-
-			accordionElement = new AccordionEntry(category,
-					listOfAllSectionsInACategory,
-					this.pluginListsMap.get(category));
+			accordionElement = new AccordionEntry(plugInName, this.pluginListsMap.get(plugInName));
 			this._panel.add(accordionElement, gridBagConstraints);
 		}
 
