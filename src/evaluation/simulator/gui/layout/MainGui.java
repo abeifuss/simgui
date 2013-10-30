@@ -6,8 +6,13 @@ import java.awt.Dimension;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -16,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 import evaluation.simulator.conf.service.UserConfigService;
@@ -36,18 +42,20 @@ public class MainGui extends JFrame {
 		return instance;
 	}
 
-	private JPanel _configToolView;
-	private JPanel _helpToolView;
+	private JPanel configToolView;
+	private JPanel helpToolView;
 
-	private JSplitPane _horrizontalSplitPlane;
-	private int _mainGuiHeight;
-	private int _mainGuiWidth;
-	private int _mainGuiXPos;
-	private int _mainGuiYPos;
+	private JSplitPane horizontalSplitPlane;
+	private int mainGuiHeight;
+	private int mainGuiWidth;
+	private int mainGuiXPos;
+	private int mainGuiYPos;
+	private int consoleHeight;
+	private int horizontalSplitPlaneDeviderLocation;
 
-	private JTabbedPane _mainView;
-	private HomeTab _homeTab;
-	private boolean _homeTabStatus;
+	private JTabbedPane mainView;
+	private HomeTab homeTab;
+	private boolean homeTabStatus;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -71,35 +79,49 @@ public class MainGui extends JFrame {
 		this.setVisible(true);
 
 		try {
-			this._mainGuiXPos = UserConfigService.getInstance().getInteger(
+			this.mainGuiXPos = UserConfigService.getInstance().getInteger(
 					"MAINGUI_XPOS");
 		} catch (Exception e) {
-			this._mainGuiXPos = 100;
+			this.mainGuiXPos = 100;
 		}
 
 		try {
-			this._mainGuiYPos = UserConfigService.getInstance().getInteger(
+			this.mainGuiYPos = UserConfigService.getInstance().getInteger(
 					"MAINGUI_YPOS");
 		} catch (Exception e) {
-			this._mainGuiYPos = 100;
+			this.mainGuiYPos = 100;
 		}
 
 		try {
-			this._mainGuiWidth = UserConfigService.getInstance().getInteger(
+			this.mainGuiWidth = UserConfigService.getInstance().getInteger(
 					"MAINGUI_WIDTH");
 		} catch (Exception e) {
-			this._mainGuiWidth = 500;
+			this.mainGuiWidth = 500;
 		}
 
 		try {
-			this._mainGuiHeight = UserConfigService.getInstance().getInteger(
+			this.mainGuiHeight = UserConfigService.getInstance().getInteger(
 					"MAINGUI_HEIGTH");
 		} catch (Exception e) {
-			this._mainGuiHeight = 750;
+			this.mainGuiHeight = 750;
 		}
 
-		this.setBounds(this._mainGuiXPos, this._mainGuiYPos,
-				this._mainGuiWidth, this._mainGuiHeight);
+		 try {
+		 this.horizontalSplitPlaneDeviderLocation = UserConfigService
+		 .getInstance().getInteger("HSPLIT_DEVIDER_LOCATION");
+		 } catch (Exception e) {
+		this.horizontalSplitPlaneDeviderLocation = 150;
+		 }
+
+		 try {
+		 this.consoleHeight = UserConfigService
+		 .getInstance().getInteger("VSPLIT_DEVIDER_LOCATION");
+		 } catch (Exception e) {
+		this.consoleHeight = 650;
+		 }
+
+		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth,
+				this.mainGuiHeight);
 
 		this.addWindowListener(new WindowListener() {
 
@@ -138,41 +160,42 @@ public class MainGui extends JFrame {
 
 	protected void init() {
 
-		this._horrizontalSplitPlane = new JSplitPane();
-		this._horrizontalSplitPlane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		this._horrizontalSplitPlane.setOneTouchExpandable(true);
-		this._horrizontalSplitPlane.setDividerLocation(350);
+		this.horizontalSplitPlane = new JSplitPane();
+		this.horizontalSplitPlane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		this.horizontalSplitPlane.setOneTouchExpandable(true);
 
-		JSplitPane verticalSplitPlane = new JSplitPane();
+		final JSplitPane verticalSplitPlane = new JSplitPane();
 		verticalSplitPlane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		verticalSplitPlane.setOneTouchExpandable(true);
-		verticalSplitPlane.setDividerLocation(400);
 
-		this._configToolView = SimConfigPanel.getInstance();
-		this._helpToolView = HelpFrame.getInstance().getPanel();
+		this.configToolView = SimConfigPanel.getInstance();
+		this.helpToolView = HelpFrame.getInstance().getPanel();
 
 		JPanel right = new JPanel();
 		right.setLayout(new BorderLayout());
 		right.add(verticalSplitPlane, BorderLayout.CENTER);
 
-		this._mainView = new JTabbedPane();
-		_homeTab = new HomeTab();
-		this._mainView.addTab("Home", _homeTab);
-		this._homeTabStatus = true;
-		this._mainView.addTab("Simulator", new SimulationTab());
+		this.mainView = new JTabbedPane();
+		homeTab = new HomeTab();
+		this.mainView.addTab("Home", homeTab);
+		this.homeTabStatus = true;
+		this.mainView.addTab("Simulator", new SimulationTab());
 
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
 		bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
 
-		this._horrizontalSplitPlane.setLeftComponent(this._configToolView);
-		this._horrizontalSplitPlane.setRightComponent(right);
+		this.horizontalSplitPlane.setLeftComponent(this.configToolView);
+		this.horizontalSplitPlane.setRightComponent(right);
 
-		verticalSplitPlane.setTopComponent(this._mainView);
+		verticalSplitPlane.setTopComponent(this.mainView);
 		verticalSplitPlane.setBottomComponent(bottom);
 
-		this.getContentPane().add(this._horrizontalSplitPlane,
+		this.getContentPane().add(this.horizontalSplitPlane,
 				BorderLayout.CENTER);
+
+		this.horizontalSplitPlane.setVisible(true);
+		verticalSplitPlane.setVisible(true);
 
 		JPanel statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -184,9 +207,51 @@ public class MainGui extends JFrame {
 		statusPanel.add(statusLabel);
 
 		this.setupMenu();
+
+		pack();
+
+		this.horizontalSplitPlane.addPropertyChangeListener(
+				JSplitPane.DIVIDER_LOCATION_PROPERTY,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						horizontalSplitPlaneDeviderLocation = horizontalSplitPlane.getDividerLocation();
+					}
+				});
+
+		verticalSplitPlane.addPropertyChangeListener(
+				JSplitPane.DIVIDER_LOCATION_PROPERTY,
+				new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						consoleHeight = verticalSplitPlane.getSize().height - verticalSplitPlane.getDividerLocation();
+					}
+				});
+
+		addComponentListener(new ComponentAdapter() {
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				horizontalSplitPlane.setDividerLocation(horizontalSplitPlaneDeviderLocation);
+				verticalSplitPlane.setDividerLocation( verticalSplitPlane.getSize().height - consoleHeight);
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				super.componentResized(e);
+				horizontalSplitPlane.setDividerLocation(horizontalSplitPlaneDeviderLocation);
+				verticalSplitPlane.setDividerLocation( verticalSplitPlane.getSize().height - consoleHeight);
+			}
+		});
 	}
 
 	private void safeProperties() {
+		UserConfigService.getInstance().setInteger("VSPLIT_DEVIDER_LOCATION",
+				this.consoleHeight);
+		UserConfigService.getInstance().setInteger("HSPLIT_DEVIDER_LOCATION",
+				this.horizontalSplitPlaneDeviderLocation);
 		UserConfigService.getInstance().setInteger("MAINGUI_XPOS", this.getX());
 		UserConfigService.getInstance().setInteger("MAINGUI_YPOS", this.getY());
 		UserConfigService.getInstance().setInteger("MAINGUI_WIDTH",
@@ -202,37 +267,36 @@ public class MainGui extends JFrame {
 	// (De)seperate the configuration tool
 	public void toogleConfTool(boolean b) {
 		if (b) {
-			this._configToolView = SimConfigPanel.getInstance();
-			this._horrizontalSplitPlane.setLeftComponent(this._configToolView);
+			this.configToolView = SimConfigPanel.getInstance();
+			this.horizontalSplitPlane.setLeftComponent(this.configToolView);
 		} else {
-			this._horrizontalSplitPlane.remove(this._configToolView);
+			this.horizontalSplitPlane.remove(this.configToolView);
 		}
 	}
 
 	// (De)seperate the help tool
 	public void toogleHelpTool(boolean b) {
 		if (b) {
-			this._helpToolView = HelpFrame.getInstance().getPanel();
-			this._mainView.addTab("Tutorial", this._helpToolView);
+			this.helpToolView = HelpFrame.getInstance().getPanel();
+			this.mainView.addTab("Tutorial", this.helpToolView);
 		} else {
-			this._mainView.remove(this._helpToolView);
+			this.mainView.remove(this.helpToolView);
 		}
 	}
-	
+
 	// Close/Open the home frame
-		public void toggleHomeTab(boolean b) {
-			if (b) {
-				this._mainView.addTab("Home", _homeTab);
-				this._homeTabStatus = true;
-			} else {
-				this._mainView.remove(_homeTab);
-				this._homeTabStatus = false;
-			}
-		}	
+	public void toggleHomeTab(boolean b) {
+		if (b) {
+			this.mainView.addTab("Home", homeTab);
+			this.homeTabStatus = true;
+		} else {
+			this.mainView.remove(homeTab);
+			this.homeTabStatus = false;
+		}
+	}
 
-
-	public boolean hTisShown() {		
-		return this._homeTabStatus;
+	public boolean hTisShown() {
+		return this.homeTabStatus;
 	}
 
 }

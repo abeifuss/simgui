@@ -1,5 +1,6 @@
 package evaluation.simulator.gui.customElements.accordion;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashSet;
@@ -30,6 +31,8 @@ public class Accordion extends JScrollPane {
 	private final SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
 	public Accordion() {
+		
+		this.setMinimumSize( new Dimension(300, 600));
 
 		// Start Layout
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

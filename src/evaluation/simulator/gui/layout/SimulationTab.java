@@ -19,19 +19,17 @@ import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.gui.results.LineJFreeChartCreator;
 import evaluation.simulator.gui.results.ResultPanelFactory;
 
-//import core.binding.gMixBinding;
-
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
 
-	private final JTabbedPane _bottom;
-	private int _resultCounter;
-	private final JButton _startButton = new JButton("Start");
-	private final JPanel _top;
+	private final JTabbedPane south;
+	private final JPanel north;
+	private int resultCounter;
+	private final JButton startButton = new JButton("Start");
 
 	public SimulationTab() {
 
-		this._resultCounter = 1;
+		this.resultCounter = 1;
 
 		JSplitPane verticalSplitPlane = new JSplitPane();
 		verticalSplitPlane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -41,66 +39,56 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.add(verticalSplitPlane, BorderLayout.CENTER);
 
-		this._top = new JPanel();
+		this.north = new JPanel();
+		this.south = new JTabbedPane();
 
 		JLabel wellcomeLabel = new JLabel("Simulation Test");
 		wellcomeLabel.setFont(new Font("arial", 1, 35));
 
-		GridBagLayout gbl = new GridBagLayout();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.weightx = 0;
-		gbc.weighty = 1;
-		gbc.gridx = GridBagConstraints.RELATIVE;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbl.setConstraints(this._top, gbc);
-		this._top.setLayout(gbl);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.anchor = GridBagConstraints.NORTH;
+		gridBagConstraints.weightx = 0;
+		gridBagConstraints.weighty = 1;
+		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
+		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayout.setConstraints(this.north, gridBagConstraints);
+		this.north.setLayout(gridBagLayout);
+		
+		this.north.add(wellcomeLabel, gridBagConstraints);
+		this.north.add(this.startButton);
 
-		// top.setLayout(new BorderLayout());
-		this._top.add(wellcomeLabel, gbc);
-		this._top.add(this._startButton);
-
-		this._startButton.addActionListener(this);
-
-		this._bottom = new JTabbedPane();
-		// bottom.setLayout(new BorderLayout());
-		// bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
-		/*
-		 * bottom.addTab("Home", new HomeTab()); bottom.addTab("Simulator", new
-		 * SimulationTab());
-		 */
-		this._bottom.addTab("Results_" + this._resultCounter, new ChartPanel(
+		this.startButton.addActionListener(this);
+		
+		this.south.addTab("Results_" + this.resultCounter, new ChartPanel(
 				LineJFreeChartCreator.createAChart()));
-		this._resultCounter++;
-		this._bottom.addTab("Results_" + this._resultCounter, new ChartPanel(
+		this.resultCounter++;
+		
+		this.south.addTab("Results_" + this.resultCounter, new ChartPanel(
 				LineJFreeChartCreator.createAChart()));
-		this._resultCounter++;
+		this.resultCounter++;
 
-		verticalSplitPlane.setTopComponent(this._top);
-		verticalSplitPlane.setBottomComponent(this._bottom);
+		verticalSplitPlane.setTopComponent(this.north);
+		verticalSplitPlane.setBottomComponent(this.south);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
-		if (event.getSource() == this._startButton) {
+		if (event.getSource() == this.startButton) {
 			String[] params = { "etc/conf/testconf.txt" };
 
 			// TODO:
 			// This is where the SimPropService must dump the configuration
 			// and pass it to the Simulator.
 
-			/*
-	    	    * 
-	    	    */
-
 			@SuppressWarnings("unused")
 			gMixBinding callSimulation = new gMixBinding(params);
-			this._bottom.addTab("Results_" + this._resultCounter,
+			this.south.addTab("Results_" + this.resultCounter,
 					ResultPanelFactory.getResultPanel());
-			this._resultCounter++;
+			this.resultCounter++;
 		}
 	}
 

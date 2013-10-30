@@ -1,9 +1,14 @@
 package evaluation.simulator.gui.console;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
-public class ConsolePanel extends JTextArea {
+public class ConsolePanel extends JPanel {
 
 	private static ConsolePanel instance = null;
 
@@ -15,29 +20,51 @@ public class ConsolePanel extends JTextArea {
 	}
 
 	private String _log;
+	private JTextArea textArea;
+	private JScrollPane scroll;
 
 	private ConsolePanel() {
 
-		this.setEditable(false);
+		this.textArea = new JTextArea();
+		this.scroll = new JScrollPane(textArea);
+		
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.fill = gridBagConstraints.BOTH;
+		gridBagConstraints.anchor = GridBagConstraints.NORTH;
+		gridBagConstraints.weightx = 1;
+		gridBagConstraints.weighty = 1;
+		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
+		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayout.setConstraints(this, gridBagConstraints);
+		
+		this.setLayout( gridBagLayout );
+		this.textArea.setEditable(false);
+		
+		this.add(this.scroll, gridBagConstraints);
+		this.textArea.setVisible(true);
+		
+		this.scroll.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+		this.scroll.setHorizontalScrollBarPolicy( JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
 
 		this._log = "";
 		this.initConsole();
 	}
 
-	@Override
 	public void append(String msg) {
-		this._log = msg + "\n" + this._log;
+		this._log = this._log + "\n" + msg;
 		this.update();
 	}
 
 	public void initConsole() {
-		this.append("Wellcome to gMixSim");
 		this.append("=============");
-		this.update();
+		this.append("Wellcome to gMixSim");
 	}
 
 	public void update() {
-		this.setText(this._log);
-		this.setCaretPosition(10);
+		this.textArea.setText(this._log);
+//		this.textArea.setCaretPosition(0);
+		this.scroll.getVerticalScrollBar().setValue( this.scroll.getVerticalScrollBar().getMaximum() );
+		this.scroll.repaint();
 	}
 }
