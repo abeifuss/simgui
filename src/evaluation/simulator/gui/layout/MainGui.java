@@ -55,6 +55,7 @@ public class MainGui extends JFrame {
 
 	private JTabbedPane mainView;
 	private HomeTab homeTab;
+	private SimulationTab simulationTab;
 	private boolean homeTabStatus;
 
 	public MainGui() {
@@ -179,7 +180,8 @@ public class MainGui extends JFrame {
 		homeTab = new HomeTab();
 		this.mainView.addTab("Home", homeTab);
 		this.homeTabStatus = true;
-		this.mainView.addTab("Simulator", new SimulationTab());
+		simulationTab = new SimulationTab();
+		this.mainView.addTab("Simulator", simulationTab);
 
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
@@ -303,6 +305,10 @@ public class MainGui extends JFrame {
 
 	public boolean hTisShown() {
 		return this.homeTabStatus;
+	}
+	
+	public void update(){
+		simulationTab.update();
 	}
 
 }

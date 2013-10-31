@@ -17,6 +17,8 @@
  */
 package evaluation.simulator.plugins.outputStrategy;
 
+import java.lang.annotation.Documented;
+
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
@@ -32,7 +34,6 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random
 // order)
-
 @PluginAnnotation(name = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
@@ -42,7 +43,7 @@ public class Batch extends OutputStrategyImpl {
 		private final MixMessage[] collectedMessages;
 		private final boolean isRequestBatch;
 		private int nextFreeSlot = 0;
-
+		
 		public SimplexBatch(int batchSize, boolean isRequestBatch) {
 
 			this.batchSize = batchSize;

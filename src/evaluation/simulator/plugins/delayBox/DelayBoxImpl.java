@@ -17,8 +17,15 @@
  */
 package evaluation.simulator.plugins.delayBox;
 
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 
 public abstract class DelayBoxImpl {
+	
+	@IntSimulationProperty( name="superclassentry", 
+			propertykey="SUPERCLASS_ENTRY",
+			min=0,
+			max=10)
+	int test;
 	
 	public abstract int getSendDelay(int numberOfBytesToSend);
 	

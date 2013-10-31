@@ -8,7 +8,9 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
+import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+import evaluation.simulator.gui.service.GuiService;
 
 public class SaveButtonAction implements ActionListener {
 
@@ -36,6 +38,8 @@ public class SaveButtonAction implements ActionListener {
 			SimulationConfigService simulationConfigService = new SimulationConfigService(
 					simPropRegistry);
 			simulationConfigService.writeConfig(file);
+			
+			MainGui.getInstance().update();
 		}
 	}
 
