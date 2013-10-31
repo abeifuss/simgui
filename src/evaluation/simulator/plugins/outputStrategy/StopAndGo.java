@@ -20,6 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -35,6 +36,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @PluginAnnotation(name = "STOP_AND_GO")
 public class StopAndGo extends OutputStrategyImpl implements EventExecutor {
 
+	@BoolSimulationProperty( name = "Use timestamps", propertykey="SGMIX_USE_TIMESTAMPS")
 	private boolean useTimeStamps;
 	
 	

@@ -18,6 +18,8 @@ import javax.swing.JScrollPane;
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
@@ -139,6 +141,7 @@ public class PluginPanel extends JScrollPane {
 		while (plugInNameIterator.hasNext()) {
 			String plugInName = plugInNameIterator.next();
 
+			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + plugInName );
 			accordionElement = new AccordionEntry(plugInName, this.pluginListsMap.get(plugInName));
 			this._panel.add(accordionElement, gridBagConstraints);
 		}

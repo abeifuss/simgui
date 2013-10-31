@@ -2,8 +2,6 @@ package evaluation.simulator.gui.customElements.accordion;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.Map.Entry;
-
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -12,17 +10,17 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.annotations.simulationProperty.StringProp;
-import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
 public class AccordionCellEditor extends AbstractCellEditor implements
 		TableCellEditor {
 
-	private final JCheckBox _cbox = new JCheckBox();
-	private Class<?> _class;
-	private final JComboBox<String> _combobox = new JComboBox<>();
-	private final JSpinner _spinner = new JSpinner();
+	private final JCheckBox checkBox = new JCheckBox();
+	private Class<?> propertyClass;
+	private final JComboBox<String> comboBox = new JComboBox<>();
+	private final JSpinner spinner = new JSpinner();
 
 	private final JTextField _textfield = new JTextField();
 	private boolean predefined;
@@ -30,15 +28,17 @@ public class AccordionCellEditor extends AbstractCellEditor implements
 	@Override
 	public Object getCellEditorValue() {
 
-		if (this._class == Integer.class) {
-			return this._spinner.getValue();
-		} else if (this._class == Boolean.class) {
-			return this._cbox.isSelected();
-		} else if (this._class == Float.class) {
+		if (this.propertyClass == Integer.class) {
+			return this.spinner.getValue();
+		} else if (this.propertyClass == Boolean.class) {
+			return this.checkBox.isSelected();
+		} else if (this.propertyClass == Float.class) {
 			return this._textfield.getText();
-		} else if (this._class == String.class) {
+		} else if (this.propertyClass == Double.class) {
+			return this._textfield.getText();
+		}else if (this.propertyClass == String.class) {
 			if (this.predefined) {
-				return this._combobox.getSelectedItem();
+				return this.comboBox.getSelectedItem();
 			}
 			return this._textfield.getText();
 		}
@@ -50,32 +50,34 @@ public class AccordionCellEditor extends AbstractCellEditor implements
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 
-		SimPropRegistry spr = SimPropRegistry.getInstance();
-		List<Entry<String, String>> list = ((AccordionModel) table.getModel())
-				.getProperties();
-		this._class = spr.getValue(list.get(row).getKey()).getValueType();
+		List<SimProp> list = ((AccordionModel) table.getModel()).getProperties();
+		
+		this.propertyClass = list.get(row).getValueType();
 
 		// TODO: extend!!!
-		if (this._class == Integer.class) {
-			this._spinner.setValue((int) value);
-			return this._spinner;
-		} else if (this._class == Float.class) {
+		if (this.propertyClass == Integer.class) {
+			this.spinner.setValue((int) value);
+			return this.spinner;
+		} else if (this.propertyClass == Float.class) {
 			this._textfield.setText(value + "");
 			return this._textfield;
-		} else if (this._class == Boolean.class) {
-			this._cbox.setSelected((boolean) value);
-			return this._cbox;
-		} else if (this._class == String.class) {
-			String possibleValues = ((StringProp) (spr.getValue(list.get(row)
-					.getKey()))).getPossibleValues();
+		} else if (this.propertyClass == Double.class) {
+			this._textfield.setText(value + "");
+			return this._textfield;
+		} else if (this.propertyClass == Boolean.class) {
+			this.checkBox.setSelected((boolean) value);
+			return this.checkBox;
+		} else if (this.propertyClass == String.class) {
+			StringProp stringProp = (StringProp) list.get(row);
+			String possibleValues = stringProp.getPossibleValues();
 			if (!possibleValues.equals("")) {
 				this.predefined = true;
-				this._combobox.removeAllItems();
+				this.comboBox.removeAllItems();
 				String[] valueArray = possibleValues.split(",");
 				for (String element : valueArray) {
-					this._combobox.addItem(element.replace(" ", ""));
+					this.comboBox.addItem(element.replace(" ", ""));
 				}
-				return this._combobox;
+				return this.comboBox;
 			}
 			this.predefined = false;
 		}

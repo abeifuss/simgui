@@ -92,19 +92,19 @@ public class SimPropRegistry {
 		System.out.println("Register: " + s.getId());
 		if (this.properties.containsKey(s.getId())) {
 
-			GraphicsDevice gd = GraphicsEnvironment
+			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-			int x = gd.getDisplayMode().getWidth();
-			int y = gd.getDisplayMode().getHeight();
+			int x = graphicsDevice.getDisplayMode().getWidth();
+			int y = graphicsDevice.getDisplayMode().getHeight();
 
 			JOptionPane alert = new JOptionPane("Redefinition of " + s.getId()
 					+ " (" + s.getPlugin() + ") detected!");
 
-			JDialog d = alert.createDialog(null, "");
-			int w = d.getWidth();
-			int h = d.getHeight();
-			d.setLocation((x / 2) - (w / 2), (y / 2) - (h / 2));
-			d.setVisible(true);
+			JDialog dialog = alert.createDialog(null, "");
+			int w = dialog.getWidth();
+			int h = dialog.getHeight();
+			dialog.setLocation((x / 2) - (w / 2), (y / 2) - (h / 2));
+			dialog.setVisible(true);
 
 		} else {
 			this.properties.put(s.getId(), s);
@@ -114,166 +114,188 @@ public class SimPropRegistry {
 	// Scans the simulation properties
 	public void scan() {
 
-		SimProp property;
 		AnnotatedPlugin plugin;
 
 		Reflections reflectionsPlugins = new Reflections(
 				ClasspathHelper.forPackage("evaluation.simulator.plugins"),
 				new TypeAnnotationsScanner());
 
+		// Look for classes with PluginAnnotation
 		Set<Class<?>> types = reflectionsPlugins
 				.getTypesAnnotatedWith(evaluation.simulator.annotations.plugin.PluginAnnotation.class);
 
-		for (Class<?> c : types) {
-			PluginAnnotation pa = c.getAnnotation(PluginAnnotation.class);
+		for (Class<?> plugInClass : types) {
+			
+			Logger.Log( LogLevel.DEBUG, "Class: " + plugInClass.getCanonicalName());
+
+			PluginAnnotation pluginAnnotation = plugInClass.getAnnotation(PluginAnnotation.class);
 
 			plugin = new AnnotatedPlugin();
-			plugin.setId(c.getName());
-			plugin.setName(pa.name());
-			plugin.setDocumentationURL(pa.documentationURL());
+			plugin.setId(plugInClass.getName());
+			plugin.setName(pluginAnnotation.name());
+			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 
 			String plugInLayer = (plugin.getId()).split("\\.", 5)[3];
-
-			try {
-				for (Field feld : Class.forName(c.getCanonicalName())
-						.getDeclaredFields()) {
-					// System.out.println(c.getCanonicalName()+":" +
-					// feld.getName());
-					Annotation[] a = feld.getAnnotations();
-					for (Annotation element : a) {
-						// System.out.println("Annotations " + a[k]);
-						if (element.annotationType() == BoolSimulationProperty.class) {
-							BoolSimulationProperty annotation = feld
-									.getAnnotation(BoolSimulationProperty.class);
-							property = new BoolProp();
-							if (annotation != null) {
-								// property.setId(f.getName());
-								property.setId(plugin.getName() + "::"
-										+ annotation.propertykey());
-								property.setNamespace(plugin.getName());
-								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
-								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(plugInLayer);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								((BoolProp) property).setValue(annotation
-										.value());
-								property.setEnable(true);
-							}
-							this.register(property);
-						} else if (element.annotationType() == IntSimulationProperty.class) {
-							IntSimulationProperty annotation = feld
-									.getAnnotation(IntSimulationProperty.class);
-							property = new IntProp();
-							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ annotation.propertykey());
-								property.setNamespace(plugin.getName());
-								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
-								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(plugInLayer);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								property.setValue_requirements(annotation
-										.value_requirements());
-								((IntProp) property).setMinValue(annotation
-										.min());
-								((IntProp) property).setMaxValue(annotation
-										.max());
-								property.setValue(annotation.value());
-								property.setEnable(true);
-							}
-							this.register(property);
-						} else if (element.annotationType() == FloatSimulationProperty.class) {
-							FloatSimulationProperty annotation = feld
-									.getAnnotation(FloatSimulationProperty.class);
-							property = new FloatProp();
-							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ annotation.propertykey());
-								property.setNamespace(plugin.getName());
-								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
-								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(plugInLayer);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								((FloatProp) property).setMinValue(annotation
-										.min());
-								((FloatProp) property).setMaxValue(annotation
-										.max());
-								((FloatProp) property).setValue(annotation
-										.value());
-								property.setEnable(true);
-							}
-							this.register(property);
-						} else if (element.annotationType() == DoubleSimulationProperty.class) {
-							DoubleSimulationProperty annotation = feld
-									.getAnnotation(DoubleSimulationProperty.class);
-							property = new DoubleProp();
-							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ annotation.propertykey());
-								property.setNamespace(plugin.getName());
-								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
-								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(plugInLayer);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								((DoubleProp) property).setMinValue(annotation
-										.min());
-								((DoubleProp) property).setMaxValue(annotation
-										.max());
-								((DoubleProp) property).setValue(annotation
-										.value());
-								property.setEnable(true);
-							}
-							this.register(property);
-						} else if (element.annotationType() == StringSimulationProperty.class) {
-							StringSimulationProperty annotation = feld
-									.getAnnotation(StringSimulationProperty.class);
-							property = new StringProp();
-							if (annotation != null) {
-								property.setId(plugin.getName() + "::"
-										+ annotation.propertykey());
-								property.setNamespace(plugin.getName());
-								property.setName(annotation.name());
-								property.setDescription(annotation
-										.description());
-								property.setTooltip(annotation.tooltip());
-								property.setPluginLayer(plugInLayer);
-								property.setEnable_requirements(annotation
-										.enable_requirements());
-								((StringProp) property).setValue(annotation
-										.value());
-								((StringProp) property)
-										.setPossibleValues(annotation
-												.possibleValues());
-								property.setEnable(true);
-							}
-							this.register(property);
-						} else {
-							Logger.Log(LogLevel.ERROR,
-									"GuiConfigRegistry - bad type");
-							continue;
-						}
-					}
-				}
-			} catch (SecurityException | ClassNotFoundException e) {
-				e.printStackTrace();
+			
+			readFields( plugin, plugInClass.getDeclaredFields(), plugInLayer );
+			
+			// lookup for super class
+			Class<?> superClass = plugInClass.getSuperclass();
+			Logger.Log( LogLevel.DEBUG , "Superclass: " + superClass.getCanonicalName());
+			readFields( plugin, superClass.getDeclaredFields(), plugInLayer );
+			
+			// scan for inner classes
+			Class<?>[] innerClasses = plugInClass.getClasses();
+			for ( Class<?> innerClass : innerClasses ){
+				Logger.Log( LogLevel.DEBUG , "Inner class: " + innerClass.getCanonicalName());
+				readFields( plugin, innerClass.getDeclaredFields(), plugInLayer );
 			}
-
+			
 		}
 
 		// call initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(this);
+	}
+
+	private void readFields(AnnotatedPlugin plugin, Field[] fields, String plugInLayer ) {
+		
+		SimProp property;
+		
+		try {
+			for (Field field : fields ) {
+				
+				Annotation[] a = field.getAnnotations();
+				for (Annotation element : a) {
+					
+					
+					if (element.annotationType() == BoolSimulationProperty.class) {
+						BoolSimulationProperty annotation = field
+								.getAnnotation(BoolSimulationProperty.class);
+						property = new BoolProp();
+						if (annotation != null) {
+							// property.setId(f.getName());
+							property.setId(plugin.getName() + "::"
+									+ annotation.propertykey());
+							property.setNamespace(plugin.getName());
+							property.setName(annotation.name());
+							property.setDescription(annotation
+									.description());
+							property.setTooltip(annotation.propertykey());
+							property.setPluginLayer(plugInLayer);
+							property.setEnable_requirements(annotation
+									.enable_requirements());
+							((BoolProp) property).setValue(annotation
+									.value());
+							property.setEnable(true);
+						}
+						this.register(property);
+					} else if (element.annotationType() == IntSimulationProperty.class) {
+						IntSimulationProperty annotation = field
+								.getAnnotation(IntSimulationProperty.class);
+						property = new IntProp();
+						if (annotation != null) {
+							property.setId(plugin.getName() + "::"
+									+ annotation.propertykey());
+							property.setNamespace(plugin.getName());
+							property.setName(annotation.name());
+							property.setDescription(annotation
+									.description());
+							property.setTooltip(annotation.propertykey());
+							property.setPluginLayer(plugInLayer);
+							property.setEnable_requirements(annotation
+									.enable_requirements());
+							property.setValue_requirements(annotation
+									.value_requirements());
+							((IntProp) property).setMinValue(annotation
+									.min());
+							((IntProp) property).setMaxValue(annotation
+									.max());
+							property.setValue(annotation.value());
+							property.setEnable(true);
+						}
+						this.register(property);
+					} else if (element.annotationType() == FloatSimulationProperty.class) {
+						FloatSimulationProperty annotation = field
+								.getAnnotation(FloatSimulationProperty.class);
+						property = new FloatProp();
+						if (annotation != null) {
+							property.setId(plugin.getName() + "::"
+									+ annotation.propertykey());
+							property.setNamespace(plugin.getName());
+							property.setName(annotation.name());
+							property.setDescription(annotation
+									.description());
+							property.setTooltip(annotation.propertykey());
+							property.setPluginLayer(plugInLayer);
+							property.setEnable_requirements(annotation
+									.enable_requirements());
+							((FloatProp) property).setMinValue(annotation
+									.min());
+							((FloatProp) property).setMaxValue(annotation
+									.max());
+							((FloatProp) property).setValue(annotation
+									.value());
+							property.setEnable(true);
+						}
+						this.register(property);
+					} else if (element.annotationType() == DoubleSimulationProperty.class) {
+						DoubleSimulationProperty annotation = field
+								.getAnnotation(DoubleSimulationProperty.class);
+						property = new DoubleProp();
+						if (annotation != null) {
+							property.setId(plugin.getName() + "::"
+									+ annotation.propertykey());
+							property.setNamespace(plugin.getName());
+							property.setName(annotation.name());
+							property.setDescription(annotation
+									.description());
+							property.setTooltip(annotation.propertykey());
+							property.setPluginLayer(plugInLayer);
+							property.setEnable_requirements(annotation
+									.enable_requirements());
+							((DoubleProp) property).setMinValue(annotation
+									.min());
+							((DoubleProp) property).setMaxValue(annotation
+									.max());
+							((DoubleProp) property).setValue(annotation
+									.value());
+							property.setEnable(true);
+						}
+						this.register(property);
+					} else if (element.annotationType() == StringSimulationProperty.class) {
+						StringSimulationProperty annotation = field
+								.getAnnotation(StringSimulationProperty.class);
+						property = new StringProp();
+						if (annotation != null) {
+							property.setId(plugin.getName() + "::"
+									+ annotation.propertykey());
+							property.setNamespace(plugin.getName());
+							property.setName(annotation.name());
+							property.setDescription(annotation
+									.description());
+							property.setTooltip(annotation.propertykey());
+							property.setPluginLayer(plugInLayer);
+							property.setEnable_requirements(annotation
+									.enable_requirements());
+							((StringProp) property).setValue(annotation
+									.value());
+							((StringProp) property)
+									.setPossibleValues(annotation
+											.possibleValues());
+							property.setEnable(true);
+						}
+						this.register(property);
+					} else {
+						Logger.Log(LogLevel.ERROR,
+								"GuiConfigRegistry - bad type");
+						continue;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void scanPlugins() {

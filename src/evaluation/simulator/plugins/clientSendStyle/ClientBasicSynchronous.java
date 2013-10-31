@@ -42,7 +42,8 @@ public class ClientBasicSynchronous extends ClientSendStyleImpl implements
 
 	public ClientBasicSynchronous(AbstractClient owner, Simulator simulator) {
 		super(owner, simulator);
-		this.sendInterval = new Integer(
+		
+		sendInterval = new Integer(
 				Simulator.settings
 						.getProperty("BASIC_SYNCHRONOUS_SEND_INTERVAL_IN_MS"));
 		this.scheduleNextSend();

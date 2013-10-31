@@ -1,11 +1,11 @@
 package evaluation.simulator.gui.customElements.accordion;
 
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -14,12 +14,16 @@ import evaluation.simulator.log.Logger;
 
 public class AccordionModel implements TableModel {
 
-	private final List<Entry<String, String>> properties;
+	private final List<SimProp> properties;
 	private final SimPropRegistry simPropRegistry;
 
-	public AccordionModel(String category) {
+	public AccordionModel(List<SimProp> tmpListOfAllSimPropertiesInANamespace) {
 		this.simPropRegistry = SimPropRegistry.getInstance();
-		this.properties = this.simPropRegistry.getPluginItems( (String) category);
+		this.properties = tmpListOfAllSimPropertiesInANamespace;
+		
+		for ( SimProp property : properties ){
+			Logger.Log(LogLevel.DEBUG, "Show: " + property.getId());
+		}
 	}
 
 	@Override
@@ -49,7 +53,7 @@ public class AccordionModel implements TableModel {
 		return "col " + arg0;
 	}
 
-	public List<Entry<String, String>> getProperties() {
+	public List<SimProp> getProperties() {
 		return this.properties;
 	}
 
@@ -59,24 +63,18 @@ public class AccordionModel implements TableModel {
 	}
 
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
+	public Object getValueAt(int row, int col) {
 
-		if (arg1 == 0) {
-			return this.simPropRegistry.getValue(
-					this.properties.get(arg0).getKey())
-					.getName();
+		if (col == 0) {
+			return this.properties.get(row).getName();
 		}
 
-		return this.simPropRegistry.getValue(
-				this.properties.get(arg0).getKey()).getValue();
+		return this.properties.get(row).getValue();
 	}
 
 	@Override
-	public boolean isCellEditable(int arg0, int arg1) {
-		if ((arg1 == 1)
-				&& this.simPropRegistry.getValue(
-						this.properties.get(arg0).getKey())
-						.getEnable()) {
+	public boolean isCellEditable(int row, int col) {
+		if ( (col == 1) && this.properties.get(row).getEnable() ) {
 			return true;
 		}
 		return false;
@@ -90,7 +88,7 @@ public class AccordionModel implements TableModel {
 	@Override
 	public void setValueAt(Object arg0, int arg1, int arg2) {
 
-		String id = this.properties.get(arg1).getKey();
+		String id = this.properties.get(arg1).getId();
 		Logger.Log(LogLevel.DEBUG, "Changed " + id);
 		this.simPropRegistry.setValue(id, arg0);
 

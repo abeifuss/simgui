@@ -20,11 +20,13 @@ import javax.swing.table.TableColumn;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
 	private final JButton entryButton;
-	private JTable entryTable;
+	private JTable entryTable = null;
 	private final String localName;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
@@ -61,7 +63,7 @@ public class AccordionEntry extends JPanel {
 
 			}
 		});
-		jComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxx"); // for
+		jComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
 																// automatically
 																// resizing the
 																// JComboBox
@@ -71,10 +73,19 @@ public class AccordionEntry extends JPanel {
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
 		if (jComboBox.getSelectedIndex() != 0) {
 			
+			if ( entryTable != null ){
+				remove(entryTable);
+			}
+			
+			Logger.Log( LogLevel.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByNamespace((String) jComboBox.getSelectedItem());
 			
-			this.entryTable = new JTable(new AccordionModel( (String) jComboBox.getSelectedItem() )) {
+			for (SimProp s : tmpListOfAllSimPropertiesInANamespace ){
+				Logger.Log( LogLevel.DEBUG, "Load: " +s.getNamespace() + "::" + s.getName());
+			}
+			
+			this.entryTable = new JTable(new AccordionModel( tmpListOfAllSimPropertiesInANamespace )) {
 
 				// This takes care that the non-editable cells are grayed out.
 				@Override

@@ -110,7 +110,7 @@ public class MainGui extends JFrame {
 			this.horizontalSplitPlaneDeviderLocation = UserConfigService
 					.getInstance().getInteger("HSPLIT_DEVIDER_LOCATION");
 		} catch (Exception e) {
-			this.horizontalSplitPlaneDeviderLocation = 150;
+			this.horizontalSplitPlaneDeviderLocation = 200;
 		}
 
 		try {
