@@ -22,6 +22,7 @@ import org.jfree.chart.ChartPanel;
 import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.gui.results.LineJFreeChartCreator;
 import evaluation.simulator.gui.results.ResultPanelFactory;
+import evaluation.simulator.gui.service.ConfigParser;
 
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
@@ -128,7 +129,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 		addExperiment.addActionListener(this);
 		delteExperiment.addActionListener(this);
-		
+
 		update();
 
 	}
@@ -143,11 +144,18 @@ public class SimulationTab extends JPanel implements ActionListener {
 			// This is where the SimPropService must dump the configuration
 			// and pass it to the Simulator.
 
-			@SuppressWarnings("unused")
-			gMixBinding callSimulation = new gMixBinding(params);
-			this.south.addTab("Results_" + this.resultCounter,
-					ResultPanelFactory.getResultPanel());
-			this.resultCounter++;
+			ConfigParser configParser = new ConfigParser();
+
+			for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
+				configParser.clenupConfigurationForSimulator(runExperiments
+						.getModel().getElementAt(i));
+			}
+
+//			@SuppressWarnings("unused")
+//			gMixBinding callSimulation = new gMixBinding(params);
+//			this.south.addTab("Results_" + this.resultCounter,
+//					ResultPanelFactory.getResultPanel());
+//			this.resultCounter++;
 		}
 
 		if (event.getSource() == this.addExperiment) {
@@ -178,9 +186,9 @@ public class SimulationTab extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
-	void update(){
-		
+
+	void update() {
+
 		final File folder = new File("etc/experiments/");
 		final File[] listOfFiles = folder.listFiles(new FileFilter() {
 
@@ -189,27 +197,29 @@ public class SimulationTab extends JPanel implements ActionListener {
 				return f.getName().toLowerCase().endsWith(".cfg");
 			}
 		});
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				for (File f : listOfFiles) {
 					boolean insertFlag = true;
-					for (int i = 0; i < availableExperiments.getModel().getSize(); i++){
-						if ( availableExperiments.getModel().getElementAt(i).equals(f) ){
-							insertFlag = false;
-							break;
-						}	
-					}
-					
-					for (int i = 0; i < runExperiments.getModel().getSize(); i++){
-						if ( runExperiments.getModel().getElementAt(i).equals(f) ){
+					for (int i = 0; i < availableExperiments.getModel()
+							.getSize(); i++) {
+						if (availableExperiments.getModel().getElementAt(i)
+								.equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
-					
-					if (insertFlag){
+
+					for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
+						if (runExperiments.getModel().getElementAt(i).equals(f)) {
+							insertFlag = false;
+							break;
+						}
+					}
+
+					if (insertFlag) {
 						availableExperimentsModel.addElement(f);
 					}
 				}

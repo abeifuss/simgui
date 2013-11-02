@@ -48,8 +48,8 @@ public class SimPropRegistry {
 
 	@SuppressWarnings("unchecked")
 	private final Map<String, String>[] pluginLayerMap = new HashMap[7];
-
 	private final Map<String, SimProp> properties = new HashMap<String, SimProp>();
+	private final Map<String, String> activePlugins = new HashMap<String, String>();
 
 	private SimPropRegistry() {
 		this.scan();
@@ -368,5 +368,23 @@ public class SimPropRegistry {
 		}
 		
 		return simPropertiesInANamespace;
+	}
+
+	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
+		
+		Map<String, String> pluginNameToConfigName = new HashMap<>();
+		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
+		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
+		pluginNameToConfigName.put("plotType", "");
+		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
+		pluginNameToConfigName.put("topology", "TOPOLOGY_SCRIPT");
+		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
+		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
+		
+		activePlugins.put(pluginNameToConfigName.get(pluginLevel), selectedPlugin);
+	}
+	
+	public Map<String, String> getActivePlugins() {
+		return activePlugins;
 	}
 }

@@ -16,6 +16,7 @@ public class SaveButtonAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("etc/experiments/"));
 		fc.setFileFilter( new FileFilter() {

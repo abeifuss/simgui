@@ -79,7 +79,14 @@ public class AccordionEntry extends JPanel {
 			
 			Logger.Log( LogLevel.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByNamespace((String) jComboBox.getSelectedItem());
+			
+			String pluginLevel = this.localName;
+			String pluginName = (String) jComboBox.getSelectedItem();
+			
+			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
+			simPropRegistry.setActivePlugins(pluginLevel, pluginName);
+			
+			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByNamespace(pluginName);
 			
 			for (SimProp s : tmpListOfAllSimPropertiesInANamespace ){
 				Logger.Log( LogLevel.DEBUG, "Load: " +s.getNamespace() + "::" + s.getName());
