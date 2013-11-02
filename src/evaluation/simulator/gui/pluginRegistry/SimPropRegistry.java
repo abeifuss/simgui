@@ -375,11 +375,13 @@ public class SimPropRegistry {
 		Map<String, String> pluginNameToConfigName = new HashMap<>();
 		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
 		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
-		pluginNameToConfigName.put("plotType", "");
+		pluginNameToConfigName.put("plotType", "PLOT_TYPE");
 		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
 		pluginNameToConfigName.put("topology", "TOPOLOGY_SCRIPT");
 		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
 		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
+		
+		Logger.Log(LogLevel.DEBUG, "Set " + pluginNameToConfigName.get(pluginLevel) + " plugin to " + selectedPlugin);
 		
 		activePlugins.put(pluginNameToConfigName.get(pluginLevel), selectedPlugin);
 	}

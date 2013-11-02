@@ -46,6 +46,8 @@ public class SimulationConfigService {
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(null, "Could not read from file.");
 		}
+		
+		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
 			if (s.getValue().getValueType() == String.class) {
 				s.getValue().setValue((props.get(s.getKey())));
@@ -55,11 +57,17 @@ public class SimulationConfigService {
 			} else if (s.getValue().getValueType() == Float.class) {
 				s.getValue().setValue(
 						Float.parseFloat((String) props.get(s.getKey())));
+			} else if (s.getValue().getValueType() == Double.class) {
+				s.getValue().setValue(
+						Double.parseDouble((String) props.get(s.getKey())));
 			} else if (s.getValue().getValueType() == Boolean.class) {
 				s.getValue().setValue(
 						Boolean.parseBoolean((String) props.get(s.getKey())));
 			}
 		}
+		
+		// Load selected plugins
+		
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}
@@ -73,9 +81,9 @@ public class SimulationConfigService {
 
 		// static part
 		Map<String, String> plugins = this.simPropRegistry.getActivePlugins();
-		Logger.Log( LogLevel.DEBUG , "Active Plugins: ");
+		Logger.Log( LogLevel.DEBUG , "Active plugins are:");
 		for (String key : plugins.keySet()) {
-			Logger.Log( LogLevel.DEBUG , key + " : " +plugins.get(key));
+			Logger.Log( LogLevel.DEBUG , plugins.get(key));
 			props.setProperty(key, plugins.get(key));
 		}
 

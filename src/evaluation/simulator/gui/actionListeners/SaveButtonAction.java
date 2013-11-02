@@ -11,11 +11,15 @@ import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 
 public class SaveButtonAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		Logger.Log( LogLevel.DEBUG , "Save config");
 		
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("etc/experiments/"));
