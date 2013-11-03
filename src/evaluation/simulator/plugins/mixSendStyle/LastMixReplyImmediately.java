@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.message.TransportMessage;
@@ -28,6 +29,9 @@ import evaluation.simulator.core.networkComponent.NetworkNode;
 @PluginAnnotation(name = "REPLY_IMMEDIATELY")
 public class LastMixReplyImmediately extends MixSendStyleImpl {
 
+	@IntSimulationProperty(name = "Dummy", propertykey = "DUMMY")
+	int dummy;
+	
 	public LastMixReplyImmediately(NetworkNode owner, Simulator simulator,
 			ReplyReceiver replyReceiver) {
 

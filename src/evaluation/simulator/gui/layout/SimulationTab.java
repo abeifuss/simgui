@@ -138,24 +138,22 @@ public class SimulationTab extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource() == this.startButton) {
-			String[] params = { "etc/conf/testconf.txt" };
-
-			// TODO:
-			// This is where the SimPropService must dump the configuration
-			// and pass it to the Simulator.
-
 			ConfigParser configParser = new ConfigParser();
 
+			String[] params = new String[runExperiments.getModel().getSize()];
+
 			for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
-				configParser.clenupConfigurationForSimulator(runExperiments
-						.getModel().getElementAt(i));
+				params[i] = configParser
+						.clenupConfigurationForSimulator(runExperiments
+								.getModel().getElementAt(i));
 			}
 
-//			@SuppressWarnings("unused")
-//			gMixBinding callSimulation = new gMixBinding(params);
-//			this.south.addTab("Results_" + this.resultCounter,
-//					ResultPanelFactory.getResultPanel());
-//			this.resultCounter++;
+			@SuppressWarnings("unused")
+			gMixBinding callSimulation = new gMixBinding(params);
+			this.south.addTab("Results_" + this.resultCounter,
+					ResultPanelFactory.getResultPanel());
+
+			this.resultCounter++;
 		}
 
 		if (event.getSource() == this.addExperiment) {
@@ -189,6 +187,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 	void update() {
 
+		// Read names of existing experiment configurations
 		final File folder = new File("etc/experiments/");
 		final File[] listOfFiles = folder.listFiles(new FileFilter() {
 

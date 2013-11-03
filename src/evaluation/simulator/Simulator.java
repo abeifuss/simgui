@@ -78,7 +78,15 @@ public class Simulator extends GMixTool implements Identifiable {
 		numericIdentifier = IdGenerator.getId();
 		if (firstRun) {
 			firstRun = false;
-			if (commandLineParameters.globalConfigFile != null) {
+			if (commandLineParameters.passthroughParameters != null ){
+				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
+				Simulator.settings.addProperties(commandLineParameters.passthroughParameters);
+				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
+				Simulator.currentSimulator = this;
+				Statistics.setSimulator(this);
+				Simulator.trafficSourceStatistics = new Statistics(this);
+				performExperiment(Simulator.settings);
+			} else if (commandLineParameters.globalConfigFile != null) {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +commandLineParameters.globalConfigFile);
 				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");

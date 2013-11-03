@@ -10,7 +10,6 @@ import javax.swing.filechooser.FileFilter;
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.gui.service.GuiService;
 import evaluation.simulator.log.LogLevel;
 import evaluation.simulator.log.Logger;
 

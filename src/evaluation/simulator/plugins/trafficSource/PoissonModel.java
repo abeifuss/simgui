@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
@@ -30,11 +31,13 @@ public class PoissonModel extends TrafficSourceImplementation implements EventEx
 	private PoissonClient[] clients;
 	private Simulator simulator;
 	
+	@IntSimulationProperty( name = "Number of Clients", propertykey = "NUMBER_OF_CLIENTS_TO_SIMULATE")
+	private int numberOfClients;
 	
 	@Override
 	public AbstractClient[] createClientsArray() {
 		this.simulator = Simulator.getSimulator();
-		int numberOfClients = Simulator.settings.getPropertyAsInt("NUMBER_OF_CLIENTS_TO_SIMULATE");
+		numberOfClients = Simulator.settings.getPropertyAsInt("NUMBER_OF_CLIENTS_TO_SIMULATE");
 		clients = new PoissonClient[numberOfClients];
 		for (int i=0; i<clients.length; i++) 
 			clients[i] = new PoissonClient("Client" +i, Simulator.getSimulator(), i);

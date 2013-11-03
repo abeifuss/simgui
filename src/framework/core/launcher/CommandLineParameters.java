@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 import framework.core.config.MatchingMechanism;
 import framework.core.config.Paths;
 import framework.core.config.Settings;
@@ -79,6 +81,8 @@ public class CommandLineParameters {
 		} else {
 			passthroughParameters = new String[0];
 		}
+		
+		Logger.Log(LogLevel.DEBUG, "Parameters: " + toString());
 	}
 	
 	

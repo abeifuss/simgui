@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
 @PluginAnnotation(name = "CONSTANT")
@@ -26,10 +27,12 @@ public class SendConstantModel extends TrafficSourceImplementation {
 
 	private SendConstantClient[] clients;
 	
+	@IntSimulationProperty( name = "Number of Clients", propertykey = "NUMBER_OF_CLIENTS_TO_SIMULATE")
+	private int numberOfClients;
 	
 	@Override
 	public AbstractClient[] createClientsArray() {
-		int numberOfClients = Simulator.settings.getPropertyAsInt("NUMBER_OF_CLIENTS_TO_SIMULATE");
+		numberOfClients = Simulator.settings.getPropertyAsInt("NUMBER_OF_CLIENTS_TO_SIMULATE");
 		clients = new SendConstantClient[numberOfClients];
 		for (int i=0; i<clients.length; i++) 
 			clients[i] = new SendConstantClient("Client" +i, Simulator.getSimulator(), i);

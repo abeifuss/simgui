@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -33,9 +31,7 @@ public class SimulationConfigService {
 	}
 
 	public void loadConfig(File file) {
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				.format(Calendar.getInstance().getTime());
-		this.writeConfig(new File("etc/conf/config.dump." + timeStamp));
+		
 		Properties props = new Properties();
 		try {
 			props.load(new FileInputStream(file));
@@ -49,24 +45,29 @@ public class SimulationConfigService {
 		
 		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
-			if (s.getValue().getValueType() == String.class) {
-				s.getValue().setValue((props.get(s.getKey())));
-			} else if (s.getValue().getValueType() == Integer.class) {
-				s.getValue().setValue(
-						Integer.parseInt((String) props.get(s.getKey())));
-			} else if (s.getValue().getValueType() == Float.class) {
-				s.getValue().setValue(
-						Float.parseFloat((String) props.get(s.getKey())));
-			} else if (s.getValue().getValueType() == Double.class) {
-				s.getValue().setValue(
-						Double.parseDouble((String) props.get(s.getKey())));
-			} else if (s.getValue().getValueType() == Boolean.class) {
-				s.getValue().setValue(
-						Boolean.parseBoolean((String) props.get(s.getKey())));
+			Logger.Log(LogLevel.DEBUG, "Load value for " + s.getKey());
+			try {
+				if (s.getValue().getValueType() == String.class) {
+					s.getValue().setValue((props.get(s.getKey())));
+				} else if (s.getValue().getValueType() == Integer.class) {
+					s.getValue().setValue(
+							Integer.parseInt((String) props.get(s.getKey())));
+				} else if (s.getValue().getValueType() == Float.class) {
+					s.getValue().setValue(
+							Float.parseFloat((String) props.get(s.getKey())));
+				} else if (s.getValue().getValueType() == Double.class) {
+					s.getValue().setValue(
+							Double.parseDouble((String) props.get(s.getKey())));
+				} else if (s.getValue().getValueType() == Boolean.class) {
+					s.getValue().setValue(
+							Boolean.parseBoolean((String) props.get(s.getKey())));
+				}
+			} catch (NullPointerException e) {
+				Logger.Log(LogLevel.DEBUG, "Can not read value for " + s.getKey());
 			}
 		}
 		
-		// Load selected plugins
+		// TODO: Load selected plugins
 		
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);

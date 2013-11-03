@@ -1,10 +1,6 @@
 package evaluation.simulator.gui.service;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.SwingUtilities;
-
-import org.apache.tools.ant.taskdefs.Sleep;
 
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;

@@ -30,7 +30,7 @@ public class ConsolePanel extends JPanel {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.fill = gridBagConstraints.BOTH;
+		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		gridBagConstraints.anchor = GridBagConstraints.NORTH;
 		gridBagConstraints.weightx = 1;
 		gridBagConstraints.weighty = 1;

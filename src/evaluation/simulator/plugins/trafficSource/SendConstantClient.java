@@ -47,10 +47,12 @@ public class SendConstantClient extends AbstractClient {
 	
 	public SendConstantClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
+		// TODO: Find a workaround, AUTO is no int
 		if (Simulator.settings.getProperty("REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_SIZE");
+		// TODO: Find a workaround, AUTO is no int
 		if (Simulator.settings.getProperty("REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else

@@ -17,8 +17,6 @@
  */
 package evaluation.simulator.plugins.outputStrategy;
 
-import java.lang.annotation.Documented;
-
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;

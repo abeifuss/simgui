@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.IdGenerator;
@@ -37,8 +38,11 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @PluginAnnotation(name = "DLPA")
 public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 
+	@IntSimulationProperty( name="Maximum request delay", propertykey="MAX_DLPA_REQUEST_DELAY" )
 	private int maxRequestDelay;
+	@IntSimulationProperty( name="Maximum reply delay", propertykey="MAX_DLPA_REPLY_DELAY" )
 	private int maxReplyDelay;
+	
 	public Vector<DLPAOutputSlot> requestOutputSlots = new Vector<DLPAOutputSlot>(100,100);
 	public Vector<DLPAOutputSlot> replyOutputSlots = new Vector<DLPAOutputSlot>(100,100);
 	public Statistics statistics;
