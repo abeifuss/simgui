@@ -130,6 +130,10 @@ public class PlotScript {
 	
 	public void writePlotScriptToDisk() {
 		String oParams = Simulator.settings.getProperty("OVERWRITABLE_PARAMETERS");
+		
+		if ( oParams == null )
+			oParams = "";
+		
 		if (!oParams.equals(""))
 			setOverwritableParameter(oParams);
 		String noParams = Simulator.settings.getProperty("NONE_OVERWRITABLE_PARAMETERS");

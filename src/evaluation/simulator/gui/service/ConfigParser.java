@@ -83,7 +83,7 @@ public class ConfigParser {
 			content.append("NONE_OVERWRITABLE_PARAMETERS=set logscale x").append(System.getProperty("line.separator"));
 			
 			content.append("SIMULATION_END=SIMULATION_TIME_END").append(System.getProperty("line.separator"));
-			content.append("REAL_TIME_LIMIT_IN_SEC=1.5").append(System.getProperty("line.separator"));
+			content.append("REAL_TIME_LIMIT_IN_SEC=1.0").append(System.getProperty("line.separator"));
 			content.append("SIMULATION_TIME_LIMIT_IN_MS=1000000").append(System.getProperty("line.separator"));
 			content.append("MESSAGE_FORMAT=BASIC_MIX_MESSAGE").append(System.getProperty("line.separator"));
 			content.append("NETWORK_PACKET_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));

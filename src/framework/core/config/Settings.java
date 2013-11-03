@@ -23,9 +23,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
-
 public class Settings {
 
 	private Properties properties;
