@@ -45,7 +45,7 @@ public class IntProp extends SimProp {
 			return;
 		}
 
-		Logger.Log(LogLevel.ERROR, "For " + super.getId() + "Value not in rage (int). " + tmp );
+		Logger.Log(LogLevel.ERROR, "For " + super.getId() + " Value not in rage! " + tmp + "(int) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}

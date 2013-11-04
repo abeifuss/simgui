@@ -54,7 +54,7 @@ public class FloatProp extends SimProp {
 			return;
 		}
 
-		Logger.Log(LogLevel.ERROR, "For " + super.getId() + "Value not in rage (float). " + tmp );
+		Logger.Log(LogLevel.ERROR, "For " + super.getId() + " Value not in rage! " + tmp + "(float) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}
