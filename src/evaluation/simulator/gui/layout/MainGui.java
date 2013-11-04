@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 import evaluation.simulator.conf.service.UserConfigService;
@@ -190,8 +191,16 @@ public class MainGui extends JFrame {
 		bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
 
 		this.horizontalSplitPlane.setLeftComponent(this.configToolView);
-		this.horizontalSplitPlane.setDividerLocation(150);
 		this.horizontalSplitPlane.setRightComponent(right);
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// adjusts the horizontal divider to automatically resize when
+				// resizing the window
+				MainGui.this.horizontalSplitPlane.setResizeWeight(0.5);
+			}
+		});
 
 		verticalSplitPlane.setTopComponent(this.mainView);
 		verticalSplitPlane.setBottomComponent(bottom);
