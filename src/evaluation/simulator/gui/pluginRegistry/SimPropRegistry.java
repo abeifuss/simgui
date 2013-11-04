@@ -102,7 +102,7 @@ public class SimPropRegistry {
 	}
 
 	public void register(SimProp s) {
-		System.out.println("Register: " + s.getId());
+		Logger.Log(LogLevel.DEBUG, "Register: " + s.getId());
 		if (this.properties.containsKey(s.getId())) {
 
 			GraphicsDevice graphicsDevice = GraphicsEnvironment

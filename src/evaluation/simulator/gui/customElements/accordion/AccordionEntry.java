@@ -28,10 +28,12 @@ public class AccordionEntry extends JPanel {
 	private final JButton entryButton;
 	private JTable entryTable = null;
 	private final String localName;
+	private final JComboBox comboBox;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
-
+		this.comboBox = jComboBox;
+		
 		this.setLayout(new BorderLayout(0, 0));
 		this.entryButton = new JButton(this.localName, new ImageIcon(
 				"etc/img/icons/green/arrow-144-24.png"));
@@ -43,7 +45,7 @@ public class AccordionEntry extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this.toggleVisibility(e.getSource(), jComboBox);
+				AccordionEntry.this.toggleVisibility(e.getSource(), comboBox);
 			}
 		};
 
@@ -51,23 +53,23 @@ public class AccordionEntry extends JPanel {
 		this.entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		this.add(this.entryButton, BorderLayout.NORTH);
-		jComboBox.setVisible(false);
-		jComboBox.addItemListener(new ItemListener() {
+		comboBox.setVisible(false);
+		comboBox.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				
 				if ( e.getStateChange() == ItemEvent.SELECTED ){
-					AccordionEntry.this.comboBoxChanged(jComboBox);
+					AccordionEntry.this.comboBoxChanged(comboBox);
 				}
 
 			}
 		});
-		jComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
+		comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
 																// automatically
 																// resizing the
 																// JComboBox
-		this.add(jComboBox, BorderLayout.CENTER);
+		this.add(comboBox, BorderLayout.CENTER);
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
@@ -133,20 +135,27 @@ public class AccordionEntry extends JPanel {
 			if (!jComboBox.isVisible()) {
 				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 			} else {
-				btn.setIcon(new ImageIcon(
-						"etc/img/icons/green/arrow-144-24.png"));
+				btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 			}
 			jComboBox.setVisible(!jComboBox.isVisible());
 		} else {
 			if (!this.entryTable.isVisible()) {
 				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 			} else {
-				btn.setIcon(new ImageIcon(
-						"etc/img/icons/green/arrow-144-24.png"));
+				btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 			}
 			this.entryTable.setVisible(!this.entryTable.isVisible());
 			jComboBox.setVisible(!jComboBox.isVisible());
 		}
 		this.repaint();
+	}
+
+	public void setVibility(boolean b) {
+
+		comboBox.setVisible( b );
+		if (entryTable != null) {
+			entryTable.setVisible( b );
+		}
+		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 	}
 }

@@ -6,6 +6,8 @@ import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 
 public class GuiService {
 
@@ -45,30 +47,30 @@ public class GuiService {
 				"TOGGLE_HOME_TAB");
 
 		if (showConfToolInSeparateWindow) {
-			System.out.println("SHOW SEPERATE CONF TOOL");
+			Logger.Log(LogLevel.DEBUG, "Seperate config tool");
 			this.configToolFrame.setVisible(true);
 			this.mainGui.toogleConfTool(false);
 		} else {
-			System.out.println("SHOW INTEGRATED CONF TOOL");
+			Logger.Log(LogLevel.DEBUG, "Integrate config tool");
 			this.configToolFrame.setVisible(false);
 			this.mainGui.toogleConfTool(true);
 		}
 
 		if (showConfHelpInSeparateWindow) {
-			System.out.println("SHOW SEPERATE HELP TOOL");
+			Logger.Log(LogLevel.DEBUG, "Seperate help tool");
 			this.helpToolFrame.setVisible(true);
 			this.mainGui.toogleHelpTool(false);
 		} else {
-			System.out.println("SHOW INTEGRATED HELP TOOL");
+			Logger.Log(LogLevel.DEBUG, "Integrate help tool");
 			this.helpToolFrame.setVisible(false);
 			this.mainGui.toogleHelpTool(true);
 		}
 
 		if (showHomeTab) {
-			System.out.println("SHOW HOME TAB");
+			Logger.Log(LogLevel.DEBUG, "Show home tab");
 			this.mainGui.toggleHomeTab(true);
 		} else {
-			System.out.println("HIDE HOME TAB");
+			Logger.Log(LogLevel.DEBUG, "Hide home tab");
 			this.mainGui.toggleHomeTab(false);
 		}
 	}

@@ -1,5 +1,6 @@
 package evaluation.simulator.gui.customElements;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ import evaluation.simulator.log.Logger;
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
 
-	private JPanel _panel;
+	private JPanel panel;
 	HashMap<String, JComboBox<String>> pluginListsMap = new HashMap<>();
 
 	SimPropRegistry simPropRegistry;
@@ -54,7 +55,7 @@ public class PluginPanel extends JScrollPane {
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getVerticalScrollBar().setUnitIncrement(16);
 
-		this._panel = new JPanel();
+		this.panel = new JPanel();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -63,10 +64,10 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraints.weighty = 0;
 		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayout.setConstraints(this._panel, gridBagConstraints);
-		this._panel.setLayout(gridBagLayout);
+		gridBagLayout.setConstraints(this.panel, gridBagConstraints);
+		this.panel.setLayout(gridBagLayout);
 
-		this.setViewportView(this._panel);
+		this.setViewportView(this.panel);
 
 		// End Layout
 
@@ -133,22 +134,17 @@ public class PluginPanel extends JScrollPane {
 		List<SimProp> listofAllSimProperties = this.getSections();
 		Set<String> listOfAllPluginLayers = new HashSet<String>();
 
-		Iterator<SimProp> simPropertyIterator = listofAllSimProperties
-				.iterator();
-		while (simPropertyIterator.hasNext()) {
-			String plugInName = simPropertyIterator.next().getPluginLayer();
+		for ( SimProp simProp : listofAllSimProperties ) {
+			String plugInName = simProp.getPluginLayer();
 			listOfAllPluginLayers.add(plugInName);
 		}
 
-		// Select the categories
-		Iterator<String> plugInNameIterator = listOfAllPluginLayers.iterator();
-		while (plugInNameIterator.hasNext()) {
-			String plugInName = plugInNameIterator.next();
+		// Select the plugin layers
+		for ( String pluginLayer : listOfAllPluginLayers ) {
 
-			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + plugInName);
-			accordionElement = new AccordionEntry(plugInName,
-					this.pluginListsMap.get(plugInName));
-			this._panel.add(accordionElement, gridBagConstraints);
+			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + pluginLayer);
+			accordionElement = new AccordionEntry(pluginLayer, this.pluginListsMap.get(pluginLayer));
+			this.panel.add(accordionElement, gridBagConstraints);
 		}
 
 		gridBagConstraints.weighty = 1;
@@ -156,18 +152,28 @@ public class PluginPanel extends JScrollPane {
 		// Spring element to push all other elements to the top
 		// needed for alignment
 		JPanel jp = new JPanel();
-		this._panel.add(jp, gridBagConstraints);
+		this.panel.add(jp, gridBagConstraints);
 
 		this.setVisible(true);
 	}
 
 	void setPlugin(String pluginLevel, String selectedPlugin) {
-		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "
-				+ selectedPlugin);
+		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "+ selectedPlugin);
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
 	public void update() {
+		
+		for ( Component component : this.panel.getComponents()){
+			if ( component.getClass().equals( AccordionEntry.class ) ) {
+				AccordionEntry accordianEntry = (AccordionEntry)(component);
+				accordianEntry.setVibility(true);
+				Logger.Log(LogLevel.DEBUG, "Found component!");
+			}else{
+				Logger.Log(LogLevel.DEBUG, "Found component " + component.getClass().getName() + " / " + AccordionEntry.class);
+			}
+		}
+		
 		final Map<String, String> activePlugins = simPropRegistry.getActivePlugins();
 		for (final String pluginLevel : activePlugins.keySet()) {
 			SwingUtilities.invokeLater(new Runnable() {
