@@ -106,7 +106,7 @@ public class GuiService {
 
 	public void toggleHomeTab() {
 
-		if (MainGui.getInstance().hTisShown()) {
+		if (MainGui.getInstance().homeTabIsShown()) {
 			this.mainGui.toggleHomeTab(false);
 			UserConfigService.getInstance().setBool("TOGGLE_HOME_TAB", false);
 			return;

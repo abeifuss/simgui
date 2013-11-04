@@ -41,20 +41,20 @@ public class MainGui extends JFrame {
 	}
 
 	private JPanel configToolView;
-	private JPanel helpToolView;
+	private int consoleHeight;
 
+	private JPanel helpToolView;
+	private HomeTab homeTab;
+	private boolean homeTabStatus;
 	private JSplitPane horizontalSplitPlane;
+	private int horizontalSplitPlaneDeviderLocation;
 	private int mainGuiHeight;
 	private int mainGuiWidth;
+
 	private int mainGuiXPos;
 	private int mainGuiYPos;
-	private int consoleHeight;
-	private int horizontalSplitPlaneDeviderLocation;
-
 	private JTabbedPane mainView;
-	private HomeTab homeTab;
 	private SimulationTab simulationTab;
-	private boolean homeTabStatus;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -157,6 +157,10 @@ public class MainGui extends JFrame {
 		});
 	}
 
+	public boolean homeTabIsShown() {
+		return this.homeTabStatus;
+	}
+
 	protected void init() {
 
 		this.horizontalSplitPlane = new JSplitPane();
@@ -175,17 +179,18 @@ public class MainGui extends JFrame {
 		right.add(verticalSplitPlane, BorderLayout.CENTER);
 
 		this.mainView = new JTabbedPane();
-		homeTab = new HomeTab();
-		this.mainView.addTab("Home", homeTab);
+		this.homeTab = new HomeTab();
+		this.mainView.addTab("Home", this.homeTab);
 		this.homeTabStatus = true;
-		simulationTab = new SimulationTab();
-		this.mainView.addTab("Simulator", simulationTab);
+		this.simulationTab = new SimulationTab();
+		this.mainView.addTab("Simulator", this.simulationTab);
 
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new BorderLayout());
 		bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
 
 		this.horizontalSplitPlane.setLeftComponent(this.configToolView);
+		this.horizontalSplitPlane.setDividerLocation(150);
 		this.horizontalSplitPlane.setRightComponent(right);
 
 		verticalSplitPlane.setTopComponent(this.mainView);
@@ -208,7 +213,7 @@ public class MainGui extends JFrame {
 
 		this.setupMenu();
 
-		pack();
+		this.pack();
 
 		this.horizontalSplitPlane.addPropertyChangeListener(
 				JSplitPane.DIVIDER_LOCATION_PROPERTY,
@@ -216,7 +221,7 @@ public class MainGui extends JFrame {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						horizontalSplitPlaneDeviderLocation = horizontalSplitPlane
+						MainGui.this.horizontalSplitPlaneDeviderLocation = MainGui.this.horizontalSplitPlane
 								.getDividerLocation();
 					}
 				});
@@ -227,28 +232,29 @@ public class MainGui extends JFrame {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						consoleHeight = verticalSplitPlane.getSize().height
+						MainGui.this.consoleHeight = verticalSplitPlane
+								.getSize().height
 								- verticalSplitPlane.getDividerLocation();
 					}
 				});
 
-		addComponentListener(new ComponentAdapter() {
-
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				horizontalSplitPlane
-						.setDividerLocation(horizontalSplitPlaneDeviderLocation);
-				verticalSplitPlane.setDividerLocation(verticalSplitPlane
-						.getSize().height - consoleHeight);
-			}
+		this.addComponentListener(new ComponentAdapter() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
-				horizontalSplitPlane
-						.setDividerLocation(horizontalSplitPlaneDeviderLocation);
+				MainGui.this.horizontalSplitPlane
+						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
 				verticalSplitPlane.setDividerLocation(verticalSplitPlane
-						.getSize().height - consoleHeight);
+						.getSize().height - MainGui.this.consoleHeight);
+			}
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				MainGui.this.horizontalSplitPlane
+						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
+				verticalSplitPlane.setDividerLocation(verticalSplitPlane
+						.getSize().height - MainGui.this.consoleHeight);
 			}
 		});
 	}
@@ -268,6 +274,17 @@ public class MainGui extends JFrame {
 
 	private void setupMenu() {
 		this.setJMenuBar(MainMenu.getInstance());
+	}
+
+	// Close/Open the home frame
+	public void toggleHomeTab(boolean b) {
+		if (b) {
+			this.mainView.addTab("Home", this.homeTab);
+			this.homeTabStatus = true;
+		} else {
+			this.mainView.remove(this.homeTab);
+			this.homeTabStatus = false;
+		}
 	}
 
 	// (De)seperate the configuration tool
@@ -290,23 +307,8 @@ public class MainGui extends JFrame {
 		}
 	}
 
-	// Close/Open the home frame
-	public void toggleHomeTab(boolean b) {
-		if (b) {
-			this.mainView.addTab("Home", homeTab);
-			this.homeTabStatus = true;
-		} else {
-			this.mainView.remove(homeTab);
-			this.homeTabStatus = false;
-		}
-	}
-
-	public boolean hTisShown() {
-		return this.homeTabStatus;
-	}
-	
-	public void update(){
-		simulationTab.update();
+	public void update() {
+		this.simulationTab.update();
 	}
 
 }
