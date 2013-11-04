@@ -49,13 +49,15 @@ public class MainGui extends JFrame {
 	private boolean homeTabStatus;
 	private JSplitPane horizontalSplitPlane;
 	private int horizontalSplitPlaneDeviderLocation;
+
 	private int mainGuiHeight;
 	private int mainGuiWidth;
-
 	private int mainGuiXPos;
+
 	private int mainGuiYPos;
 	private JTabbedPane mainView;
 	private SimulationTab simulationTab;
+	private JSplitPane verticalSplitPlane;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -168,16 +170,16 @@ public class MainGui extends JFrame {
 		this.horizontalSplitPlane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		this.horizontalSplitPlane.setOneTouchExpandable(true);
 
-		final JSplitPane verticalSplitPlane = new JSplitPane();
-		verticalSplitPlane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		verticalSplitPlane.setOneTouchExpandable(true);
+		this.verticalSplitPlane = new JSplitPane();
+		this.verticalSplitPlane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		this.verticalSplitPlane.setOneTouchExpandable(true);
 
 		this.configToolView = SimConfigPanel.getInstance();
 		this.helpToolView = HelpFrame.getInstance().getPanel();
 
 		JPanel right = new JPanel();
 		right.setLayout(new BorderLayout());
-		right.add(verticalSplitPlane, BorderLayout.CENTER);
+		right.add(this.verticalSplitPlane, BorderLayout.CENTER);
 
 		this.mainView = new JTabbedPane();
 		this.homeTab = new HomeTab();
@@ -193,23 +195,14 @@ public class MainGui extends JFrame {
 		this.horizontalSplitPlane.setLeftComponent(this.configToolView);
 		this.horizontalSplitPlane.setRightComponent(right);
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// adjusts the horizontal divider to automatically resize when
-				// resizing the window
-				MainGui.this.horizontalSplitPlane.setResizeWeight(0.5);
-			}
-		});
-
-		verticalSplitPlane.setTopComponent(this.mainView);
-		verticalSplitPlane.setBottomComponent(bottom);
+		this.verticalSplitPlane.setTopComponent(this.mainView);
+		this.verticalSplitPlane.setBottomComponent(bottom);
 
 		this.getContentPane().add(this.horizontalSplitPlane,
 				BorderLayout.CENTER);
 
 		this.horizontalSplitPlane.setVisible(true);
-		verticalSplitPlane.setVisible(true);
+		this.verticalSplitPlane.setVisible(true);
 
 		JPanel statusPanel = new JPanel();
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -221,7 +214,15 @@ public class MainGui extends JFrame {
 		statusPanel.add(statusLabel);
 
 		this.setupMenu();
-
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// adjusts the horizontal divider to automatically resize when
+				// resizing the window
+				MainGui.this.horizontalSplitPlane.setResizeWeight(0.5);
+				MainGui.this.verticalSplitPlane.setResizeWeight(0.5);
+			}
+		});
 		this.pack();
 
 		this.horizontalSplitPlane.addPropertyChangeListener(
@@ -235,15 +236,16 @@ public class MainGui extends JFrame {
 					}
 				});
 
-		verticalSplitPlane.addPropertyChangeListener(
+		this.verticalSplitPlane.addPropertyChangeListener(
 				JSplitPane.DIVIDER_LOCATION_PROPERTY,
 				new PropertyChangeListener() {
 
 					@Override
 					public void propertyChange(PropertyChangeEvent evt) {
-						MainGui.this.consoleHeight = verticalSplitPlane
+						MainGui.this.consoleHeight = MainGui.this.verticalSplitPlane
 								.getSize().height
-								- verticalSplitPlane.getDividerLocation();
+								- MainGui.this.verticalSplitPlane
+										.getDividerLocation();
 					}
 				});
 
@@ -254,16 +256,18 @@ public class MainGui extends JFrame {
 				super.componentResized(e);
 				MainGui.this.horizontalSplitPlane
 						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
-				verticalSplitPlane.setDividerLocation(verticalSplitPlane
-						.getSize().height - MainGui.this.consoleHeight);
+				MainGui.this.verticalSplitPlane
+						.setDividerLocation(MainGui.this.verticalSplitPlane
+								.getSize().height - MainGui.this.consoleHeight);
 			}
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				MainGui.this.horizontalSplitPlane
 						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
-				verticalSplitPlane.setDividerLocation(verticalSplitPlane
-						.getSize().height - MainGui.this.consoleHeight);
+				MainGui.this.verticalSplitPlane
+						.setDividerLocation(MainGui.this.verticalSplitPlane
+								.getSize().height - MainGui.this.consoleHeight);
 			}
 		});
 	}
