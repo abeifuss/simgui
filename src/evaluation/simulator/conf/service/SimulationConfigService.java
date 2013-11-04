@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -31,7 +32,7 @@ public class SimulationConfigService {
 	}
 
 	public void loadConfig(File file) {
-		
+
 		Properties props = new Properties();
 		try {
 			props.load(new FileInputStream(file));
@@ -42,7 +43,8 @@ public class SimulationConfigService {
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(null, "Could not read from file.");
 		}
-		
+
+		// This value is not in range
 		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
 			Logger.Log(LogLevel.DEBUG, "Load value for " + s.getKey());
@@ -50,8 +52,13 @@ public class SimulationConfigService {
 				if (s.getValue().getValueType() == String.class) {
 					s.getValue().setValue((props.get(s.getKey())));
 				} else if (s.getValue().getValueType() == Integer.class) {
-					s.getValue().setValue(
-							Integer.parseInt((String) props.get(s.getKey())));
+
+					if (props.get(s.getKey()).equals("AUTO")) { // TODO Fix this in a nice way
+						
+					} else {
+						s.getValue().setValue(Integer.parseInt((String) props.get(s.getKey())));
+					}
+					
 				} else if (s.getValue().getValueType() == Float.class) {
 					s.getValue().setValue(
 							Float.parseFloat((String) props.get(s.getKey())));
@@ -59,16 +66,26 @@ public class SimulationConfigService {
 					s.getValue().setValue(
 							Double.parseDouble((String) props.get(s.getKey())));
 				} else if (s.getValue().getValueType() == Boolean.class) {
-					s.getValue().setValue(
-							Boolean.parseBoolean((String) props.get(s.getKey())));
+					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
 				}
 			} catch (NullPointerException e) {
-				Logger.Log(LogLevel.DEBUG, "Can not read value for " + s.getKey());
+				Logger.Log(LogLevel.DEBUG,"Can not read value for " + s.getKey());
 			}
 		}
+
+		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		List<String> pluginLevels = simPropRegistry.getPluginLevels();
 		
-		// TODO: Load selected plugins
 		
+		
+		for (String pluginLevel : pluginLevels) {
+			String selectedPlugin = (String) props.getProperty(simPropRegistry.pluginNameToConfigName(pluginLevel));
+			SimPropRegistry.getInstance().setActivePlugins(pluginLevel, selectedPlugin, false);
+			
+			// Update GUI in order to inform JComboBoxes
+			SimConfigPanel.getInstance().update();
+		}
+
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}
@@ -82,9 +99,9 @@ public class SimulationConfigService {
 
 		// static part
 		Map<String, String> plugins = this.simPropRegistry.getActivePlugins();
-		Logger.Log( LogLevel.DEBUG , "Active plugins are:");
+		Logger.Log(LogLevel.DEBUG, "Active plugins are:");
 		for (String key : plugins.keySet()) {
-			Logger.Log( LogLevel.DEBUG , plugins.get(key));
+			Logger.Log(LogLevel.DEBUG, plugins.get(key));
 			props.setProperty(key, plugins.get(key));
 		}
 

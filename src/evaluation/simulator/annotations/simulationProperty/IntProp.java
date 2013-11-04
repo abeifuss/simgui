@@ -2,6 +2,9 @@ package evaluation.simulator.annotations.simulationProperty;
 
 import javax.swing.JOptionPane;
 
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
+
 public class IntProp extends SimProp {
 
 	private int _maxValue;
@@ -42,6 +45,7 @@ public class IntProp extends SimProp {
 			return;
 		}
 
+		Logger.Log(LogLevel.ERROR, "For " + super.getId() + "Value not in rage (int). " + tmp );
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}

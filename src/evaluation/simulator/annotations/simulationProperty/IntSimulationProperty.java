@@ -19,9 +19,9 @@ public @interface IntSimulationProperty {
 	// general
 	public String id() default "";
 
-	public int max() default 1;
+	public int max() default Integer.MAX_VALUE;
 
-	public int min() default 0;
+	public int min() default Integer.MIN_VALUE;
 
 	public String name() default "";
 

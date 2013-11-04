@@ -19,9 +19,9 @@ public @interface FloatSimulationProperty {
 	// general
 	public String id() default "";
 
-	public float max() default 1.0f;
+	public float max() default Float.MAX_VALUE;
 
-	public float min() default 0.0f;
+	public float min() default Float.NEGATIVE_INFINITY;
 
 	public String name() default "";
 

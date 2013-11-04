@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
@@ -74,6 +75,8 @@ public class PluginPanel extends JScrollPane {
 		Map<String, String>[] PluginLayerMap = this.simPropRegistry
 				.getPlugIns();
 
+		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
+
 		String[] levelStrings[] = {
 				PluginLayerMap[0].keySet().toArray(
 						new String[PluginLayerMap[0].size()]),
@@ -88,36 +91,36 @@ public class PluginPanel extends JScrollPane {
 				PluginLayerMap[5].keySet().toArray(
 						new String[PluginLayerMap[5].size()]),
 				PluginLayerMap[6].keySet().toArray(
-						new String[PluginLayerMap[6].size()])};
+						new String[PluginLayerMap[6].size()]) };
 
 		// CLIENT_SEND_STYLE
 		JComboBox<String> plugInLevel1List = new JComboBox<String>(
 				levelStrings[0]);
-		this.pluginListsMap.put("clientSendStyle", plugInLevel1List);
+		this.pluginListsMap.put(pluginOrder.get(0), plugInLevel1List);
 
 		JComboBox<String> plugInLevel2List = new JComboBox<String>(
 				levelStrings[1]);
-		this.pluginListsMap.put("delayBox", plugInLevel2List);
+		this.pluginListsMap.put(pluginOrder.get(1), plugInLevel2List);
 
 		JComboBox<String> plugInLevel3List = new JComboBox<String>(
 				levelStrings[2]);
-		this.pluginListsMap.put("mixSendStyle", plugInLevel3List);
+		this.pluginListsMap.put(pluginOrder.get(2), plugInLevel3List);
 
 		JComboBox<String> plugInLevel4List = new JComboBox<String>(
 				levelStrings[3]);
-		this.pluginListsMap.put("outputStrategy", plugInLevel4List);
+		this.pluginListsMap.put(pluginOrder.get(3), plugInLevel4List);
 
 		JComboBox<String> plugInLevel5List = new JComboBox<String>(
 				levelStrings[4]);
-		this.pluginListsMap.put("plotType", plugInLevel5List);
+		this.pluginListsMap.put(pluginOrder.get(4), plugInLevel5List);
 
 		JComboBox<String> plugInLevel6List = new JComboBox<String>(
 				levelStrings[5]);
-		this.pluginListsMap.put("topology", plugInLevel6List);
-		
+		this.pluginListsMap.put(pluginOrder.get(5), plugInLevel6List);
+
 		JComboBox<String> plugInLevel7List = new JComboBox<String>(
 				levelStrings[6]);
-		this.pluginListsMap.put("trafficSource", plugInLevel7List);
+		this.pluginListsMap.put(pluginOrder.get(6), plugInLevel7List);
 
 		for (String chooseString : this.pluginListsMap.keySet()) {
 			this.pluginListsMap.get(chooseString).insertItemAt(
@@ -130,7 +133,8 @@ public class PluginPanel extends JScrollPane {
 		List<SimProp> listofAllSimProperties = this.getSections();
 		Set<String> listOfAllPluginLayers = new HashSet<String>();
 
-		Iterator<SimProp> simPropertyIterator = listofAllSimProperties.iterator();
+		Iterator<SimProp> simPropertyIterator = listofAllSimProperties
+				.iterator();
 		while (simPropertyIterator.hasNext()) {
 			String plugInName = simPropertyIterator.next().getPluginLayer();
 			listOfAllPluginLayers.add(plugInName);
@@ -141,8 +145,9 @@ public class PluginPanel extends JScrollPane {
 		while (plugInNameIterator.hasNext()) {
 			String plugInName = plugInNameIterator.next();
 
-			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + plugInName );
-			accordionElement = new AccordionEntry(plugInName, this.pluginListsMap.get(plugInName));
+			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + plugInName);
+			accordionElement = new AccordionEntry(plugInName,
+					this.pluginListsMap.get(plugInName));
 			this._panel.add(accordionElement, gridBagConstraints);
 		}
 
@@ -154,5 +159,22 @@ public class PluginPanel extends JScrollPane {
 		this._panel.add(jp, gridBagConstraints);
 
 		this.setVisible(true);
+	}
+
+	void setPlugin(String pluginLevel, String selectedPlugin) {
+		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "
+				+ selectedPlugin);
+		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
+	}
+
+	public void update() {
+		final Map<String, String> activePlugins = simPropRegistry.getActivePlugins();
+		for (final String pluginLevel : activePlugins.keySet()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					setPlugin(pluginLevel, activePlugins.get(pluginLevel));
+				}
+			});
+		}
 	}
 }

@@ -19,9 +19,9 @@ public @interface DoubleSimulationProperty {
 	// general
 	public String id() default "";
 
-	public double max() default 1.0f;
+	public double max() default Double.MAX_VALUE;
 
-	public double min() default 0.0f;
+	public double min() default Double.NEGATIVE_INFINITY;
 
 	public String name() default "";
 

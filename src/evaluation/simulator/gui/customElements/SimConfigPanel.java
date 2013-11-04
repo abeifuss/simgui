@@ -66,4 +66,9 @@ public class SimConfigPanel extends JPanel {
 		this.add(this.pluginPanel, BorderLayout.CENTER);
 		this.add(this.buttonBar, BorderLayout.SOUTH);
 	};
+	
+	public void update(){
+		pluginPanel.update();
+		updateUI();
+	}
 }

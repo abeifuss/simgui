@@ -46,12 +46,25 @@ public class SimPropRegistry {
 		return _instance;
 	}
 
+//	private final List<String> pluginLayer;
+
 	@SuppressWarnings("unchecked")
 	private final Map<String, String>[] pluginLayerMap = new HashMap[7];
 	private final Map<String, SimProp> properties = new HashMap<String, SimProp>();
 	private final Map<String, String> activePlugins = new HashMap<String, String>();
-
+	private final Map<String, String> pluginNameToConfigName;
 	private SimPropRegistry() {
+		
+		pluginNameToConfigName = new HashMap<>();
+		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
+		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
+		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
+		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
+		pluginNameToConfigName.put("plotType", "PLOT_TYPE");
+		pluginNameToConfigName.put("topology", "TOPOLOGY_SCRIPT");
+		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
+		
+		
 		this.scan();
 		this.scanPlugins();
 	}
@@ -300,31 +313,30 @@ public class SimPropRegistry {
 
 	public void scanPlugins() {
 		
-		for (int i = 0; i < 7; i++) {
+		String[] pluginLayer = pluginNameToConfigName.keySet().toArray(new String[0]);
+		
+		for (int i = 0; i < pluginNameToConfigName.size(); i++) {
 			this.pluginLayerMap[i] = new HashMap<String, String>();
 		}
-		
-		String[] plugInLayer = { "clientSendStyle", "delayBox", "mixSendStyle",
-				"outputStrategy", "plotType", "topology", "trafficSource" };
 		
 		for ( String key : properties.keySet() ) {
 			SimProp simProp = properties.get(key);
 			String layer = simProp.getPluginLayer();
 			String name = simProp.getNamespace();
-
-			if ( layer.equals(plugInLayer[0]) ){
+			
+			if ( layer.equals(pluginLayer[0]) ){
 				this.pluginLayerMap[0].put( name, layer );
-			}else if ( layer.equals(plugInLayer[1]) ){
+			}else if ( layer.equals(pluginLayer[1]) ){
 				this.pluginLayerMap[1].put( name, layer );
-			}else if ( layer.equals(plugInLayer[2]) ){
+			}else if ( layer.equals(pluginLayer[2]) ){
 				this.pluginLayerMap[2].put( name, layer );
-			}else if ( layer.equals(plugInLayer[3]) ){
+			}else if ( layer.equals(pluginLayer[3]) ){
 				this.pluginLayerMap[3].put( name, layer );
-			}else if ( layer.equals(plugInLayer[4]) ){
+			}else if ( layer.equals(pluginLayer[4]) ){
 				this.pluginLayerMap[4].put( name, layer );
-			}else if ( layer.equals(plugInLayer[5]) ){
+			}else if ( layer.equals(pluginLayer[5]) ){
 				this.pluginLayerMap[5].put( name, layer );
-			}else if ( layer.equals(plugInLayer[6]) ){
+			}else if ( layer.equals(pluginLayer[6]) ){
 				this.pluginLayerMap[6].put( name, layer );
 			}else {
 				System.err.println( "No such plugin layer: " + layer );
@@ -370,23 +382,28 @@ public class SimPropRegistry {
 		return simPropertiesInANamespace;
 	}
 
-	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
+	public void setActivePlugins(String pluginLevel, String selectedPlugin, boolean map) {
 		
-		Map<String, String> pluginNameToConfigName = new HashMap<>();
-		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
-		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
-		pluginNameToConfigName.put("plotType", "PLOT_TYPE");
-		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
-		pluginNameToConfigName.put("topology", "TOPOLOGY_SCRIPT");
-		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
-		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
-		
-		Logger.Log(LogLevel.DEBUG, "Set " + pluginNameToConfigName.get(pluginLevel) + " plugin to " + selectedPlugin);
-		
-		activePlugins.put(pluginNameToConfigName.get(pluginLevel), selectedPlugin);
+		String pluginLevelConfigName;
+		if ( map ){
+			pluginLevelConfigName = pluginNameToConfigName(pluginLevel);
+		} else{
+			pluginLevelConfigName = pluginLevel;
+		}
+		Logger.Log(LogLevel.DEBUG, "Set " + pluginLevelConfigName + " plugin to " + selectedPlugin);
+		activePlugins.put(pluginLevelConfigName, selectedPlugin);
 	}
 	
 	public Map<String, String> getActivePlugins() {
 		return activePlugins;
 	}
+
+	public List<String> getPluginLevels() {
+		return new LinkedList<String>(pluginNameToConfigName.keySet());
+	}
+
+	public String pluginNameToConfigName(String pluginLevel) {
+		return pluginNameToConfigName.get(pluginLevel);
+	}
+	
 }
