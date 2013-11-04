@@ -1,9 +1,7 @@
 package evaluation.simulator.gui.layout;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,8 +9,10 @@ import java.io.FileFilter;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -27,22 +27,25 @@ import evaluation.simulator.gui.service.ConfigParser;
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
 
-	private final JTabbedPane south;
-	private final JPanel north;
-	private int resultCounter;
-	private final JButton startButton = new JButton("Start Simulation");
 	private final JButton addExperiment = new JButton(">>");
-	private final JButton delteExperiment = new JButton("<<");
-
-	final DefaultListModel<File> availableExperimentsModel;
-	final DefaultListModel<File> runExperimentsModel;
 	JList<File> availableExperiments;
+	final DefaultListModel<File> availableExperimentsModel;
+	private final JButton deleteExperiment = new JButton("<<");
+	private final JPanel leftNorth;
+	JScrollPane leftScrollPane;
+	private final JPanel north;
+
+	private int resultCounter;
+	JScrollPane rightScrollPane;
 	JList<File> runExperiments;
+	final DefaultListModel<File> runExperimentsModel;
+	private final JTabbedPane south;
+	private final JButton startButton = new JButton("Start Simulation");
 
 	public SimulationTab() {
 
-		availableExperimentsModel = new DefaultListModel<File>();
-		runExperimentsModel = new DefaultListModel<File>();
+		this.availableExperimentsModel = new DefaultListModel<File>();
+		this.runExperimentsModel = new DefaultListModel<File>();
 
 		this.resultCounter = 1;
 
@@ -54,65 +57,43 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		this.add(verticalSplitPlane, BorderLayout.CENTER);
 
+		GridLayout simulationTabLayoutNorth = new GridLayout(1, 2);
+		this.leftNorth = new JPanel();
 		this.north = new JPanel();
+		this.north.setLayout(simulationTabLayoutNorth);
 		this.south = new JTabbedPane();
 
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		GridLayout gridLayout = new GridLayout(3, 3);
+		this.leftNorth.setLayout(gridLayout);
 
-		this.north.setLayout(gridBagLayout);
+		JLabel experimentsToSelectLabel = new JLabel(
+				"<html><b>Select</b> experiments:</html>");
+		JLabel selectedExperimentsLabel = new JLabel("Experiments to perform:");
+		this.leftNorth.add(experimentsToSelectLabel);
+		this.leftNorth.add(new JLabel(""));
+		this.leftNorth.add(selectedExperimentsLabel);
 
-		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
-		gridBagConstraints.anchor = GridBagConstraints.EAST;
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.ipadx = 0;
-		gridBagConstraints.gridheight = 2;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new Insets(3, 3, 3, 3);
+		this.availableExperiments = new JList<File>(
+				this.availableExperimentsModel);
+		this.leftScrollPane = new JScrollPane(this.availableExperiments);
+		this.runExperiments = new JList<File>(this.runExperimentsModel);
+		this.rightScrollPane = new JScrollPane(this.runExperiments);
+		this.leftNorth.add(this.leftScrollPane);
 
-		availableExperiments = new JList<File>(availableExperimentsModel);
-		runExperiments = new JList<File>(runExperimentsModel);
+		JPanel experimentSelectionPane = new JPanel();
+		GridLayout buttonLayout = new GridLayout(2, 1);
+		experimentSelectionPane.setLayout(buttonLayout);
+		experimentSelectionPane.add(this.addExperiment);
+		experimentSelectionPane.add(this.deleteExperiment);
+		this.leftNorth.add(experimentSelectionPane);
 
-		this.north.add(availableExperiments, gridBagConstraints);
+		this.leftNorth.add(this.rightScrollPane);
 
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		gridBagConstraints.anchor = GridBagConstraints.CENTER;
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.ipadx = 0;
-		gridBagConstraints.gridheight = 1;
-		gridBagConstraints.weightx = 0.0;
-		gridBagConstraints.weighty = 0.5;
-		this.north.add(addExperiment, gridBagConstraints);
+		this.leftNorth.add(new JLabel(""));
+		this.leftNorth.add(this.startButton);
 
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.ipadx = 0;
-		gridBagConstraints.gridheight = 1;
-		this.north.add(delteExperiment, gridBagConstraints);
-
-		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
-		gridBagConstraints.anchor = GridBagConstraints.WEST;
-		gridBagConstraints.gridx = 2;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.ipadx = 0;
-		gridBagConstraints.gridheight = 2;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 0.0;
-		this.north.add(runExperiments, gridBagConstraints);
-
-		// this.north.add(wellcomeLabel, gridBagConstraints);
-		gridBagConstraints.anchor = GridBagConstraints.SOUTH;
-		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 2;
-		gridBagConstraints.gridheight = 1;
-		gridBagConstraints.gridwidth = 3;
-		gridBagConstraints.weightx = 0.0;
-		gridBagConstraints.weighty = 0.0;
-		this.north.add(this.startButton, gridBagConstraints);
+		this.north.add(this.leftNorth);
+		this.north.add(new JLabel(""));
 
 		this.startButton.addActionListener(this);
 
@@ -127,10 +108,10 @@ public class SimulationTab extends JPanel implements ActionListener {
 		verticalSplitPlane.setTopComponent(this.north);
 		verticalSplitPlane.setBottomComponent(this.south);
 
-		addExperiment.addActionListener(this);
-		delteExperiment.addActionListener(this);
+		this.addExperiment.addActionListener(this);
+		this.deleteExperiment.addActionListener(this);
 
-		update();
+		this.update();
 
 	}
 
@@ -140,11 +121,12 @@ public class SimulationTab extends JPanel implements ActionListener {
 		if (event.getSource() == this.startButton) {
 			ConfigParser configParser = new ConfigParser();
 
-			String[] params = new String[runExperiments.getModel().getSize()];
+			String[] params = new String[this.runExperiments.getModel()
+					.getSize()];
 
-			for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
+			for (int i = 0; i < this.runExperiments.getModel().getSize(); i++) {
 				params[i] = configParser
-						.clenupConfigurationForSimulator(runExperiments
+						.clenupConfigurationForSimulator(this.runExperiments
 								.getModel().getElementAt(i));
 			}
 
@@ -158,11 +140,12 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 		if (event.getSource() == this.addExperiment) {
 			try {
-				int index = availableExperiments.getSelectedIndex();
+				int index = this.availableExperiments.getSelectedIndex();
 				if (index != -1) {
-					runExperimentsModel.addElement(availableExperiments
-							.getSelectedValue());
-					availableExperimentsModel.remove(index);
+					this.runExperimentsModel
+							.addElement(this.availableExperiments
+									.getSelectedValue());
+					this.availableExperimentsModel.remove(index);
 					this.updateUI();
 				}
 			} catch (Exception e) {
@@ -170,13 +153,13 @@ public class SimulationTab extends JPanel implements ActionListener {
 			}
 		}
 
-		if (event.getSource() == this.delteExperiment) {
+		if (event.getSource() == this.deleteExperiment) {
 			try {
-				int index = runExperiments.getSelectedIndex();
+				int index = this.runExperiments.getSelectedIndex();
 				if (index != -1) {
-					availableExperimentsModel.addElement(runExperiments
-							.getSelectedValue());
-					runExperimentsModel.remove(index);
+					this.availableExperimentsModel
+							.addElement(this.runExperiments.getSelectedValue());
+					this.runExperimentsModel.remove(index);
 					this.updateUI();
 				}
 			} catch (Exception e) {
@@ -202,24 +185,27 @@ public class SimulationTab extends JPanel implements ActionListener {
 			public void run() {
 				for (File f : listOfFiles) {
 					boolean insertFlag = true;
-					for (int i = 0; i < availableExperiments.getModel()
-							.getSize(); i++) {
-						if (availableExperiments.getModel().getElementAt(i)
-								.equals(f)) {
+					for (int i = 0; i < SimulationTab.this.availableExperiments
+							.getModel().getSize(); i++) {
+						if (SimulationTab.this.availableExperiments.getModel()
+								.getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
-					for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
-						if (runExperiments.getModel().getElementAt(i).equals(f)) {
+					for (int i = 0; i < SimulationTab.this.runExperiments
+							.getModel().getSize(); i++) {
+						if (SimulationTab.this.runExperiments.getModel()
+								.getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
 					if (insertFlag) {
-						availableExperimentsModel.addElement(f);
+						SimulationTab.this.availableExperimentsModel
+								.addElement(f);
 					}
 				}
 			}
