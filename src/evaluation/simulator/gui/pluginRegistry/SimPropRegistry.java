@@ -52,18 +52,24 @@ public class SimPropRegistry {
 	private final Map<String, String>[] pluginLayerMap = new HashMap[7];
 	private final Map<String, SimProp> properties = new HashMap<String, SimProp>();
 	private final Map<String, String> activePlugins = new HashMap<String, String>();
+	private final Map<String, String> activePluginsMapped = new HashMap<String, String>();
 	private final Map<String, String> pluginNameToConfigName;
+	private final Map<String, String> configNameToPluginName;
 	private SimPropRegistry() {
 		
-		pluginNameToConfigName = new HashMap<>();
+		pluginNameToConfigName = new HashMap<String, String>();
 		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
 		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
 		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
 		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
 		pluginNameToConfigName.put("plotType", "PLOT_TYPE");
-		pluginNameToConfigName.put("topology", "TOPOLOGY_SCRIPT");
+		pluginNameToConfigName.put("topology", "TOPOLOGY");
 		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
 		
+		configNameToPluginName = new HashMap<String, String>();
+		for ( Entry<String, String> entry : pluginNameToConfigName.entrySet() ){
+			configNameToPluginName.put(entry.getValue(), entry.getKey());
+		}
 		
 		this.scan();
 		this.scanPlugins();
@@ -147,8 +153,14 @@ public class SimPropRegistry {
 			plugin.setId(plugInClass.getName());
 			plugin.setName(pluginAnnotation.name());
 			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
+			plugin.setPluginLayer(pluginAnnotation.pluginLayer());
 
-			String plugInLayer = (plugin.getId()).split("\\.", 5)[3];
+			String plugInLayer;
+			if ( plugin.getPluginLayer().equals("") ){
+				plugInLayer = (plugin.getId()).split("\\.", 5)[3];
+			} else {
+				plugInLayer = plugin.getPluginLayer();
+			}
 			
 			readFields( plugin, plugInClass.getDeclaredFields(), plugInLayer );
 			
@@ -382,20 +394,24 @@ public class SimPropRegistry {
 		return simPropertiesInANamespace;
 	}
 
-	public void setActivePlugins(String pluginLevel, String selectedPlugin, boolean map) {
-		
-		String pluginLevelConfigName;
-		if ( map ){
-			pluginLevelConfigName = pluginNameToConfigName(pluginLevel);
-		} else{
-			pluginLevelConfigName = pluginLevel;
-		}
-		Logger.Log(LogLevel.DEBUG, "Set " + pluginLevelConfigName + " plugin to " + selectedPlugin);
-		activePlugins.put(pluginLevelConfigName, selectedPlugin);
+	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
+		Logger.Log(LogLevel.DEBUG, "Set " + pluginLevel + " plugin to " + selectedPlugin);
+		activePlugins.put(pluginLevel, selectedPlugin);
+		activePluginsMapped.put( pluginNameToConfigName(pluginLevel), selectedPlugin);
 	}
 	
-	public Map<String, String> getActivePlugins() {
-		return activePlugins;
+	public void setActivePluginsMapped(String pluginLevel, String selectedPlugin) {
+		Logger.Log(LogLevel.DEBUG, "Set mapped " + pluginNameToConfigName(pluginLevel) + " plugin to " + selectedPlugin);
+		activePlugins.put(configNameToPluginName(pluginLevel), selectedPlugin);
+		activePluginsMapped.put(pluginLevel, selectedPlugin);
+	}
+	
+	public Map<String, String> getActivePlugins(boolean mapped) {
+		if (mapped){
+			return activePluginsMapped;
+		}else{
+			return activePlugins;	
+		}
 	}
 
 	public List<String> getPluginLevels() {
@@ -404,6 +420,20 @@ public class SimPropRegistry {
 
 	public String pluginNameToConfigName(String pluginLevel) {
 		return pluginNameToConfigName.get(pluginLevel);
+	}
+	
+	public String configNameToPluginName(String pluginLevel) {
+		return configNameToPluginName.get(pluginLevel);
+	}
+
+	public List<String> getConfigNamesForPluginLayers() {
+		
+		List<String> configNamesForPluginLayers = new LinkedList<String>();
+		for ( Entry<String, String> entry : configNameToPluginName.entrySet() )
+		{
+			configNamesForPluginLayers.add( entry.getKey() );
+		}
+		return configNamesForPluginLayers;
 	}
 	
 }

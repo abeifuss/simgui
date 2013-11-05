@@ -29,12 +29,8 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "ONE_MIX") // TODO: N_MIX_CASCADE_TOPOLOGY
 public class NMixCascadeTopology extends TopologyScript {
-	
-	// @IntSimulationProperty( name = "dummy", propertykey = "DUMMY")
-	private int dummy;
-	
+
 	private int numberOfMixes;
 	private HashMap<String, AbstractClient> clients;
 	private HashMap<String, Mix> mixes;

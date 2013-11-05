@@ -144,7 +144,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 			for (int i = 0; i < runExperiments.getModel().getSize(); i++) {
 				params[i] = configParser
-						.clenupConfigurationForSimulator(runExperiments
+						.cleanupConfigurationForSimulator(runExperiments
 								.getModel().getElementAt(i));
 			}
 

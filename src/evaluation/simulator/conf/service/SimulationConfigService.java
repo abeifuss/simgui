@@ -77,10 +77,10 @@ public class SimulationConfigService {
 		List<String> pluginLevels = simPropRegistry.getPluginLevels();
 		
 		
-		
 		for (String pluginLevel : pluginLevels) {
-			String selectedPlugin = (String) props.getProperty(simPropRegistry.pluginNameToConfigName(pluginLevel));
-			SimPropRegistry.getInstance().setActivePlugins(pluginLevel, selectedPlugin, false);
+			String configName = SimPropRegistry.getInstance().pluginNameToConfigName(pluginLevel);
+			String selectedPlugin = (String) props.getProperty(configName);
+			SimPropRegistry.getInstance().setActivePluginsMapped(configName, selectedPlugin);
 			
 			// Update GUI in order to inform JComboBoxes
 			SimConfigPanel.getInstance().update();
@@ -98,10 +98,10 @@ public class SimulationConfigService {
 		Properties props = new Properties();
 
 		// static part
-		Map<String, String> plugins = this.simPropRegistry.getActivePlugins();
+		Map<String, String> plugins = this.simPropRegistry.getActivePlugins(true);
 		Logger.Log(LogLevel.DEBUG, "Active plugins are:");
 		for (String key : plugins.keySet()) {
-			Logger.Log(LogLevel.DEBUG, plugins.get(key));
+			Logger.Log(LogLevel.DEBUG, key + " with " + plugins.get(key));
 			props.setProperty(key, plugins.get(key));
 		}
 

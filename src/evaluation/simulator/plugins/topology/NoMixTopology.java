@@ -21,6 +21,8 @@ import java.util.HashMap;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -28,9 +30,14 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "NO_MIXES")
+// HACK
+@PluginAnnotation(name = "TOPOLOGYSCRIPT")
 public class NoMixTopology extends TopologyScript {
 
+	// HACK
+	@StringSimulationProperty( name = "Topology", propertykey = "TOPOLOGY_SCRIPT", possibleValues="NO_MIXES,ONE_MIX,THREE_MIX_CASCADE,FIVE_MIX_CASCADE")
+	String choice;
+	
 	private HashMap<String, AbstractClient> clients;;
 	private HashMap<String, Mix> mixes;
 	private HashMap<String, NetworkConnection> networkConnections;

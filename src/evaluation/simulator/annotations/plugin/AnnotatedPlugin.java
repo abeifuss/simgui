@@ -5,6 +5,7 @@ public class AnnotatedPlugin {
 	private String documentationURL;
 	private String id;
 	private String name;
+	private String pluginLayer;
 
 	public String getDocumentationURL() {
 		return this.documentationURL;
@@ -29,5 +30,15 @@ public class AnnotatedPlugin {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getPluginLayer() {
+		return pluginLayer;
+	}
+
+	public void setPluginLayer(String pluginLayer) {
+		this.pluginLayer = pluginLayer;
+	}
+	
+	
 
 }

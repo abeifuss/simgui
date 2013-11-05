@@ -25,6 +25,9 @@ import evaluation.simulator.pluginRegistry.DelayBox;
 @PluginAnnotation(name = "BASIC_DELAY_BOX")
 public class BasicDelayBox extends DelayBoxImpl {
 
+	@IntSimulationProperty(	name = "Packet Size (byte)", propertykey = "NETWORK_PACKET_PAYLOAD_SIZE")
+	private int packetSize = new Integer(Simulator.settings.getProperty("NETWORK_PACKET_PAYLOAD_SIZE"));
+	
 	private class SimplexDelayBox {
 
 		private final static int NOT_SCHEDULED = -100;
@@ -35,18 +38,14 @@ public class BasicDelayBox extends DelayBoxImpl {
 		private long lastPulse = NOT_SET;
 		private final int latency; // in ms
 		
-		@IntSimulationProperty(
-				name = "Packet Size (byte)", 
-				propertykey = "NETWORK_PACKET_PAYLOAD_SIZE"
-		)
-		private int packetSize = new Integer(
-				Simulator.settings.getProperty("NETWORK_PACKET_PAYLOAD_SIZE"));
+		private int packetSize;
 
 		private double sendInterval; // abstand in dem pakete geschickt werden
 										// können
 		private long timeOfOutputForNextNotFullPacket;
 
-		public SimplexDelayBox(int bandwidth, int latency) {
+		public SimplexDelayBox(int bandwidth, int latency, int packetSize) {
+			this.packetSize = packetSize;
 			this.latency = latency;
 			if (bandwidth != DelayBox.UNLIMITD_BANDWIDTH) {
 				double packetsPerSecond = Math.round((double) bandwidth
@@ -236,8 +235,8 @@ public class BasicDelayBox extends DelayBoxImpl {
 	// latency in ms
 	public BasicDelayBox(int bandwidthSend, int bandwidthReceive, int latency) {
 		super();
-		this.sendDelayBox = new SimplexDelayBox(bandwidthSend, latency);
-		this.receiveDelayBox = new SimplexDelayBox(bandwidthReceive, latency);
+		this.sendDelayBox = new SimplexDelayBox(bandwidthSend, latency, packetSize);
+		this.receiveDelayBox = new SimplexDelayBox(bandwidthReceive, latency, packetSize);
 		this.hasUnlimitedBandwidthSend = bandwidthSend == DelayBox.UNLIMITD_BANDWIDTH;
 		this.hasUnlimitedBandwidthReceive = bandwidthReceive == DelayBox.UNLIMITD_BANDWIDTH;
 	}

@@ -18,11 +18,13 @@
 package evaluation.simulator.pluginRegistry;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.plugins.delayBox.BasicDelayBox;
 import evaluation.simulator.plugins.delayBox.DelayBoxImpl;
 import evaluation.simulator.plugins.delayBox.NoDelayDelayBox;
 
-
+@PluginAnnotation(name = "BASIC_DELAY_BOX", pluginLayer="delayBox")
 public enum DelayBox {
 
 	NO_DELAY,
@@ -31,7 +33,25 @@ public enum DelayBox {
 		
 	public static enum TypeOfNode {CLIENT, MIX, DISTANT_PROXY};
 	public static int UNLIMITD_BANDWIDTH = -1;
-		
+	
+	@IntSimulationProperty( name="Client send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND")
+	private static int bandwidthSend_client;
+	@IntSimulationProperty( name="Client receive bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE")
+	private static int bandwidthReceive_client;
+	@IntSimulationProperty( name="Client latency", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY")
+	private static int latency_client;
+	@IntSimulationProperty( name="Mix send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND")
+	private static int bandwidthSend_mix;
+	@IntSimulationProperty( name="Mix receive banwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE")
+	private static int bandwidthReceive_mix;
+	@IntSimulationProperty( name="Mix latency", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY")
+	private static int latency_mix;
+	@IntSimulationProperty( name="Distant proxy send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND")
+	private static int bandwidthSend_proxy;
+	@IntSimulationProperty( name="Distant proxy receive bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE")
+	private static int bandwidthReceive_proxy;
+	@IntSimulationProperty( name="Distant proxy latency", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY")
+	private static int latency_proxy;
 		
 	public static DelayBoxImpl getInstance(int bandwidthSend, int bandwidthReceive, int latency) {
 		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
@@ -51,44 +71,47 @@ public enum DelayBox {
 		if (desiredImpl.equals("NO_DELAY")) {
 			return new NoDelayDelayBox();
 		} else if (desiredImpl.equals("BASIC_DELAY_BOX")) {
-			int bandwidthSend;
-			int bandwidthReceive;
-			int latency;
+//			int bandwidthSend;
+//			int bandwidthReceive;
+//			int latency;
 			if (typeOfNode == TypeOfNode.CLIENT) {
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND").equals("UNLIMITED"))
-					bandwidthSend = UNLIMITD_BANDWIDTH;
+					bandwidthSend_client = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthSend = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND");
+					bandwidthSend_client = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND");
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE").equals("UNLIMITED"))
-					bandwidthReceive = UNLIMITD_BANDWIDTH;
+					bandwidthReceive_client = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthReceive = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE");
-				latency = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY");
+					bandwidthReceive_client = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE");
+				latency_client = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY");
+				return new BasicDelayBox(bandwidthSend_client, bandwidthReceive_client, latency_client);
 			} else if (typeOfNode == TypeOfNode.MIX) {
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND").equals("UNLIMITED"))
-					bandwidthSend = UNLIMITD_BANDWIDTH;
+					bandwidthSend_mix = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthSend = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND");
+					bandwidthSend_mix = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND");
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE").equals("UNLIMITED"))
-					bandwidthReceive = UNLIMITD_BANDWIDTH;
+					bandwidthReceive_mix = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthReceive = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE");
-				latency = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY");
+					bandwidthReceive_mix = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE");
+				latency_mix = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY");
+				return new BasicDelayBox(bandwidthSend_mix, bandwidthReceive_mix, latency_mix);
 			} else if (typeOfNode == TypeOfNode.DISTANT_PROXY) {
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND").equals("UNLIMITED"))
-					bandwidthSend = UNLIMITD_BANDWIDTH;
+					bandwidthSend_proxy = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthSend = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND");
+					bandwidthSend_proxy = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND");
 				if (Simulator.settings.getProperty("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE").equals("UNLIMITED"))
-					bandwidthReceive = UNLIMITD_BANDWIDTH;
+					bandwidthReceive_proxy = UNLIMITD_BANDWIDTH;
 				else
-					bandwidthReceive = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE");
-				latency = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY");
+					bandwidthReceive_proxy = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE");
+				latency_proxy = Simulator.settings.getPropertyAsInt("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY");
+				return new BasicDelayBox(bandwidthSend_proxy, bandwidthReceive_proxy, latency_proxy);
 			} else {
 				new InternalError("add new case for TypeOfNode " +typeOfNode);
 				return null;
 			}
-			return new BasicDelayBox(bandwidthSend, bandwidthReceive, latency);
+//			return new BasicDelayBox(bandwidthSend, bandwidthReceive, latency);
 		} else
 			throw new RuntimeException("ERROR: no DelayBox with the name \"" +desiredImpl  
 				+"\" available (Key \"TYPE_OF_DELAY_BOX\" in experiment config file. See " +

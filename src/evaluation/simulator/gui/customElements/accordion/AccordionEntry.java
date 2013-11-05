@@ -86,7 +86,7 @@ public class AccordionEntry extends JPanel {
 			String pluginName = (String) jComboBox.getSelectedItem();
 			
 			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
-			simPropRegistry.setActivePlugins(pluginLevel, pluginName, true);
+			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 			
 			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByNamespace(pluginName);
 			

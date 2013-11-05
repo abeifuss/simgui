@@ -13,24 +13,27 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.log.LogLevel;
 import evaluation.simulator.log.Logger;
 
+
+/**
+ * @author alex
+ *
+ */
 public class ConfigParser {
 
-	public String clenupConfigurationForSimulator(File file) {
+	
+	/**
+	 * @param file
+	 * @return
+	 */
+	public String cleanupConfigurationForSimulator(File file) {
 		StringBuffer content = new StringBuffer();
 		BufferedReader reader = null;
-
-		Map<String, String> configNameToPluginName = new HashMap<>();
-		configNameToPluginName.put("TYPE_OF_DELAY_BOX", "delayBox");
-		configNameToPluginName
-				.put("TYPE_OF_TRAFFIC_GENERATOR", "trafficSource");
-		configNameToPluginName.put("PLOT_TYPE", "plotType");
-		configNameToPluginName.put("OUTPUT_STRATEGY", "outputStrategy");
-		configNameToPluginName.put("TOPOLOGY_SCRIPT", "topology");
-		configNameToPluginName.put("MIX_SEND_STYLE", "mixSendStyle");
-		configNameToPluginName.put("CLIENT_SEND_STYLE", "clientSendStyle");
+		
+		List<String> configNamesForPluginLayers = SimPropRegistry.getInstance().getConfigNamesForPluginLayers();
 		
 		Properties props = new Properties();
 		
@@ -48,7 +51,7 @@ public class ConfigParser {
 		List<String> activePlugins = new LinkedList<String>();
 		List<String> generalProperties = new LinkedList<String>();
 		
-		for (String s : configNameToPluginName.keySet() ) {
+		for (String s : configNamesForPluginLayers ) {
 				String tmp = props.getProperty(s);
 				Logger.Log(LogLevel.DEBUG, "Found: " + s + "=" + tmp);
 				activePlugins.add(tmp);
@@ -97,16 +100,6 @@ public class ConfigParser {
 			content.append("PROCESSING_TIME_FOR_1000_REPLIES=0").append(System.getProperty("line.separator"));
 
 			content.append("COMMUNICATION_MODE=SIMPLEX").append(System.getProperty("line.separator"));
-			
-			content.append("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND=131072").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE=UNLIMITED").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY=25").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND=UNLIMITED").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE=UNLIMITED").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY=7").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND=UNLIMITED").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE=UNLIMITED").append(System.getProperty("line.separator"));
-			content.append("BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY=7").append(System.getProperty("line.separator"));
 					
 			content.append("RECEIVER_SUPPORTS_DUMMY_TRAFFIC=FALSE").append(System.getProperty("line.separator"));
 			

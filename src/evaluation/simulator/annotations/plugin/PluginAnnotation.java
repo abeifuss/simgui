@@ -16,4 +16,6 @@ public @interface PluginAnnotation {
 	public String documentationURL() default "";
 
 	public String name() default "";
+	
+	public String pluginLayer() default "";
 }

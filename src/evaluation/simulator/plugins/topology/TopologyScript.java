@@ -19,14 +19,14 @@ package evaluation.simulator.plugins.topology;
 
 import java.util.HashMap;
 
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
 import evaluation.simulator.core.networkComponent.Mix;
 import evaluation.simulator.core.networkComponent.NetworkConnection;
 
-
+@PluginAnnotation(name = "TOPOLOGY_SCRIPT")
 public abstract class TopologyScript {
-
 	
 	public abstract void constructor(AbstractClient[] clients);
 	
