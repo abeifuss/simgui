@@ -1,19 +1,31 @@
 package evaluation.simulator.core.binding;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.core.statistics.Statistics;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 import framework.core.launcher.CommandLineParameters;
 
-public class gMixBinding {
+public class gMixBinding extends Thread {
 
+	private CommandLineParameters params;
+	Statistics stats;
+	
 	public gMixBinding(String[] configFile) {
-		this.init(configFile);
+		params = new CommandLineParameters(configFile);
 	}
+	
+	public void run() {
+		
+		try {
+			Simulator gMixSim = new Simulator(params);
+			Logger.Log(LogLevel.INFO, "Finished Simulator");
+			
+			stats = Simulator.trafficSourceStatistics;
 
-	private void init(String[] configFile) {
-		CommandLineParameters params = new CommandLineParameters(configFile);
-
-		@SuppressWarnings("unused")
-		Simulator gMixSim = new Simulator(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

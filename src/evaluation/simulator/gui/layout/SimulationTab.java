@@ -41,6 +41,9 @@ public class SimulationTab extends JPanel implements ActionListener {
 	final DefaultListModel<File> runExperimentsModel;
 	private final JTabbedPane south;
 	private final JButton startButton = new JButton("Start Simulation");
+	private final JButton stopButton = new JButton("Stop Simulation");
+	
+	gMixBinding callSimulation;
 
 	public SimulationTab() {
 
@@ -91,12 +94,15 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 		this.leftNorth.add(new JLabel(""));
 		this.leftNorth.add(this.startButton);
+		
+		this.leftNorth.add(this.stopButton);
 
 		this.north.add(this.leftNorth);
 		this.north.add(new JLabel(""));
 
 		this.startButton.addActionListener(this);
-
+		this.stopButton.addActionListener(this);
+		
 		this.south.addTab("Results_" + this.resultCounter, new ChartPanel(
 				LineJFreeChartCreator.createAChart()));
 		this.resultCounter++;
@@ -121,19 +127,24 @@ public class SimulationTab extends JPanel implements ActionListener {
 		if (event.getSource() == this.startButton) {
 			ConfigParser configParser = new ConfigParser();
 
-			String[] params = new String[this.runExperiments.getModel()
-					.getSize()];
+			String[][] params = new String[this.runExperiments.getModel().getSize()][1];
 
 			for (int i = 0; i < this.runExperiments.getModel().getSize(); i++) {
-				params[i] = configParser.cleanupConfigurationForSimulator(runExperiments.getModel().getElementAt(i));
+				params[i][0] = configParser.cleanupConfigurationForSimulator(runExperiments.getModel().getElementAt(i));
+				
+				callSimulation = new gMixBinding(params[i]);
+				callSimulation.start();
+				
+				// TODO: sync with main thread (pass Statistics)
 			}
-
-			@SuppressWarnings("unused")
-			gMixBinding callSimulation = new gMixBinding(params);
-			this.south.addTab("Results_" + this.resultCounter,
-					ResultPanelFactory.getResultPanel());
+			
+			this.south.addTab("Results_" + this.resultCounter, ResultPanelFactory.getResultPanel());
 
 			this.resultCounter++;
+		}
+		
+		if (event.getSource() == this.stopButton) {
+			// callSimulation.interrupt();
 		}
 
 		if (event.getSource() == this.addExperiment) {
