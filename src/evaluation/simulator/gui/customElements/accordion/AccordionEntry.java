@@ -25,15 +25,15 @@ import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
+	private final JComboBox comboBox;
 	private final JButton entryButton;
 	private JTable entryTable = null;
 	private final String localName;
-	private final JComboBox comboBox;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
 		this.comboBox = jComboBox;
-		
+
 		this.setLayout(new BorderLayout(0, 0));
 		this.entryButton = new JButton(this.localName, new ImageIcon(
 				"etc/img/icons/green/arrow-144-24.png"));
@@ -45,7 +45,7 @@ public class AccordionEntry extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this.toggleVisibility(e.getSource(), comboBox);
+				AccordionEntry.this.toggleVisibility(e.getSource(),AccordionEntry.this.comboBox);
 			}
 		};
 
@@ -53,38 +53,38 @@ public class AccordionEntry extends JPanel {
 		this.entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		this.add(this.entryButton, BorderLayout.NORTH);
-		comboBox.setVisible(false);
-		comboBox.addItemListener(new ItemListener() {
+		this.comboBox.setVisible(false);
+		this.comboBox.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				
-				if ( e.getStateChange() == ItemEvent.SELECTED ){
-					AccordionEntry.this.comboBoxChanged(comboBox);
+
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					AccordionEntry.this.comboBoxChanged(AccordionEntry.this.comboBox);
 				}
 
 			}
 		});
-		comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
-																// automatically
-																// resizing the
-																// JComboBox
-		this.add(comboBox, BorderLayout.CENTER);
+		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
+		// automatically
+		// resizing the
+		// JComboBox
+		this.add(this.comboBox, BorderLayout.CENTER);
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
 		if (jComboBox.getSelectedIndex() != 0) {
-			
-			if ( entryTable != null ){
-				remove(entryTable);
+
+			if (this.entryTable != null) {
+				this.remove(this.entryTable);
 			}
-			
-			Logger.Log( LogLevel.DEBUG, "Reload table");
+
+			Logger.Log(LogLevel.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-			
+
 			String pluginLevel = this.localName;
 			String pluginName = (String) jComboBox.getSelectedItem();
-			
+
 			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 			
@@ -92,9 +92,11 @@ public class AccordionEntry extends JPanel {
 			
 			for (SimProp s : tmpListOfAllSimPropertiesInANamespace ){
 				Logger.Log( LogLevel.DEBUG, "Load: " +s.getNamespace() + "::" + s.getName());
+
 			}
-			
-			this.entryTable = new JTable(new AccordionModel( tmpListOfAllSimPropertiesInANamespace )) {
+
+			this.entryTable = new JTable(new AccordionModel(
+					tmpListOfAllSimPropertiesInANamespace)) {
 
 				// This takes care that the non-editable cells are grayed out.
 				@Override
@@ -108,12 +110,15 @@ public class AccordionEntry extends JPanel {
 				}
 			};
 
-			this.entryTable.addMouseMotionListener(new AccordionMouseMotionAdapter(
-							tmpListOfAllSimPropertiesInANamespace, this.entryTable));
-			
-			this.entryTable.setDefaultRenderer(Object.class, new AccordionTableCellRenderer(
+			this.entryTable
+					.addMouseMotionListener(new AccordionMouseMotionAdapter(
+							tmpListOfAllSimPropertiesInANamespace,
+							this.entryTable));
+
+			this.entryTable.setDefaultRenderer(Object.class,
+					new AccordionTableCellRenderer(
 							tmpListOfAllSimPropertiesInANamespace));
-			
+
 			this.entryTable.setVisible(true);
 
 			TableColumn col = this.entryTable.getColumnModel().getColumn(1);
@@ -123,9 +128,19 @@ public class AccordionEntry extends JPanel {
 			this.entryTable.setVisible(true);
 			this.updateUI();
 		} else {
-			// this.remove(this.entryTable);
+			this.remove(this.entryTable);
 			this.updateUI();
 		}
+	}
+
+	public void setVibility(boolean b) {
+
+		this.comboBox.setVisible(b);
+		if (this.entryTable != null) {
+			this.entryTable.setVisible(b);
+		}
+		this.entryButton.setIcon(new ImageIcon(
+				"etc/img/icons/red/arrow-144-24.png"));
 	}
 
 	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
@@ -135,27 +150,20 @@ public class AccordionEntry extends JPanel {
 			if (!jComboBox.isVisible()) {
 				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 			} else {
-				btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+				btn.setIcon(new ImageIcon(
+						"etc/img/icons/green/arrow-144-24.png"));
 			}
 			jComboBox.setVisible(!jComboBox.isVisible());
 		} else {
 			if (!this.entryTable.isVisible()) {
 				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 			} else {
-				btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+				btn.setIcon(new ImageIcon(
+						"etc/img/icons/green/arrow-144-24.png"));
 			}
 			this.entryTable.setVisible(!this.entryTable.isVisible());
 			jComboBox.setVisible(!jComboBox.isVisible());
 		}
 		this.repaint();
-	}
-
-	public void setVibility(boolean b) {
-
-		comboBox.setVisible( b );
-		if (entryTable != null) {
-			entryTable.setVisible( b );
-		}
-		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 	}
 }

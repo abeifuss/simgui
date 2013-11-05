@@ -89,7 +89,7 @@ public class ConfigParser {
 			content.append("REAL_TIME_LIMIT_IN_SEC=1.0").append(System.getProperty("line.separator"));
 			content.append("SIMULATION_TIME_LIMIT_IN_MS=1000000").append(System.getProperty("line.separator"));
 			content.append("MESSAGE_FORMAT=BASIC_MIX_MESSAGE").append(System.getProperty("line.separator"));
-			content.append("NETWORK_PACKET_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
+			// content.append("NETWORK_PACKET_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
 			content.append("MIX_REQUEST_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
 			content.append("MIX_REQUEST_HEADER_SIZE=0").append(System.getProperty("line.separator"));
 			content.append("MIX_REPLY_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
@@ -115,9 +115,11 @@ public class ConfigParser {
 				
 				// Simproplevel
 				for (String plugin : activePlugins) {
-					if (string.matches("^" + plugin + "\\\\:\\\\:\\w*=\\w*")) {
+					if (string.matches("^" + plugin + "\\\\:\\\\:\\w*=-{0,1}\\w*\\.{0,1}\\w*")) {
 						subStrings = string.split("\\\\:\\\\:");
 						content.append(subStrings[1]).append(System.getProperty("line.separator"));
+					}else{
+						Logger.Log(LogLevel.ERROR, "Skip " + string);
 					}
 				}
 				

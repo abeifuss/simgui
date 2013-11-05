@@ -134,16 +134,17 @@ public class PluginPanel extends JScrollPane {
 		List<SimProp> listofAllSimProperties = this.getSections();
 		Set<String> listOfAllPluginLayers = new HashSet<String>();
 
-		for ( SimProp simProp : listofAllSimProperties ) {
+		for (SimProp simProp : listofAllSimProperties) {
 			String plugInName = simProp.getPluginLayer();
 			listOfAllPluginLayers.add(plugInName);
 		}
 
 		// Select the plugin layers
-		for ( String pluginLayer : listOfAllPluginLayers ) {
+		for (String pluginLayer : listOfAllPluginLayers) {
 
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + pluginLayer);
-			accordionElement = new AccordionEntry(pluginLayer, this.pluginListsMap.get(pluginLayer));
+			accordionElement = new AccordionEntry(pluginLayer,
+					this.pluginListsMap.get(pluginLayer));
 			this.panel.add(accordionElement, gridBagConstraints);
 		}
 
@@ -160,26 +161,32 @@ public class PluginPanel extends JScrollPane {
 	void setPlugin(String configName, String selectedPlugin) {
 		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
 		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "+ selectedPlugin);
+
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
 	public void update() {
-		
-		for ( Component component : this.panel.getComponents()){
-			if ( component.getClass().equals( AccordionEntry.class ) ) {
-				AccordionEntry accordianEntry = (AccordionEntry)(component);
+
+		for (Component component : this.panel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
 				accordianEntry.setVibility(true);
 				Logger.Log(LogLevel.DEBUG, "Found component!");
-			}else{
-				Logger.Log(LogLevel.DEBUG, "Found component " + component.getClass().getName() + " / " + AccordionEntry.class);
+			} else {
+				Logger.Log(LogLevel.DEBUG, "Found component "
+						+ component.getClass().getName() + " / "
+						+ AccordionEntry.class);
 			}
 		}
-		
+
 		final Map<String, String> activePlugins = simPropRegistry.getActivePlugins(true);
+
 		for (final String pluginLevel : activePlugins.keySet()) {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
-					setPlugin(pluginLevel, activePlugins.get(pluginLevel));
+					PluginPanel.this.setPlugin(pluginLevel,
+							activePlugins.get(pluginLevel));
 				}
 			});
 		}

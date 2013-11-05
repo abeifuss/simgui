@@ -19,6 +19,7 @@ package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.message.NetworkMessage;
@@ -28,6 +29,9 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 @PluginAnnotation(name = "SEND_IMMEDIATELY")
 public class ClientSendImmediately extends ClientSendStyleImpl {
 
+	@IntSimulationProperty(name = "Dummy", propertykey = "CSI_DUMMY")
+	private int dummy;
+	
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {
 		super(owner, simulator);
 	}

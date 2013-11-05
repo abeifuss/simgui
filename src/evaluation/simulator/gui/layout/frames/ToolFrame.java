@@ -14,20 +14,20 @@ import evaluation.simulator.gui.service.GuiService;
 @SuppressWarnings("serial")
 public class ToolFrame extends JFrame {
 
-	private static ToolFrame _instance = null;
+	private static ToolFrame instance = null;
 
 	public static ToolFrame getInstance() {
-		if (_instance == null) {
-			_instance = new ToolFrame();
+		if (instance == null) {
+			instance = new ToolFrame();
 		}
-		return _instance;
+		return instance;
 	}
 
-	private int _confToolFrameHeight;
-	private int _confToolFrameWidth;
-	private int _confToolFrameXPos;
+	private int confToolFrameHeight;
+	private int confToolFrameWidth;
+	private int confToolFrameXPos;
 
-	private int _confToolFrameYPos;
+	private int confToolFrameYPos;
 
 	private ToolFrame() {
 
@@ -82,35 +82,36 @@ public class ToolFrame extends JFrame {
 		this.pack();
 
 		try {
-			this._confToolFrameXPos = UserConfigService.getInstance()
+			this.confToolFrameXPos = UserConfigService.getInstance()
 					.getInteger("CONFTOOLFRAME_XPOS");
 		} catch (Exception e) {
-			this._confToolFrameXPos = 100;
+			this.confToolFrameXPos = 100;
 		}
 
 		try {
-			this._confToolFrameYPos = UserConfigService.getInstance()
+			this.confToolFrameYPos = UserConfigService.getInstance()
 					.getInteger("CONFTOOLFRAME_YPOS");
 		} catch (Exception e) {
-			this._confToolFrameYPos = 100;
+			this.confToolFrameYPos = 100;
 		}
 
 		try {
-			this._confToolFrameWidth = UserConfigService.getInstance()
+			this.confToolFrameWidth = UserConfigService.getInstance()
 					.getInteger("CONFTOOLFRAME_WIDTH");
 		} catch (Exception e) {
-			this._confToolFrameWidth = 500;
+			this.confToolFrameWidth = 500;
 		}
 
 		try {
-			this._confToolFrameHeight = UserConfigService.getInstance()
+			this.confToolFrameHeight = UserConfigService.getInstance()
 					.getInteger("CONFTOOLFRAME_HEIGTH");
 		} catch (Exception e) {
-			this._confToolFrameHeight = 750;
+			this.confToolFrameHeight = 750;
 		}
 
-		this.setBounds(this._confToolFrameXPos, this._confToolFrameYPos,
-				this._confToolFrameWidth, this._confToolFrameHeight);
+		this.setBounds(this.confToolFrameXPos, this.confToolFrameYPos,
+				this.confToolFrameWidth, this.confToolFrameHeight);
+
 	}
 
 	private void safeProperties() {
