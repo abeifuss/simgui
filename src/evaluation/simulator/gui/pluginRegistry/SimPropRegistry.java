@@ -86,14 +86,14 @@ public class SimPropRegistry {
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
-		return this.properties.entrySet();
+		return properties.entrySet();
 	}
 
 	public List<Entry<String, String>> getPluginItems(String pluginName) {
 
 		List<Entry<String, String>> mapIdToName = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet().iterator();
+		Iterator<Entry<String, SimProp>> iter = properties.entrySet().iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
 			if (pluginName.equals(entry.getNamespace())) {
@@ -304,15 +304,14 @@ public class SimPropRegistry {
 	public void scanPlugins() {
 		
 		String[] pluginLayer = pluginNameToConfigName.keySet().toArray(new String[0]);
-		
 		for (int i = 0; i < pluginNameToConfigName.size(); i++) {
 			this.pluginLayerMap[i] = new HashMap<String, String>();
 		}
 		
 		for ( String key : properties.keySet() ) {
 			SimProp simProp = properties.get(key);
-			String layer = simProp.getPluginLayer();
-			String name = simProp.getNamespace();
+			String layer = simProp.getPluginLayer(); // aka pluginPackage
+			String name = simProp.getNamespace(); // aka pluginName
 			
 			if ( layer.equals(pluginLayer[0]) ){
 				this.pluginLayerMap[0].put( name, layer );

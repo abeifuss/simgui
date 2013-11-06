@@ -7,10 +7,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+
 import javax.swing.JOptionPane;
 
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -49,7 +52,7 @@ public class ConfigParser {
 
 		// Load simProps
 		List<String> activePlugins = new LinkedList<String>();
-		List<String> generalProperties = new LinkedList<String>();
+		Set<String> generalProperties = new HashSet<String>();
 		
 		for (String s : configNamesForPluginLayers ) {
 				String tmp = props.getProperty(s);
@@ -89,7 +92,7 @@ public class ConfigParser {
 			content.append("REAL_TIME_LIMIT_IN_SEC=1.0").append(System.getProperty("line.separator"));
 			content.append("SIMULATION_TIME_LIMIT_IN_MS=1000000").append(System.getProperty("line.separator"));
 			content.append("MESSAGE_FORMAT=BASIC_MIX_MESSAGE").append(System.getProperty("line.separator"));
-			// content.append("NETWORK_PACKET_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
+
 			content.append("MIX_REQUEST_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
 			content.append("MIX_REQUEST_HEADER_SIZE=0").append(System.getProperty("line.separator"));
 			content.append("MIX_REPLY_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
@@ -106,24 +109,11 @@ public class ConfigParser {
 			// Filter relevant lines in configuration file
 			while ((string = reader.readLine()) != null) {
 				
-				// Pluginlevel
-				for (String plugin : generalProperties) {
-					if (string.matches("^" + plugin + "=\\w*")) {
-						content.append(string).append(System.getProperty("line.separator"));
-					}
+				// filter comments
+				if ( !string.matches("^#.*") ){
+					content.append(string).append(System.getProperty("line.separator"));
+					continue;
 				}
-				
-				// Simproplevel
-				for (String plugin : activePlugins) {
-					if (string.matches("^" + plugin + "\\\\:\\\\:\\w*=-{0,1}\\w*\\.{0,1}\\w*")) {
-						subStrings = string.split("\\\\:\\\\:");
-						content.append(subStrings[1]).append(System.getProperty("line.separator"));
-					}else{
-						Logger.Log(LogLevel.ERROR, "Skip " + string);
-					}
-				}
-				
-				// TODO: Delete whitespace!
 			}
 
 		} catch (FileNotFoundException e) {

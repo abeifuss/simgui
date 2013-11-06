@@ -59,7 +59,7 @@ public class PluginPanel extends JScrollPane {
 		String[] levelStrings[] = {
 				PluginLayerMap[0].keySet().toArray(
 						new String[PluginLayerMap[0].size()]),
-				PluginLayerMap[6].keySet().toArray(
+				PluginLayerMap[1].keySet().toArray(
 						new String[PluginLayerMap[1].size()]),
 				PluginLayerMap[2].keySet().toArray(
 						new String[PluginLayerMap[2].size()]),
@@ -69,7 +69,7 @@ public class PluginPanel extends JScrollPane {
 						new String[PluginLayerMap[4].size()]),
 				PluginLayerMap[5].keySet().toArray(
 						new String[PluginLayerMap[5].size()]),
-				PluginLayerMap[1].keySet().toArray(
+				PluginLayerMap[6].keySet().toArray(
 						new String[PluginLayerMap[6].size()]) };
 
 		// CLIENT_SEND_STYLE
