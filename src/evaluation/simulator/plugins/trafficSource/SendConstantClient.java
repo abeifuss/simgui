@@ -33,13 +33,13 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @PluginAnnotation(name = "CONSTANT")
 public class SendConstantClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", propertykey = "CONSTANT_REQUEST_SIZE" )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", propertykey = "CONSTANT_REPLY_SIZE" )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", propertykey = "RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time", propertykey = "CONSTANT_RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
-	@IntSimulationProperty( name = "Average requests per second", propertykey = "AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
+	@IntSimulationProperty( name = "Average requests per second", propertykey = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
 	private long TIME_BETWEEN_SENDS;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
@@ -48,18 +48,18 @@ public class SendConstantClient extends AbstractClient {
 	public SendConstantClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
 		// TODO: Find a workaround, AUTO is no int
-		if (Simulator.settings.getProperty("REQUEST_SIZE").equals("AUTO"))
+		if (Simulator.settings.getProperty("CONSTANT_REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
-			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_SIZE");
+			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("CONSTANT_REQUEST_SIZE");
 		// TODO: Find a workaround, AUTO is no int
-		if (Simulator.settings.getProperty("REPLY_SIZE").equals("AUTO"))
+		if (Simulator.settings.getProperty("CONSTANT_REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else
-			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("REPLY_SIZE");
-		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("RESOLVE_TIME");
+			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("CONSTANT_REPLY_SIZE");
+		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("CONSTANT_RESOLVE_TIME");
 		this.clientId = clientId;
-		this.TIME_BETWEEN_SENDS = Math.round(1000d/Simulator.settings.getPropertyAsDouble("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT"));
+		this.TIME_BETWEEN_SENDS = Math.round(1000d/Simulator.settings.getPropertyAsDouble("CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT"));
 		if (TIME_BETWEEN_SENDS == 0)
 			throw new RuntimeException("ERROR: TIME_BETWEEN_SENDS in experiment config files must be 1000 at max."); 
 		this.randomDataImpl = new RandomDataImpl();

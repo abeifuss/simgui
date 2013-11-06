@@ -27,12 +27,12 @@ public class SendConstantModel extends TrafficSourceImplementation {
 
 	private SendConstantClient[] clients;
 	
-	@IntSimulationProperty( name = "Number of Clients", propertykey = "NUMBER_OF_CLIENTS_TO_SIMULATE")
+	@IntSimulationProperty( name = "Number of Clients", propertykey = "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE")
 	private int numberOfClients;
 	
 	@Override
 	public AbstractClient[] createClientsArray() {
-		numberOfClients = Simulator.settings.getPropertyAsInt("NUMBER_OF_CLIENTS_TO_SIMULATE");
+		numberOfClients = Simulator.settings.getPropertyAsInt("CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE");
 		clients = new SendConstantClient[numberOfClients];
 		for (int i=0; i<clients.length; i++) 
 			clients[i] = new SendConstantClient("Client" +i, Simulator.getSimulator(), i);

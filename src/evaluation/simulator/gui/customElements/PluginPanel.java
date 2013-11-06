@@ -4,20 +4,13 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.log.LogLevel;
@@ -33,20 +26,6 @@ public class PluginPanel extends JScrollPane {
 
 	public PluginPanel() {
 		this.initPanel();
-	}
-
-	private List<SimProp> getSections() {
-		List<SimProp> list = new LinkedList<SimProp>();
-
-		Set<Entry<String, SimProp>> e = this.simPropRegistry.getAllSimProps();
-
-		Iterator<Entry<String, SimProp>> iter = e.iterator();
-		while (iter.hasNext()) {
-			Entry<?, ?> entry = iter.next();
-			list.add((SimProp) entry.getValue());
-		}
-
-		return list;
 	}
 
 	private void initPanel() {
@@ -73,15 +52,14 @@ public class PluginPanel extends JScrollPane {
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
 
-		Map<String, String>[] PluginLayerMap = this.simPropRegistry
-				.getPlugIns();
+		Map<String, String>[] PluginLayerMap = this.simPropRegistry.getPlugIns();
 
 		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
 
 		String[] levelStrings[] = {
 				PluginLayerMap[0].keySet().toArray(
 						new String[PluginLayerMap[0].size()]),
-				PluginLayerMap[1].keySet().toArray(
+				PluginLayerMap[6].keySet().toArray(
 						new String[PluginLayerMap[1].size()]),
 				PluginLayerMap[2].keySet().toArray(
 						new String[PluginLayerMap[2].size()]),
@@ -91,7 +69,7 @@ public class PluginPanel extends JScrollPane {
 						new String[PluginLayerMap[4].size()]),
 				PluginLayerMap[5].keySet().toArray(
 						new String[PluginLayerMap[5].size()]),
-				PluginLayerMap[6].keySet().toArray(
+				PluginLayerMap[1].keySet().toArray(
 						new String[PluginLayerMap[6].size()]) };
 
 		// CLIENT_SEND_STYLE
@@ -131,13 +109,7 @@ public class PluginPanel extends JScrollPane {
 
 		AccordionEntry accordionElement;
 
-		List<SimProp> listofAllSimProperties = this.getSections();
-		Set<String> listOfAllPluginLayers = new HashSet<String>();
-
-		for (SimProp simProp : listofAllSimProperties) {
-			String plugInName = simProp.getPluginLayer();
-			listOfAllPluginLayers.add(plugInName);
-		}
+		List<String> listOfAllPluginLayers = SimPropRegistry.getInstance().getPluginLevels();
 
 		// Select the plugin layers
 		for (String pluginLayer : listOfAllPluginLayers) {

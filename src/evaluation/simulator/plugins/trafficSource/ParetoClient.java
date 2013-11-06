@@ -34,35 +34,37 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @PluginAnnotation(name = "PARETO")
 public class ParetoClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE")
+	// Properties
+	@IntSimulationProperty( name = "Request size", propertykey = "PARETO_REQUEST_SIZE")
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE")
+	@IntSimulationProperty( name = "Reply size", propertykey = "PARETO_REPLY_SIZE")
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "RESOLVE_TIME")
-	private int RESOLVE_TIME; // in ms
-	private NormalizedPareto pareto;
+	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "PARETO_RESOLVE_TIME")
+	private int RESOLVE_TIME;
 	@DoubleSimulationProperty( name = "Alpha", propertykey = "PARETO_ALPHA")
 	private double ALPHA;
-	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
 	private double AVERAGE_REQUESTS_PER_SECOND;
+	
+	private NormalizedPareto pareto;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
 	
 	
 	public ParetoClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
-		if (Simulator.settings.getProperty("REQUEST_SIZE").equals("AUTO"))
+		if (Simulator.settings.getProperty("PARETO_REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
-			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_SIZE");
-		if (Simulator.settings.getProperty("REPLY_SIZE").equals("AUTO"))
+			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("PARETO_REQUEST_SIZE");
+		if (Simulator.settings.getProperty("PARETO_REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else
-			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("REPLY_SIZE");
-		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("RESOLVE_TIME");
+			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("PARETO_REPLY_SIZE");
+		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("PARETO_RESOLVE_TIME");
 		this.clientId = clientId;
 		this.ALPHA = Simulator.settings.getPropertyAsDouble("PARETO_ALPHA");
-		this.AVERAGE_REQUESTS_PER_SECOND = Simulator.settings.getPropertyAsDouble("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+		this.AVERAGE_REQUESTS_PER_SECOND = Simulator.settings.getPropertyAsDouble("PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
 		this.pareto = new NormalizedPareto(ALPHA, AVERAGE_REQUESTS_PER_SECOND);
 		this.randomDataImpl = new RandomDataImpl();
 		this.randomDataImpl.reSeed(secureRandom.nextLong());

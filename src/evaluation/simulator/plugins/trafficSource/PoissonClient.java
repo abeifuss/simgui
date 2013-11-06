@@ -34,13 +34,13 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @PluginAnnotation(name = "POISSON")
 public class PoissonClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", propertykey = "POISSON_REQUEST_SIZE" )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", propertykey = "POISSON_REPLY_SIZE" )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "POISSON_RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
-	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
+	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
 	private double LAMBDA;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
@@ -48,17 +48,17 @@ public class PoissonClient extends AbstractClient {
 	
 	public PoissonClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
-		if (Simulator.settings.getProperty("REQUEST_SIZE").equals("AUTO"))
+		if (Simulator.settings.getProperty("POISSON_REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
-			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_SIZE");
-		if (Simulator.settings.getProperty("REPLY_SIZE").equals("AUTO"))
+			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("POISSON_REQUEST_SIZE");
+		if (Simulator.settings.getProperty("POISSON_REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else
-			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("REPLY_SIZE");
-		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("RESOLVE_TIME");
+			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("POISSON_REPLY_SIZE");
+		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("POISSON_RESOLVE_TIME");
 		this.clientId = clientId;
-		this.LAMBDA = Simulator.settings.getPropertyAsDouble("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+		this.LAMBDA = Simulator.settings.getPropertyAsDouble("POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
 		this.randomDataImpl = new RandomDataImpl();
 		this.randomDataImpl.reSeed(secureRandom.nextLong());
 	}

@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,16 +58,21 @@ public class SimPropRegistry {
 	private final Map<String, String> configNameToPluginName;
 	private SimPropRegistry() {
 		
-		pluginNameToConfigName = new HashMap<String, String>();
+		// This map specifies the order of the AccordionEntries
+		// in the ConfigTool. Furthermore this map is used to map the display
+		// name to the propertyname which is used to specify the active plugin
+		pluginNameToConfigName = new LinkedHashMap<String, String>();
+		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
 		pluginNameToConfigName.put("clientSendStyle", "CLIENT_SEND_STYLE");
+		// TODO: insert RecordingScheme
 		pluginNameToConfigName.put("delayBox", "TYPE_OF_DELAY_BOX");
 		pluginNameToConfigName.put("mixSendStyle", "MIX_SEND_STYLE");
 		pluginNameToConfigName.put("outputStrategy", "OUTPUT_STRATEGY");
+		// TODO: remove
 		pluginNameToConfigName.put("plotType", "PLOT_TYPE");
 		pluginNameToConfigName.put("topology", "TOPOLOGY");
-		pluginNameToConfigName.put("trafficSource", "TYPE_OF_TRAFFIC_GENERATOR");
 		
-		configNameToPluginName = new HashMap<String, String>();
+		configNameToPluginName = new LinkedHashMap<String, String>();
 		for ( Entry<String, String> entry : pluginNameToConfigName.entrySet() ){
 			configNameToPluginName.put(entry.getValue(), entry.getKey());
 		}
@@ -199,18 +205,14 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						if (annotation != null) {
 							// property.setId(f.getName());
-							property.setId(plugin.getName() + "::"
-									+ annotation.propertykey());
+							property.setId(annotation.propertykey());
 							property.setNamespace(plugin.getName());
 							property.setName(annotation.name());
-							property.setDescription(annotation
-									.description());
+							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 							property.setPluginLayer(plugInLayer);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							((BoolProp) property).setValue(annotation
-									.value());
+							property.setEnable_requirements(annotation.enable_requirements());
+							((BoolProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
 						this.register(property);
@@ -219,22 +221,16 @@ public class SimPropRegistry {
 								.getAnnotation(IntSimulationProperty.class);
 						property = new IntProp();
 						if (annotation != null) {
-							property.setId(plugin.getName() + "::"
-									+ annotation.propertykey());
+							property.setId(annotation.propertykey());
 							property.setNamespace(plugin.getName());
 							property.setName(annotation.name());
-							property.setDescription(annotation
-									.description());
+							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 							property.setPluginLayer(plugInLayer);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							property.setValue_requirements(annotation
-									.value_requirements());
-							((IntProp) property).setMinValue(annotation
-									.min());
-							((IntProp) property).setMaxValue(annotation
-									.max());
+							property.setEnable_requirements(annotation.enable_requirements());
+							property.setValue_requirements(annotation.value_requirements());
+							((IntProp) property).setMinValue(annotation.min());
+							((IntProp) property).setMaxValue(annotation.max());
 							property.setValue(annotation.value());
 							property.setEnable(true);
 						}
@@ -244,22 +240,16 @@ public class SimPropRegistry {
 								.getAnnotation(FloatSimulationProperty.class);
 						property = new FloatProp();
 						if (annotation != null) {
-							property.setId(plugin.getName() + "::"
-									+ annotation.propertykey());
+							property.setId(annotation.propertykey());
 							property.setNamespace(plugin.getName());
 							property.setName(annotation.name());
-							property.setDescription(annotation
-									.description());
+							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 							property.setPluginLayer(plugInLayer);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							((FloatProp) property).setMinValue(annotation
-									.min());
-							((FloatProp) property).setMaxValue(annotation
-									.max());
-							((FloatProp) property).setValue(annotation
-									.value());
+							property.setEnable_requirements(annotation.enable_requirements());
+							((FloatProp) property).setMinValue(annotation.min());
+							((FloatProp) property).setMaxValue(annotation.max());
+							((FloatProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
 						this.register(property);
@@ -268,22 +258,16 @@ public class SimPropRegistry {
 								.getAnnotation(DoubleSimulationProperty.class);
 						property = new DoubleProp();
 						if (annotation != null) {
-							property.setId(plugin.getName() + "::"
-									+ annotation.propertykey());
+							property.setId(annotation.propertykey());
 							property.setNamespace(plugin.getName());
 							property.setName(annotation.name());
-							property.setDescription(annotation
-									.description());
+							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 							property.setPluginLayer(plugInLayer);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							((DoubleProp) property).setMinValue(annotation
-									.min());
-							((DoubleProp) property).setMaxValue(annotation
-									.max());
-							((DoubleProp) property).setValue(annotation
-									.value());
+							property.setEnable_requirements(annotation.enable_requirements());
+							((DoubleProp) property).setMinValue(annotation.min());
+							((DoubleProp) property).setMaxValue(annotation.max());
+							((DoubleProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
 						this.register(property);
@@ -292,21 +276,15 @@ public class SimPropRegistry {
 								.getAnnotation(StringSimulationProperty.class);
 						property = new StringProp();
 						if (annotation != null) {
-							property.setId(plugin.getName() + "::"
-									+ annotation.propertykey());
+							property.setId(annotation.propertykey());
 							property.setNamespace(plugin.getName());
 							property.setName(annotation.name());
-							property.setDescription(annotation
-									.description());
+							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 							property.setPluginLayer(plugInLayer);
-							property.setEnable_requirements(annotation
-									.enable_requirements());
-							((StringProp) property).setValue(annotation
-									.value());
-							((StringProp) property)
-									.setPossibleValues(annotation
-											.possibleValues());
+							property.setEnable_requirements(annotation.enable_requirements());
+							((StringProp) property).setValue(annotation.value());
+							((StringProp) property).setPossibleValues(annotation.possibleValues());
 							property.setEnable(true);
 						}
 						this.register(property);

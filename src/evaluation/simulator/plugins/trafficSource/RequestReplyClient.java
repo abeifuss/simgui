@@ -27,25 +27,25 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @PluginAnnotation(name = "REQUEST_REPLY")
 public class RequestReplyClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_REPLY_REQUEST_SIZE" )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", propertykey = "REQUEST_REPLY_REPLY_SIZE" )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", propertykey = "RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time", propertykey = "REQUEST_REPLY_RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
 	
 	
 	public RequestReplyClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
-		if (Simulator.settings.getProperty("REQUEST_SIZE").equals("AUTO"))
+		if (Simulator.settings.getProperty("REQUEST_REPLY_REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
-			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_SIZE");
-		if (Simulator.settings.getProperty("REPLY_SIZE").equals("AUTO"))
+			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_REPLY_REQUEST_SIZE");
+		if (Simulator.settings.getProperty("REQUEST_REPLY_REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else
-			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("REPLY_SIZE");
-		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("RESOLVE_TIME");
+			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("REQUEST_REPLY_REPLY_SIZE");
+		this.RESOLVE_TIME = Simulator.settings.getPropertyAsInt("REQUEST_REPLY_RESOLVE_TIME");
 		this.clientId = clientId;
 	}
 

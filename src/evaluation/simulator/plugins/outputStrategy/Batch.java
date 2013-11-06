@@ -35,6 +35,9 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @PluginAnnotation(name = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
+	@IntSimulationProperty( name = "Batch size", propertykey = "BASIC_BATCH_BATCH_SIZE")
+	private int batchSize;
+	
 	public class SimplexBatch {
 
 		private final int batchSize;
@@ -75,18 +78,12 @@ public class Batch extends OutputStrategyImpl {
 	private final SimplexBatch replyBatch;
 
 	private final SimplexBatch requestBatch;
-	
-	@IntSimulationProperty(
-			name = "Batch size",
-			propertykey = "BATCH_SIZE"
-	)
-	private int batchSize;
 
 	public Batch(Mix mix, Simulator simulator) {
 
 		super(mix, simulator);
 		
-		int batchSize = Simulator.settings.getPropertyAsInt("BATCH_SIZE");
+		int batchSize = Simulator.settings.getPropertyAsInt("BASIC_BATCH_BATCH_SIZE");
 		this.requestBatch = new SimplexBatch(batchSize, true);
 		this.replyBatch = new SimplexBatch(batchSize, false);
 
