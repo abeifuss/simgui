@@ -64,6 +64,8 @@ public class ConfigParser {
 		try {
 			reader = new BufferedReader(new FileReader(file));
 			String string = null;
+			
+			@SuppressWarnings("unused")
 			String[] subStrings = { "" };
 			
 //			// Some glue that we need at the moment
