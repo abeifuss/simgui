@@ -46,7 +46,7 @@ public class ExperimentConfig {
 	public boolean isNumeric = true;
 	public HashMap<String, Double> propertyToVaryToId;
 	
-	
+	// TODO: MALTE START HERE
 	// load experiment config from property file
 	public ExperimentConfig(Settings settings) {
 		

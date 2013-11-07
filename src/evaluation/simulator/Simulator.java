@@ -38,6 +38,8 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.core.statistics.GeneralStatistics;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.Statistics;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 import evaluation.simulator.pluginRegistry.ClientSendStyle;
 import evaluation.simulator.pluginRegistry.OutputStrategy;
 import evaluation.simulator.pluginRegistry.PlotType;
@@ -70,6 +72,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	public static Statistics trafficSourceStatistics;
 	private Topology topology;
 	private TrafficSource trafficSource;
+	public ResultSet results;
 	
 	public static void reset() {
 		Simulator.firstRun = true;
@@ -79,6 +82,7 @@ public class Simulator extends GMixTool implements Identifiable {
 		Simulator.commandLineParameters = params;
 		now = 0;
 		numericIdentifier = IdGenerator.getId();
+		results = null;
 		if (firstRun) {
 			firstRun = false;
 			if (commandLineParameters.passthroughParameters != null ){ // GUI call
@@ -88,7 +92,9 @@ public class Simulator extends GMixTool implements Identifiable {
 				Simulator.currentSimulator = this;
 				Statistics.setSimulator(this);
 				Simulator.trafficSourceStatistics = new Statistics(this);
-				performExperiment(Simulator.settings);
+				results = performExperimentReturnResults(Simulator.settings);
+				Logger.Log(LogLevel.ERROR, "MURKS");
+
 			} else if (commandLineParameters.globalConfigFile != null) {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +commandLineParameters.globalConfigFile);
@@ -115,7 +121,6 @@ public class Simulator extends GMixTool implements Identifiable {
 			Simulator.trafficSourceStatistics = new Statistics(this);
 			Simulator.currentSimulator = this;
 		}
-		
 	}
 
 	private void executeSimulationScript(String simulationScript) {
@@ -273,6 +278,18 @@ public class Simulator extends GMixTool implements Identifiable {
 
 	}
 	
+	private static ResultSet performExperimentReturnResults(Settings settings) {
+
+		ExperimentConfig ep = new ExperimentConfig(settings);
+		saveConfigToDisk(ep);
+
+		ResultSet resultSet = generateResultSet(ep);
+		storeAndPlotResults(resultSet);
+		
+		StatisticsType.reset();
+		return resultSet;
+
+	}
 	
 	private static void saveConfigToDisk(ExperimentConfig ep) {
 		String description =	"# " +ep.experimentStart +" experiment:\n";

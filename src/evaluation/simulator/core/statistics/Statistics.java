@@ -50,10 +50,10 @@ public class Statistics implements EventExecutor {
 		recordedBooleanValues = new int[StatisticsType.values().length][];
 	}
 	
-	
 	// dummy constructor used for scheduling start and end of statistics recording (see below)
 	private Statistics(int i) {}
 	
+	// DESIRED_EVALUATIONS
 	
 	public static void setSimulator(Simulator simulator) {
 		Statistics.simulator = simulator;
