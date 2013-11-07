@@ -73,38 +73,6 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.north.setLayout(simulationTabLayoutNorth);
 		this.south = new JTabbedPane();
 
-		// GridLayout gridLayout = new GridLayout(3, 3);
-		// this.leftNorth.setLayout(gridLayout);
-		//
-		// JLabel experimentsToSelectLabel = new JLabel(
-		// "<html><b>Select</b> experiments:</html>");
-		// JLabel selectedExperimentsLabel = new
-		// JLabel("Experiments to perform:");
-		// this.leftNorth.add(experimentsToSelectLabel);
-		// this.leftNorth.add(new JLabel(""));
-		// this.leftNorth.add(selectedExperimentsLabel);
-		//
-		// this.availableExperiments = new JList<File>(
-		// this.availableExperimentsModel);
-		// this.leftScrollPane = new JScrollPane(this.availableExperiments);
-		// this.runExperiments = new JList<File>(this.runExperimentsModel);
-		// this.rightScrollPane = new JScrollPane(this.runExperiments);
-		// this.leftNorth.add(this.leftScrollPane);
-		//
-		// JPanel experimentSelectionPane = new JPanel();
-		// GridLayout buttonLayout = new GridLayout(2, 1);
-		// experimentSelectionPane.setLayout(buttonLayout);
-		// experimentSelectionPane.add(this.addExperiment);
-		// experimentSelectionPane.add(this.deleteExperiment);
-		// this.leftNorth.add(experimentSelectionPane);
-		//
-		// this.leftNorth.add(this.rightScrollPane);
-		//
-		// this.leftNorth.add(new JLabel(""));
-		// this.leftNorth.add(this.startButton, GridBagConstraints.NONE);
-		//
-		// this.leftNorth.add(this.stopButton, GridBagConstraints.NONE);
-
 		this.north.add(this.leftNorth);
 		this.north.add(new JLabel(""));
 
@@ -147,8 +115,9 @@ public class SimulationTab extends JPanel implements ActionListener {
 				this.callSimulation.start();
 
 				// TODO: sync with main thread (pass Statistics)
-				
-				this.south.addTab("Results_" + this.resultCounter, ResultPanelFactory.getResultPanel());
+
+				this.south.addTab("Results_" + this.resultCounter,
+						ResultPanelFactory.getResultPanel());
 
 				this.resultCounter++;
 			}

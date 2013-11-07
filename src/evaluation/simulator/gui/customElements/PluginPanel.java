@@ -6,10 +6,12 @@ import java.awt.GridBagLayout;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -35,6 +37,8 @@ public class PluginPanel extends JScrollPane {
 		this.getVerticalScrollBar().setUnitIncrement(16);
 
 		this.panel = new JPanel();
+		this.panel.setBorder(new TitledBorder(null, "Plugin Configuration",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -52,7 +56,8 @@ public class PluginPanel extends JScrollPane {
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
 
-		Map<String, String>[] PluginLayerMap = this.simPropRegistry.getPlugIns();
+		Map<String, String>[] PluginLayerMap = this.simPropRegistry
+				.getPlugIns();
 
 		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
 
@@ -109,7 +114,8 @@ public class PluginPanel extends JScrollPane {
 
 		AccordionEntry accordionElement;
 
-		List<String> listOfAllPluginLayers = SimPropRegistry.getInstance().getPluginLevels();
+		List<String> listOfAllPluginLayers = SimPropRegistry.getInstance()
+				.getPluginLevels();
 
 		// Select the plugin layers
 		for (String pluginLayer : listOfAllPluginLayers) {
@@ -131,8 +137,10 @@ public class PluginPanel extends JScrollPane {
 	}
 
 	void setPlugin(String configName, String selectedPlugin) {
-		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
-		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "+ selectedPlugin);
+		String pluginLevel = SimPropRegistry.getInstance()
+				.configNameToPluginName(configName);
+		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "
+				+ selectedPlugin);
 
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
@@ -151,7 +159,8 @@ public class PluginPanel extends JScrollPane {
 			}
 		}
 
-		final Map<String, String> activePlugins = simPropRegistry.getActivePlugins(true);
+		final Map<String, String> activePlugins = this.simPropRegistry
+				.getActivePlugins(true);
 
 		for (final String pluginLevel : activePlugins.keySet()) {
 			SwingUtilities.invokeLater(new Runnable() {

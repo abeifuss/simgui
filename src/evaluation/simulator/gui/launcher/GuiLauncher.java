@@ -38,5 +38,6 @@ public class GuiLauncher {
 
 		//
 		GuiService.getInstance();
+
 	}
 }

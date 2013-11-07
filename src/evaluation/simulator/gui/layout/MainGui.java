@@ -61,7 +61,6 @@ public class MainGui extends JFrame {
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
-
 		this.init();
 
 		this.setTitle("gMixSim");
