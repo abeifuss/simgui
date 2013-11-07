@@ -47,7 +47,7 @@ public class HelpFrame extends JFrame {
 				"etc/img/icons/icon128.png"));
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setVisible(true);
+		this.setVisible(false);
 
 		this.addWindowListener(new WindowListener() {
 
