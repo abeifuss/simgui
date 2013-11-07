@@ -69,7 +69,7 @@ public class ConfigParser {
 //			// Some glue that we need at the moment
 //			// TODO: Find a nice way to wrap them into the gui 
 //			
-			content.append("DEBUG_OUTPUT=ON").append(System.getProperty("line.separator"));
+//			content.append("DEBUG_OUTPUT=ON").append(System.getProperty("line.separator"));
 //			
 //			// DESIRED_EVALUATIONS
 //			content.append("DESIRED_EVALUATIONS=AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE").append(System.getProperty("line.separator")); // See StatisticsType.java
