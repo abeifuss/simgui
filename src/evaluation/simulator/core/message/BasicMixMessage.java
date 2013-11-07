@@ -43,7 +43,7 @@ public class BasicMixMessage extends MixMessage {
 		this.maxPayloadSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		this.headerSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_HEADER_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_HEADER_SIZE");
 		this.totalSize = maxPayloadSize + headerSize;
-		payloadObjectsContained = new Vector<PayloadObject>(10,10); // TODO calculcte instead of fixed 10,10
+		payloadObjectsContained = new Vector<PayloadObject>(10,10); // TODO calculate instead of fixed 10,10
 		super.setPayload(payloadObjectsContained);
 		
 	}

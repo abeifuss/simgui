@@ -30,14 +30,8 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-// HACK
-@PluginAnnotation(name = "TOPOLOGYSCRIPT")
 public class NoMixTopology extends TopologyScript {
 
-	// HACK
-	@StringSimulationProperty( name = "Topology", propertykey = "TOPOLOGY_SCRIPT", possibleValues="NO_MIXES,ONE_MIX,THREE_MIX_CASCADE,FIVE_MIX_CASCADE")
-	String choice;
-	
 	private HashMap<String, AbstractClient> clients;;
 	private HashMap<String, Mix> mixes;
 	private HashMap<String, NetworkConnection> networkConnections;
@@ -59,7 +53,6 @@ public class NoMixTopology extends TopologyScript {
 		}
 	}
 
-	
 	@Override
 	public HashMap<String, AbstractClient> getClients() {
 		return this.clients;

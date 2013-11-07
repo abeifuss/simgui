@@ -18,13 +18,19 @@
 package evaluation.simulator.core.message;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;
 
 
+@PluginAnnotation( name = "General", pluginLayer = "recodingScheme" )
 public abstract class MixMessage extends NetworkMessage {
 
+	@StringSimulationProperty(name = "Message format", propertykey = "MESSAGE_FORMAT")
+	private static String type;
+	
 	protected long creationTime;
 	protected AbstractClient owner;
 	protected int replyCounter = 0;
@@ -36,7 +42,7 @@ public abstract class MixMessage extends NetworkMessage {
 			NetworkNode destination, AbstractClient owner, long creationTime,
 			boolean isDummy) {
 		
-		String type = Simulator.settings.getProperty("MESSAGE_FORMAT");
+		type = Simulator.settings.getProperty("MESSAGE_FORMAT");
 		String outputStrategy = Simulator.settings.getProperty("OUTPUT_STRATEGY");
 		if (outputStrategy.equals("STOP_AND_GO") || type.equals("STOP_AND_GO_MESSAGE"))
 			return new StopAndGoMessage(isRequest, source, destination, owner, creationTime, isDummy);

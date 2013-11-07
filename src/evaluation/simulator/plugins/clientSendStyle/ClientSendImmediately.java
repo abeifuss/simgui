@@ -28,9 +28,6 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 
 @PluginAnnotation(name = "SEND_IMMEDIATELY")
 public class ClientSendImmediately extends ClientSendStyleImpl {
-
-	@IntSimulationProperty(name = "Dummy", propertykey = "CSI_DUMMY")
-	private int dummy;
 	
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {
 		super(owner, simulator);

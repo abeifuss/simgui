@@ -18,6 +18,7 @@
 package evaluation.simulator.plugins.outputStrategy;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -25,14 +26,15 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-
 public abstract class OutputStrategyImpl implements ReplyReceiver {
 
+	@IntSimulationProperty( name = "Superclass test entry", propertykey = "SC_TEST_ENTRY" )
+	private int test;
+	
 	protected Simulator simulator;
 	protected Mix mix;
 	protected boolean simulateRequestChannel;
 	protected boolean simulateReplyChannel;
-	
 	
 	public OutputStrategyImpl(Mix mix, Simulator simulator) {
 		this.mix = mix;

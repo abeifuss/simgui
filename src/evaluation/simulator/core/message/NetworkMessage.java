@@ -19,7 +19,6 @@ package evaluation.simulator.core.message;
 
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-
 public abstract class NetworkMessage {
 	
 	private NetworkNode source;

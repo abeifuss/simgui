@@ -12,6 +12,10 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.tools.ant.types.selectors.modifiedselector.PropertiesfileCache;
+
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
@@ -53,12 +57,16 @@ public class SimulationConfigService {
 					s.getValue().setValue((props.get(s.getKey())));
 				} else if (s.getValue().getValueType() == Integer.class) {
 
-					if (props.get(s.getKey()).equals("AUTO")) { // TODO Fix this in a nice way
-						
+					if (props.get(s.getKey()).equals("AUTO")) { // TODO Fix this
+																// in a nice way
+
+					} else if (props.get(s.getKey()).equals("UNLIMITED")) { // TODO Fix this
+																			// in a nice way
+
 					} else {
 						s.getValue().setValue(Integer.parseInt((String) props.get(s.getKey())));
 					}
-					
+
 				} else if (s.getValue().getValueType() == Float.class) {
 					s.getValue().setValue(
 							Float.parseFloat((String) props.get(s.getKey())));
@@ -66,22 +74,27 @@ public class SimulationConfigService {
 					s.getValue().setValue(
 							Double.parseDouble((String) props.get(s.getKey())));
 				} else if (s.getValue().getValueType() == Boolean.class) {
-					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
+					s.getValue()
+							.setValue(
+									Boolean.parseBoolean((String) props.get(s
+											.getKey())));
 				}
 			} catch (NullPointerException e) {
-				Logger.Log(LogLevel.DEBUG,"Can not read value for " + s.getKey());
+				Logger.Log(LogLevel.DEBUG,
+						"Can not read value for " + s.getKey());
 			}
 		}
 
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		List<String> pluginLevels = simPropRegistry.getPluginLevels();
-		
-		
+
 		for (String pluginLevel : pluginLevels) {
-			String configName = SimPropRegistry.getInstance().pluginNameToConfigName(pluginLevel);
+			String configName = SimPropRegistry.getInstance()
+					.pluginNameToConfigName(pluginLevel);
 			String selectedPlugin = (String) props.getProperty(configName);
-			SimPropRegistry.getInstance().setActivePluginsMapped(configName, selectedPlugin);
-			
+			SimPropRegistry.getInstance().setActivePluginsMapped(configName,
+					selectedPlugin);
+
 			// Update GUI in order to inform JComboBoxes
 			SimConfigPanel.getInstance().update();
 		}
@@ -95,26 +108,39 @@ public class SimulationConfigService {
 	}
 
 	public void writeConfig(File outputFile) {
-		Properties props = new Properties();
 
-		// static part
-		Map<String, String> plugins = this.simPropRegistry.getActivePlugins(true);
-		Logger.Log(LogLevel.DEBUG, "Active plugins are:");
-		for (String key : plugins.keySet()) {
-			Logger.Log(LogLevel.DEBUG, key + " with " + plugins.get(key));
-			props.setProperty(key, plugins.get(key));
-		}
-
-		// dynamic part
-		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
-			props.setProperty(s.getKey(), s.getValue().getValue().toString());
-		}
+		PropertiesConfiguration props;
 		try {
-			props.store(new FileOutputStream(outputFile), null);
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "File not found.");
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Could not write to file.");
+
+			props = new PropertiesConfiguration("etc/templates/experiment.cfg");
+
+			props.setProperty("VERSION", 2);
+
+			// static part
+			Map<String, String> plugins = this.simPropRegistry
+					.getActivePlugins(true);
+			Logger.Log(LogLevel.DEBUG, "Active plugins are:");
+			for (String key : plugins.keySet()) {
+				Logger.Log(LogLevel.DEBUG, key + " with " + plugins.get(key));
+				props.setProperty(key, plugins.get(key));
+			}
+
+			// dynamic part
+			for (Entry<String, SimProp> s : this.simPropRegistry
+					.getAllSimProps()) {
+				try {
+					props.setProperty(s.getKey(), s.getValue().getValue()
+							.toString());
+				} catch (Exception e) {
+					Logger.Log(LogLevel.DEBUG, s.getKey()
+							+ " has not associated property -> SKIP");
+				}
+			}
+
+			props.save(outputFile);
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
 		}
+
 	}
 }

@@ -33,13 +33,13 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @PluginAnnotation(name = "CONSTANT")
 public class SendConstantClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "CONSTANT_REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", propertykey = "CONSTANT_REQUEST_SIZE", order = 3 )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "CONSTANT_REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", propertykey = "CONSTANT_REPLY_SIZE", order = 4 )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", propertykey = "CONSTANT_RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time", propertykey = "CONSTANT_RESOLVE_TIME", order = 5 )
 	private int RESOLVE_TIME; // in ms
-	@IntSimulationProperty( name = "Average requests per second", propertykey = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
+	@IntSimulationProperty( name = "Average requests per second", propertykey = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", order = 2 )
 	private long TIME_BETWEEN_SENDS;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();

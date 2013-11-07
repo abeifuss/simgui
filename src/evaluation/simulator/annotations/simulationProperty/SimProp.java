@@ -16,6 +16,7 @@ public abstract class SimProp {
 	private String propertykey;
 	private String tooltip;
 	private Class<? extends Requirement>[] value_requirements;
+	private boolean isSuperclass;
 
 	public String getDescription() {
 		return this.description;
@@ -125,6 +126,11 @@ public abstract class SimProp {
 	public void setValue_requirements(
 			Class<? extends Requirement>[] value_requirements) {
 		this.value_requirements = value_requirements;
+	}
+
+	public void setIsSuperclassProperty(boolean b) {
+		this.isSuperclass = b;
+		
 	}
 
 }

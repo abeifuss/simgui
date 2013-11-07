@@ -30,9 +30,6 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 
 @PluginAnnotation(name = "WAIT_FOR_REPLY")
 public class ClientWaitForReply extends ClientSendStyleImpl {
-
-	@IntSimulationProperty(name = "Dummy", propertykey = "WFR_DUMMY")
-	private int dummy;
 	
 	private boolean isFirstCall;
 	private final Vector<TransportMessage> requestWaitingQueue = new Vector<TransportMessage>(

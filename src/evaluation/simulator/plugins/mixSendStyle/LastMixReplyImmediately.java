@@ -28,9 +28,6 @@ import evaluation.simulator.core.networkComponent.NetworkNode;
 
 @PluginAnnotation(name = "REPLY_IMMEDIATELY")
 public class LastMixReplyImmediately extends MixSendStyleImpl {
-
-	@IntSimulationProperty(name = "Dummy", propertykey = "DUMMY")
-	int dummy;
 	
 	public LastMixReplyImmediately(NetworkNode owner, Simulator simulator,
 			ReplyReceiver replyReceiver) {

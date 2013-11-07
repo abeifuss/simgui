@@ -32,14 +32,15 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 		implements EventExecutor {
 
-	private MixMessage[] replies;
-	private boolean setupComplete = false;
-	private Event[] timeoutEvents;
 	@IntSimulationProperty(
 			name = "Time to wait for further data from distant proxy (in ms)", 
 			propertykey="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY"
 	)
 	private final int timeToWaitForFurtherDataFromDistantProxy;
+	
+	private MixMessage[] replies;
+	private boolean setupComplete = false;
+	private Event[] timeoutEvents;
 
 	public LastMixWaitForFurtherDataBeforeReply(NetworkNode owner,
 			Simulator simulator, ReplyReceiver replyReceiver) {

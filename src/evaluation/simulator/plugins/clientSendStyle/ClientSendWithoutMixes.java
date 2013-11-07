@@ -26,9 +26,6 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 
 @PluginAnnotation(name = "SEND_WITHOUT_MIXES")
 public class ClientSendWithoutMixes extends ClientSendStyleImpl {
-
-	@IntSimulationProperty(name = "Dummy", propertykey = "SWM_DUMMY")
-	private int dummy;
 	
 	public ClientSendWithoutMixes(AbstractClient owner, Simulator simulator) {
 

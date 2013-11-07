@@ -162,7 +162,6 @@ public class LineChartPlotterCf extends Plotter {
 		}
 	}
 
-	
 	private int lengthOfLast = Util.NOT_SET;
 	private double[] performPostProcessing(double[] values, StatisticsType statisticsType, ResultSet resultSet, int varyingValueId) {
 		if (lengthOfLast == Util.NOT_SET) {

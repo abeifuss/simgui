@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Inherited
 public @interface PluginAnnotation {
 
 	public String documentationURL() default "";

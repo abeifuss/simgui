@@ -23,9 +23,6 @@ import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty
 @PluginAnnotation(name = "NO_DELAY")
 public class NoDelayDelayBox extends DelayBoxImpl {
 	
-	 @IntSimulationProperty( name = "DUMMY", propertykey = "DUMY")
-	 private int dummy;
-	
 	public NoDelayDelayBox() {
 		super();
 	}

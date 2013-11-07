@@ -20,6 +20,7 @@ package evaluation.simulator.plugins.topology;
 import java.util.HashMap;
 
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -27,6 +28,10 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 
 @PluginAnnotation(name = "TOPOLOGY_SCRIPT")
 public abstract class TopologyScript {
+	
+	// HACK
+	@StringSimulationProperty( name = "Topology", propertykey = "TOPOLOGY_SCRIPT", possibleValues="NO_MIXES,ONE_MIX,THREE_MIX_CASCADE,FIVE_MIX_CASCADE")
+	String choice;
 	
 	public abstract void constructor(AbstractClient[] clients);
 	

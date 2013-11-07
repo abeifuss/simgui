@@ -57,5 +57,6 @@
 		<dependency org="org.xhtmlrenderer" name="core-renderer" rev="R8pre2"/>
 		<dependency org="com.google.classpath-explorer" name="classpath-explorer" rev="1.0"/>
 		<dependency org="javax.media" name="jmf" rev="2.1.1e" />
+		<dependency org="commons-configuration" name="commons-configuration" rev="1.10"/>
 	</dependencies>
 </ivy-module>

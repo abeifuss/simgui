@@ -25,7 +25,7 @@ import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
-	private final JComboBox comboBox;
+	private final JComboBox<String> comboBox;
 	private final JButton entryButton;
 	private JTable entryTable = null;
 	private final String localName;

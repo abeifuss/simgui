@@ -56,6 +56,7 @@ public class SimPropRegistry {
 	private final Map<String, String> activePluginsMapped = new HashMap<String, String>();
 	private final Map<String, String> pluginNameToConfigName;
 	private final Map<String, String> configNameToPluginName;
+	private final Map<String, String> registeredPlugins = new HashMap<String, String>();
 	private SimPropRegistry() {
 		
 		// This map specifies the order of the AccordionEntries
@@ -113,9 +114,8 @@ public class SimPropRegistry {
 		return this.properties.get(key);
 	}
 
-	public void register(SimProp s) {
-		Logger.Log(LogLevel.DEBUG, "Register: " + s.getId());
-		if (this.properties.containsKey(s.getId())) {
+	public void register(SimProp s, boolean isSuperClass) {
+		if (this.properties.containsKey(s.getId()) && !isSuperClass) {
 
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -131,7 +131,12 @@ public class SimPropRegistry {
 			dialog.setLocation((x / 2) - (w / 2), (y / 2) - (h / 2));
 			dialog.setVisible(true);
 
+		} else if (this.properties.containsKey(s.getId()) && isSuperClass) {
+			Logger.Log(LogLevel.DEBUG,  "Associate superclass property " + s.getId() + " with " + s.getPluginLayer());
+			this.properties.get(s.getId()).setIsSuperclassProperty(true);
 		} else {
+			Logger.Log(LogLevel.DEBUG, "Register " + s.getId() + " as a member of " + s.getId() + " plugin");
+			s.setIsSuperclassProperty(false);
 			this.properties.put(s.getId(), s);
 		}
 	}
@@ -141,17 +146,17 @@ public class SimPropRegistry {
 
 		AnnotatedPlugin plugin;
 
+		// TODO: Seems not to work properly
 		Reflections reflectionsPlugins = new Reflections(
 				ClasspathHelper.forPackage("evaluation.simulator.plugins"),
 				new TypeAnnotationsScanner());
 
 		// Look for classes with PluginAnnotation
-		Set<Class<?>> types = reflectionsPlugins
-				.getTypesAnnotatedWith(evaluation.simulator.annotations.plugin.PluginAnnotation.class);
+		Set<Class<?>> types = reflectionsPlugins.getTypesAnnotatedWith(evaluation.simulator.annotations.plugin.PluginAnnotation.class);
 
 		for (Class<?> plugInClass : types) {
 			
-			Logger.Log( LogLevel.DEBUG, "Class: " + plugInClass.getCanonicalName());
+//			Logger.Log( LogLevel.DEBUG, "Class: " + plugInClass.getCanonicalName());
 
 			PluginAnnotation pluginAnnotation = plugInClass.getAnnotation(PluginAnnotation.class);
 
@@ -163,24 +168,37 @@ public class SimPropRegistry {
 
 			String plugInLayer;
 			if ( plugin.getPluginLayer().equals("") ){
+				// Autodetect for plugins (uses the classpath/package structure)
+				// Refactoring might break this !!!
 				plugInLayer = (plugin.getId()).split("\\.", 5)[3];
 			} else {
+				// Lookup annotation information
+				// This is for manual overwriting
+				// HowToUse Example: See MixMessage.java
 				plugInLayer = plugin.getPluginLayer();
 			}
 			
-			readFields( plugin, plugInClass.getDeclaredFields(), plugInLayer );
+			registerPlugin( plugin, plugInLayer );
+			readFields( plugin, plugInClass.getDeclaredFields(), plugInLayer, false );
 			
-			// lookup for super class
+//			// Deprectated: Classes must be annotated explicitly to enforce clear
+			// membership of Properties
+//			// lookup super class
 			Class<?> superClass = plugInClass.getSuperclass();
-			Logger.Log( LogLevel.DEBUG , "Superclass: " + superClass.getCanonicalName());
-			readFields( plugin, superClass.getDeclaredFields(), plugInLayer );
-			
-			// scan for inner classes
-			Class<?>[] innerClasses = plugInClass.getClasses();
-			for ( Class<?> innerClass : innerClasses ){
-				Logger.Log( LogLevel.DEBUG , "Inner class: " + innerClass.getCanonicalName());
-				readFields( plugin, innerClass.getDeclaredFields(), plugInLayer );
+			if ( superClass.isAnnotationPresent( PluginAnnotation.class ) ){
+				Logger.Log( LogLevel.ERROR , "Superclass: " + superClass.getCanonicalName() + " has a pluginannotation");
+			}else{
+//				Logger.Log( LogLevel.DEBUG , "Superclass: " + superClass.getCanonicalName());
+				readFields( plugin, superClass.getDeclaredFields(), plugInLayer, true );
 			}
+			
+//			// Deprecated: It is not possible to use our annotations within inner classes
+//			// scan inner classes
+//			Class<?>[] innerClasses = plugInClass.getClasses();
+//			for ( Class<?> innerClass : innerClasses ){
+//				Logger.Log( LogLevel.DEBUG , "Inner class: " + innerClass.getCanonicalName());
+//				readFields( plugin, innerClass.getDeclaredFields(), plugInLayer );
+//			}
 			
 		}
 
@@ -188,7 +206,15 @@ public class SimPropRegistry {
 		DependencyChecker.checkAll(this);
 	}
 
-	private void readFields(AnnotatedPlugin plugin, Field[] fields, String plugInLayer ) {
+	private void registerPlugin(AnnotatedPlugin plugin, String plugInLayer) {
+		registeredPlugins.put(plugin.getName(), plugInLayer);
+	}
+	
+	private Map<String, String> getRegisteredPlugins(){
+		return registeredPlugins;
+	}
+
+	private void readFields(AnnotatedPlugin plugin, Field[] fields, String plugInLayer, boolean isSuperClass ) {
 		
 		SimProp property;
 		
@@ -215,7 +241,7 @@ public class SimPropRegistry {
 							((BoolProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
-						this.register(property);
+						this.register(property, isSuperClass);
 					} else if (element.annotationType() == IntSimulationProperty.class) {
 						IntSimulationProperty annotation = field
 								.getAnnotation(IntSimulationProperty.class);
@@ -234,7 +260,7 @@ public class SimPropRegistry {
 							property.setValue(annotation.value());
 							property.setEnable(true);
 						}
-						this.register(property);
+						this.register(property, isSuperClass);
 					} else if (element.annotationType() == FloatSimulationProperty.class) {
 						FloatSimulationProperty annotation = field
 								.getAnnotation(FloatSimulationProperty.class);
@@ -252,7 +278,7 @@ public class SimPropRegistry {
 							((FloatProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
-						this.register(property);
+						this.register(property, isSuperClass);
 					} else if (element.annotationType() == DoubleSimulationProperty.class) {
 						DoubleSimulationProperty annotation = field
 								.getAnnotation(DoubleSimulationProperty.class);
@@ -270,7 +296,7 @@ public class SimPropRegistry {
 							((DoubleProp) property).setValue(annotation.value());
 							property.setEnable(true);
 						}
-						this.register(property);
+						this.register(property, isSuperClass);
 					} else if (element.annotationType() == StringSimulationProperty.class) {
 						StringSimulationProperty annotation = field
 								.getAnnotation(StringSimulationProperty.class);
@@ -287,10 +313,9 @@ public class SimPropRegistry {
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
 							property.setEnable(true);
 						}
-						this.register(property);
-					} else {
-						Logger.Log(LogLevel.ERROR,
-								"GuiConfigRegistry - bad type");
+						this.register(property, isSuperClass);
+					} else { 
+						Logger.Log(LogLevel.ERROR, this + "Bad property type for field" + field.getName() );
 						continue;
 					}
 				}
@@ -308,10 +333,15 @@ public class SimPropRegistry {
 			this.pluginLayerMap[i] = new HashMap<String, String>();
 		}
 		
-		for ( String key : properties.keySet() ) {
-			SimProp simProp = properties.get(key);
-			String layer = simProp.getPluginLayer(); // aka pluginPackage
-			String name = simProp.getNamespace(); // aka pluginName
+//		for ( String key : properties.keySet() ) {
+//			SimProp simProp = properties.get(key);
+//			String layer = simProp.getPluginLayer(); // aka pluginPackage
+//			String name = simProp.getNamespace(); // aka pluginName
+		
+		for ( Entry<String, String> entry : getRegisteredPlugins().entrySet() ) {
+			
+			String name = entry.getKey();
+			String layer = entry.getValue();
 			
 			if ( layer.equals(pluginLayer[0]) ){
 				this.pluginLayerMap[0].put( name, layer );
@@ -328,7 +358,9 @@ public class SimPropRegistry {
 			}else if ( layer.equals(pluginLayer[6]) ){
 				this.pluginLayerMap[6].put( name, layer );
 			}else {
-				System.err.println( "No such plugin layer: " + layer );
+				
+				// General Properties
+				Logger.Log(LogLevel.ERROR, "No such plugin layer: " + layer );
 			}
 		}
 	}

@@ -27,7 +27,7 @@ public class SendConstantModel extends TrafficSourceImplementation {
 
 	private SendConstantClient[] clients;
 	
-	@IntSimulationProperty( name = "Number of Clients", propertykey = "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE")
+	@IntSimulationProperty( name = "Number of Clients", propertykey = "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE", order = 1)
 	private int numberOfClients;
 	
 	@Override

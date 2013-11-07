@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -53,7 +54,7 @@ public class TimedDynamicPool extends OutputStrategyImpl {
 	private int sendingRate;
 	@IntSimulationProperty( name = "Minimum messages in pool", propertykey = "TIMED_DYNAMIC_POOL_MIN_MESSAGES_IN_POOL" )
 	private int minMessages;
-	@IntSimulationProperty( name = "Fraction", propertykey = "TIMED_DYNAMIC_POOL_FRACTION" )
+	@DoubleSimulationProperty( name = "Fraction", propertykey = "TIMED_DYNAMIC_POOL_FRACTION" )
 	private double fraction;
 	
 	public TimedDynamicPool(Mix mix, Simulator simulator) {

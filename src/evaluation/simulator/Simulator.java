@@ -51,7 +51,7 @@ public class Simulator extends GMixTool implements Identifiable {
 
 	private int numericIdentifier;
 	public static Settings settings;
-	public static boolean DEBUG_ON = false;
+	public static boolean DEBUG_ON = true;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
 	private static CommandLineParameters commandLineParameters;
