@@ -71,6 +71,9 @@ public class Simulator extends GMixTool implements Identifiable {
 	private Topology topology;
 	private TrafficSource trafficSource;
 	
+	public static void reset() {
+		Simulator.firstRun = true;
+	}
 	
 	public Simulator(CommandLineParameters params) {
 		Simulator.commandLineParameters = params;

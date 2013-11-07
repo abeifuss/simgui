@@ -18,6 +18,7 @@ public class gMixBinding extends Thread {
 	public void run() {
 		
 		try {
+			Simulator.reset();
 			Simulator gMixSim = new Simulator(params);
 			Logger.Log(LogLevel.INFO, "Finished Simulator");
 			
