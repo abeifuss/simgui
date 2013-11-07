@@ -27,10 +27,8 @@ public class gMixBinding extends Thread {
 				Logger.Log(LogLevel.INFO, "Finished simulator with results");
 			}
 			
-			for ( int i = 0; i < 1337 ; i++){ // muhahah ich bin ein troll!!! :D
-				for (PlotType plotType:results.getDesiredPlotTypes())
-					plotType.plot(results);
-			}
+			for (PlotType plotType:results.getDesiredPlotTypes())
+				plotType.plot(results);
 
 		} catch (Exception e) {
 			e.printStackTrace();
