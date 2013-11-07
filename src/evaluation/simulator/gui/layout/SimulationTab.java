@@ -136,11 +136,13 @@ public class SimulationTab extends JPanel implements ActionListener {
 				callSimulation.start();
 				
 				// TODO: sync with main thread (pass Statistics)
+				
+				this.south.addTab("Results_" + this.resultCounter, ResultPanelFactory.getResultPanel());
+
+				this.resultCounter++;
 			}
 			
-			this.south.addTab("Results_" + this.resultCounter, ResultPanelFactory.getResultPanel());
-
-			this.resultCounter++;
+			
 		}
 		
 		if (event.getSource() == this.stopButton) {
