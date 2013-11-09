@@ -41,7 +41,7 @@ import evaluation.simulator.log.LogLevel;
 import evaluation.simulator.log.Logger;
 
 public class SimPropRegistry {
-
+	
 	private static SimPropRegistry _instance = null;
 
 	public static SimPropRegistry getInstance() {
@@ -732,19 +732,19 @@ public class SimPropRegistry {
 	public void setValue(String key, Object arg0) {
 
 		if (arg0.getClass() == Boolean.class) {
-			System.out.println("Boolean");
+			//System.out.println("Boolean");
 			this.properties.get(key).setValue(arg0);
 		} else if (arg0.getClass() == Float.class) {
-			System.out.println("Float");
+			//System.out.println("Float");
 			this.properties.get(key).setValue(arg0);
 		} else if (arg0.getClass() == Double.class) {
-			System.out.println("Double");
+			//System.out.println("Double");
 			this.properties.get(key).setValue(arg0);
 		}else if (arg0.getClass() == Integer.class) {
-			System.out.println("Integer");
+			//System.out.println("Integer");
 			this.properties.get(key).setValue(arg0);
 		} else if (arg0.getClass() == String.class) {
-			System.out.println("String");
+			//System.out.println("String");
 			this.properties.get(key).setValue(arg0);
 
 		} else {

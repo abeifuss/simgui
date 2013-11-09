@@ -112,9 +112,8 @@ public class PluginPanel extends JScrollPane {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
 				accordianEntry.setVibility(true);
-				Logger.Log(LogLevel.DEBUG, "Found component!");
 			} else {
-				Logger.Log(LogLevel.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
+				// Logger.Log(LogLevel.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
 			}
 		}
 

@@ -16,22 +16,23 @@ public class GuiLauncher {
 
 	public static void main(String[] args) {
 
-		final SimPropRegistry simPropRegistry = null;;
+		@SuppressWarnings("unused")
+		SimPropRegistry simPropRegistry;
 		
-		class simPropInitializer implements Callable<Boolean>
+		class simPropInitializer implements Callable<SimPropRegistry>
 		{
-		    public Boolean call()
+		    public SimPropRegistry call()
 		    {
-		        SimPropRegistry.getInstance();
-				
-				// initial dependency-check for per plugin configurations
+		    	SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		    	// initial dependency-check for per plugin configurations
 				DependencyChecker.checkAll(simPropRegistry);
-		        return true;
+				
+		        return simPropRegistry;
 		    }
 		}
 		
 		final ExecutorService service;
-        final Future<Boolean>  task;
+        final Future<SimPropRegistry>  task;
 		
         service = Executors.newFixedThreadPool(1);
         task    = service.submit(new simPropInitializer());
@@ -39,7 +40,7 @@ public class GuiLauncher {
         try 
         {
         	// block until finished
-            task.get();
+        	simPropRegistry = task.get();
         }
         catch(final InterruptedException ex)
         {
