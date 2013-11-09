@@ -30,7 +30,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 
-@PluginSuperclass( layerName = "Load Generator", layerKey = "TYPE_OF_TRAFFIC_GENERATOR")
+@PluginSuperclass( layerName = "Load Generator", layerKey = "TYPE_OF_TRAFFIC_GENERATOR", position = 0)
 public abstract class AbstractClient extends NetworkNode {
 	
 	protected Simulator simulator;

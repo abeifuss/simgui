@@ -31,25 +31,25 @@ public class BasicMixMessage extends MixMessage {
 			name = "Mix request playload size (byte)", 
 			propertykey = "MIX_REQUEST_PAYLOAD_SIZE", 
 			order = 1, 
-			inject = "RECODING_SCHEME")
+			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
 	private int requestPlayloadSize;
 	@IntSimulationProperty( 
 			name = "Mix reply playload size (byte)", 
 			propertykey = "MIX_REPLY_PAYLOAD_SIZE", 
 			order = 3, 
-			inject = "RECODING_SCHEME")
+			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
 	private int replyPlayloadSize;
 	@IntSimulationProperty( 
 			name = "Mix request header size (byte)", 
 			propertykey = "MIX_REQUEST_HEADER_SIZE", 
 			order = 2,
-			inject = "RECODING_SCHEME")
+			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
 	private int requestHeaderSize;
 	@IntSimulationProperty( 
 			name = "Mix reply header size (byte)", 
 			propertykey = "MIX_REPLY_HEADER_SIZE", 
 			order = 4,
-			inject = "RECODING_SCHEME")
+			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
 	private int replyHeaderSize;
 	
 	private int payloadSize;
@@ -60,6 +60,7 @@ public class BasicMixMessage extends MixMessage {
 	private int transportMessagesContained = 0;
 	//private int messageFragmentsContained = 0;
 	
+	// RECORDING_SCHEME
 	
 	protected BasicMixMessage(boolean isRequest, NetworkNode source,
 			NetworkNode destination, AbstractClient owner, long creationTime,

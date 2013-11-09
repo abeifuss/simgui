@@ -36,4 +36,6 @@ public @interface BoolSimulationProperty {
 
 	public Class<?> valueType() default Boolean.class;
 
+	public Class<? extends Requirement>[] value_requirements() default {};
+
 }

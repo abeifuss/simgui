@@ -28,7 +28,7 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-@PluginSuperclass( layerName = "Mix Server", layerKey = "OUTPUT_STRATEGY")
+@PluginSuperclass( layerName = "Mix Server", layerKey = "OUTPUT_STRATEGY", position = 4)
 public abstract class OutputStrategyImpl implements ReplyReceiver {
 	
 	protected Simulator simulator;

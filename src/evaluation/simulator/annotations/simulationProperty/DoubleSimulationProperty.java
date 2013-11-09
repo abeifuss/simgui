@@ -40,4 +40,6 @@ public @interface DoubleSimulationProperty {
 
 	public Class<?> valueType() default Double.class;
 
+	public Class<? extends Requirement>[] value_requirements() default {};
+
 }

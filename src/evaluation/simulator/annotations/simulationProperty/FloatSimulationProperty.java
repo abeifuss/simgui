@@ -40,4 +40,6 @@ public @interface FloatSimulationProperty {
 
 	public Class<?> valueType() default Float.class;
 
+	public Class<? extends Requirement>[] value_requirements() default {};
+
 }

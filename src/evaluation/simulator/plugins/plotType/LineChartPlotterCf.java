@@ -34,9 +34,14 @@ import framework.core.util.Util;
 @Plugin(name = "LINE_CHART_CF", vilible = false, allowFieldsGlobal = true)
 public class LineChartPlotterCf extends Plotter {
 
-	@BoolSimulationProperty(name = "Calculate average", propertykey = "CALC_AVG_OF_RUNS", global = true)
+	@BoolSimulationProperty(name = "Calculate average", 
+			propertykey = "CALC_AVG_OF_RUNS", 
+			global = true)
 	private boolean CALC_AVG_OF_RUNS;
-	@BoolSimulationProperty(name = "Inverse", propertykey = "IS_INVERSE", global = true)
+	
+	@BoolSimulationProperty(name = "Inverse plot", 
+			propertykey = "IS_INVERSE", 
+			global = true)
 	private boolean IS_INVERSE;
 	
 	public LineChartPlotterCf() {

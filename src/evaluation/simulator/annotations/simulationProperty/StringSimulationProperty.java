@@ -37,5 +37,7 @@ public @interface StringSimulationProperty {
 	public String value() default "";
 
 	public Class<?> valueType() default String.class;
+	
+	public Class<? extends Requirement>[] value_requirements() default {};
 
 }

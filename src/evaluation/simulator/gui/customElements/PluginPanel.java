@@ -3,10 +3,14 @@ package evaluation.simulator.gui.customElements;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -29,6 +33,23 @@ public class PluginPanel extends JScrollPane {
 
 	public PluginPanel() {
 		this.initPanel();
+	}
+	
+	private class ValueComparator implements Comparator<String> {
+
+	    Map<String, Integer> base;
+	    public ValueComparator(Map<String, Integer> base) {
+	        this.base = base;
+	    }
+
+	    // Note: this comparator imposes orderings that are inconsistent with equals.    
+	    public int compare(String a, String b) {
+	        if (base.get(a) <= base.get(b)) {
+	            return -1;
+	        } else {
+	            return 1;
+	        }
+	    }
 	}
 	
 	private void initPanel() {
@@ -56,30 +77,25 @@ public class PluginPanel extends JScrollPane {
 		// End Layout
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
-
-//		Map<String, String>[] PluginLayerMap = this.simPropRegistry.getPluginLayerMap();
-//		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
 		
-		// set the order manually until it works automatically (by annotations)
-		List<String> order = new LinkedList<>();
-		order.add("Load Generator");
-		order.add("Mix Client");
-		order.add("Mix Proxy");
-		order.add("Mix Server");
-		order.add("Recoding Scheme");
-		order.add("Topology");
-		order.add("Underlay-net");
-		order.add("Plotter");
-		
-		String[] levelStrings[] = new String[SimPropRegistry.getInstance().getNumberOfPluginLayers()][];
+		Map<String, Integer> layerMap = this.simPropRegistry.getLayerMapDisplayNameToOrder();
+		// Sort the map by value (first) and key (second)
+		ValueComparator comperator =  new ValueComparator(layerMap);
+        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(comperator);
+        sorted_map.putAll(layerMap);
+        
+        System.out.println("results: "+sorted_map);
+        
+		String[] levelStrings[] = new String[sorted_map.size()][];
 		
 		AccordionEntry accordionElement;
 		
-		for (int i = 0; i < SimPropRegistry.getInstance().getNumberOfPluginLayers(); i ++){
+		int i = 0;
+		for ( String layer : sorted_map.keySet() ){
 			
-			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( order.get(i) );
+			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
 
-			String key = order.get(i);
+			String key = layer;
 			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 			this.pluginListsMap.get(key).setSelectedIndex(0);
@@ -87,6 +103,8 @@ public class PluginPanel extends JScrollPane {
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
 			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 			this.panel.add(accordionElement, gridBagConstraints);
+			
+			i++;
 		}
 
 		gridBagConstraints.weighty = 1;

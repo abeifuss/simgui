@@ -25,10 +25,12 @@ import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;
 
 
-@Plugin( name = "MIX_MESSAGE", pluginLayer="RECORDING_SCHEME" )
 public abstract class MixMessage extends NetworkMessage {
 
-	@StringSimulationProperty(name = "Message format", propertykey = "MESSAGE_FORMAT")
+	@StringSimulationProperty(name = "Message format", 
+			propertykey = "MESSAGE_FORMAT",
+			order = 5,
+			inject = "0:RECODING_SCHEME,Recoding Scheme (injected)")
 	private static String type;
 	
 	protected long creationTime;

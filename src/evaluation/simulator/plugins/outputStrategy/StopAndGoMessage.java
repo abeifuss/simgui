@@ -30,6 +30,9 @@ import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
+// This is an example of how to manually cap a plugin
+// by providing the pluginLayer. If the pluginLayer
+// is missing, the SimPropRegistry tries to find a superclass!
 @Plugin(name = "STOP_AND_GO", pluginLayer = "OUTPUT_STRATEGY")
 public class StopAndGoMessage extends BasicMixMessage {
 

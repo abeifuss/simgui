@@ -20,4 +20,6 @@ public @interface PluginSuperclass {
 	public boolean writeToConfig() default true;
 
 	public String fakePlugins() default "";
+
+	public int position() default 100;
 }
