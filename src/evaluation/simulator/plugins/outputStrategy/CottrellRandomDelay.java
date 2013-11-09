@@ -21,7 +21,7 @@ import java.security.SecureRandom;
 
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -36,7 +36,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 // Cottrell 1995 ("Mixmaster & Remailer Attacks")
 // delays incoming messages randomly
-@PluginAnnotation(name = "COTTRELL_RANDOM_DELAY")
+@Plugin(name = "COTTRELL_RANDOM_DELAY")
 public class CottrellRandomDelay extends OutputStrategyImpl implements EventExecutor {
 
 	private static SecureRandom secureRandom = new SecureRandom();

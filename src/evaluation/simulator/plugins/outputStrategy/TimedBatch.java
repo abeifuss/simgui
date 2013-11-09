@@ -21,7 +21,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -36,7 +36,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 // Dingledine 2002: Timed Mix
 // "The mix fires (flushes all messages) every t seconds"
-@PluginAnnotation(name = "TIMED_BATCH")
+@Plugin(name = "TIMED_BATCH")
 public class TimedBatch extends OutputStrategyImpl {
 
 	private SimplexTimedMix requestBatch;

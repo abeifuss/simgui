@@ -32,6 +32,10 @@ public class AccordionEntry extends JPanel {
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
+		
+		if ( jComboBox == null ){
+			Logger.Log(LogLevel.ERROR, "jComboBox == null");
+		}
 		this.comboBox = jComboBox;
 
 		this.setLayout(new BorderLayout(0, 0));
@@ -65,18 +69,21 @@ public class AccordionEntry extends JPanel {
 
 			}
 		});
-		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); // for
-		// automatically
-		// resizing the
-		// JComboBox
-		this.add(this.comboBox, BorderLayout.CENTER);
+		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); 
+		
+		if ( this.comboBox.getModel().getSize() > 1 ){
+			this.add(this.comboBox, BorderLayout.CENTER);
+		}
+		
+		setDefaultTable();
+		
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
 		if (jComboBox.getSelectedIndex() != 0) {
 
 			if (this.entryTable != null) {
-				this.remove(this.entryTable);
+				this.setDefaultTable();
 			}
 
 			Logger.Log(LogLevel.DEBUG, "Reload table");
@@ -88,10 +95,10 @@ public class AccordionEntry extends JPanel {
 			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 			
-			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByNamespace(pluginName);
+			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
 			
 			for (SimProp s : tmpListOfAllSimPropertiesInANamespace ){
-				Logger.Log( LogLevel.DEBUG, "Load: " +s.getNamespace() + "::" + s.getName());
+				Logger.Log( LogLevel.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
 
 			}
 
@@ -131,6 +138,54 @@ public class AccordionEntry extends JPanel {
 			this.remove(this.entryTable);
 			this.updateUI();
 		}
+	}
+
+	private void setDefaultTable() {
+		if (this.entryTable != null) {
+			this.remove(this.entryTable);
+		}
+		
+		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		String pluginLevel = this.localName;
+		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLevel);
+	
+		for (SimProp s : tmpListOfAllVisibleSimProperties ){
+			Logger.Log( LogLevel.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
+		}
+		
+		this.entryTable = new JTable(new AccordionModel(
+				tmpListOfAllVisibleSimProperties)) {
+
+			// This takes care that the non-editable cells are grayed out.
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer,
+					int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if ((column == 1) && !this.isCellEditable(row, column)) {
+					c.setBackground(new Color(255, 200, 200));
+				}
+				return c;
+			}
+		};
+
+		this.entryTable
+				.addMouseMotionListener(new AccordionMouseMotionAdapter(
+						tmpListOfAllVisibleSimProperties,
+						this.entryTable));
+
+		this.entryTable.setDefaultRenderer(Object.class,
+				new AccordionTableCellRenderer(
+						tmpListOfAllVisibleSimProperties));
+
+		this.entryTable.setVisible(true);
+
+		TableColumn col = this.entryTable.getColumnModel().getColumn(1);
+		col.setCellEditor(new AccordionCellEditor());
+		this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.add(this.entryTable, BorderLayout.SOUTH);
+		this.entryTable.setVisible(false);
+		this.updateUI();
+		
 	}
 
 	public void setVibility(boolean b) {

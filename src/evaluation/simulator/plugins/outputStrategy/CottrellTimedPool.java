@@ -23,7 +23,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -39,7 +39,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //Cottrell 1995 ("Mixmaster & Remailer Attacks")
 //every "outputRate" ms, send x (= "numberOfMessagesInPool" - "minPoolSize") 
 //randomly chosen messages (if x >= 1)
-@PluginAnnotation(name = "COTTRELL_TIMED_POOL")
+@Plugin(name = "COTTRELL_TIMED_POOL")
 public class CottrellTimedPool extends OutputStrategyImpl {
 
 	private SimplexCottrellTimedPool requestBatch;

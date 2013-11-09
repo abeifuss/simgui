@@ -18,6 +18,7 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.NetworkMessage;
@@ -25,8 +26,9 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.statistics.Statistics;
 
+@PluginSuperclass( pluginLayerName = "Mix Client", key = "CLIENT_SEND_STYLE")
 public abstract class ClientSendStyleImpl implements EventExecutor {
-
+	
 	protected AbstractClient owner;
 
 	protected boolean simulateReplyChannel;

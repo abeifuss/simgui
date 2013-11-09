@@ -18,14 +18,14 @@
 package evaluation.simulator.core.message;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;
 
 
-@PluginAnnotation( name = "General", pluginLayer = "recodingScheme" )
+@Plugin( name = "MIX_MESSAGE", pluginLayer="RECORDING_SCHEME" )
 public abstract class MixMessage extends NetworkMessage {
 
 	@StringSimulationProperty(name = "Message format", propertykey = "MESSAGE_FORMAT")

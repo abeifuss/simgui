@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.plotType;
 import java.util.Arrays;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
@@ -31,12 +31,12 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import framework.core.util.Util;
 
-@PluginAnnotation(name = "LINE_CHART_CF")
+@Plugin(name = "LINE_CHART_CF", vilible = false, makeFieldsGlobal = true)
 public class LineChartPlotterCf extends Plotter {
 
-	@BoolSimulationProperty(name = "Calculate average", propertykey = "CALC_AVG_OF_RUNS")
+	@BoolSimulationProperty(name = "Calculate average", propertykey = "CALC_AVG_OF_RUNS", global = true)
 	private boolean CALC_AVG_OF_RUNS;
-	@BoolSimulationProperty(name = "Inverse", propertykey = "IS_INVERSE")
+	@BoolSimulationProperty(name = "Inverse", propertykey = "IS_INVERSE", global = true)
 	private boolean IS_INVERSE;
 	
 	public LineChartPlotterCf() {

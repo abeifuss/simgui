@@ -18,7 +18,7 @@
 package evaluation.simulator.plugins.outputStrategy;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -32,7 +32,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random
 // order)
-@PluginAnnotation(name = "BASIC_BATCH")
+@Plugin(name = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
 	@IntSimulationProperty( name = "Batch size", propertykey = "BASIC_BATCH_BATCH_SIZE")

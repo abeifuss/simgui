@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 import java.security.SecureRandom;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -37,7 +37,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // put new message in pool and randomly chose and put out one message 
 // see also: ThresholdPool.java (CottrellPool is a ThresholdPool with n=1)
 
-@PluginAnnotation(name = "COTTRELL_POOL")
+@Plugin(name = "COTTRELL_POOL")
 public class CottrellPool extends OutputStrategyImpl {
 
 	private static SecureRandom secureRandom = new SecureRandom();

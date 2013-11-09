@@ -17,22 +17,21 @@
  */
 package evaluation.simulator.plugins.delayBox;
 
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.plugin.Plugin;
 
-@PluginAnnotation(name = "NO_DELAY")
+//TODO: Sometimes this plugin is not recognized
+
+@Plugin(name = "NO_DELAY_BOX")
 public class NoDelayDelayBox extends DelayBoxImpl {
 	
 	public NoDelayDelayBox() {
 		super();
 	}
 	
-
 	@Override
 	public int getReceiveDelay(int numberOfBytesToReceive) {
 		return 0;
 	}
-
 
 	@Override
 	public int getSendDelay(int numberOfBytesToSend) {

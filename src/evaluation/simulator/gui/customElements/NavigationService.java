@@ -1,27 +1,22 @@
 package evaluation.simulator.gui.customElements;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-
 public class NavigationService {
 
 	private static String content() {
-		SimPropRegistry gcr = SimPropRegistry.getInstance();
+//		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
-		Map<String, String>[] plugins = gcr.getPlugIns();
+//		Map<String, String>[] plugins = simPropRegistry.getPluginLayerMap();
 
 		String menu = "";
-		for (Map<String, String> plugin : plugins) {
-			Set<Entry<String, String>> pluginsInLayer = plugin.entrySet();
-			for (Entry<String, String> entry : pluginsInLayer) {
-				menu += "<a href=\"etc/html/plugins/"
-						+ entry.getKey().replaceAll("\\.class", "/") + "\">"
-						+ entry.getKey().split("\\.", 2)[0] + "</a><br/>\n";
-			}
-		}
+//		for (Map<String, String> plugin : plugins) {
+//			// TODO: Reimplement
+//			Set<Entry<String, String>> pluginsInLayer = plugin.entrySet();
+//			for (Entry<String, String> entry : pluginsInLayer) {
+//				menu += "<a href=\"etc/html/plugins/"
+//						+ entry.getKey().replaceAll("\\.class", "/") + "\">"
+//						+ entry.getKey().split("\\.", 2)[0] + "</a><br/>\n";
+//			}
+//		}
 
 		return menu;
 	}

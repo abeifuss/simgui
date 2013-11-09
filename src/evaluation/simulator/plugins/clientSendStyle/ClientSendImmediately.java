@@ -18,15 +18,14 @@
 package evaluation.simulator.plugins.clientSendStyle;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "SEND_IMMEDIATELY")
+@Plugin(name = "SEND_IMMEDIATELY")
 public class ClientSendImmediately extends ClientSendStyleImpl {
 	
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {

@@ -18,7 +18,7 @@
 package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 
-@PluginAnnotation(name = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY")
+@Plugin(name = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY")
 public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 		implements EventExecutor {
 

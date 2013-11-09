@@ -22,7 +22,7 @@ import java.security.SecureRandom;
 import org.apache.commons.math.random.RandomDataImpl;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
@@ -31,7 +31,7 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@PluginAnnotation(name = "PARETO")
+@Plugin(name = "PARETO")
 public class ParetoClient extends AbstractClient {
 
 	// Properties

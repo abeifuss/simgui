@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class PluginPanel extends JScrollPane {
 	public PluginPanel() {
 		this.initPanel();
 	}
-
+	
 	private void initPanel() {
 		// Start Layout
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -56,73 +57,35 @@ public class PluginPanel extends JScrollPane {
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
 
-		Map<String, String>[] PluginLayerMap = this.simPropRegistry
-				.getPlugIns();
-
-		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
-
-		String[] levelStrings[] = {
-				PluginLayerMap[0].keySet().toArray(
-						new String[PluginLayerMap[0].size()]),
-				PluginLayerMap[1].keySet().toArray(
-						new String[PluginLayerMap[1].size()]),
-				PluginLayerMap[2].keySet().toArray(
-						new String[PluginLayerMap[2].size()]),
-				PluginLayerMap[3].keySet().toArray(
-						new String[PluginLayerMap[3].size()]),
-				PluginLayerMap[4].keySet().toArray(
-						new String[PluginLayerMap[4].size()]),
-				PluginLayerMap[5].keySet().toArray(
-						new String[PluginLayerMap[5].size()]),
-				PluginLayerMap[6].keySet().toArray(
-						new String[PluginLayerMap[6].size()]) };
-
-		// CLIENT_SEND_STYLE
-		JComboBox<String> plugInLevel1List = new JComboBox<String>(
-				levelStrings[0]);
-		this.pluginListsMap.put(pluginOrder.get(0), plugInLevel1List);
-
-		JComboBox<String> plugInLevel2List = new JComboBox<String>(
-				levelStrings[1]);
-		this.pluginListsMap.put(pluginOrder.get(1), plugInLevel2List);
-
-		JComboBox<String> plugInLevel3List = new JComboBox<String>(
-				levelStrings[2]);
-		this.pluginListsMap.put(pluginOrder.get(2), plugInLevel3List);
-
-		JComboBox<String> plugInLevel4List = new JComboBox<String>(
-				levelStrings[3]);
-		this.pluginListsMap.put(pluginOrder.get(3), plugInLevel4List);
-
-		JComboBox<String> plugInLevel5List = new JComboBox<String>(
-				levelStrings[4]);
-		this.pluginListsMap.put(pluginOrder.get(4), plugInLevel5List);
-
-		JComboBox<String> plugInLevel6List = new JComboBox<String>(
-				levelStrings[5]);
-		this.pluginListsMap.put(pluginOrder.get(5), plugInLevel6List);
-
-		JComboBox<String> plugInLevel7List = new JComboBox<String>(
-				levelStrings[6]);
-		this.pluginListsMap.put(pluginOrder.get(6), plugInLevel7List);
-
-		for (String chooseString : this.pluginListsMap.keySet()) {
-			this.pluginListsMap.get(chooseString).insertItemAt(
-					"Choose your " + chooseString + " plugin...", 0);
-			this.pluginListsMap.get(chooseString).setSelectedIndex(0);
-		}
-
+//		Map<String, String>[] PluginLayerMap = this.simPropRegistry.getPluginLayerMap();
+//		List<String> pluginOrder = this.simPropRegistry.getPluginLevels();
+		
+		// set the order manually until it works automatically (by annotations)
+		List<String> order = new LinkedList<>();
+		order.add("Load Generator");
+		order.add("Mix Client");
+		order.add("Mix Proxy");
+		order.add("Mix Server");
+		order.add("Recoding Scheme");
+		order.add("Topology");
+		order.add("Underlay-net");
+		order.add("Plotter");
+		
+		String[] levelStrings[] = new String[SimPropRegistry.getInstance().getNumberOfPluginLayers()][];
+		
 		AccordionEntry accordionElement;
+		
+		for (int i = 0; i < SimPropRegistry.getInstance().getNumberOfPluginLayers(); i ++){
+			
+			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( order.get(i) );
 
-		List<String> listOfAllPluginLayers = SimPropRegistry.getInstance()
-				.getPluginLevels();
-
-		// Select the plugin layers
-		for (String pluginLayer : listOfAllPluginLayers) {
-
-			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + pluginLayer);
-			accordionElement = new AccordionEntry(pluginLayer,
-					this.pluginListsMap.get(pluginLayer));
+			String key = order.get(i);
+			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
+			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
+			this.pluginListsMap.get(key).setSelectedIndex(0);
+			
+			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 			this.panel.add(accordionElement, gridBagConstraints);
 		}
 
@@ -137,10 +100,8 @@ public class PluginPanel extends JScrollPane {
 	}
 
 	void setPlugin(String configName, String selectedPlugin) {
-		String pluginLevel = SimPropRegistry.getInstance()
-				.configNameToPluginName(configName);
-		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to "
-				+ selectedPlugin);
+		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
+		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
 
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
@@ -153,9 +114,7 @@ public class PluginPanel extends JScrollPane {
 				accordianEntry.setVibility(true);
 				Logger.Log(LogLevel.DEBUG, "Found component!");
 			} else {
-				Logger.Log(LogLevel.DEBUG, "Found component "
-						+ component.getClass().getName() + " / "
-						+ AccordionEntry.class);
+				Logger.Log(LogLevel.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
 			}
 		}
 
@@ -166,8 +125,7 @@ public class PluginPanel extends JScrollPane {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					PluginPanel.this.setPlugin(pluginLevel,
-							activePlugins.get(pluginLevel));
+					PluginPanel.this.setPlugin(pluginLevel,activePlugins.get(pluginLevel));
 				}
 			});
 		}

@@ -22,7 +22,7 @@ public class AccordionModel implements TableModel {
 		this.properties = tmpListOfAllSimPropertiesInANamespace;
 		
 		for ( SimProp property : properties ){
-			Logger.Log(LogLevel.DEBUG, "Show: " + property.getId());
+			Logger.Log(LogLevel.DEBUG, "Show: " + property.getPropertyID());
 		}
 	}
 
@@ -88,7 +88,7 @@ public class AccordionModel implements TableModel {
 	@Override
 	public void setValueAt(Object arg0, int arg1, int arg2) {
 
-		String id = this.properties.get(arg1).getId();
+		String id = this.properties.get(arg1).getPropertyID();
 		Logger.Log(LogLevel.DEBUG, "Changed " + id);
 		this.simPropRegistry.setValue(id, arg0);
 

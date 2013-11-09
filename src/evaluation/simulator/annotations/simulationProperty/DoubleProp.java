@@ -7,21 +7,21 @@ import evaluation.simulator.log.Logger;
 
 public class DoubleProp extends SimProp {
 
-	private double _maxValue;
-	private double _minValue;
-	private double _value;
+	private double maxValue;
+	private double minValue;
+	private double value;
 
 	public double getMaxValue() {
-		return this._maxValue;
+		return this.maxValue;
 	}
 
 	public double getMinValue() {
-		return this._minValue;
+		return this.minValue;
 	}
 
 	@Override
 	public Object getValue() {
-		return this._value;
+		return this.value;
 	}
 
 	@Override
@@ -30,11 +30,11 @@ public class DoubleProp extends SimProp {
 	}
 
 	public void setMaxValue(double maxValue) {
-		this._maxValue = maxValue;
+		this.maxValue = maxValue;
 	}
 
 	public void setMinValue(double minValue) {
-		this._minValue = minValue;
+		this.minValue = minValue;
 	}
 
 	@Override
@@ -50,12 +50,17 @@ public class DoubleProp extends SimProp {
 		}
 
 		if ((tmp <= this.getMaxValue()) && (tmp >= this.getMinValue())) {
-			this._value = tmp;
+			this.value = tmp;
 			return;
 		}
 
-		Logger.Log(LogLevel.ERROR, "For " + super.getId() + " Value not in rage! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
+		Logger.Log(LogLevel.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	@Override
+	public String toString() {
+		return super.getName() + "" + this.value;
 	}
 }

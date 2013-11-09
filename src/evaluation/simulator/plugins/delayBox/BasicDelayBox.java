@@ -18,11 +18,11 @@
 package evaluation.simulator.plugins.delayBox;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@PluginAnnotation(name = "BASIC_DELAY_BOX")
+@Plugin(name = "BASIC_DELAY_BOX")
 public class BasicDelayBox extends DelayBoxImpl {
 
 	@IntSimulationProperty(	name = "Packet Size (byte)", propertykey = "NETWORK_PACKET_PAYLOAD_SIZE")

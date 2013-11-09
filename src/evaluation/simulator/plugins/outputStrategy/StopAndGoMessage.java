@@ -23,14 +23,14 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-@PluginAnnotation(name = "STOP_AND_GO")
+@Plugin(name = "STOP_AND_GO", pluginLayer = "OUTPUT_STRATEGY")
 public class StopAndGoMessage extends BasicMixMessage {
 
 	private long[] tsMin; // 0: first mix; 1: second mix...

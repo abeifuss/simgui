@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -54,7 +54,8 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
  * 07: endif
  * 08: Go to step 01 until no more packet arrives."
 */
-@PluginAnnotation(name = "DLPA_HEURISTIC")
+
+@Plugin(name = "DLPA_HEURISTIC")
 public class DLPAHeuristic extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;

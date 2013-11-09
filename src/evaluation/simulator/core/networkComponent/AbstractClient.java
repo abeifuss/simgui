@@ -18,6 +18,7 @@
 package evaluation.simulator.core.networkComponent;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.core.event.ClientEvent;
 import evaluation.simulator.core.event.DistantProxyEvent;
 import evaluation.simulator.core.event.Event;
@@ -29,7 +30,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 
-
+@PluginSuperclass( pluginLayerName = "Load Generator", key = "TYPE_OF_TRAFFIC_GENERATOR")
 public abstract class AbstractClient extends NetworkNode {
 	
 	protected Simulator simulator;

@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.clientSendStyle;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MessageFragment;
 import evaluation.simulator.core.message.MixMessage;
@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "WAIT_FOR_REPLY")
+@Plugin(name = "WAIT_FOR_REPLY")
 public class ClientWaitForReply extends ClientSendStyleImpl {
 	
 	private boolean isFirstCall;

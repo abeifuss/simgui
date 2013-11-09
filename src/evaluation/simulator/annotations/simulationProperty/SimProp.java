@@ -9,14 +9,13 @@ public abstract class SimProp {
 	boolean enabled;
 	private String id;
 	private String name;
-	private String namespace;
+	private String plugin;
 	private int order;
 	private String pluginLayer;
-
 	private String propertykey;
 	private String tooltip;
 	private Class<? extends Requirement>[] value_requirements;
-	private boolean isSuperclass;
+	private boolean isSuperclassProperty;
 
 	public String getDescription() {
 		return this.description;
@@ -30,7 +29,7 @@ public abstract class SimProp {
 		return this.enable_requirements;
 	}
 
-	public String getId() {
+	public String getPropertyID() {
 		return this.id;
 	}
 
@@ -38,20 +37,15 @@ public abstract class SimProp {
 		return this.name;
 	}
 
-	public String getNamespace() {
-		return this.namespace;
+	public String getPluginID() {
+		return this.plugin;
 	}
 
 	public int getOrder() {
 		return this.order;
 	}
 
-	public String getPlugin() {
-		// TODO Implement
-		return "DummyPlugin";
-	}
-
-	public String getPluginLayer() {
+	public String getPluginLayerID() {
 		return this.pluginLayer;
 	}
 
@@ -72,13 +66,7 @@ public abstract class SimProp {
 	// abstract methods
 	public abstract Class<?> getValueType();
 
-	public void printOut() {
-		System.out.println("ID(" + this.id + ") aka. " + this.name + " has");
-		System.out.println("Description: " + this.description);
-		System.out.println("Tooltip: " + this.tooltip);
-		System.out.println("Its value type is " + this.getValueType());
-		System.out.println("==================================");
-	}
+	public abstract String toString();
 
 	public void setDescription(String description) {
 		this.description = description;
@@ -101,15 +89,15 @@ public abstract class SimProp {
 		this.name = name;
 	}
 
-	public void setNamespace(String namespace) {
-		this.namespace = namespace;
+	public void setPluginID(String namespace) {
+		this.plugin = namespace;
 	}
 
 	public void setOrder(int order) {
 		this.order = order;
 	}
 
-	public void setPluginLayer(String pluginLayer) {
+	public void setPluginLayerID(String pluginLayer) {
 		this.pluginLayer = pluginLayer;
 	}
 
@@ -128,9 +116,17 @@ public abstract class SimProp {
 		this.value_requirements = value_requirements;
 	}
 
-	public void setIsSuperclassProperty(boolean b) {
-		this.isSuperclass = b;
+	public void isGlobal(boolean b) {
+		this.setSuperclass(b);
 		
+	}
+
+	public boolean isSuperclass() {
+		return isSuperclassProperty;
+	}
+
+	public void setSuperclass(boolean isSuperclass) {
+		this.isSuperclassProperty = isSuperclass;
 	}
 
 }

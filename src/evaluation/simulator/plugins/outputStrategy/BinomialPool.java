@@ -19,14 +19,13 @@ package evaluation.simulator.plugins.outputStrategy;
 
 import java.security.SecureRandom;
 import java.util.Vector;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
-
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -43,7 +42,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // depends on the number of messages inside the mix at the time of flushing"
 // -> normal cumulative distribution
 
-@PluginAnnotation(name = "BINOMIAL_POOL")
+@Plugin(name = "BINOMIAL_POOL")
 public class BinomialPool extends OutputStrategyImpl {
 
 	private SimplexBinomialPool requestBatch;

@@ -21,7 +21,7 @@ import java.util.Vector;
 
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -38,7 +38,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //"The mix fires (flushes all messages) every t seconds or when n messages 
 // accumulate in the mix."
 // see also: "BatchWithTimeout.java"
-@PluginAnnotation(name = "THRESHOLD_OR_TIMED_BATCH")
+@Plugin(name = "THRESHOLD_OR_TIMED_BATCH")
 public class ThresholdOrTimedBatch extends OutputStrategyImpl {
 
 	private SimplexThresholdOrTimedBatch requestBatch;

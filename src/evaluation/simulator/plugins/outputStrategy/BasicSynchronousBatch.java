@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -46,7 +46,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // (blocks until every client has sent a message!)
 // will put out a reply batch every "replyRate" ms
 // (creates dummies if no data available)
-@PluginAnnotation(name = "BASIC_SYNCHRONOUS_BATCH")
+@Plugin(name = "BASIC_SYNCHRONOUS_BATCH")
 public class BasicSynchronousBatch extends OutputStrategyImpl implements
 		EventExecutor {
 

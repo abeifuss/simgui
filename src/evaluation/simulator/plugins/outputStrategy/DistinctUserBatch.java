@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -43,7 +43,7 @@ import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 // output strategy, that collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random order)
 // accepts only one message per participant for each batch
-@PluginAnnotation(name = "DISTINCT_USER_BATCH")
+@Plugin(name = "DISTINCT_USER_BATCH")
 public class DistinctUserBatch extends OutputStrategyImpl implements EventExecutor {
 	
 	private boolean setupComplete;

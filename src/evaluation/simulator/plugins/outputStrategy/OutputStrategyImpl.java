@@ -18,6 +18,8 @@
 package evaluation.simulator.plugins.outputStrategy;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.Plugin;
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -26,10 +28,8 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
+@PluginSuperclass( pluginLayerName = "Mix Server", key = "OUTPUT_STRATEGY")
 public abstract class OutputStrategyImpl implements ReplyReceiver {
-
-	@IntSimulationProperty( name = "Superclass test entry", propertykey = "SC_TEST_ENTRY" )
-	private int test;
 	
 	protected Simulator simulator;
 	protected Mix mix;

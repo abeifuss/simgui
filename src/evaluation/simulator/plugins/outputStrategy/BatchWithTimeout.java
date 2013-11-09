@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -38,7 +38,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // and gets canceled as the batch is put out (due to reaching the batch size)
 // see also: "ThresholdOrTimedBatch.java"
 
-@PluginAnnotation(name = "BATCH_WITH_TIMEOUT")
+@Plugin(name = "BATCH_WITH_TIMEOUT")
 public class BatchWithTimeout extends OutputStrategyImpl {
 
 	@IntSimulationProperty( name = "Timeout (in ms)", propertykey = "TIMEOUT_IN_MS" )

@@ -23,7 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
 import evaluation.simulator.core.statistics.postProcessor.PostProcessor;
@@ -33,7 +33,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import framework.core.config.Paths;
 import gnu.trove.TDoubleArrayList;
 
-@PluginAnnotation(name = "TXT_ONLY")
+@Plugin(name = "TXT_ONLY", vilible = false)
 public class TxtWriter extends Plotter {
 
 	private BufferedWriter resultFile;

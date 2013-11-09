@@ -18,11 +18,12 @@
 package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.core.statistics.Statistics;
 
-
+@PluginSuperclass( pluginLayerName = "Mix Proxy", key = "MIX_SEND_STYLE")
 public abstract class MixSendStyleImpl {
 
 	protected NetworkNode owner;

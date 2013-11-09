@@ -20,11 +20,16 @@ package evaluation.simulator.plugins.plotType;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 
-
+@PluginSuperclass( pluginLayerName = "Plotter", key = "PLOTTER", writeToConfig = false)
 public abstract class Plotter {
 
+	@StringSimulationProperty( name = "Plot script", propertykey = "NAME_OF_PLOT_SCRIPT" )
+	String plotscript;
+	
 	public final static DecimalFormat decimalFormat;
 	static {
 		DecimalFormatSymbols sym = new DecimalFormatSymbols();

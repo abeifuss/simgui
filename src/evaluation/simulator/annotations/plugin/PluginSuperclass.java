@@ -9,11 +9,15 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PluginAnnotation {
+public @interface PluginSuperclass {
 
 	public String documentationURL() default "";
 
-	public String name() default "";
+	public String key();
 	
-	public String pluginLayer() default "";
+	public String pluginLayerName();
+
+	public boolean writeToConfig() default true;
+
+	public String fakePlugins() default "";
 }

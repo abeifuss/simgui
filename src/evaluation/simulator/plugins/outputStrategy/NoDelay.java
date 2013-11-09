@@ -19,7 +19,7 @@ package evaluation.simulator.plugins.outputStrategy;
 
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.core.message.MixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.Mix;
@@ -28,9 +28,10 @@ import evaluation.simulator.pluginRegistry.MixSendStyle;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
+// TODO: Sometimes this plugin is not recognized
 
 // forwards messages without delay (use for base line measurments)
-@PluginAnnotation(name = "NO_DELAY")
+@Plugin(name = "NO_DELAY")
 public class NoDelay extends OutputStrategyImpl {
 
 	

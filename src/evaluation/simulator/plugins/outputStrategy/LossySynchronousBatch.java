@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
@@ -44,7 +44,7 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-@PluginAnnotation(name = "LOSSY_SYNCHRONOUS_BATCH")
+@Plugin(name = "LOSSY_SYNCHRONOUS_BATCH")
 public class LossySynchronousBatch extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;

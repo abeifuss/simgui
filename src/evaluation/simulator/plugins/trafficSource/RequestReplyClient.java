@@ -18,13 +18,13 @@
 package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@PluginAnnotation(name = "REQUEST_REPLY")
+@Plugin(name = "REQUEST_REPLY")
 public class RequestReplyClient extends AbstractClient {
 
 	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_REPLY_REQUEST_SIZE" )

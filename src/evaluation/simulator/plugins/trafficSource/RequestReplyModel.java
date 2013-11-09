@@ -18,11 +18,11 @@
 package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginAnnotation;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@PluginAnnotation(name = "REQUEST_REPLY")
+@Plugin(name = "REQUEST_REPLY")
 public class RequestReplyModel extends TrafficSourceImplementation {
 	
 	private RequestReplyClient[] clients;

@@ -27,4 +27,9 @@ public class StringProp extends SimProp {
 	public void setValue(Object o) {
 		this.value = (String) (o);
 	}
+	
+	@Override
+	public String toString() {
+		return super.getName() + "" + this.value;
+	}
 }

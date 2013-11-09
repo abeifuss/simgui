@@ -2,11 +2,11 @@ package evaluation.simulator.annotations.simulationProperty;
 
 public class BoolProp extends SimProp {
 
-	private boolean _value;
+	private boolean value;
 
 	@Override
 	public Object getValue() {
-		return this._value;
+		return this.value;
 	}
 
 	@Override
@@ -16,6 +16,11 @@ public class BoolProp extends SimProp {
 
 	@Override
 	public void setValue(Object o) {
-		this._value = (boolean) (o);
+		this.value = (boolean) (o);
+	}
+
+	@Override
+	public String toString() {
+		return super.getName() + "" + this.value;
 	}
 }

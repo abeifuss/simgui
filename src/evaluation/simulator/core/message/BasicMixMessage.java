@@ -20,12 +20,38 @@ package evaluation.simulator.core.message;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.plugin.PluginSuperclass;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
-
 public class BasicMixMessage extends MixMessage {
 
+	@IntSimulationProperty( 
+			name = "Mix request playload size (byte)", 
+			propertykey = "MIX_REQUEST_PAYLOAD_SIZE", 
+			order = 1, 
+			inject = "RECODING_SCHEME")
+	private int requestPlayloadSize;
+	@IntSimulationProperty( 
+			name = "Mix reply playload size (byte)", 
+			propertykey = "MIX_REPLY_PAYLOAD_SIZE", 
+			order = 3, 
+			inject = "RECODING_SCHEME")
+	private int replyPlayloadSize;
+	@IntSimulationProperty( 
+			name = "Mix request header size (byte)", 
+			propertykey = "MIX_REQUEST_HEADER_SIZE", 
+			order = 2,
+			inject = "RECODING_SCHEME")
+	private int requestHeaderSize;
+	@IntSimulationProperty( 
+			name = "Mix reply header size (byte)", 
+			propertykey = "MIX_REPLY_HEADER_SIZE", 
+			order = 4,
+			inject = "RECODING_SCHEME")
+	private int replyHeaderSize;
+	
 	private int payloadSize;
 	private int maxPayloadSize; // byte
 	private int headerSize; // byte

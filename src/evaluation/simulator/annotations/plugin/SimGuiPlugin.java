@@ -1,11 +1,13 @@
 package evaluation.simulator.annotations.plugin;
 
-public class AnnotatedPlugin {
+public class SimGuiPlugin {
 
 	private String documentationURL;
 	private String id;
 	private String name;
 	private String pluginLayer;
+	private boolean visible;
+	private boolean globalFields;
 
 	public String getDocumentationURL() {
 		return this.documentationURL;
@@ -38,7 +40,21 @@ public class AnnotatedPlugin {
 	public void setPluginLayer(String pluginLayer) {
 		this.pluginLayer = pluginLayer;
 	}
-	
-	
 
+	public boolean isVisible() {
+		return this.visible;
+	}
+	
+	public void isVisible( boolean isVisible) {
+		this.visible = isVisible;
+	}
+
+	public boolean makeFieldsGlobal() {
+		return this.globalFields;
+	}
+	
+	public void  makeFieldsGlobal( boolean globalFields ) {
+		this.globalFields = globalFields;
+	}
+	
 }
