@@ -23,7 +23,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.core.statistics.Statistics;
 
-@PluginSuperclass( pluginLayerName = "Mix Proxy", key = "MIX_SEND_STYLE")
+@PluginSuperclass( layerName = "Mix Proxy", layerKey = "MIX_SEND_STYLE")
 public abstract class MixSendStyleImpl {
 
 	protected NetworkNode owner;

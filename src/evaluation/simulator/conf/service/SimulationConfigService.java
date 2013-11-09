@@ -112,7 +112,7 @@ public class SimulationConfigService {
 
 			props = new PropertiesConfiguration("etc/templates/experiment.cfg");
 
-			props.setProperty("VERSION", 2);
+			props.setProperty("EDF_VERSION", 1);
 
 			// static part
 			Map<String, String> plugins = this.simPropRegistry

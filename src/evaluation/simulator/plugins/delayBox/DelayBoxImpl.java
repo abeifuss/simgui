@@ -19,7 +19,7 @@ package evaluation.simulator.plugins.delayBox;
 
 import evaluation.simulator.annotations.plugin.PluginSuperclass;
 
-@PluginSuperclass( pluginLayerName = "Underlay-net", key = "TYPE_OF_DELAY_BOX")
+@PluginSuperclass( layerName = "Underlay-net", layerKey = "TYPE_OF_DELAY_BOX")
 public abstract class DelayBoxImpl {
 
 	public abstract int getSendDelay(int numberOfBytesToSend);

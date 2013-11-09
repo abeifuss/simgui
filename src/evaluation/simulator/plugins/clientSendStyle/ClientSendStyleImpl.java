@@ -26,7 +26,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.statistics.Statistics;
 
-@PluginSuperclass( pluginLayerName = "Mix Client", key = "CLIENT_SEND_STYLE")
+@PluginSuperclass( layerName = "Mix Client", layerKey = "CLIENT_SEND_STYLE")
 public abstract class ClientSendStyleImpl implements EventExecutor {
 	
 	protected AbstractClient owner;

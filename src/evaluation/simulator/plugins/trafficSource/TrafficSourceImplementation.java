@@ -22,7 +22,7 @@ import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
 
-@PluginSuperclass( pluginLayerName = "Load Generator", key = "TYPE_OF_TRAFFIC_GENERATOR")
+@PluginSuperclass( layerName = "Load Generator", layerKey = "TYPE_OF_TRAFFIC_GENERATOR")
 public abstract class TrafficSourceImplementation {
 
 	public abstract AbstractClient[] createClientsArray();

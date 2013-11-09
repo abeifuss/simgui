@@ -106,7 +106,9 @@ public class SimPropRegistry {
 	private SimPropRegistry() {
 		numberOfPluginLayers = 0;
 		numberOfNonPluginLayers = 0;
+		
 		this.scanForStaticPaoperties();
+		
 		this.scanForPluginProperties();
 		this.scanPlugins();
 		this.toString();
@@ -123,7 +125,7 @@ public class SimPropRegistry {
 		numberOfVsiblePluginsInLayer.put("Mix Server", 19);
 		numberOfVsiblePluginsInLayer.put("Topology", 4);
 		numberOfVsiblePluginsInLayer.put("Underlay-net", 2);
-		numberOfVsiblePluginsInLayer.put("Plotter", 3);
+		numberOfVsiblePluginsInLayer.put("Plotter", 0);
 		
 		for ( String layer : numberOfVsiblePluginsInLayer.keySet() ){
 			int expected = numberOfVsiblePluginsInLayer.get( layer );
@@ -205,6 +207,10 @@ public class SimPropRegistry {
 			Logger.Log(LogLevel.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
 			s.isGlobal(true);
 			this.properties.put(s.getPropertyID(), s);
+		} else if ( !this.properties.containsKey(s.getPropertyID()) && isGlobal ) {
+			Logger.Log(LogLevel.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
+			s.isGlobal(true);
+			this.properties.put(s.getPropertyID(), s);
 		} else {
 			Logger.Log(LogLevel.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
 			s.isGlobal(false);
@@ -212,7 +218,9 @@ public class SimPropRegistry {
 		}
 	}
 	
-	// Scans static simulation properties
+	/**
+	 * Scans static simulation properties. Only handles PropertyAnnoations with inject parameter.
+	 */
 	private void scanForStaticPaoperties() {
 		
 		Reflections reflections = new Reflections(
@@ -225,12 +233,20 @@ public class SimPropRegistry {
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.StringSimulationProperty.class));
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty.class));
 	
+		List<Class<? extends Annotation> > annotationTypes = new LinkedList<Class<? extends Annotation> >();
+		annotationTypes.add( IntSimulationProperty.class );
+		annotationTypes.add( BoolSimulationProperty.class );
+		annotationTypes.add( FloatSimulationProperty.class );
+		annotationTypes.add( DoubleSimulationProperty.class );
+		annotationTypes.add( StringSimulationProperty.class );
+		
 		SimProp property;
 		boolean globalProperty = true;
 		for ( Field field : fields ){
 				Annotation[] a = field.getAnnotations();
 				for (Annotation element : a) {
 					if (element.annotationType() == IntSimulationProperty.class) {
+						
 						IntSimulationProperty annotation = field.getAnnotation(IntSimulationProperty.class);
 						if ( !annotation.inject().equals("") ){
 							String[] injectionArguments = annotation.inject().split("@");
@@ -267,6 +283,7 @@ public class SimPropRegistry {
 
 							properties.put(property.getName(), property);
 							
+							// TODO: Implement
 							if ( !layerMapDisplayNameToConfigName.containsKey("Recoding Scheme")){
 								Logger.Log(LogLevel.DEBUG, "Register injected pluginlevel (" + annotation.inject() + ", Recoding Scheme)");
 								layerMapDisplayNameToConfigName.put("Recoding Scheme", annotation.inject());	
@@ -308,67 +325,81 @@ public class SimPropRegistry {
 			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 			plugin.setPluginLayer(pluginAnnotation.pluginLayer());
 			plugin.isVisible(pluginAnnotation.vilible());
-			plugin.makeFieldsGlobal(pluginAnnotation.makeFieldsGlobal());
+			plugin.makeFieldsGlobal(pluginAnnotation.allowFieldsGlobal());
 
-			boolean autodetectPluginLayer = pluginAnnotation.pluginLayer().equals("");
+			// If there is is a pluginlayer provided by the annotation, a plugin can 
+			// be registered drectly. Otherwise the plugin superclasses name is used
 			
+			boolean autodetectPluginLayer = pluginAnnotation.pluginLayer().equals("");
 			if ( !autodetectPluginLayer ){
-				
+				// register plugin with 
 				registerPlugin( plugin.getName(), pluginAnnotation.pluginLayer(), plugin.isVisible() );
 				readFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayer(), false );
 			
-			}else{ // AUTODETECT PLUGINLAYER
-			
-				Class<?> superClass = pluginClass.getSuperclass();
+			}else{ // AUTODETECT PLUGINLAYER (Lookup superclass)
+				Logger.Log(LogLevel.DEBUG, "Autodetect for plugin " + plugin.getName());
+				Class<?> directSuperlass = pluginClass.getSuperclass();
 				
-				// first find the annotated superclass in a recursive manner
-				Class<?> tmp = pluginClass;
-				while ( !tmp.isAnnotationPresent( PluginSuperclass.class ) && 
-						!tmp.getCanonicalName().equals("java.lang.Object") ){
-					tmp = tmp.getSuperclass();
+				// Find the annotated superclass in a recursive manner
+				Class<?> pluginSuperclass = pluginClass;
+				while ( !pluginSuperclass.isAnnotationPresent( PluginSuperclass.class ) && 
+						!pluginSuperclass.getCanonicalName().equals("java.lang.Object") ){
+					pluginSuperclass = pluginSuperclass.getSuperclass();
 				}
 				
-				if ( tmp.isAnnotationPresent( PluginSuperclass.class) ){
-					registerPlugin( plugin.getName(), tmp.getAnnotation( PluginSuperclass.class ).key(), plugin.isVisible() );
+				// Process PluginSuperclass information
+				if ( pluginSuperclass.isAnnotationPresent( PluginSuperclass.class) ){
+					Logger.Log(LogLevel.DEBUG, plugin.getName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
+					registerPlugin( plugin.getName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );
 				}else{
+					// The plugin is not well written! Each plugin must be caped by a pluginSuperclass
 					Logger.Log(LogLevel.ERROR, plugin.getName() + " is not caped by a superclass");
+					System.exit(-1);
 				}
 				
-				// invalid inheritance
-				if ( superClass.isAnnotationPresent( Plugin.class ) && 
-						superClass.getAnnotation( Plugin.class ).name() != pluginAnnotation.name() ){
-					Logger.Log( LogLevel.ERROR , "Check the annotation in class " + superClass.getCanonicalName() +
+				// Case: Invalid inheritance
+				// If the direct superclass has a normal plugin annotation, the
+				// provided name must match the actual plugin name.
+				if (directSuperlass.isAnnotationPresent( Plugin.class ) && 	
+					 directSuperlass.getAnnotation( Plugin.class ).name() != pluginAnnotation.name() ){
+						 
+					Logger.Log( LogLevel.ERROR , "Check the annotation in class " + directSuperlass.getCanonicalName() +
 							" it should be @Plugin( name = \""+ plugin.getName() +"\" ... ) or a valid @PluginSuperclass annotation.");
 				}
 				
-				// valid shared superclass
-				// resgister plugin with superclass
-				if ( superClass.isAnnotationPresent( PluginSuperclass.class ) ){
-					String pluginLayerName = superClass.getAnnotation( PluginSuperclass.class ).pluginLayerName();
-					if ( !layerMapDisplayNameToConfigName.containsKey( pluginLayerName )){
-						String name = superClass.getAnnotation( PluginSuperclass.class ).pluginLayerName();
-						String key = superClass.getAnnotation( PluginSuperclass.class ).key();
-						Logger.Log( LogLevel.DEBUG , "Register pluginlevel (" + key + ", " + name + ")");
-						layerMapDisplayNameToConfigName.put(name, key);
+				// Case: Valid direct superclass
+				// Process superclass
+					
+				String layerDisplayName = pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerName();
+				String layerConfigName = pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey();
+					
+				// check if this superclass is already registered
+				if ( !layerMapDisplayNameToConfigName.containsKey( layerConfigName )){
 						
-						String fakePlugins = superClass.getAnnotation( PluginSuperclass.class ).fakePlugins();
-						if ( !fakePlugins.equals("") ){
-							String[] fakedPlugins = fakePlugins.split(",");
-							for (int i = 0; i < fakedPlugins.length; i++ ){
-								Logger.Log(LogLevel.DEBUG, "Inject fake plugin " + fakedPlugins[i] + " to " + pluginLayerName );
-								registerPlugin(fakedPlugins[i], superClass.getAnnotation( PluginSuperclass.class ).key(), true);
-							}
-							// pluginLayerNameToConfigName.put(superClass.getAnnotation( PluginSuperclass.class ).key(), pluginLayerName);
+					// if not: register the plugin level
+					Logger.Log( LogLevel.DEBUG , "Register pluginlevel (" + layerConfigName + ", " + layerDisplayName + ")");
+					layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+						
+					// PluginSuperclasses can provide fake plugins. Fake plugins will occur in the
+					// jcombobox of the corresponding plugin level (see TopologyScript.java)
+					String fakePlugins = pluginSuperclass.getAnnotation( PluginSuperclass.class ).fakePlugins();
+					if ( !fakePlugins.equals("") ){
+						String[] fakedPlugins = fakePlugins.split(",");
+						for (int i = 0; i < fakedPlugins.length; i++ ){
+							Logger.Log(LogLevel.DEBUG, "Inject fake plugin " + fakedPlugins[i] + " to " + layerConfigName );
+							registerPlugin(fakedPlugins[i], pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), true);
 						}
-						
-						readFields( plugin, superClass.getDeclaredFields(), pluginLayerName, true );
-					}else{
-						readFields( plugin, pluginClass.getDeclaredFields(), pluginLayerName, false );
 					}
-				}else{
-					Logger.Log(LogLevel.ERROR, "Plugin " + plugin.getName() + "'s superclass has no @PluginSuperclass annotation");
+					
+					// Now we need to process the fields of the direct superclass, because
+					// this is the first time we detectied this pluginSuperclass.
+					readFields( plugin, pluginSuperclass.getDeclaredFields(), layerConfigName, true );
+					
 				}
-				
+					
+				// Then we process our own fields
+				readFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
+					
 				// This map is used to map the display name of to the
 				// propertyname which is used to identify the active plugin
 				for ( Entry<String, String> entry : layerMapDisplayNameToConfigName.entrySet() ){
@@ -381,17 +412,28 @@ public class SimPropRegistry {
 		DependencyChecker.checkAll(this);
 	}
 
+	
+	/**
+	 * 
+	 * Registers a plugin name with a plugin layer.
+	 * 
+	 * @param plugin A plugin name e.g. 
+	 * @param plugInLayer A player name e.g. 
+	 * @param isVisible A boolean which specifies whether the plugin name will be
+	 * registered with a plugin layer (ture) or not (false). If a plugin is not
+	 * registerd with a plugin layer, it will be invisible whithin the gui. 
+	 */
 	private void registerPlugin(String plugin, String plugInLayer, boolean isVisible) {
 		if ( isVisible ){
-			Logger.Log(LogLevel.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
 			
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 			int x = graphicsDevice.getDisplayMode().getWidth();
 			int y = graphicsDevice.getDisplayMode().getHeight();
 			
-			// Check if this plugin is known for a different pluginlayer
-			if ( registeredPlugins.containsKey(plugin )){
+			// Check if this plugin is already known for a different pluginlayer. 
+			// In this case show an alert an exit. The Pluginprogrammer has to fix ist
+			if ( registeredPlugins.containsKey(plugin) ){
 				if ( !registeredPlugins.get(plugin).equals(plugInLayer) ){
 					JOptionPane alert = new JOptionPane("Reuse of Plugin name '" + plugin +
 							"' in plugin layers: \n" +
@@ -406,7 +448,14 @@ public class SimPropRegistry {
 					dialog.setVisible(true);
 					System.exit(-1);
 				} 
-			} else{
+				
+			} 
+			// Otherwise, register the plugin the pluginlayer.
+			// Plugins which are registered to a pluginlayer will occur in the 
+			// pluginlayer's corresponging jcombobox!
+			// Plugins which are not registered are not visible in the gui.
+			else { 
+				Logger.Log(LogLevel.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
 				registeredPlugins.put(plugin, plugInLayer);
 			}
 		} else{
@@ -421,9 +470,16 @@ public class SimPropRegistry {
 
 	private void readFields(SimGuiPlugin plugin, Field[] fields, String plugInLayer, boolean isSuperClass ) {
 		
+		boolean allowGlobalFields = false;
+		
 		// Skip invisible plugins
-		if ( !plugin.isVisible() && !plugin.makeFieldsGlobal() ){
+		if ( !plugin.isVisible() && !plugin.allowFieldsGlobal() ){
+			Logger.Log(LogLevel.DEBUG, 
+					plugin.getName() + " is ignored due to isVisible=" + 
+					plugin.isVisible()	+ " and makeFieldsGlobal=" + plugin.allowFieldsGlobal());
 			return;
+		} else if ( !plugin.isVisible() && plugin.allowFieldsGlobal() ){
+			allowGlobalFields = true;
 		}
 		
 		SimProp property;
@@ -440,26 +496,32 @@ public class SimPropRegistry {
 								.getAnnotation(BoolSimulationProperty.class);
 						property = new BoolProp();
 						if (annotation != null) {
-							// property.setId(f.getName());
+							// Properties are global if:
+							// They are PluginSuperclass properties OR the plugin allows global Properties
+							// Furthermore each Property must be declared as global
+							isGlobal = (isSuperClass || plugin.allowFieldsGlobal()) && annotation.global();
 							property.setId(annotation.propertykey());
-							isGlobal = isSuperClass || annotation.global() || plugin.makeFieldsGlobal();
 							if ( !isGlobal ){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is not global");
 								property.setPluginID(plugin.getName());
 							}else{
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global");
 								property.setPluginID("");
 							}
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							if (plugin.makeFieldsGlobal()){
+							if (plugin.allowFieldsGlobal()){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + plugInLayer);
 								property.setPluginLayerID(plugInLayer);
 							} else {
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
 								property.setPluginLayerID(getPluginLayer(plugin.getName()));
 							}
 							property.setEnable_requirements(annotation.enable_requirements());
-							((BoolProp) property).setValue(annotation.value());
 							property.setEnable(true);
-							property.isGlobal(isGlobal);
+							
+							((BoolProp) property).setValue(annotation.value());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == IntSimulationProperty.class) {
@@ -467,28 +529,35 @@ public class SimPropRegistry {
 								.getAnnotation(IntSimulationProperty.class);
 						property = new IntProp();
 						if (annotation != null) {
-							isGlobal = isSuperClass || annotation.global() || plugin.makeFieldsGlobal();
+							// Properties are global if:
+							// They are PluginSuperclass properties OR the plugin allows global Properties
+							// Furthermore each Property must be declared as global
+							isGlobal = (isSuperClass || plugin.allowFieldsGlobal()) && annotation.global();
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is not global");
 								property.setPluginID(plugin.getName());
 							}else{
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global");
 								property.setPluginID("");
 							}
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							if (plugin.makeFieldsGlobal()){
+							if (plugin.allowFieldsGlobal()){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + plugInLayer);
 								property.setPluginLayerID(plugInLayer);
 							} else {
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
 								property.setPluginLayerID(getPluginLayer(plugin.getName()));
 							}
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
-							((IntProp) property).setMinValue(annotation.min());
-							((IntProp) property).setMaxValue(annotation.max());
 							property.setValue(annotation.value());
 							property.setEnable(true);
-							property.isGlobal(true);
+							
+							((IntProp) property).setMinValue(annotation.min());
+							((IntProp) property).setMaxValue(annotation.max());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == FloatSimulationProperty.class) {
@@ -496,27 +565,34 @@ public class SimPropRegistry {
 								.getAnnotation(FloatSimulationProperty.class);
 						property = new FloatProp();
 						if (annotation != null) {
-							isGlobal = isSuperClass || annotation.global() || plugin.makeFieldsGlobal();
+							// Properties are global if:
+							// They are PluginSuperclass properties OR the plugin allows global Properties
+							// Furthermore each Property must be declared as global
+							isGlobal = (isSuperClass || plugin.allowFieldsGlobal()) && annotation.global();
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is not global");
 								property.setPluginID(plugin.getName());
 							}else{
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global");
 								property.setPluginID("");
 							}
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							if (plugin.makeFieldsGlobal()){
+							if (plugin.allowFieldsGlobal()){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + plugInLayer);
 								property.setPluginLayerID(plugInLayer);
 							} else {
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
 								property.setPluginLayerID(getPluginLayer(plugin.getName()));
 							}
 							property.setEnable_requirements(annotation.enable_requirements());
+							property.setEnable(true);
+							
 							((FloatProp) property).setMinValue(annotation.min());
 							((FloatProp) property).setMaxValue(annotation.max());
 							((FloatProp) property).setValue(annotation.value());
-							property.setEnable(true);
-							property.isGlobal(isGlobal);
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == DoubleSimulationProperty.class) {
@@ -524,27 +600,34 @@ public class SimPropRegistry {
 								.getAnnotation(DoubleSimulationProperty.class);
 						property = new DoubleProp();
 						if (annotation != null) {
-							isGlobal = isSuperClass || annotation.global() || plugin.makeFieldsGlobal();
+							// Properties are global if:
+							// They are PluginSuperclass properties OR the plugin allows global Properties
+							// Furthermore each Property must be declared as global
+							isGlobal = (isSuperClass || plugin.allowFieldsGlobal()) && annotation.global();
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is not global");
 								property.setPluginID(plugin.getName());
 							}else{
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global");
 								property.setPluginID("");
 							}
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							if (plugin.makeFieldsGlobal()){
+							if (plugin.allowFieldsGlobal()){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + plugInLayer);
 								property.setPluginLayerID(plugInLayer);
 							} else {
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
 								property.setPluginLayerID(getPluginLayer(plugin.getName()));
 							}
 							property.setEnable_requirements(annotation.enable_requirements());
+							property.setEnable(true);
+							
 							((DoubleProp) property).setMinValue(annotation.min());
 							((DoubleProp) property).setMaxValue(annotation.max());
 							((DoubleProp) property).setValue(annotation.value());
-							property.setEnable(true);
-							property.isGlobal(isGlobal);
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == StringSimulationProperty.class) {
@@ -552,26 +635,33 @@ public class SimPropRegistry {
 								.getAnnotation(StringSimulationProperty.class);
 						property = new StringProp();
 						if (annotation != null) {
-							isGlobal = isSuperClass || annotation.global() || plugin.makeFieldsGlobal();
+							// Properties are global if:
+							// They are PluginSuperclass properties OR the plugin allows global Properties
+							// Furthermore each Property must be declared as global
+							isGlobal = (isSuperClass || plugin.allowFieldsGlobal()) && annotation.global();
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is not global");
 								property.setPluginID(plugin.getName());
 							}else{
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global");
 								property.setPluginID("");
 							}
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							if (plugin.makeFieldsGlobal()){
+							if (plugin.allowFieldsGlobal()){
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + plugInLayer);
 								property.setPluginLayerID(plugInLayer);
 							} else {
+								Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
 								property.setPluginLayerID(getPluginLayer(plugin.getName()));
 							}
 							property.setEnable_requirements(annotation.enable_requirements());
+							property.setEnable(true);
+							
 							((StringProp) property).setValue(annotation.value());
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
-							property.setEnable(true);
-							property.isGlobal(isGlobal);
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else { 

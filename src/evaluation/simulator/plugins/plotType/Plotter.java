@@ -24,7 +24,7 @@ import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 
-@PluginSuperclass( pluginLayerName = "Plotter", key = "PLOTTER", writeToConfig = false)
+@PluginSuperclass( layerName = "Plotter", layerKey = "PLOTTER", writeToConfig = false)
 public abstract class Plotter {
 
 	@StringSimulationProperty( name = "Plot script", propertykey = "NAME_OF_PLOT_SCRIPT" )

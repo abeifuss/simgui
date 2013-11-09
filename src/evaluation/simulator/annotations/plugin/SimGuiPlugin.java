@@ -49,7 +49,7 @@ public class SimGuiPlugin {
 		this.visible = isVisible;
 	}
 
-	public boolean makeFieldsGlobal() {
+	public boolean allowFieldsGlobal() {
 		return this.globalFields;
 	}
 	

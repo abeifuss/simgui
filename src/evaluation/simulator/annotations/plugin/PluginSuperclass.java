@@ -13,9 +13,9 @@ public @interface PluginSuperclass {
 
 	public String documentationURL() default "";
 
-	public String key();
+	public String layerKey();
 	
-	public String pluginLayerName();
+	public String layerName();
 
 	public boolean writeToConfig() default true;
 
