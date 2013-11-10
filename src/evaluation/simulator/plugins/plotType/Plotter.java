@@ -27,9 +27,6 @@ import evaluation.simulator.core.statistics.ResultSet;
 @PluginSuperclass( layerName = "Plotter", layerKey = "PLOTTER", writeToConfig = false)
 public abstract class Plotter {
 
-	// TODO: It seems like there are timing problems
-	// sometimes this property is visible, sometimes not :(
-	// I guess superclass has to be loaded before plugins and / or injections
 	@StringSimulationProperty( name = "Plot script", 
 			propertykey = "NAME_OF_PLOT_SCRIPT")
 	String plotscript;

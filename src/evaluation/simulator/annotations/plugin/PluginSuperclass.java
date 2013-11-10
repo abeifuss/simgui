@@ -22,4 +22,6 @@ public @interface PluginSuperclass {
 	public String fakePlugins() default "";
 
 	public int position() default 100;
+
+	public boolean isStatic() default false;
 }

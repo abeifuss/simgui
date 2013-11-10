@@ -31,9 +31,6 @@ import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 
 @Plugin( pluginKey = "NMIX", vilible = false )
 public class NMixCascadeTopology extends TopologyScript {
-
-	@IntSimulationProperty( name = "This is a test", propertykey = "NMC_TEST")
-	int a_test;
 	
 	private int numberOfMixes;
 	private HashMap<String, AbstractClient> clients;

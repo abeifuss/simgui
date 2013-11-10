@@ -13,6 +13,8 @@ public class SimGuiPlugin {
 	private String pluginLayer;
 	private boolean visible;
 	private boolean globalFields;
+	private String fallbackLayer;
+	private boolean allowGlobalFields;
 
 	public String getDocumentationURL() {
 		return this.documentationURL;
@@ -54,12 +56,28 @@ public class SimGuiPlugin {
 		this.visible = isVisible;
 	}
 
-	public boolean allowFieldsGlobal() {
+	public boolean isGlobal() {
 		return this.globalFields;
 	}
 	
-	public void  makeFieldsGlobal( boolean globalFields ) {
+	public void  isGlobal( boolean globalFields ) {
 		this.globalFields = globalFields;
+	}
+	
+	public void setFallbackLayer(String pluginLayer) {
+		this.fallbackLayer = pluginLayer;		
+	}
+	
+	public String getFallbackLayer() {
+		return this.fallbackLayer;		
+	}
+
+	public void allowGlobalFields( boolean allowGlobalFields ) {
+		this.allowGlobalFields = allowGlobalFields;
+	}
+	
+	public boolean allowGlobalFields() {
+		return this.allowGlobalFields;
 	}
 
 	/**

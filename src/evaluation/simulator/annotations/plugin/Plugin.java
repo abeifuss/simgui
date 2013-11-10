@@ -19,5 +19,7 @@ public @interface Plugin {
 
 	public boolean vilible() default true;
 
-	public boolean allowFieldsGlobal() default false;
+	public boolean global() default false;
+
+	public boolean allowGlobalFields() default true;
 }

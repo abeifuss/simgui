@@ -130,7 +130,7 @@ public abstract class SimProp {
 		return isSuperclassProperty;
 	}
 
-	public void setSuperclass(boolean isSuperclass) {
+	public void isSuperclass(boolean isSuperclass) {
 		this.isSuperclassProperty = isSuperclass;
 	}
 

@@ -31,7 +31,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import framework.core.util.Util;
 
-@Plugin(pluginKey = "LINE_CHART_CF", vilible = false, allowFieldsGlobal = true)
+@Plugin(pluginKey = "LINE_CHART_CF", vilible = false, global = true)
 public class LineChartPlotterCf extends Plotter {
 
 	@BoolSimulationProperty(name = "Calculate average", 
