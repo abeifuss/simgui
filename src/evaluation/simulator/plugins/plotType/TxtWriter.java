@@ -33,7 +33,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import framework.core.config.Paths;
 import gnu.trove.TDoubleArrayList;
 
-@Plugin(name = "TXT_ONLY", vilible = false)
+@Plugin(pluginKey = "TXT_ONLY", vilible = false)
 public class TxtWriter extends Plotter {
 
 	private BufferedWriter resultFile;

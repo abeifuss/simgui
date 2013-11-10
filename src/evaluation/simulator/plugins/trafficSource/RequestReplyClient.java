@@ -24,7 +24,7 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(name = "REQUEST_REPLY")
+@Plugin(pluginKey = "REQUEST_REPLY")
 public class RequestReplyClient extends AbstractClient {
 
 	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_REPLY_REQUEST_SIZE" )

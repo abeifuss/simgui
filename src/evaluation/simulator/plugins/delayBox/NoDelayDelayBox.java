@@ -21,7 +21,7 @@ import evaluation.simulator.annotations.plugin.Plugin;
 
 //TODO: Sometimes this plugin is not recognized
 
-@Plugin(name = "NO_DELAY_BOX")
+@Plugin(pluginKey = "NO_DELAY_BOX")
 public class NoDelayDelayBox extends DelayBoxImpl {
 	
 	public NoDelayDelayBox() {

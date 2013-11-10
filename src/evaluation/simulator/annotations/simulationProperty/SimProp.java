@@ -16,6 +16,7 @@ public abstract class SimProp {
 	private String tooltip;
 	private Class<? extends Requirement>[] value_requirements;
 	private boolean isSuperclassProperty;
+	private boolean isGlobal;
 
 	public String getDescription() {
 		return this.description;
@@ -116,9 +117,13 @@ public abstract class SimProp {
 		this.value_requirements = value_requirements;
 	}
 
-	public void isGlobal(boolean b) {
-		this.setSuperclass(b);
+	public void isGlobal(boolean isGlobal) {
+		this.isGlobal = isGlobal;
 		
+	}
+	
+	public boolean isGlobal() {
+		return isGlobal;
 	}
 
 	public boolean isSuperclass() {

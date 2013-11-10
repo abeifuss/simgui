@@ -95,15 +95,16 @@ public class AccordionEntry extends JPanel {
 			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 			
-			List<SimProp> tmpListOfAllSimPropertiesInANamespace = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
+			// Select all SimProps which either match the plugin or are global in the plugin layer
+			List<SimProp> tmpListOfAllSimPropertiesForPlugin = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
 			
-			for (SimProp s : tmpListOfAllSimPropertiesInANamespace ){
+			for (SimProp s : tmpListOfAllSimPropertiesForPlugin ){
 				Logger.Log( LogLevel.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
 
 			}
 
 			this.entryTable = new JTable(new AccordionModel(
-					tmpListOfAllSimPropertiesInANamespace)) {
+					tmpListOfAllSimPropertiesForPlugin)) {
 
 				// This takes care that the non-editable cells are grayed out.
 				@Override
@@ -119,12 +120,12 @@ public class AccordionEntry extends JPanel {
 
 			this.entryTable
 					.addMouseMotionListener(new AccordionMouseMotionAdapter(
-							tmpListOfAllSimPropertiesInANamespace,
+							tmpListOfAllSimPropertiesForPlugin,
 							this.entryTable));
 
 			this.entryTable.setDefaultRenderer(Object.class,
 					new AccordionTableCellRenderer(
-							tmpListOfAllSimPropertiesInANamespace));
+							tmpListOfAllSimPropertiesForPlugin));
 
 			this.entryTable.setVisible(true);
 
@@ -145,12 +146,13 @@ public class AccordionEntry extends JPanel {
 			this.remove(this.entryTable);
 		}
 		
+		// Select all global SimProps for the given plugin layer
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		String pluginLevel = this.localName;
-		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLevel);
+		String pluginLayer = this.localName;
+		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
 	
 		for (SimProp s : tmpListOfAllVisibleSimProperties ){
-			Logger.Log( LogLevel.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
+			Logger.Log( LogLevel.DEBUG, "Load " +s.getPluginID() + " " + s.getName());
 		}
 		
 		this.entryTable = new JTable(new AccordionModel(

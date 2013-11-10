@@ -25,7 +25,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(name = "SEND_IMMEDIATELY")
+@Plugin(pluginKey = "SEND_IMMEDIATELY")
 public class ClientSendImmediately extends ClientSendStyleImpl {
 	
 	public ClientSendImmediately(AbstractClient owner, Simulator simulator) {

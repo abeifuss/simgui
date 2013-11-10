@@ -43,7 +43,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //in the mix (m >=n). If n = 1, this is the mix that has been used in the 
 //Mixmaster remailer system for years."
 // implemented as described in "Generalising Mixes" (Diaz)
-@Plugin(name = "TIMED_DYNAMIC_POOL")
+@Plugin(pluginKey = "TIMED_DYNAMIC_POOL")
 public class TimedDynamicPool extends OutputStrategyImpl {
 
 	private SimplexTimedDynamicPool requestPool;

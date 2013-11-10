@@ -22,7 +22,7 @@ import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(name = "REQUEST_REPLY")
+@Plugin(pluginKey = "REQUEST_REPLY")
 public class RequestReplyModel extends TrafficSourceImplementation {
 	
 	private RequestReplyClient[] clients;

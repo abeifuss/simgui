@@ -32,7 +32,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random
 // order)
-@Plugin(name = "BASIC_BATCH")
+@Plugin(pluginKey = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
 	@IntSimulationProperty( name = "Batch size", propertykey = "BASIC_BATCH_BATCH_SIZE")

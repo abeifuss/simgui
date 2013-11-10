@@ -28,7 +28,7 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@Plugin(name = "NO_MIX", vilible = false)
+@Plugin(pluginKey = "NO_MIX", vilible = false)
 public class NoMixTopology extends TopologyScript {
 
 	private HashMap<String, AbstractClient> clients;;

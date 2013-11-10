@@ -35,7 +35,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // DLP Algorithm (2008: Wei Wang, Mehul Motani, Vikram Srinivasan: Dependent Link Padding Algorithms for Low Latency Anonymity Systems)
-@Plugin(name = "DLPA")
+@Plugin(pluginKey = "DLPA")
 public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 
 	@IntSimulationProperty( name="Maximum request delay", propertykey="MAX_DLPA_REQUEST_DELAY" )

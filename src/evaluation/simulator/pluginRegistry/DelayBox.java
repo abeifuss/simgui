@@ -24,7 +24,7 @@ import evaluation.simulator.plugins.delayBox.BasicDelayBox;
 import evaluation.simulator.plugins.delayBox.DelayBoxImpl;
 import evaluation.simulator.plugins.delayBox.NoDelayDelayBox;
 
-@Plugin(name = "BASIC_DELAY_BOX", pluginLayer="TYPE_OF_DELAY_BOX")
+@Plugin(pluginKey = "BASIC_DELAY_BOX", pluginLayerKey="TYPE_OF_DELAY_BOX")
 public enum DelayBox {
 
 	NO_DELAY,

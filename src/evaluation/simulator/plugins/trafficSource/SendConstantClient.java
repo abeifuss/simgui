@@ -30,7 +30,7 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(name = "CONSTANT")
+@Plugin(pluginKey = "CONSTANT")
 public class SendConstantClient extends AbstractClient {
 
 	@IntSimulationProperty( name = "Request size", propertykey = "CONSTANT_REQUEST_SIZE", order = 3 )

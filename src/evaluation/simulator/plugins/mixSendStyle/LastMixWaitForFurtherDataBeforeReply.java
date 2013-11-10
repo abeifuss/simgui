@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 
-@Plugin(name = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY")
+@Plugin(pluginKey = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY")
 public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 		implements EventExecutor {
 

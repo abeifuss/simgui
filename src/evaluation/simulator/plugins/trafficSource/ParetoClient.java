@@ -31,7 +31,7 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(name = "PARETO")
+@Plugin(pluginKey = "PARETO")
 public class ParetoClient extends AbstractClient {
 
 	// Properties

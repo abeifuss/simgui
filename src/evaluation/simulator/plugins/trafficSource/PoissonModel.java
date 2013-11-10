@@ -25,7 +25,7 @@ import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(name = "POISSON")
+@Plugin(pluginKey = "POISSON")
 public class PoissonModel extends TrafficSourceImplementation implements EventExecutor {
 
 	private PoissonClient[] clients;

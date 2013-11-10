@@ -30,7 +30,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(name = "SEND_SYNCHRONOUS")
+@Plugin(pluginKey = "SEND_SYNCHRONOUS")
 public class ClientBasicSynchronous extends ClientSendStyleImpl implements
 		EventExecutor {
 

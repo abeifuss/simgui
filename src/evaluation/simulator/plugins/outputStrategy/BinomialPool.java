@@ -42,7 +42,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // depends on the number of messages inside the mix at the time of flushing"
 // -> normal cumulative distribution
 
-@Plugin(name = "BINOMIAL_POOL")
+@Plugin(pluginKey = "BINOMIAL_POOL")
 public class BinomialPool extends OutputStrategyImpl {
 
 	private SimplexBinomialPool requestBatch;

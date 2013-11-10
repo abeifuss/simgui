@@ -38,7 +38,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //Dingledine 2002: Timed Mix
 // "fires (flushes all messages) every t seconds but only
 // when at least n messages have accumulated in the mix.
-@Plugin(name = "THRESHOLD_AND_TIMED_BATCH")
+@Plugin(pluginKey = "THRESHOLD_AND_TIMED_BATCH")
 public class ThresholdAndTimedBatch extends OutputStrategyImpl {
 
 	private SimplexThresholdAndTimedBatch requestBatch;

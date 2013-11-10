@@ -79,6 +79,7 @@ public class PluginPanel extends JScrollPane {
 		this.simPropRegistry = SimPropRegistry.getInstance();
 		
 		Map<String, Integer> layerMap = this.simPropRegistry.getLayerMapDisplayNameToOrder();
+		
 		// Sort the map by value (first) and key (second)
 		ValueComparator comperator =  new ValueComparator(layerMap);
         TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(comperator);

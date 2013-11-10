@@ -13,9 +13,9 @@ public @interface Plugin {
 
 	public String documentationURL() default "";
 
-	public String name() default "";
+	public String pluginKey() default "";
 	
-	public String pluginLayer() default "";
+	public String pluginLayerKey() default "";
 
 	public boolean vilible() default true;
 

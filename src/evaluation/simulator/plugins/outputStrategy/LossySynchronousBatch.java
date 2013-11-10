@@ -44,7 +44,7 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-@Plugin(name = "LOSSY_SYNCHRONOUS_BATCH")
+@Plugin(pluginKey = "LOSSY_SYNCHRONOUS_BATCH")
 public class LossySynchronousBatch extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;

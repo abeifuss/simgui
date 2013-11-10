@@ -29,7 +29,7 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.StatisticsType.Unit;
 import gnu.trove.TDoubleArrayList;
 
-@Plugin(name = "MULTI_PLOTTER", vilible = false)
+@Plugin(pluginKey = "MULTI_PLOTTER", vilible = false)
 public class MultiPlotter extends Plotter {
 
 	public enum PlotStyle {LINE_CHART_ABS, HISTOGRAM};

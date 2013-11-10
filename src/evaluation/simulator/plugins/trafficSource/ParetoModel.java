@@ -25,7 +25,7 @@ import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(name = "PARETO")
+@Plugin(pluginKey = "PARETO")
 public class ParetoModel extends TrafficSourceImplementation implements EventExecutor {
 
 	private ParetoClient[] clients;

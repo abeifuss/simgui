@@ -43,7 +43,7 @@ import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 // output strategy, that collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random order)
 // accepts only one message per participant for each batch
-@Plugin(name = "DISTINCT_USER_BATCH")
+@Plugin(pluginKey = "DISTINCT_USER_BATCH")
 public class DistinctUserBatch extends OutputStrategyImpl implements EventExecutor {
 	
 	private boolean setupComplete;
