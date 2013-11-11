@@ -24,7 +24,7 @@ public class PluginPanel extends JScrollPane {
 
 	private JPanel panel;
 	private JPanel pluginSelectionPanel;
-	private JPanel globalPreferencesPanel;
+	private JPanel generalPreferencesPanel;
 	HashMap<String, JComboBox<String>> pluginListsMap = new HashMap<>();
 
 	SimPropRegistry simPropRegistry;
@@ -61,8 +61,8 @@ public class PluginPanel extends JScrollPane {
 		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
-		this.globalPreferencesPanel = new JPanel();
-		this.globalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration",
+		this.generalPreferencesPanel = new JPanel();
+		this.generalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
 		this.panel = new JPanel();
@@ -89,7 +89,7 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraintsGeneral.gridx = gridBagConstraintsPlugins.gridx;
 		gridBagConstraintsGeneral.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayoutGeneral.setConstraints(this.pluginSelectionPanel, gridBagConstraintsGeneral);
-		this.globalPreferencesPanel.setLayout(gridBagLayoutGeneral);
+		this.generalPreferencesPanel.setLayout(gridBagLayoutGeneral);
 
 		//GridBagLayout for overall configuration-panel
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -155,7 +155,7 @@ public class PluginPanel extends JScrollPane {
 
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
 			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.globalPreferencesPanel.add(accordionElement, gridBagConstraintsGeneral);
+			this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsGeneral);
 
 			i++;
 		}
@@ -164,7 +164,7 @@ public class PluginPanel extends JScrollPane {
 		this.panel.add(this.pluginSelectionPanel,gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
-		this.panel.add(this.globalPreferencesPanel,gridBagConstraints);
+		this.panel.add(this.generalPreferencesPanel,gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
 

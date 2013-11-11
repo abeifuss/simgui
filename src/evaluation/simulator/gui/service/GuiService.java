@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
+import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
 import evaluation.simulator.log.LogLevel;
@@ -22,17 +23,20 @@ public class GuiService {
 
 	private final ToolFrame configToolFrame;
 	private final HelpFrame helpToolFrame;
+	private final ConsoleFrame consoleFrame;
 	private final MainGui mainGui;
 
 	private GuiService() {
 
 		this.configToolFrame = ToolFrame.getInstance();
 		this.helpToolFrame = HelpFrame.getInstance();
+		this.consoleFrame = ConsoleFrame.getInstance();
 		this.mainGui = MainGui.getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				loadOldWinConf();
+				GuiService.this.loadOldWinConf();
 			}
 		});
 
@@ -43,6 +47,8 @@ public class GuiService {
 				.getBool("SEPERATE_CONF_TOOL");
 		boolean showConfHelpInSeparateWindow = UserConfigService.getInstance()
 				.getBool("SEPERATE_HELP_TOOL");
+		boolean showConfConsoleInSeparateWindow = UserConfigService.getInstance()
+				.getBool("SEPERATE_CONSOLE");
 		boolean showHomeTab = UserConfigService.getInstance().getBool(
 				"TOGGLE_HOME_TAB");
 
@@ -66,6 +72,16 @@ public class GuiService {
 			this.mainGui.toogleHelpTool(true);
 		}
 
+		if (showConfConsoleInSeparateWindow) {
+			Logger.Log(LogLevel.DEBUG, "Seperate console");
+			this.consoleFrame.setVisible(true);
+			this.mainGui.toogleConsole(false);
+		} else {
+			Logger.Log(LogLevel.DEBUG, "Integrate console");
+			this.consoleFrame.setVisible(false);
+			this.mainGui.toogleConsole(true);
+		}
+
 		if (showHomeTab) {
 			Logger.Log(LogLevel.DEBUG, "Show home tab");
 			this.mainGui.toggleHomeTab(true);
@@ -80,7 +96,7 @@ public class GuiService {
 			this.configToolFrame.setVisible(false);
 			this.mainGui.toogleConfTool(true);
 			UserConfigService.getInstance()
-					.setBool("SEPERATE_CONF_TOOL", false);
+			.setBool("SEPERATE_CONF_TOOL", false);
 			return;
 		}
 		this.configToolFrame.setVisible(true);
@@ -94,13 +110,28 @@ public class GuiService {
 			this.helpToolFrame.setVisible(false);
 			this.mainGui.toogleHelpTool(true);
 			UserConfigService.getInstance()
-					.setBool("SEPERATE_HELP_TOOL", false);
+			.setBool("SEPERATE_HELP_TOOL", false);
 			return;
 		}
 		this.helpToolFrame.setVisible(true);
 		this.helpToolFrame.init();
 		this.mainGui.toogleHelpTool(false);
 		UserConfigService.getInstance().setBool("SEPERATE_HELP_TOOL", true);
+
+	}
+
+	public void toggleConsole() {
+		if (this.consoleFrame.isVisible()) {
+			this.consoleFrame.setVisible(false);
+			this.mainGui.toogleConsole(true);
+			UserConfigService.getInstance()
+			.setBool("SEPERATE_CONSOLE", false);
+			return;
+		}
+		this.consoleFrame.setVisible(true);
+		this.consoleFrame.init();
+		this.mainGui.toogleConsole(false);
+		UserConfigService.getInstance().setBool("SEPERATE_CONSOLE", true);
 
 	}
 

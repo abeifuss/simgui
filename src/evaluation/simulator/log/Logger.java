@@ -1,13 +1,13 @@
 package evaluation.simulator.log;
 
-import evaluation.simulator.gui.console.ConsolePanel;
+import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 
 public class Logger {
 
 	public static void Log(LogLevel level, String msg) {
 
 		Long msg_time = System.currentTimeMillis();
-		ConsolePanel console = ConsolePanel.getInstance();
+		ConsoleFrame console = ConsoleFrame.getInstance();
 
 		switch (level) {
 		case INFO:

@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
+@Deprecated
 public class ConsolePanel extends JPanel {
 
 	private static ConsolePanel instance = null;
@@ -20,14 +21,14 @@ public class ConsolePanel extends JPanel {
 	}
 
 	private String _log;
-	private JTextArea textArea;
-	private JScrollPane scroll;
+	private final JTextArea textArea;
+	private final JScrollPane scroll;
 
 	private ConsolePanel() {
 
 		this.textArea = new JTextArea();
-		this.scroll = new JScrollPane(textArea);
-		
+		this.scroll = new JScrollPane(this.textArea);
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -37,13 +38,13 @@ public class ConsolePanel extends JPanel {
 		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayout.setConstraints(this, gridBagConstraints);
-		
+
 		this.setLayout( gridBagLayout );
 		this.textArea.setEditable(false);
-		
+
 		this.add(this.scroll, gridBagConstraints);
 		this.textArea.setVisible(true);
-		
+
 		this.scroll.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 		this.scroll.setHorizontalScrollBarPolicy( JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
 
@@ -63,7 +64,7 @@ public class ConsolePanel extends JPanel {
 
 	public void update() {
 		this.textArea.setText(this._log);
-//		this.textArea.setCaretPosition(0);
+		//		this.textArea.setCaretPosition(0);
 		this.scroll.getVerticalScrollBar().setValue( this.scroll.getVerticalScrollBar().getMaximum() );
 		this.scroll.repaint();
 	}

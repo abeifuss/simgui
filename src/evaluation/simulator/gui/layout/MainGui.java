@@ -24,8 +24,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 
 import evaluation.simulator.conf.service.UserConfigService;
-import evaluation.simulator.gui.console.ConsolePanel;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
+import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.menu.MainMenu;
 
@@ -45,6 +45,7 @@ public class MainGui extends JFrame {
 	private int consoleHeight;
 
 	private JPanel helpToolView;
+	private JPanel consoleView;
 	private HomeTab homeTab;
 	private boolean homeTabStatus;
 	private JSplitPane horizontalSplitPlane;
@@ -58,6 +59,7 @@ public class MainGui extends JFrame {
 	private JTabbedPane mainView;
 	private SimulationTab simulationTab;
 	private JSplitPane verticalSplitPlane;
+	private JPanel bottom;
 
 	public MainGui() {
 		this.getContentPane().setLayout(new BorderLayout());
@@ -175,6 +177,7 @@ public class MainGui extends JFrame {
 
 		this.configToolView = SimConfigPanel.getInstance();
 		this.helpToolView = HelpFrame.getInstance().getPanel();
+		this.consoleView = ConsoleFrame.getInstance().getPanel();
 
 		JPanel right = new JPanel();
 		right.setLayout(new BorderLayout());
@@ -187,15 +190,11 @@ public class MainGui extends JFrame {
 		this.simulationTab = new SimulationTab();
 		this.mainView.addTab("Simulator", this.simulationTab);
 
-		JPanel bottom = new JPanel();
-		bottom.setLayout(new BorderLayout());
-		bottom.add(ConsolePanel.getInstance(), BorderLayout.CENTER);
-
 		this.horizontalSplitPlane.setLeftComponent(this.configToolView);
 		this.horizontalSplitPlane.setRightComponent(right);
 
 		this.verticalSplitPlane.setTopComponent(this.mainView);
-		this.verticalSplitPlane.setBottomComponent(bottom);
+		this.verticalSplitPlane.setBottomComponent(this.bottom);
 
 		this.getContentPane().add(this.horizontalSplitPlane,
 				BorderLayout.CENTER);
@@ -244,7 +243,7 @@ public class MainGui extends JFrame {
 						MainGui.this.consoleHeight = MainGui.this.verticalSplitPlane
 								.getSize().height
 								- MainGui.this.verticalSplitPlane
-										.getDividerLocation();
+								.getDividerLocation();
 					}
 				});
 
@@ -254,19 +253,19 @@ public class MainGui extends JFrame {
 			public void componentResized(ComponentEvent e) {
 				super.componentResized(e);
 				MainGui.this.horizontalSplitPlane
-						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
+				.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
 				MainGui.this.verticalSplitPlane
-						.setDividerLocation(MainGui.this.verticalSplitPlane
-								.getSize().height - MainGui.this.consoleHeight);
+				.setDividerLocation(MainGui.this.verticalSplitPlane
+						.getSize().height - MainGui.this.consoleHeight);
 			}
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				MainGui.this.horizontalSplitPlane
-						.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
+				.setDividerLocation(MainGui.this.horizontalSplitPlaneDeviderLocation);
 				MainGui.this.verticalSplitPlane
-						.setDividerLocation(MainGui.this.verticalSplitPlane
-								.getSize().height - MainGui.this.consoleHeight);
+				.setDividerLocation(MainGui.this.verticalSplitPlane
+						.getSize().height - MainGui.this.consoleHeight);
 			}
 		});
 	}
@@ -316,6 +315,19 @@ public class MainGui extends JFrame {
 			this.mainView.addTab("Tutorial", this.helpToolView);
 		} else {
 			this.mainView.remove(this.helpToolView);
+		}
+	}
+
+	public void toogleConsole(boolean b) {
+		if (b) {
+			this.consoleView = ConsoleFrame.getInstance().getPanel();
+			this.bottom = new JPanel();
+			this.bottom.setLayout(new BorderLayout());
+			this.bottom.add(this.consoleView, BorderLayout.CENTER);
+			this.verticalSplitPlane.setBottomComponent(this.bottom);
+			this.verticalSplitPlane.repaint();
+		} else {
+			this.verticalSplitPlane.remove(this.bottom);
 		}
 	}
 
