@@ -60,18 +60,49 @@ public class PluginPanel extends JScrollPane {
 		this.pluginSelectionPanel = new JPanel();
 		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
+		this.globalPreferencesPanel = new JPanel();
+		this.globalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
+		this.panel = new JPanel();
+
+		//GridBagLayout for plugin configuration
+		GridBagLayout gridBagLayoutPlugins = new GridBagLayout();
+		GridBagConstraints gridBagConstraintsPlugins = new GridBagConstraints();
+		gridBagConstraintsPlugins.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraintsPlugins.anchor = GridBagConstraints.NORTH;
+		gridBagConstraintsPlugins.weightx = 1;
+		gridBagConstraintsPlugins.weighty = 1;
+		gridBagConstraintsPlugins.gridx = GridBagConstraints.RELATIVE;
+		gridBagConstraintsPlugins.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayoutPlugins.setConstraints(this.pluginSelectionPanel, gridBagConstraintsPlugins);
+		this.pluginSelectionPanel.setLayout(gridBagLayoutPlugins);
+
+		//GridBagLayout for general configuration
+		GridBagLayout gridBagLayoutGeneral = new GridBagLayout();
+		GridBagConstraints gridBagConstraintsGeneral = new GridBagConstraints();
+		gridBagConstraintsGeneral.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraintsGeneral.anchor = GridBagConstraints.CENTER;
+		gridBagConstraintsGeneral.weightx = 1;
+		gridBagConstraintsGeneral.weighty = 1;
+		gridBagConstraintsGeneral.gridx = gridBagConstraintsPlugins.gridx;
+		gridBagConstraintsGeneral.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayoutGeneral.setConstraints(this.pluginSelectionPanel, gridBagConstraintsGeneral);
+		this.globalPreferencesPanel.setLayout(gridBagLayoutGeneral);
+
+		//GridBagLayout for overall configuration-panel
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.anchor = GridBagConstraints.NORTH;
+		gridBagConstraints.anchor = GridBagConstraints.CENTER;
 		gridBagConstraints.weightx = 1;
 		gridBagConstraints.weighty = 0;
-		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayout.setConstraints(this.pluginSelectionPanel, gridBagConstraints);
-		this.pluginSelectionPanel.setLayout(gridBagLayout);
+		gridBagLayout.setConstraints(this.panel, gridBagConstraints);
+		this.panel.setLayout(gridBagLayout);
 
-		this.setViewportView(this.pluginSelectionPanel);
+		this.setViewportView(this.panel);
 
 		// End Layout
 
@@ -94,7 +125,7 @@ public class PluginPanel extends JScrollPane {
 		String[] levelStrings[] = new String[sortedLayerMap.size()][];
 
 		AccordionEntry accordionElement;
-		this.globalPreferencesPanel = new JPanel();
+
 
 		int i = 0;
 		for ( String layer : sortedLayerMap.keySet() ){
@@ -108,7 +139,7 @@ public class PluginPanel extends JScrollPane {
 
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
 			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.pluginSelectionPanel.add(accordionElement, gridBagConstraints);
+			this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 			i++;
 		}
@@ -124,19 +155,23 @@ public class PluginPanel extends JScrollPane {
 
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
 			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.globalPreferencesPanel.add(accordionElement, gridBagConstraints);
+			this.globalPreferencesPanel.add(accordionElement, gridBagConstraintsGeneral);
 
 			i++;
 		}
-
-		this.panel = new JPanel();
-		this.panel.add(this.pluginSelectionPanel);
-		this.panel.add(this.globalPreferencesPanel);
-
-		gridBagConstraints.weighty = 1;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		this.panel.add(this.pluginSelectionPanel,gridBagConstraints);
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 1;
+		this.panel.add(this.globalPreferencesPanel,gridBagConstraints);
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 2;
 
 		// Spring element to push all other elements to the top
 		// needed for alignment
+		gridBagConstraints.weighty = 1;
+		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
 		JPanel jp = new JPanel();
 		this.panel.add(jp, gridBagConstraints);
 
