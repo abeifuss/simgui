@@ -18,7 +18,6 @@
 package evaluation.simulator.core.message;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
@@ -27,50 +26,52 @@ import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;
 
 public abstract class MixMessage extends NetworkMessage {
 
-	@StringSimulationProperty(name = "Message format", 
+	@StringSimulationProperty(name = "Message format",
 			propertykey = "MESSAGE_FORMAT",
 			order = 5,
 			inject = "0:RECODING_SCHEME,Recoding Scheme (injected)")
 	private static String type;
-	
+
 	protected long creationTime;
 	protected AbstractClient owner;
 	protected int replyCounter = 0;
 	protected boolean isDummy;
 	public long timeOfArrival;
-	
-	
+
+
 	public static MixMessage getInstance(boolean isRequest, NetworkNode source,
 			NetworkNode destination, AbstractClient owner, long creationTime,
 			boolean isDummy) {
-		
+
 		type = Simulator.settings.getProperty("MESSAGE_FORMAT");
 		String outputStrategy = Simulator.settings.getProperty("OUTPUT_STRATEGY");
-		if (outputStrategy.equals("STOP_AND_GO") || type.equals("STOP_AND_GO_MESSAGE"))
+		if (outputStrategy.equals("STOP_AND_GO") || type.equals("STOP_AND_GO_MESSAGE")) {
 			return new StopAndGoMessage(isRequest, source, destination, owner, creationTime, isDummy);
-		if (type.equals("BASIC_MIX_MESSAGE"))
+		}
+		if (type.equals("BASIC_MIX_MESSAGE")) {
 			return new BasicMixMessage(isRequest, source, destination, owner, creationTime, isDummy);
-		else
+		} else {
 			throw new RuntimeException("ERROR: Unknown MESSAGE_FORMAT!");
+		}
 
 	}
-	
+
 
 	protected MixMessage(boolean isRequest, NetworkNode source, NetworkNode destination, AbstractClient owner, long creationTime, boolean isDummy, Object payload) {
 		super(isRequest, source, destination, payload);
-		
+
 		this.creationTime = creationTime;
 		this.isDummy = isDummy;
 		this.owner = owner;
-		
+
 	}
 
-	
+
 	/**
 	 * @return the creationTime
 	 */
 	public long getCreationTime() {
-		return creationTime;
+		return this.creationTime;
 	}
 
 
@@ -87,7 +88,7 @@ public abstract class MixMessage extends NetworkMessage {
 	 * @return the isDummy
 	 */
 	public boolean isDummy() {
-		return isDummy;
+		return this.isDummy;
 	}
 
 
@@ -104,7 +105,7 @@ public abstract class MixMessage extends NetworkMessage {
 	 * @return the owner
 	 */
 	public AbstractClient getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 
@@ -114,14 +115,14 @@ public abstract class MixMessage extends NetworkMessage {
 	public void setOwner(AbstractClient owner) {
 		this.owner = owner;
 	}
-	
-	
+
+
 	/*public String toString() {
 		String replyOrRequest = super.isRequest() ? "Request" : "Reply";
 		return "MixMessage ("+replyOrRequest +", owner: "+owner +")";
 	}*/
-	
-	
+
+
 	public abstract int getPayloadLength();
 	public abstract int getMaxPayloadLength();
 	public abstract int getNumberOfMessagesContained();
@@ -129,36 +130,36 @@ public abstract class MixMessage extends NetworkMessage {
 	public abstract TransportMessage[] getTransportMessagesContained();
 	public abstract boolean addPayloadObject(PayloadObject payloadObject);
 
-	
+
 	public int getFreeSpace() {
-		return getMaxPayloadLength() - getPayloadLength();
+		return this.getMaxPayloadLength() - this.getPayloadLength();
 	}
-	
-	
+
+
 	public int getPaddingLength() {
-		return getMaxPayloadLength() - getPayloadLength();
+		return this.getMaxPayloadLength() - this.getPayloadLength();
 	}
-	
-	
+
+
 	public double getPaddingPercentage() {
-		return (double)getPaddingLength()/(double)getMaxPayloadLength()* 100d;
+		return ((double)this.getPaddingLength()/(double)this.getMaxPayloadLength())* 100d;
 	}
 
 
 	public double getPayloadPercentage() {
-		return (double)getPayloadLength()/(double)getMaxPayloadLength()* 100d;
+		return ((double)this.getPayloadLength()/(double)this.getMaxPayloadLength())* 100d;
 	}
-	
-	
+
+
 	public boolean areAllRepliesReceived() {
-		
-		if (getNumberOfMessagesContained() == ++replyCounter) {
-			replyCounter = 0;
+
+		if (this.getNumberOfMessagesContained() == ++this.replyCounter) {
+			this.replyCounter = 0;
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 }

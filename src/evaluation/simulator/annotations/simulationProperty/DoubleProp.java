@@ -54,7 +54,7 @@ public class DoubleProp extends SimProp {
 			return;
 		}
 
-		Logger.Log(LogLevel.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
+		Logger.Log(LogLevel.ERROR, "For " + super.getPropertyID() + " Value not in range! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}

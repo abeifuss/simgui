@@ -22,10 +22,9 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 
-import evaluation.simulator.gui.pluginRegistry.InjectionParser;
+import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.plugin.SimGuiPlugin;
-import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.BoolProp;
 import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.DoubleProp;
@@ -42,7 +41,7 @@ import evaluation.simulator.log.LogLevel;
 import evaluation.simulator.log.Logger;
 
 public class SimPropRegistry {
-	
+
 	private static SimPropRegistry _instance = null;
 
 	public static SimPropRegistry getInstance() {
@@ -52,14 +51,14 @@ public class SimPropRegistry {
 		return _instance;
 	}
 
-//	private final List<String> pluginLayer;
+	//	private final List<String> pluginLayer;
 
 	@SuppressWarnings("rawtypes")
 	private final List<Vector> deferList = new LinkedList<>();
-	
+
 	private int numberOfPluginLayers;
 	private int numberOfNonPluginLayers;
-	
+
 	/**
 	 * 
 	 */
@@ -85,7 +84,7 @@ public class SimPropRegistry {
 	/**
 	 * Maps the active plugins. Active plungins are those, which are enabled in the GUI.
 	 * key: name of the plugin
-	 * value: name of plugin level 
+	 * value: name of plugin level
 	 */
 	private final Map<String, String> activePluginsMapped = new HashMap<String, String>();
 	/**
@@ -105,30 +104,32 @@ public class SimPropRegistry {
 	 * key: config name of the plugin
 	 * value: display name of the plugin layer
 	 */
+	private final Map<String, Integer> staticConfigurationDisplay = new HashMap<String, Integer>();
+
 	private final Map<String, String> registeredPlugins = new HashMap<String, String>();
-	
+
 	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
-	
+
 	// TODO: Merge both order functions
 	public Map<String, Integer> getLayerMapDisplayNameToOrder() {
-		return layerMapDisplayNameToOrder;
+		return this.layerMapDisplayNameToOrder;
 	}
 
 	public Map<String, Integer> getLayerMapConfigNameToOrder() {
-		return layerMapConfigNameToOrder;
+		return this.layerMapConfigNameToOrder;
 	}
 
 	private final Map<String, Integer>  layerMapConfigNameToOrder = new HashMap<String, Integer>();
-	
+
 	private SimPropRegistry() {
-		numberOfPluginLayers = 0;
-		numberOfNonPluginLayers = 0;
-		
+		this.numberOfPluginLayers = 0;
+		this.numberOfNonPluginLayers = 0;
+
 		this.scanForPluginProperties();
-		
+
 		// TODO: Obsolete or even deprecated?
 		// this.scanPlugins();
-		
+
 		Logger.Log(LogLevel.DEBUG, "Now it's time to process defered plugins");
 		this.processDefered();
 		this.scanForStaticProperties();
@@ -140,14 +141,14 @@ public class SimPropRegistry {
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
-		return properties.entrySet();
+		return this.properties.entrySet();
 	}
 
 	public List<Entry<String, String>> getPluginItems(String pluginName) {
 
 		List<Entry<String, String>> mapIdToName = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = properties.entrySet().iterator();
+		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet().iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
 			if (pluginName.equals(entry.getPluginID())) {
@@ -168,7 +169,7 @@ public class SimPropRegistry {
 	}
 
 	public void register(SimProp s, boolean isSuperClass, boolean isGlobal, String pluginLayer) {
-		if (this.properties.containsKey(s.getPropertyID()) && 
+		if (this.properties.containsKey(s.getPropertyID()) &&
 				!this.properties.get( s.getPropertyID() ).getPluginLayerID().equals(this.pluginNameToConfigName(pluginLayer))) {
 
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
@@ -176,14 +177,14 @@ public class SimPropRegistry {
 			int x = graphicsDevice.getDisplayMode().getWidth();
 			int y = graphicsDevice.getDisplayMode().getHeight();
 
-			// 
+			//
 			if ( !this.properties.get( s.getPropertyID() ).equals(pluginLayer) ) {
 				JOptionPane alert = new JOptionPane("Redefinition of property '" + s.getPropertyID()
 						+ "' at superclass level detected \n (" +
 						this.properties.get( s.getPropertyID() ).getPluginLayerID() + "" +
 						", " + this.pluginNameToConfigName(pluginLayer) + ") \n" +
 						"Please fix the problem!");
-				
+
 				JDialog dialog = alert.createDialog(null, "");
 				int w = dialog.getWidth();
 				int h = dialog.getHeight();
@@ -193,7 +194,7 @@ public class SimPropRegistry {
 			}else{
 				JOptionPane alert = new JOptionPane("Redefinition of " + s.getPropertyID()
 						+ " at pluginlevel (" + s.getPluginID() + ") detected!");
-				
+
 				JDialog dialog = alert.createDialog(null, "");
 				int w = dialog.getWidth();
 				int h = dialog.getHeight();
@@ -203,296 +204,332 @@ public class SimPropRegistry {
 
 		} else if ( !this.properties.containsKey(s.getPropertyID()) && isSuperClass) {
 			Logger.Log(LogLevel.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
-			s.isGlobal(true);
+			s.setIsGlobal(true);
 			this.properties.put(s.getPropertyID(), s);
 		} else if ( !this.properties.containsKey(s.getPropertyID()) && isGlobal ) {
 			Logger.Log(LogLevel.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
-			s.isGlobal(true);
+			s.setIsGlobal(true);
 			this.properties.put(s.getPropertyID(), s);
 		} else {
 			Logger.Log(LogLevel.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
-			s.isGlobal(false);
+			s.setIsGlobal(false);
 			this.properties.put(s.getPropertyID(), s);
 		}
 	}
-	
+
 	/**
 	 * Scans static simulation properties. Only handles PropertyAnnoations with inject parameter.
 	 */
 	private void scanForStaticProperties() {
-		
+
 		Reflections reflections = new Reflections(
 				ClasspathHelper.forPackage("evaluation.simulator.plugins"),
 				new FieldAnnotationsScanner());
-		
+
 		Set<Field> fields = reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.IntSimulationProperty.class);
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty.class));
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty.class));
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.StringSimulationProperty.class));
 		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty.class));
-	
+
 		List<Class<? extends Annotation> > annotationTypes = new LinkedList<Class<? extends Annotation> >();
 		annotationTypes.add( IntSimulationProperty.class );
 		annotationTypes.add( BoolSimulationProperty.class );
 		annotationTypes.add( FloatSimulationProperty.class );
 		annotationTypes.add( DoubleSimulationProperty.class );
 		annotationTypes.add( StringSimulationProperty.class );
-		
+
 		SimProp property;
 		boolean globalProperty = true;
 		for ( Field field : fields ){
-				Annotation[] a = field.getAnnotations();
-				for (Annotation element : a) {
-					
-					if (element.annotationType() == BoolSimulationProperty.class) {
-						
-						BoolSimulationProperty annotation = field.getAnnotation(BoolSimulationProperty.class);
-						if ( !annotation.inject().equals("") ){
-							
-							InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
-							
-							String layerDisplayName = injection.getLayerDisplayName();
-							String layerConfigName = injection.getLayerConfigName();
-							String pluginDisplayName = injection.getPluginDisplayName();
-							String pluginConfigName = injection.getPluginConfigName();
-							int layerPosition = injection.getLayerPosition();
-							int pluginPosition = injection.getPluginPosition();
-							
-							property = new BoolProp();
-							property.setId(annotation.propertykey());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.propertykey());
-							property.setPluginLayerID(layerConfigName);
-							property.setPluginID(pluginConfigName);
-							property.setEnable_requirements(annotation.enable_requirements());
-							property.setValue_requirements(annotation.value_requirements());
-							property.setValue(annotation.value());
-							property.setEnable(true);
-							
-							globalProperty = annotation.global() || injection.isGlobalProperty();
-							property.isGlobal(globalProperty);
+			Annotation[] a = field.getAnnotations();
+			for (Annotation element : a) {
 
-							((BoolProp) property).setValue(annotation.value());
-							
-							properties.put(property.getPropertyID(), property);
-							
-							if ( !layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-								Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-								Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-								layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
-								layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
-								layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
-								layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
-							}
-							
-							if ( !globalProperty ){
-								registerPlugin(pluginDisplayName, layerDisplayName, true);
-							}
+				if (element.annotationType() == BoolSimulationProperty.class) {
+
+					BoolSimulationProperty annotation = field.getAnnotation(BoolSimulationProperty.class);
+					if ( !annotation.inject().equals("") ){
+
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+
+						String layerDisplayName = injection.getLayerDisplayName();
+						String layerConfigName = injection.getLayerConfigName();
+						String pluginDisplayName = injection.getPluginDisplayName();
+						String pluginConfigName = injection.getPluginConfigName();
+						int layerPosition = injection.getLayerPosition();
+						int pluginPosition = injection.getPluginPosition();
+
+						property = new BoolProp();
+						property.setId(annotation.propertykey());
+						property.setName(annotation.name());
+						property.setDescription(annotation.description());
+						property.setTooltip(annotation.propertykey());
+						property.setPluginLayerID(layerConfigName);
+						property.setPluginID(pluginConfigName);
+						property.setEnable_requirements(annotation.enable_requirements());
+						property.setValue_requirements(annotation.value_requirements());
+						property.setValue(annotation.value());
+						property.setEnable(true);
+
+						globalProperty = annotation.global() || injection.isGlobalProperty();
+						property.setIsGlobal(globalProperty);
+						property.setIsStatic(annotation.isStatic());
+
+						if(property.isStatic()){
+							property.setPluginID("");
+						}
+
+						((BoolProp) property).setValue(annotation.value());
+
+						this.properties.put(property.getPropertyID(), property);
+
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName) && !property.isStatic()){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
+							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
+							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+						} else{
+							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
+						}
+
+						if ( !globalProperty  && !property.isStatic()){
+							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
 						}
 					}
-					
-					if (element.annotationType() == IntSimulationProperty.class) {
-						
-						IntSimulationProperty annotation = field.getAnnotation(IntSimulationProperty.class);
-						if ( !annotation.inject().equals("") ){
-							
-							InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
-							
-							String layerDisplayName = injection.getLayerDisplayName();
-							String layerConfigName = injection.getLayerConfigName();
-							String pluginDisplayName = injection.getPluginDisplayName();
-							String pluginConfigName = injection.getPluginConfigName();
-							int layerPosition = injection.getLayerPosition();
-							int pluginPosition = injection.getPluginPosition();
-							
-							property = new IntProp();
-							property.setId(annotation.propertykey());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.propertykey());
-							property.setPluginLayerID(layerConfigName);
-							property.setPluginID(pluginConfigName);
-							property.setEnable_requirements(annotation.enable_requirements());
-							property.setValue_requirements(annotation.value_requirements());
-							property.setEnable(true);
-							
-							globalProperty = annotation.global() || injection.isGlobalProperty();
-							property.isGlobal(globalProperty);
-;
-							((IntProp) property).setValue(annotation.value());
-							((IntProp) property).setMinValue(annotation.min());
-							((IntProp) property).setMaxValue(annotation.max());
-							
-							properties.put(property.getPropertyID(), property);
-							
-							if ( !layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-								Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-								Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-								layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
-								layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
-								layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
-								layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
-							}
-							
-							if ( !globalProperty ){
-								registerPlugin(pluginDisplayName, layerDisplayName, true);
-							}
-						}
-					}
-					
-					if (element.annotationType() == FloatSimulationProperty.class) {
-						
-						FloatSimulationProperty annotation = field.getAnnotation(FloatSimulationProperty.class);
-						if ( !annotation.inject().equals("") ){
-							
-							InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
-							
-							String layerDisplayName = injection.getLayerDisplayName();
-							String layerConfigName = injection.getLayerConfigName();
-							String pluginDisplayName = injection.getPluginDisplayName();
-							String pluginConfigName = injection.getPluginConfigName();
-							int layerPosition = injection.getLayerPosition();
-							int pluginPosition = injection.getPluginPosition();
-							
-							property = new FloatProp();
-							property.setId(annotation.propertykey());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.propertykey());
-							property.setPluginLayerID(layerConfigName);
-							property.setPluginID(pluginConfigName);
-							property.setEnable_requirements(annotation.enable_requirements());
-							property.setValue_requirements(annotation.value_requirements());
-							property.setEnable(true);
-							
-							globalProperty = annotation.global() || injection.isGlobalProperty();
-							property.isGlobal(globalProperty);
-							
-							((FloatProp) property).setMinValue(annotation.min());
-							((FloatProp) property).setMaxValue(annotation.max());
-							((FloatProp) property).setValue(annotation.value());
-
-							properties.put(property.getPropertyID(), property);
-							
-							if ( !layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-								Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-								Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-								layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
-								layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
-								layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
-								layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
-							}
-							
-							if ( !globalProperty ){
-								registerPlugin(pluginDisplayName, layerDisplayName, true);
-							}
-						}
-					}
-					
-					if (element.annotationType() == DoubleSimulationProperty.class) {
-						
-						DoubleSimulationProperty annotation = field.getAnnotation(DoubleSimulationProperty.class);
-						if ( !annotation.inject().equals("") ){
-							
-							InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
-							
-							String layerDisplayName = injection.getLayerDisplayName();
-							String layerConfigName = injection.getLayerConfigName();
-							String pluginDisplayName = injection.getPluginDisplayName();
-							String pluginConfigName = injection.getPluginConfigName();
-							int layerPosition = injection.getLayerPosition();
-							int pluginPosition = injection.getPluginPosition();
-							
-							property = new DoubleProp();
-							property.setId(annotation.propertykey());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.propertykey());
-							property.setPluginLayerID(layerConfigName);
-							property.setPluginID(pluginConfigName);
-							property.setEnable_requirements(annotation.enable_requirements());
-							property.setValue_requirements(annotation.value_requirements());
-							property.setEnable(true);
-							
-							globalProperty = annotation.global() || injection.isGlobalProperty();
-							property.isGlobal(globalProperty);
-
-							((DoubleProp) property).setMinValue(annotation.min());
-							((DoubleProp) property).setMaxValue(annotation.max());
-							((DoubleProp) property).setValue(annotation.value());
-
-							properties.put(property.getPropertyID(), property);
-							
-							if ( !layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-								Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-								Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-								layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
-								layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
-								layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
-								layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
-							}
-							
-							if ( !globalProperty ){
-								registerPlugin(pluginDisplayName, layerDisplayName, true);
-							}
-						}
-					}
-					
-					if (element.annotationType() == StringSimulationProperty.class) {
-						
-						StringSimulationProperty annotation = field.getAnnotation(StringSimulationProperty.class);
-						if ( !annotation.inject().equals("") ){
-							
-							InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
-							
-							String layerDisplayName = injection.getLayerDisplayName();
-							String layerConfigName = injection.getLayerConfigName();
-							String pluginDisplayName = injection.getPluginDisplayName();
-							String pluginConfigName = injection.getPluginConfigName();
-							int layerPosition = injection.getLayerPosition();
-							int pluginPosition = injection.getPluginPosition();
-							
-							property = new StringProp();
-							property.setId(annotation.propertykey());
-							property.setName(annotation.name());
-							property.setDescription(annotation.description());
-							property.setTooltip(annotation.propertykey());
-							property.setPluginLayerID(layerConfigName);
-							property.setPluginID(pluginConfigName);
-							property.setEnable_requirements(annotation.enable_requirements());
-							property.setValue_requirements(annotation.value_requirements());
-							property.setEnable(true);
-							
-							globalProperty = annotation.global() || injection.isGlobalProperty();
-							property.isGlobal(globalProperty);
-							
-							((StringProp) property).setValue(annotation.value());
-							((StringProp) property).setPossibleValues(annotation.possibleValues());
-
-							properties.put(property.getPropertyID(), property);
-							
-							if ( !layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-								Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-								Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-								layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
-								layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
-								layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
-								layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
-							}
-							
-							if ( !globalProperty ){
-								registerPlugin(pluginDisplayName, layerDisplayName, true);
-							}
-						}
-					}
-
 				}
+
+				if (element.annotationType() == IntSimulationProperty.class) {
+
+					IntSimulationProperty annotation = field.getAnnotation(IntSimulationProperty.class);
+					if ( !annotation.inject().equals("") ){
+
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+
+						String layerDisplayName = injection.getLayerDisplayName();
+						String layerConfigName = injection.getLayerConfigName();
+						String pluginDisplayName = injection.getPluginDisplayName();
+						String pluginConfigName = injection.getPluginConfigName();
+						int layerPosition = injection.getLayerPosition();
+						int pluginPosition = injection.getPluginPosition();
+
+						property = new IntProp();
+						property.setId(annotation.propertykey());
+						property.setName(annotation.name());
+						property.setDescription(annotation.description());
+						property.setTooltip(annotation.propertykey());
+						property.setPluginLayerID(layerConfigName);
+						property.setPluginID(pluginConfigName);
+						property.setEnable_requirements(annotation.enable_requirements());
+						property.setValue_requirements(annotation.value_requirements());
+						property.setEnable(true);
+
+						globalProperty = annotation.global() || injection.isGlobalProperty();
+						property.setIsGlobal(globalProperty);
+						property.setIsStatic(annotation.isStatic());
+
+						if(property.isStatic()){
+							property.setPluginID("");
+						}
+
+						;
+						((IntProp) property).setValue(annotation.value());
+						((IntProp) property).setMinValue(annotation.min());
+						((IntProp) property).setMaxValue(annotation.max());
+
+						this.properties.put(property.getPropertyID(), property);
+
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName) && !property.isStatic()){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
+							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
+							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+						} else{
+							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
+						}
+
+						if ( !globalProperty  && !property.isStatic()){
+							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
+						}
+					}
+				}
+
+				if (element.annotationType() == FloatSimulationProperty.class) {
+
+					FloatSimulationProperty annotation = field.getAnnotation(FloatSimulationProperty.class);
+					if ( !annotation.inject().equals("") ){
+
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+
+						String layerDisplayName = injection.getLayerDisplayName();
+						String layerConfigName = injection.getLayerConfigName();
+						String pluginDisplayName = injection.getPluginDisplayName();
+						String pluginConfigName = injection.getPluginConfigName();
+						int layerPosition = injection.getLayerPosition();
+						int pluginPosition = injection.getPluginPosition();
+
+						property = new FloatProp();
+						property.setId(annotation.propertykey());
+						property.setName(annotation.name());
+						property.setDescription(annotation.description());
+						property.setTooltip(annotation.propertykey());
+						property.setPluginLayerID(layerConfigName);
+						property.setPluginID(pluginConfigName);
+						property.setEnable_requirements(annotation.enable_requirements());
+						property.setValue_requirements(annotation.value_requirements());
+						property.setEnable(true);
+
+						globalProperty = annotation.global() || injection.isGlobalProperty();
+						property.setIsGlobal(globalProperty);
+						property.setIsStatic(annotation.isStatic());
+
+						if(property.isStatic()){
+							property.setPluginID("");
+						}
+
+						((FloatProp) property).setMinValue(annotation.min());
+						((FloatProp) property).setMaxValue(annotation.max());
+						((FloatProp) property).setValue(annotation.value());
+
+						this.properties.put(property.getPropertyID(), property);
+
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName) && !property.isStatic()){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
+							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
+							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+						} else{
+							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
+						}
+
+						if ( !globalProperty  && !property.isStatic()){
+							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
+						}
+					}
+				}
+
+				if (element.annotationType() == DoubleSimulationProperty.class) {
+
+					DoubleSimulationProperty annotation = field.getAnnotation(DoubleSimulationProperty.class);
+					if ( !annotation.inject().equals("") ){
+
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+
+						String layerDisplayName = injection.getLayerDisplayName();
+						String layerConfigName = injection.getLayerConfigName();
+						String pluginDisplayName = injection.getPluginDisplayName();
+						String pluginConfigName = injection.getPluginConfigName();
+						int layerPosition = injection.getLayerPosition();
+						int pluginPosition = injection.getPluginPosition();
+
+						property = new DoubleProp();
+						property.setId(annotation.propertykey());
+						property.setName(annotation.name());
+						property.setDescription(annotation.description());
+						property.setTooltip(annotation.propertykey());
+						property.setPluginLayerID(layerConfigName);
+						property.setPluginID(pluginConfigName);
+						property.setEnable_requirements(annotation.enable_requirements());
+						property.setValue_requirements(annotation.value_requirements());
+						property.setEnable(true);
+
+						globalProperty = annotation.global() || injection.isGlobalProperty();
+						property.setIsGlobal(globalProperty);
+						property.setIsStatic(annotation.isStatic());
+
+						if(property.isStatic()){
+							property.setPluginID("");
+						}
+
+						((DoubleProp) property).setMinValue(annotation.min());
+						((DoubleProp) property).setMaxValue(annotation.max());
+						((DoubleProp) property).setValue(annotation.value());
+
+						this.properties.put(property.getPropertyID(), property);
+
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName) && !property.isStatic()){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
+							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
+							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+						} else{
+							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
+						}
+
+						if ( !globalProperty  && !property.isStatic()){
+							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
+						}
+					}
+				}
+
+				if (element.annotationType() == StringSimulationProperty.class) {
+
+					StringSimulationProperty annotation = field.getAnnotation(StringSimulationProperty.class);
+					if ( !annotation.inject().equals("") ){
+
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+
+						String layerDisplayName = injection.getLayerDisplayName();
+						String layerConfigName = injection.getLayerConfigName();
+						String pluginDisplayName = injection.getPluginDisplayName();
+						String pluginConfigName = injection.getPluginConfigName();
+						int layerPosition = injection.getLayerPosition();
+						int pluginPosition = injection.getPluginPosition();
+
+						property = new StringProp();
+						property.setId(annotation.propertykey());
+						property.setName(annotation.name());
+						property.setDescription(annotation.description());
+						property.setTooltip(annotation.propertykey());
+						property.setPluginLayerID(layerConfigName);
+						property.setPluginID(pluginConfigName);
+						property.setEnable_requirements(annotation.enable_requirements());
+						property.setValue_requirements(annotation.value_requirements());
+						property.setEnable(true);
+
+						globalProperty = annotation.global() || injection.isGlobalProperty();
+						property.setIsGlobal(globalProperty);
+						property.setIsStatic(annotation.isStatic());
+
+						if(property.isStatic()){
+							property.setPluginID("");
+						}
+
+						((StringProp) property).setValue(annotation.value());
+						((StringProp) property).setPossibleValues(annotation.possibleValues());
+
+						this.properties.put(property.getPropertyID(), property);
+
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName) && !property.isStatic()){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
+							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
+							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+						} else{
+							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
+						}
+
+						if ( !globalProperty  && !property.isStatic()){
+							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
+						}
+					}
+				}
+
+			}
 		}
-		
-//		Field[] fieldArray = fields.toArray( new Field[fields.size()]);
-//		readFields(null, fieldArray, null, false);
-	
+
+		//		Field[] fieldArray = fields.toArray( new Field[fields.size()]);
+		//		readFields(null, fieldArray, null, false);
+
 	}
 
 	// Scans plugin dependent simulation properties
@@ -526,120 +563,120 @@ public class SimPropRegistry {
 			// to be annotated with @PluginSuperclass. It also can be annotated with
 			// @Plugin but then it must have the same name
 			Class<?> directSuperlass = pluginClass.getSuperclass();
-			
+
 			// Find the annotated superclass
 			Class<?> pluginSuperclass = plugin.getPluginSuperclass( pluginClass );
-			
-			// If there is a plugin layer provided by the plugin annotation, a plugin can 
-			// be registered drectly ( e.g. StopAndGoMessage.java ). 
+
+			// If there is a plugin layer provided by the plugin annotation, a plugin can
+			// be registered drectly ( e.g. StopAndGoMessage.java ).
 			// Otherwise the we try to find the pluginSuperclasse an use its name ( e.g. StopAndGo.java ).
 			boolean autodetectPluginLayer = pluginAnnotation.pluginLayerKey().equals("");
-			
+
 			if ( !autodetectPluginLayer ){
 				Logger.Log(LogLevel.DEBUG, "Disable autodetect for plugin " + plugin.getName() );
-				
+
 				// we need this for invisible plugins
 				plugin.setFallbackLayer(pluginAnnotation.pluginLayerKey());
-				
-				// Although autodetection is disabled, it is a good idea to check if there is a superclass 
+
+				// Although autodetection is disabled, it is a good idea to check if there is a superclass
 				// with @PluginSuperclass annotation.
-				// Reason: This superclass might have some properties! 
+				// Reason: This superclass might have some properties!
 				if ( pluginSuperclass != null ) {
-					
+
 					PluginSuperclass pluginSuperclassAnnotation = pluginSuperclass.getAnnotation( PluginSuperclass.class );
-					
+
 					// prefer pluginLayer from @PluginSuperclass annotation
 					// let's overwrite it!
 					String pluginSuperclassLayerKey = pluginSuperclassAnnotation.layerKey();
 					String pluginSuperclassLayerName = pluginSuperclassAnnotation.layerName();
 					plugin.setPluginLayer( pluginSuperclassLayerKey );
-					
+
 					// we need this for invisible plugins
 					plugin.setFallbackLayer(pluginSuperclassLayerKey);
-					
+
 					// Process PluginSuperclass fields if not already done
-					if ( !layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
-						
+					if ( !this.layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
+
 						// We can/must read PluginSuperclass fields without registering a plugin
-						readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
-						layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
-						layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
+						this.readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
+						this.layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
+						this.layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
 					}
 				}
-				
+
 				// We have to defer the plugin registration, since now it is not clear
 				// if there is another class of the same plugin that has a PluginSuperclass,
 				// which has higher priority when setting the display name of the layer.
-				deferedReadFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayerKey(), false );
-				
+				this.deferedReadFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayerKey(), false );
+
 				// Now it is safe to register the plugin and read the fields
 				// registerPlugin( plugin.getName(), plugin.getPluginLayer(), plugin.isVisible() );
 				// readFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayerKey(), false );
-			
+
 			}else{ // AUTODETECT PLUGINLAYER (Lookup superclass)
 				Logger.Log(LogLevel.DEBUG, "Enable autodetect for plugin " + plugin.getName() + ", PluginSuperclass=" + pluginSuperclass.getSimpleName());
-				
+
 				String layerDisplayName = "";
 				String layerConfigName = "";
-				
+
 				// Process PluginSuperclass information
 				if ( pluginSuperclass != null ){
-					
+
 					PluginSuperclass pluginSuperclassAnnotation = pluginSuperclass.getAnnotation( PluginSuperclass.class );
-					
+
 					// Case: Invalid inheritance
 					// If the direct superclass has a normal plugin annotation, the
 					// provided name must match the actual plugin name.
-					if (directSuperlass.isAnnotationPresent( Plugin.class ) && 	
-						 directSuperlass.getAnnotation( Plugin.class ).pluginKey() != pluginAnnotation.pluginKey() ){
-							 
+					if (directSuperlass.isAnnotationPresent( Plugin.class ) &&
+							(directSuperlass.getAnnotation( Plugin.class ).pluginKey() != pluginAnnotation.pluginKey()) ){
+
 						Logger.Log( LogLevel.ERROR , "Check the annotation in class " + directSuperlass.getCanonicalName() +
 								" it should be @Plugin( name = \""+ plugin.getName() +"\" ... ) or a valid @PluginSuperclass annotation.");
 					}
-					
+
 					// Set the pluginLayer
 					String pluginSuperclassLayerKey = pluginSuperclassAnnotation.layerKey();
 					String pluginSuperclassLayerName = pluginSuperclassAnnotation.layerName();
 					plugin.setPluginLayer( pluginSuperclassLayerKey );
-					
+
 					// we need this for invisible plugins
 					plugin.setFallbackLayer(pluginSuperclassLayerKey);
-					
+
 					// Process PluginSuperclass fields if not already done
-					if ( !layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
+					if ( !this.layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
 						Logger.Log(LogLevel.DEBUG, "Register PluginSuperclass for " + pluginSuperclassLayerKey);
-						
+
 						// register the plugin layer manually
-						Logger.Log(LogLevel.DEBUG, "Associate plugin layer (" + 
+						Logger.Log(LogLevel.DEBUG, "Associate plugin layer (" +
 								pluginSuperclassLayerKey + ", " + pluginSuperclassLayerName + ")");
-						
-						readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
-						layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
-						layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
-						
+
+						this.readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
+						this.layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
+						this.layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
+
 						int layerPosition = pluginSuperclass.getAnnotation( PluginSuperclass.class ).position();
-						
+
 						Logger.Log( LogLevel.DEBUG, "Set position for plugin layer " + pluginSuperclassLayerKey + " to " + layerPosition);
-						layerMapDisplayNameToOrder.put( pluginSuperclassLayerName, layerPosition );
-						layerMapConfigNameToOrder.put( pluginSuperclassLayerKey, layerPosition );
-						
+						this.layerMapDisplayNameToOrder.put( pluginSuperclassLayerName, layerPosition );
+						this.layerMapConfigNameToOrder.put( pluginSuperclassLayerKey, layerPosition );
+
 						// PluginSuperclasses can provide fake plugins. Fake plugins will occur in the
 						// jcombobox of the corresponding plugin level (see TopologyScript.java)
 						String fakePlugins = pluginSuperclass.getAnnotation( PluginSuperclass.class ).fakePlugins();
 						if ( !fakePlugins.equals("") ){
 							String[] fakedPlugins = fakePlugins.split(",");
-							for (int i = 0; i < fakedPlugins.length; i++ ){
-								Logger.Log(LogLevel.DEBUG, "Inject fake plugin " + fakedPlugins[i] + " to " + layerConfigName );
-								registerPlugin(fakedPlugins[i], pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), true);
+							for (String fakedPlugin : fakedPlugins) {
+								Logger.Log(LogLevel.DEBUG, "Inject fake plugin " + fakedPlugin + " to " + layerConfigName );
+								this.registerPlugin(fakedPlugin, pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), true);
 							}
 						}
-						
+
 					}else{
 						Logger.Log(LogLevel.DEBUG, plugin.getName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
-						registerPlugin( plugin.getName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );	
+						this.registerPlugin( plugin.getName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );
 					}
 
-					
+
 				}
 				else{
 					// The plugin is not O.K.! Each plugin must be caped by a pluginSuperclass
@@ -649,8 +686,8 @@ public class SimPropRegistry {
 
 				PluginSuperclass pluginSuperclassAnnotation = pluginSuperclass.getAnnotation( PluginSuperclass.class );
 				String pluginSuperclassLayerName = pluginSuperclassAnnotation.layerName();
-				
-				deferedReadFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
+
+				this.deferedReadFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
 			}
 		}
 
@@ -658,109 +695,109 @@ public class SimPropRegistry {
 		DependencyChecker.checkAll(this);
 	}
 
-	
+
 	private void deferedReadFields(SimGuiPlugin plugin, Field[] declaredFields, String pluginLayerKey, boolean isSuperclass) {
-		
+
 		Logger.Log(LogLevel.DEBUG, "Defer " + plugin.getName() );
-		
+
 		Vector<Object> deferInformation = new Vector<Object>();
 		deferInformation.add( plugin );
 		deferInformation.add( declaredFields );
 		deferInformation.add( pluginLayerKey);
 		deferInformation.add( isSuperclass );
-		
-		deferList.add( deferInformation );
+
+		this.deferList.add( deferInformation );
 	}
-	
+
 	private void processDefered(){
-		
-		for ( Vector<Object> deferInformation : deferList ){
-			
+
+		for ( Vector<Object> deferInformation : this.deferList ){
+
 			SimGuiPlugin plugin = (SimGuiPlugin) deferInformation.get( 0 );
 			Field[] declaredFields = (Field[]) deferInformation.get( 1 );
 			String pluginLayerKey = (String) deferInformation.get( 2 );
 			boolean isSuperclass = (boolean) deferInformation.get( 3 );
-			
-			registerPlugin( plugin.getName(), plugin.getPluginLayer(), plugin.isVisible() );
-			readFields( plugin, declaredFields, pluginLayerKey, isSuperclass );
+
+			this.registerPlugin( plugin.getName(), plugin.getPluginLayer(), plugin.isVisible() );
+			this.readFields( plugin, declaredFields, pluginLayerKey, isSuperclass );
 		}
-		
+
 	}
 
 	/**
 	 * 
 	 * Registers a plugin name with a plugin layer.
 	 * 
-	 * @param plugin A plugin name e.g. 
-	 * @param plugInLayer A player name e.g. 
+	 * @param plugin A plugin name e.g.
+	 * @param plugInLayer A player name e.g.
 	 * @param isVisible A boolean which specifies whether the plugin name will be
 	 * registered with a plugin layer (ture) or not (false). If a plugin is not
-	 * registerd with a plugin layer, it will be invisible whithin the gui. 
+	 * registerd with a plugin layer, it will be invisible whithin the gui.
 	 */
 	private void registerPlugin(String plugin, String plugInLayer, boolean isVisible) {
 		if ( isVisible ){
-			
+
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 			int x = graphicsDevice.getDisplayMode().getWidth();
 			int y = graphicsDevice.getDisplayMode().getHeight();
-			
-			// Check if this plugin is already known for a different pluginlayer. 
+
+			// Check if this plugin is already known for a different pluginlayer.
 			// In this case show an alert an exit. The Pluginprogrammer has to fix ist
-			if ( registeredPlugins.containsKey(plugin) ){
-				if ( !registeredPlugins.get(plugin).equals(plugInLayer) ){
+			if ( this.registeredPlugins.containsKey(plugin) ){
+				if ( !this.registeredPlugins.get(plugin).equals(plugInLayer) ){
 					JOptionPane alert = new JOptionPane("Reuse of Plugin name '" + plugin +
 							"' in plugin layers: \n" +
-							registeredPlugins.get(plugin) + " \n" +
+							this.registeredPlugins.get(plugin) + " \n" +
 							plugInLayer + " \n" +
 							"Please fix the problem!");
-					
+
 					JDialog dialog = alert.createDialog(null, "");
 					int w = dialog.getWidth();
 					int h = dialog.getHeight();
 					dialog.setLocation((x / 2) - (w / 2), (y / 2) - (h / 2));
 					dialog.setVisible(true);
 					System.exit(-1);
-				} 
-				
-			} 
+				}
+
+			}
 			// Otherwise, register the plugin the pluginlayer.
-			// Plugins which are registered to a pluginlayer will occur in the 
+			// Plugins which are registered to a pluginlayer will occur in the
 			// pluginlayer's corresponging jcombobox!
 			// Plugins which are not registered are not visible in the gui.
-			else { 
+			else {
 				Logger.Log(LogLevel.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
-				registeredPlugins.put(plugin, plugInLayer);
+				this.registeredPlugins.put(plugin, plugInLayer);
 			}
 		} else{
 			Logger.Log(LogLevel.DEBUG, "Plugin (" + plugin + ", " + plugInLayer + ") is set to invisible");
 		}
-		
+
 	}
-	
+
 	private Map<String, String> getRegisteredPlugins(){
-		return registeredPlugins;
+		return this.registeredPlugins;
 	}
 
 	private void readFields(SimGuiPlugin plugin, Field[] fields, String plugInLayer, boolean isSuperClass ) {
-		
+
 		// Skip invisible plugins
 		if ( !plugin.isVisible() && !(plugin.isGlobal() || plugin.allowGlobalFields()) ){
-			Logger.Log(LogLevel.DEBUG, 
-					plugin.getName() + " is ignored due to isVisible=" + 
-					plugin.isVisible()	+ " and makeFieldsGlobal=" + 
-					plugin.isGlobal() + " and allowGlobalFields=" + plugin.allowGlobalFields());
+			Logger.Log(LogLevel.DEBUG,
+					plugin.getName() + " is ignored due to isVisible=" +
+							plugin.isVisible()	+ " and makeFieldsGlobal=" +
+							plugin.isGlobal() + " and allowGlobalFields=" + plugin.allowGlobalFields());
 			return;
 		}
-		
+
 		SimProp property;
-		
+
 		try {
 			for (Field field : fields ) {
-				
+
 				Annotation[] a = field.getAnnotations();
 				for (Annotation element : a) {
-					
+
 					boolean isGlobal = false;
 					if (element.annotationType() == BoolSimulationProperty.class) {
 						BoolSimulationProperty annotation = field.getAnnotation(BoolSimulationProperty.class);
@@ -776,33 +813,33 @@ public class SimPropRegistry {
 							// If the plugin allows global properties each property which is annotated as global
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
-							
+
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
-								property.isGlobal( false );
+								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
-								property.isGlobal( true );
+								property.setIsGlobal( true );
 							}
 							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
-							
-							property.isSuperclass( isSuperClass );
+
+							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
-							
+
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							
+
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = getPluginLayer(plugin.getName());
-							if ( possiblePluginLayer != null && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(getPluginLayer(plugin.getName()));
+							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
+								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -813,12 +850,12 @@ public class SimPropRegistry {
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
-							
+							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
-							
+
 							((BoolProp) property).setValue(annotation.value());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
@@ -837,33 +874,33 @@ public class SimPropRegistry {
 							// If the plugin allows global properties each property which is annotated as global
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
-							
+
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
-								property.isGlobal( false );
+								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
-								property.isGlobal( true );
+								property.setIsGlobal( true );
 							}
 							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
-							
-							property.isSuperclass( isSuperClass );
+
+							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
-							
+
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							
+
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = getPluginLayer(plugin.getName());
-							if ( possiblePluginLayer != null && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(getPluginLayer(plugin.getName()));
+							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
+								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -874,12 +911,12 @@ public class SimPropRegistry {
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
-							
+							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
-							
+
 							((IntProp) property).setValue(annotation.value());
 							((IntProp) property).setMinValue(annotation.min());
 							((IntProp) property).setMaxValue(annotation.max());
@@ -900,33 +937,33 @@ public class SimPropRegistry {
 							// If the plugin allows global properties each property which is annotated as global
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
-							
+
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
-								property.isGlobal( false );
+								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
-								property.isGlobal( true );
+								property.setIsGlobal( true );
 							}
 							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
-							
-							property.isSuperclass( isSuperClass );
+
+							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
-							
+
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							
+
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = getPluginLayer(plugin.getName());
-							if ( possiblePluginLayer != null && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(getPluginLayer(plugin.getName()));
+							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
+								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -937,12 +974,12 @@ public class SimPropRegistry {
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
-							
+							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
-							
+
 							((FloatProp) property).setMinValue(annotation.min());
 							((FloatProp) property).setMaxValue(annotation.max());
 							((FloatProp) property).setValue(annotation.value());
@@ -963,33 +1000,33 @@ public class SimPropRegistry {
 							// If the plugin allows global properties each property which is annotated as global
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
-							
+
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
-								property.isGlobal( false );
+								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
-								property.isGlobal( true );
+								property.setIsGlobal( true );
 							}
 							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
-							
-							property.isSuperclass( isSuperClass );
+
+							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
-							
+
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							
+
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = getPluginLayer(plugin.getName());
-							if ( possiblePluginLayer != null && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(getPluginLayer(plugin.getName()));
+							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
+								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -1000,12 +1037,12 @@ public class SimPropRegistry {
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
-							
+							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
-							
+
 							((DoubleProp) property).setMinValue(annotation.min());
 							((DoubleProp) property).setMaxValue(annotation.max());
 							((DoubleProp) property).setValue(annotation.value());
@@ -1026,33 +1063,33 @@ public class SimPropRegistry {
 							// The corresponding plugin is global.
 							// The property itself is global ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
-							
+
 							property.setId(annotation.propertykey());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
-								property.isGlobal( false );
+								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
-								property.isGlobal( true );
+								property.setIsGlobal( true );
 							}
 							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
-							
-							property.isSuperclass( isSuperClass );
+
+							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
-							
+
 							property.setName(annotation.name());
 							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
-							
+
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = getPluginLayer(plugin.getName());
-							if ( possiblePluginLayer != null && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(getPluginLayer(plugin.getName()));
+							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
+								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -1063,17 +1100,17 @@ public class SimPropRegistry {
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + getPluginLayer(plugin.getName()));
-							
+							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
-							
+
 							((StringProp) property).setValue(annotation.value());
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
-					} else { 
+					} else {
 						Logger.Log(LogLevel.ERROR, this + "Bad property type for field" + field.getName() );
 						continue;
 					}
@@ -1082,63 +1119,63 @@ public class SimPropRegistry {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private String getPluginLayer(String pluginName) {
-		
-		if ( registeredPlugins.containsKey(pluginName) ){
-			return registeredPlugins.get(pluginName);
+
+		if ( this.registeredPlugins.containsKey(pluginName) ){
+			return this.registeredPlugins.get(pluginName);
 		}
 		Logger.Log(LogLevel.ERROR, "Plugin " + pluginName + " is unknown");
 		return null;
 	}
 
 	public void scanPlugins() {
-		
+
 		// Get the display names of plugin layers
-		String[] pluginLayer = layerMapConfigNameToDisplayName.keySet().toArray(new String[0]);
-		for (int i = 0; i < layerMapConfigNameToDisplayName.size(); i++) {
+		String[] pluginLayer = this.layerMapConfigNameToDisplayName.keySet().toArray(new String[0]);
+		for (int i = 0; i < this.layerMapConfigNameToDisplayName.size(); i++) {
 			this.pluginLayerMap[i] = new HashMap<String, String>();
 		}
-			
-		for ( Entry<String, String> entry : getRegisteredPlugins().entrySet() ) {
-			
+
+		for ( Entry<String, String> entry : this.getRegisteredPlugins().entrySet() ) {
+
 			String name = entry.getKey();
 			String layer = entry.getValue();
-			
+
 			boolean insertFlag = false;
-			for (int i = 0; i < layerMapDisplayNameToConfigName.size(); i++){
-				
-				// Append plugins config name and corresponding layers display name 
+			for (int i = 0; i < this.layerMapDisplayNameToConfigName.size(); i++){
+
+				// Append plugins config name and corresponding layers display name
 				// if plugin's layer matches
 				if ( layer.equals(pluginLayer[i]) ){
 					this.pluginLayerMap[i].put( name, layer );
 					insertFlag = true;
-					numberOfPluginLayers = Math.max(numberOfPluginLayers, i+1);
+					this.numberOfPluginLayers = Math.max(this.numberOfPluginLayers, i+1);
 				}
 			}
-			
+
 			if ( !insertFlag ) {
 				Logger.Log(LogLevel.ERROR, "No such plugin layer: " + layer );
 			}
 		}
-		
-		numberOfNonPluginLayers++;
+
+		this.numberOfNonPluginLayers++;
 	}
-	
+
 	public int getNumberOfPluginLayers(){
-		return numberOfPluginLayers;
+		return this.numberOfPluginLayers;
 	}
-	
+
 	public int getNumberOfNonPluginLayers(){
-		return numberOfNonPluginLayers;
+		return this.numberOfNonPluginLayers;
 	}
 
 	public void setValue(String key, Object arg0) {
 
 		Logger.Log(LogLevel.DEBUG, "key " + key + " arg " + arg0);
-		
+
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
 			this.properties.get(key).setValue(arg0);
@@ -1161,34 +1198,34 @@ public class SimPropRegistry {
 	}
 
 	public List<SimProp> getGlobalSimPropertiesByPluginLayer(String pluginLayer) {
-		
+
 		// TODO: order simproperties here
-		
+
 		List<SimProp> simPropsInPluginLayer = new LinkedList<SimProp>();
-		
-		for ( String key : properties.keySet() ) {
-			SimProp simProp = properties.get(key);
-			
-			if ( ( simProp.isSuperclass() || simProp.isGlobal() ) 
+
+		for ( String key : this.properties.keySet() ) {
+			SimProp simProp = this.properties.get(key);
+
+			if ( ( simProp.isSuperclass() || simProp.isGlobal() )
 					&& simProp.getPluginLayerID().equals(this.layerMapDisplayNameToConfigName.get(pluginLayer)
 							) ){
-				
+
 				simPropsInPluginLayer.add( simProp );
 			}
 		}
-		
+
 		return simPropsInPluginLayer;
 	}
-	
+
 	public List<SimProp> getSimPropertiesByPluginOrPluginLayer(String pluginName, String pluginLayer) {
-		
+
 		// TODO: order simproperties here
-		
+
 		List<SimProp> simPropertiesInANamespace = new LinkedList<SimProp>();
-		
-		for ( String key : properties.keySet() ) {
-			SimProp simProp = properties.get(key);
-			
+
+		for ( String key : this.properties.keySet() ) {
+			SimProp simProp = this.properties.get(key);
+
 			if ( simProp.getPluginID().equals(pluginName) ||
 					( simProp.isSuperclass() && simProp.getPluginLayerID().equals(
 							this.layerMapDisplayNameToConfigName.get(pluginLayer)
@@ -1196,97 +1233,102 @@ public class SimPropRegistry {
 				simPropertiesInANamespace.add( simProp );
 			}
 		}
-		
+
 		return simPropertiesInANamespace;
 	}
 
 	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
 		Logger.Log(LogLevel.DEBUG, "Set " + pluginLevel + " plugin to " + selectedPlugin);
-		activePlugins.put(pluginLevel, selectedPlugin);
-		activePluginsMapped.put( pluginNameToConfigName(pluginLevel), selectedPlugin);
+		this.activePlugins.put(pluginLevel, selectedPlugin);
+		this.activePluginsMapped.put( this.pluginNameToConfigName(pluginLevel), selectedPlugin);
 	}
-	
+
 	public void setActivePluginsMapped(String plugLayer, String selectedPlugin) {
-		Logger.Log(LogLevel.DEBUG, "Set mapped " + pluginNameToConfigName(plugLayer) + " plugin to " + selectedPlugin);
-		activePlugins.put(configNameToPluginName(plugLayer), selectedPlugin);
-		activePluginsMapped.put(plugLayer, selectedPlugin);
+		Logger.Log(LogLevel.DEBUG, "Set mapped " + this.pluginNameToConfigName(plugLayer) + " plugin to " + selectedPlugin);
+		this.activePlugins.put(this.configNameToPluginName(plugLayer), selectedPlugin);
+		this.activePluginsMapped.put(plugLayer, selectedPlugin);
 	}
-	
+
 	public Map<String, String> getActivePlugins(boolean mapped) {
 		if (mapped){
-			return activePluginsMapped;
+			return this.activePluginsMapped;
 		}else{
-			return activePlugins;	
+			return this.activePlugins;
 		}
 	}
 
 	public List<String> getPluginLevels() {
-		return new LinkedList<String>(layerMapDisplayNameToConfigName.keySet());
+		return new LinkedList<String>(this.layerMapDisplayNameToConfigName.keySet());
 	}
 
 	public String pluginNameToConfigName(String pluginLayer) {
-		return layerMapDisplayNameToConfigName.get(pluginLayer);
+		return this.layerMapDisplayNameToConfigName.get(pluginLayer);
 	}
-	
+
 	public String configNameToPluginName(String pluginName) {
-		return layerMapConfigNameToDisplayName.get(pluginName);
+		return this.layerMapConfigNameToDisplayName.get(pluginName);
 	}
 
 	public List<String> getConfigNamesForPluginLayers() {
-		
+
 		List<String> configNamesForPluginLayers = new LinkedList<String>();
-		for ( Entry<String, String> entry : layerMapConfigNameToDisplayName.entrySet() )
+		for ( Entry<String, String> entry : this.layerMapConfigNameToDisplayName.entrySet() )
 		{
 			configNamesForPluginLayers.add( entry.getKey() );
 		}
 		return configNamesForPluginLayers;
 	}
-	
+
+	@Override
 	public String toString(){
-		
+
 		String tree = "";
-		for ( String layer : layerMapDisplayNameToConfigName.keySet() ){
-			System.err.println( layerMapDisplayNameToConfigName.get(layer) );
-			for ( String prop : properties.keySet() ){
-				if ( properties.get(prop).getPluginID().equals("") && 
-						( properties.get(prop).isSuperclass() || properties.get(prop).isGlobal() ) && 
-						properties.get(prop).getPluginLayerID().equals(layerMapDisplayNameToConfigName.get(layer)) ){
+		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
+			System.err.println( this.layerMapDisplayNameToConfigName.get(layer) );
+			for ( String prop : this.properties.keySet() ){
+				if ( this.properties.get(prop).getPluginID().equals("") &&
+						( this.properties.get(prop).isSuperclass() || this.properties.get(prop).isGlobal() ) &&
+						this.properties.get(prop).getPluginLayerID().equals(this.layerMapDisplayNameToConfigName.get(layer)) ){
 					System.err.println("(" + prop + ")" );
 				}
 			}
-			for ( String plugin : registeredPlugins.keySet() ){
-				if ( registeredPlugins.get(plugin).equals(layerMapDisplayNameToConfigName.get(layer))){
+			for ( String plugin : this.registeredPlugins.keySet() ){
+				if ( this.registeredPlugins.get(plugin).equals(this.layerMapDisplayNameToConfigName.get(layer))){
 					System.err.println("----" + plugin);
-					for ( String prop : properties.keySet() ){
-						if ( properties.get(prop).getPluginID().equals(plugin) ){
+					for ( String prop : this.properties.keySet() ){
+						if ( this.properties.get(prop).getPluginID().equals(plugin) ){
 							System.err.println("------" + prop );
 						}
 					}
 				}
 			}
 		}
-		
+
 		return tree;
 	}
 
 	public String[] getPluginsInLayer( String pluginLayer ) {
-		
+
 		// TODO: order jcombobox items for accordion entries here!
-		
+
 		List<String> tmp = new LinkedList<>();
-		
-		for ( String layer : layerMapDisplayNameToConfigName.keySet() ){
+
+		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
 			if ( layer.equals( pluginLayer )){
-				for ( String plugin : registeredPlugins.keySet() ){
-					if ( registeredPlugins.get(plugin).equals(layerMapDisplayNameToConfigName.get(layer))){
+				for ( String plugin : this.registeredPlugins.keySet() ){
+					if ( this.registeredPlugins.get(plugin).equals(this.layerMapDisplayNameToConfigName.get(layer))){
 						tmp.add(plugin);
 					}
 				}
 			}
 		}
-		
+
 		String[] ret = new String[tmp.size()];
 		ret = tmp.toArray(ret);
 		return ret;
+	}
+
+	public Map<String, Integer> getStaticConfigurationDisplay() {
+		return this.staticConfigurationDisplay;
 	}
 }

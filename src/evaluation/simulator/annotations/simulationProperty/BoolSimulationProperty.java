@@ -26,10 +26,10 @@ public @interface BoolSimulationProperty {
 	public String propertykey() default "";
 
 	public String tooltip() default "No Tooltip available";
-	
+
 	public String inject() default "";
-	
-	
+
+
 	public boolean global() default false;
 	// bool
 	public boolean value() default true;
@@ -37,5 +37,7 @@ public @interface BoolSimulationProperty {
 	public Class<?> valueType() default Boolean.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
+
+	public boolean isStatic() default false;
 
 }

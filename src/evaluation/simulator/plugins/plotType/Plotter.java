@@ -20,24 +20,24 @@ package evaluation.simulator.plugins.plotType;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 
-@PluginSuperclass( layerName = "Plotter", layerKey = "PLOTTER", writeToConfig = false)
 public abstract class Plotter {
 
-	@StringSimulationProperty( name = "Plot script", 
-			propertykey = "NAME_OF_PLOT_SCRIPT")
+	@StringSimulationProperty( name = "Plot script",
+			propertykey = "NAME_OF_PLOT_SCRIPT",
+			inject = "0:PLOTTYPE,Plottype (inject)",
+			isStatic = true)
 	String plotscript;
-	
+
 	public final static DecimalFormat decimalFormat;
 	static {
 		DecimalFormatSymbols sym = new DecimalFormatSymbols();
 		sym.setDecimalSeparator('.');
 		decimalFormat = new DecimalFormat("#.##########", sym);
 	}
-	
+
 	public abstract void plot(ResultSet resultSet);
-	
+
 }

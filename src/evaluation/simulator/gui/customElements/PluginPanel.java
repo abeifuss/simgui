@@ -3,13 +3,9 @@ package evaluation.simulator.gui.customElements;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.swing.JComboBox;
@@ -27,6 +23,8 @@ import evaluation.simulator.log.Logger;
 public class PluginPanel extends JScrollPane {
 
 	private JPanel panel;
+	private JPanel pluginSelectionPanel;
+	private JPanel globalPreferencesPanel;
 	HashMap<String, JComboBox<String>> pluginListsMap = new HashMap<>();
 
 	SimPropRegistry simPropRegistry;
@@ -34,32 +32,33 @@ public class PluginPanel extends JScrollPane {
 	public PluginPanel() {
 		this.initPanel();
 	}
-	
+
 	private class ValueComparator implements Comparator<String> {
 
-	    Map<String, Integer> base;
-	    public ValueComparator(Map<String, Integer> base) {
-	        this.base = base;
-	    }
+		Map<String, Integer> base;
+		public ValueComparator(Map<String, Integer> base) {
+			this.base = base;
+		}
 
-	    // Note: this comparator imposes orderings that are inconsistent with equals.    
-	    public int compare(String a, String b) {
-	        if (base.get(a) <= base.get(b)) {
-	            return -1;
-	        } else {
-	            return 1;
-	        }
-	    }
+		// Note: this comparator imposes orderings that are inconsistent with equals.
+		@Override
+		public int compare(String a, String b) {
+			if (this.base.get(a) <= this.base.get(b)) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
 	}
-	
+
 	private void initPanel() {
 		// Start Layout
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getVerticalScrollBar().setUnitIncrement(16);
 
-		this.panel = new JPanel();
-		this.panel.setBorder(new TitledBorder(null, "Plugin Configuration",
+		this.pluginSelectionPanel = new JPanel();
+		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -69,44 +68,70 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraints.weighty = 0;
 		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayout.setConstraints(this.panel, gridBagConstraints);
-		this.panel.setLayout(gridBagLayout);
+		gridBagLayout.setConstraints(this.pluginSelectionPanel, gridBagConstraints);
+		this.pluginSelectionPanel.setLayout(gridBagLayout);
 
-		this.setViewportView(this.panel);
+		this.setViewportView(this.pluginSelectionPanel);
 
 		// End Layout
 
 		this.simPropRegistry = SimPropRegistry.getInstance();
-		
+
 		Map<String, Integer> layerMap = this.simPropRegistry.getLayerMapDisplayNameToOrder();
-		
 		// Sort the map by value (first) and key (second)
-		ValueComparator comperator =  new ValueComparator(layerMap);
-        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(comperator);
-        sorted_map.putAll(layerMap);
-        
-        System.out.println("results: "+sorted_map);
-        
-		String[] levelStrings[] = new String[sorted_map.size()][];
-		
+		ValueComparator comperatorLayer =  new ValueComparator(layerMap);
+		TreeMap<String,Integer> sortedLayerMap = new TreeMap<String,Integer>(comperatorLayer);
+		sortedLayerMap.putAll(layerMap);
+
+		// Sort the static configurations by value
+		Map<String, Integer> staticMap = this.simPropRegistry.getStaticConfigurationDisplay();
+		ValueComparator comperatorStatic =  new ValueComparator(staticMap);
+		TreeMap<String,Integer> sortedStaticMap = new TreeMap<String,Integer>(comperatorStatic);
+		sortedStaticMap.putAll(staticMap);
+
+		System.out.println("results: "+sortedLayerMap);
+
+		String[] levelStrings[] = new String[sortedLayerMap.size()][];
+
 		AccordionEntry accordionElement;
-		
+		this.globalPreferencesPanel = new JPanel();
+
 		int i = 0;
-		for ( String layer : sorted_map.keySet() ){
-			
+		for ( String layer : sortedLayerMap.keySet() ){
+
 			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
 
 			String key = layer;
 			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 			this.pluginListsMap.get(key).setSelectedIndex(0);
-			
+
 			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
 			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.panel.add(accordionElement, gridBagConstraints);
-			
+			this.pluginSelectionPanel.add(accordionElement, gridBagConstraints);
+
 			i++;
 		}
+		i = 0;
+		for ( String layer : sortedStaticMap.keySet() ){
+
+			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
+
+			String key = layer;
+			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
+			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
+			this.pluginListsMap.get(key).setSelectedIndex(0);
+
+			Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
+			this.globalPreferencesPanel.add(accordionElement, gridBagConstraints);
+
+			i++;
+		}
+
+		this.panel = new JPanel();
+		this.panel.add(this.pluginSelectionPanel);
+		this.panel.add(this.globalPreferencesPanel);
 
 		gridBagConstraints.weighty = 1;
 

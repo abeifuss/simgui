@@ -30,9 +30,9 @@ public @interface IntSimulationProperty {
 	public String propertykey() default "";
 
 	public String tooltip() default "No Tooltip available";
-	
+
 	public String inject() default "";
-	
+
 	public boolean global() default false;
 
 	// int
@@ -41,5 +41,7 @@ public @interface IntSimulationProperty {
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public Class<?> valueType() default Integer.class;
+
+	public boolean isStatic() default false;
 
 }

@@ -28,16 +28,18 @@ public @interface StringSimulationProperty {
 	public String propertykey() default "";
 
 	public String tooltip() default "No Tooltip available";
-	
+
 	public String inject() default "";
-	
+
 	public boolean global() default false;
 
 	// string
 	public String value() default "";
 
 	public Class<?> valueType() default String.class;
-	
+
 	public Class<? extends Requirement>[] value_requirements() default {};
+
+	public boolean isStatic() default false;
 
 }
