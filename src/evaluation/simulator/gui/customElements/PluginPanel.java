@@ -128,7 +128,7 @@ public class PluginPanel extends JScrollPane {
 
 		int i = 0;
 		for ( String layer : sortedLayerMap.keySet() ){
-			if((isStaticLayerMap.get(layer)== null) || !isStaticLayerMap.get(layer)){
+			if((isStaticLayerMap.get(layer) == null) || !isStaticLayerMap.get(layer)){
 				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
 
 				String key = layer;

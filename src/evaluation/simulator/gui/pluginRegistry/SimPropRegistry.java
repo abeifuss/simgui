@@ -4,6 +4,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -1304,9 +1305,6 @@ public class SimPropRegistry {
 	}
 
 	public String[] getPluginsInLayer( String pluginLayer ) {
-
-		// TODO: order jcombobox items for accordion entries here!
-
 		List<String> tmp = new LinkedList<>();
 
 		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
@@ -1318,7 +1316,7 @@ public class SimPropRegistry {
 				}
 			}
 		}
-
+		Collections.sort(tmp);
 		String[] ret = new String[tmp.size()];
 		ret = tmp.toArray(ret);
 		return ret;
