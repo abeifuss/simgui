@@ -32,7 +32,7 @@ plot "WILL_BE_SET_AUTOMATICALLY"
 
 
 # BEGIN modify output for file
-set terminal postscript color eps solid
+set terminal png
 
 #set size 0.6
 #set terminal postscript eps "Helvetica" 16

@@ -44,9 +44,9 @@ public class PluginPanel extends JScrollPane {
 		@Override
 		public int compare(String a, String b) {
 			if (this.base.get(a) <= this.base.get(b)) {
-				return -1;
-			} else {
 				return 1;
+			} else {
+				return -1;
 			}
 		}
 	}

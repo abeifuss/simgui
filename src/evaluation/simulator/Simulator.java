@@ -17,15 +17,9 @@
  */
 package evaluation.simulator;
 
-import java.util.*;
-
-import gnu.trove.TDoubleArrayList;
-
-import framework.core.config.Paths;
-import framework.core.config.Settings;
-import framework.core.launcher.CommandLineParameters;
-import framework.core.launcher.GMixTool;
-import framework.core.util.Util;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
@@ -38,8 +32,6 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.core.statistics.GeneralStatistics;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.Statistics;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 import evaluation.simulator.pluginRegistry.ClientSendStyle;
 import evaluation.simulator.pluginRegistry.OutputStrategy;
 import evaluation.simulator.pluginRegistry.PlotType;
@@ -47,17 +39,23 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 import evaluation.simulator.pluginRegistry.Topology;
 import evaluation.simulator.pluginRegistry.TrafficSource;
 import evaluation.simulator.plugins.outputStrategy.OutputStrategyImpl;
+import framework.core.config.Paths;
+import framework.core.config.Settings;
+import framework.core.launcher.CommandLineParameters;
+import framework.core.launcher.GMixTool;
+import framework.core.util.Util;
+import gnu.trove.TDoubleArrayList;
 
 
 public class Simulator extends GMixTool implements Identifiable {
 
-	private int numericIdentifier;
+	private final int numericIdentifier;
 	public static Settings settings;
 	public static boolean DEBUG_ON = true;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
 	private static CommandLineParameters commandLineParameters;
-	private PriorityQueue<Event> eventQueue = new PriorityQueue<Event>();
+	private final PriorityQueue<Event> eventQueue = new PriorityQueue<Event>();
 	private HashMap<String, AbstractClient> clients;
 	private HashMap<String, Mix> mixes;
 	private HashMap<String, NetworkConnection> networkConnections;
@@ -73,16 +71,16 @@ public class Simulator extends GMixTool implements Identifiable {
 	private Topology topology;
 	private TrafficSource trafficSource;
 	public ResultSet results;
-	
+
 	public static void reset() {
 		Simulator.firstRun = true;
 	}
-	
+
 	public Simulator(CommandLineParameters params) {
 		Simulator.commandLineParameters = params;
 		now = 0;
-		numericIdentifier = IdGenerator.getId();
-		results = null;
+		this.numericIdentifier = IdGenerator.getId();
+		this.results = null;
 		if (firstRun) {
 			firstRun = false;
 			if (commandLineParameters.passthroughParameters != null ){ // GUI call
@@ -92,9 +90,7 @@ public class Simulator extends GMixTool implements Identifiable {
 				Simulator.currentSimulator = this;
 				Statistics.setSimulator(this);
 				Simulator.trafficSourceStatistics = new Statistics(this);
-				results = performExperimentReturnResults(Simulator.settings);
-				Logger.Log(LogLevel.ERROR, "MURKS");
-
+				this.results = performExperimentReturnResults(Simulator.settings);
 			} else if (commandLineParameters.globalConfigFile != null) {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +commandLineParameters.globalConfigFile);
@@ -126,49 +122,55 @@ public class Simulator extends GMixTool implements Identifiable {
 	private void executeSimulationScript(String simulationScript) {
 		// init traffic source
 		this.trafficSource = TrafficSource.getTrafficSource();
-		this.clientByIdArray = trafficSource.createClientsArray();
+		this.clientByIdArray = this.trafficSource.createClientsArray();
 		// init topology
 		this.topology = Topology.getTopology();
 		this.topology.constructor(this.clientByIdArray);
-		this.clients = topology.getClients();
-		this.mixes = topology.getMixes();
-		this.networkConnections = topology.getNetworkConnections();
-		this.distantProxy = topology.getDistantProxy();
+		this.clients = this.topology.getClients();
+		this.mixes = this.topology.getMixes();
+		this.networkConnections = this.topology.getNetworkConnections();
+		this.distantProxy = this.topology.getDistantProxy();
 		// create output strategies and sending styles:
-		if (mixes.size() == 0) {
-			for (AbstractClient client:clients.values())
+		if (this.mixes.size() == 0) {
+			for (AbstractClient client:this.clients.values()) {
 				client.setSendStyle(ClientSendStyle.getInstance(client));
+			}
 		} else {
-			for (Mix mix:mixes.values()) {
+			for (Mix mix:this.mixes.values()) {
 				OutputStrategyImpl os = OutputStrategy.getInstance(mix);
 				mix.setOutputStrategy(os);
-				if (mix.isFirstMix())
-					for (AbstractClient client:clients.values())
+				if (mix.isFirstMix()) {
+					for (AbstractClient client:this.clients.values()) {
 						client.setSendStyle(os.getClientSendStyle(client));
-			} 
+					}
+				}
+			}
 		}
-		if (Simulator.settings.getProperty("SIMULATION_END").equals("REAL_TIME_END"))
+		if (Simulator.settings.getProperty("SIMULATION_END").equals("REAL_TIME_END")) {
 			new StopSimulationTimer(this);
+		}
 	}
-	
-	
+
+
 	public int getNumberOfClients() {
-		return clientByIdArray.length;
+		return this.clientByIdArray.length;
 	}
-	
-	
+
+
 	private void performSimulation() {
 		Event event;
-		trafficSource.startSending();
+		this.trafficSource.startSending();
 		while (true) {
-			event = eventQueue.poll(); // get next event
-			if (event == null || stopSimulation) { // stop simulation
-				if (event == null)
+			event = this.eventQueue.poll(); // get next event
+			if ((event == null) || this.stopSimulation) { // stop simulation
+				if (event == null) {
 					System.out.println("### simulation finished (no more events to simulate)");
-				else
+				} else {
 					System.out.println("### simulation finished");
-				if (ts_recordStatisticsEnd == Util.NOT_SET) // not yet determined
-					ts_recordStatisticsEnd = getNow();
+				}
+				if (this.ts_recordStatisticsEnd == Util.NOT_SET) {
+					this.ts_recordStatisticsEnd = getNow();
+				}
 				return;
 			} else if (event.isCanceled()) {
 				continue;
@@ -180,30 +182,31 @@ public class Simulator extends GMixTool implements Identifiable {
 			}
 		}
 	}
-	
+
 	private long sequenceCounter = 0;
 	// callingInstance = DEBUG
 	public void scheduleEvent(Event e, Object callingInstance) {
-		//System.out.println("Received ScheduleTask from " +callingInstance +" (now: " +e.getExecutionTime() +") " +e.getAttachment()); 
+		//System.out.println("Received ScheduleTask from " +callingInstance +" (now: " +e.getExecutionTime() +") " +e.getAttachment());
 		if (e.getExecutionTime() < now) {
 			throw new RuntimeException("ERROR: executionTime < now (" +e.getExecutionTime() +" < " +now);
 		} else {
-			if (sequenceCounter == Long.MAX_VALUE) {
-				System.out.println("RESETTING SEQUENCE_COUNTER"); 
-				sequenceCounter = eventQueue.size() + 1;
-				long diff = Long.MAX_VALUE - eventQueue.size();
-				for (Event event:eventQueue)
+			if (this.sequenceCounter == Long.MAX_VALUE) {
+				System.out.println("RESETTING SEQUENCE_COUNTER");
+				this.sequenceCounter = this.eventQueue.size() + 1;
+				long diff = Long.MAX_VALUE - this.eventQueue.size();
+				for (Event event:this.eventQueue) {
 					event.setSequenceNumber(event.getSequenceNumber() - diff);
-				 
+				}
+
 			}
-			sequenceCounter++;
-			e.setSequenceNumber(sequenceCounter);
-			eventQueue.add(e);
+			this.sequenceCounter++;
+			e.setSequenceNumber(this.sequenceCounter);
+			this.eventQueue.add(e);
 		}
-		
+
 	}
-	
-	
+
+
 	public void unscheduleEvent(Event e) {
 		e.cancel();
 	}
@@ -221,51 +224,53 @@ public class Simulator extends GMixTool implements Identifiable {
 		return currentSimulator;
 	}
 
-	
+
 	public HashMap<String, AbstractClient> getClients() {
-		return clients;
+		return this.clients;
 	}
-	
-	
+
+
 	public AbstractClient getClientById(int clientId) {
-		return clientByIdArray[clientId];
+		return this.clientByIdArray[clientId];
 	}
-	
+
 
 	public HashMap<String, Mix> getMixes() {
-		return mixes;
+		return this.mixes;
 	}
-	
+
 
 	/**
 	 * @return the networkConnections
 	 */
 	public Map<String, NetworkConnection> getNetworkConnections() {
-		return networkConnections;
+		return this.networkConnections;
 	}
-	
+
 
 	public DistantProxy getDistantProxy() {
-		return distantProxy;
+		return this.distantProxy;
 	}
 
 
-	
+
 	public void stopSimulation(String reason) {
-		if (stopSimulation) // ignore multiple calls
+		if (this.stopSimulation) {
 			return;
+		}
 		this.stopSimulation = true;
 		System.out.println("### stopping simulation. reason: " +reason);
 	}
-	
+
 
 	public void voteForStop() {
-		voteStopCounter++;
-		if (voteStopCounter == clients.size())
-			stopSimulation("end of trace reached (variable SIMULATION_END in experiment config)");
+		this.voteStopCounter++;
+		if (this.voteStopCounter == this.clients.size()) {
+			this.stopSimulation("end of trace reached (variable SIMULATION_END in experiment config)");
+		}
 	}
-	
-	
+
+
 	private static void performExperiment(Settings settings) {
 
 		ExperimentConfig ep = new ExperimentConfig(settings);
@@ -273,11 +278,11 @@ public class Simulator extends GMixTool implements Identifiable {
 
 		ResultSet resultSet = generateResultSet(ep);
 		storeAndPlotResults(resultSet);
-		
+
 		StatisticsType.reset();
 
 	}
-	
+
 	private static ResultSet performExperimentReturnResults(Settings settings) {
 
 		ExperimentConfig ep = new ExperimentConfig(settings);
@@ -285,46 +290,50 @@ public class Simulator extends GMixTool implements Identifiable {
 
 		ResultSet resultSet = generateResultSet(ep);
 		storeAndPlotResults(resultSet);
-		
+
 		StatisticsType.reset();
 		return resultSet;
 
 	}
-	
+
 	private static void saveConfigToDisk(ExperimentConfig ep) {
 		String description =	"# " +ep.experimentStart +" experiment:\n";
 		if (!ep.useSecondPropertyToVary) {
 			description += 	"# effect of " +ep.propertyToVary +" on [";
-			for (StatisticsType st: ep.desiredStatisticsTypes)
+			for (StatisticsType st: ep.desiredStatisticsTypes) {
 				description += " " +st;
+			}
 			description += "]\n";
 		} else {
 			description += 	"# effect of " +ep.propertyToVary +" and " +ep.secondPropertyToVary +" on [";
-			for (StatisticsType st: ep.desiredStatisticsTypes)
+			for (StatisticsType st: ep.desiredStatisticsTypes) {
 				description += " " +st;
+			}
 			description += "]\n";
 		}
 		String config = "";
-		for (String property: settings.getPropertiesObject().stringPropertyNames())
+		for (String property: settings.getPropertiesObject().stringPropertyNames()) {
 			config += property + " = " +settings.getProperty(property) + "\n";
-		Util.writeToFile(	description + config, 
-							Paths.SIM_OUTPUT_FOLDER_PATH + ep.experimentStart 
-							+ "-configShort.txt");	
+		}
+		Util.writeToFile(	description + config,
+				Paths.SIM_OUTPUT_FOLDER_PATH + ep.experimentStart
+				+ "-configShort.txt");
 	}
-	
-	
+
+
 	private static void storeAndPlotResults(ResultSet resultSet) {
-		for (PlotType plotType:resultSet.getDesiredPlotTypes())
+		for (PlotType plotType:resultSet.getDesiredPlotTypes()) {
 			plotType.plot(resultSet);
-	} 
-	
-	
+		}
+	}
+
+
 	private static ResultSet generateResultSet(ExperimentConfig ep) {
 		Simulator simulator;
 		ResultSet resultSet = new ResultSet(ep);
 		TDoubleArrayList[][][] results = resultSet.results;
 		long startOfExperiment = System.currentTimeMillis();
-		
+
 		// generate results and store them in ResultSet
 		for (int i=0; i<ep.values.length; i++) { // for each value of the parameter(s) to vary
 			// set value(s) of the parameter(s) to vary
@@ -335,20 +344,21 @@ public class Simulator extends GMixTool implements Identifiable {
 				secondValue = ep.valuesForSecondProperty[i];
 				settings.setProperty(ep.secondPropertyToVary, secondValue);
 			}
-			
+
 			System.out.println();
-			if (!ep.useSecondPropertyToVary)
+			if (!ep.useSecondPropertyToVary) {
 				System.out.println("### STARTING NEW RUN SERIES (" +(i+1) +"/" +(ep.values.length) +"): " +ep.propertyToVary +"=" +value);
-			else
+			} else {
 				System.out.println("### STARTING NEW RUN SERIES (" +(i+1) +"/" +(ep.values.length) +"): " +ep.propertyToVary +"=" +value +", " +ep.secondPropertyToVary +"=" +secondValue);
-			
+			}
+
 			for (int j=0; j<ep.runs; j++) { // for each validation run
 
 				System.out.println("### STARTING RUN " +(j+1) +"/" +ep.runs);
 
 				simulator = new Simulator(commandLineParameters);
 				simulator.executeSimulationScript(ep.simulationScript);
-				
+
 				long start = System.currentTimeMillis();
 				simulator.performSimulation();
 				resultSet.simulationTime[i][j] = simulator.ts_recordStatisticsEnd - simulator.ts_recordStatisticsStart;
@@ -357,19 +367,20 @@ public class Simulator extends GMixTool implements Identifiable {
 				System.out.println("### FINISHED RUN " +(j+1) +"/" +ep.runs +" (execution time: " +(System.currentTimeMillis() - start) +" ms, simulation time: " +resultSet.simulationTime[i][j] +"ms)");
 
 				// calculate results
-				for (StatisticsType st: ep.desiredStatisticsTypes)
+				for (StatisticsType st: ep.desiredStatisticsTypes) {
 					results[i][st.ordinal()][j] = GeneralStatistics.getResult(st);
+				}
 				GeneralStatistics.reset();
 				AbstractClient.reset();
-				
+
 			} // end for each validation run
-	
+
 		} // end for each value of the parameter to vary
-		
-		System.out.println("### total execution time of experiment: " +(System.currentTimeMillis() - startOfExperiment)); 
-		
+
+		System.out.println("### total execution time of experiment: " +(System.currentTimeMillis() - startOfExperiment));
+
 		return resultSet;
-		
+
 	}
 
 
@@ -377,37 +388,37 @@ public class Simulator extends GMixTool implements Identifiable {
 	public int getGlobalId() {
 		return this.numericIdentifier;
 	}
-	
-	
+
+
 	private class StopSimulationTimer extends Thread {
-		
-		private Simulator simulator;
+
+		private final Simulator simulator;
 		private long sleepUntil;
-		
-		
+
+
 		public StopSimulationTimer(Simulator simulator) {
 			this.simulator = simulator;
 			this.start();
 		}
-		
-		
+
+
 		@Override
 		public void run() {
 			int delay = (int) Math.round(Simulator.settings.getPropertyAsDouble("REAL_TIME_LIMIT_IN_SEC") * 1000d);
-			sleepUntil = System.currentTimeMillis() + delay;
-			while (System.currentTimeMillis() < sleepUntil) {
+			this.sleepUntil = System.currentTimeMillis() + delay;
+			while (System.currentTimeMillis() < this.sleepUntil) {
 				try {
-					Thread.sleep(Math.max(0, sleepUntil - System.currentTimeMillis()));
+					Thread.sleep(Math.max(0, this.sleepUntil - System.currentTimeMillis()));
 				} catch (InterruptedException e) {
 					continue;
 				}
 			}
-			simulator.stopSimulation("real-time limit reached (variable REAL_TIME_LIMIT_IN_SEC in experiment config)");
+			this.simulator.stopSimulation("real-time limit reached (variable REAL_TIME_LIMIT_IN_SEC in experiment config)");
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Comment
 	 *

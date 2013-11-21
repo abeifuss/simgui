@@ -29,6 +29,7 @@ public class AccordionEntry extends JPanel {
 	private final JButton entryButton;
 	private JTable entryTable = null;
 	private final String localName;
+	private final int tableHeight = 25;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
@@ -127,6 +128,8 @@ public class AccordionEntry extends JPanel {
 					new AccordionTableCellRenderer(
 							tmpListOfAllSimPropertiesForPlugin));
 
+			this.entryTable.setRowHeight(this.tableHeight);
+
 			this.entryTable.setVisible(true);
 
 			TableColumn col = this.entryTable.getColumnModel().getColumn(1);
@@ -177,6 +180,8 @@ public class AccordionEntry extends JPanel {
 		this.entryTable.setDefaultRenderer(Object.class,
 				new AccordionTableCellRenderer(
 						tmpListOfAllVisibleSimProperties));
+
+		this.entryTable.setRowHeight(this.tableHeight );
 
 		this.entryTable.setVisible(true);
 

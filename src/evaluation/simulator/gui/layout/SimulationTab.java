@@ -21,11 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.jfree.chart.ChartPanel;
-
 import evaluation.simulator.core.binding.gMixBinding;
-import evaluation.simulator.gui.results.LineJFreeChartCreator;
-import evaluation.simulator.gui.results.ResultPanelFactory;
 import evaluation.simulator.gui.service.ConfigParser;
 
 @SuppressWarnings("serial")
@@ -40,7 +36,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 	JScrollPane leftScrollPane;
 
 	private final JPanel north;
-	private int resultCounter;
+	private final int resultCounter;
 	JScrollPane rightScrollPane;
 	JList<File> runExperiments;
 	final DefaultListModel<File> runExperimentsModel;
@@ -49,7 +45,18 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 	private JButton stopButton;
 
+	private static SimulationTab instance = null;
+
+	public static SimulationTab getInstance() {
+		if (instance == null) {
+			instance = new SimulationTab();
+		}
+		return instance;
+	}
+
 	public SimulationTab() {
+		// dirty workaround because of lazyness
+		instance=this;
 
 		this.availableExperimentsModel = new DefaultListModel<File>();
 		this.runExperimentsModel = new DefaultListModel<File>();
@@ -79,16 +86,8 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.startButton.addActionListener(this);
 		this.stopButton.addActionListener(this);
 
-		this.south.addTab("Results_" + this.resultCounter, new ChartPanel(
-				LineJFreeChartCreator.createAChart()));
-		this.resultCounter++;
-
-		this.south.addTab("Results_" + this.resultCounter, new ChartPanel(
-				LineJFreeChartCreator.createAChart()));
-		this.resultCounter++;
-
 		verticalSplitPlane.setTopComponent(this.north);
-		verticalSplitPlane.setBottomComponent(this.south);
+		verticalSplitPlane.setBottomComponent(this.getResultsPanel());
 
 		this.addExperiment.addActionListener(this);
 		this.deleteExperiment.addActionListener(this);
@@ -104,22 +103,19 @@ public class SimulationTab extends JPanel implements ActionListener {
 			ConfigParser configParser = new ConfigParser();
 
 			String[][] params = new String[this.runExperiments.getModel()
-					.getSize()][1];
+			                               .getSize()][1];
 
 			for (int i = 0; i < this.runExperiments.getModel().getSize(); i++) {
 				params[i][0] = configParser
 						.cleanupConfigurationForSimulator(this.runExperiments
 								.getModel().getElementAt(i));
 
-				this.callSimulation = new gMixBinding(params[i]);
+				this.callSimulation = gMixBinding.getInstance();
+				this.callSimulation.setParams(params[i]);
 				this.callSimulation.start();
 
 				// TODO: sync with main thread (pass Statistics)
 
-				this.south.addTab("Results_" + this.resultCounter,
-						ResultPanelFactory.getResultPanel());
-
-				this.resultCounter++;
 			}
 
 		}
@@ -133,8 +129,8 @@ public class SimulationTab extends JPanel implements ActionListener {
 				int index = this.availableExperiments.getSelectedIndex();
 				if (index != -1) {
 					this.runExperimentsModel
-							.addElement(this.availableExperiments
-									.getSelectedValue());
+					.addElement(this.availableExperiments
+							.getSelectedValue());
 					this.availableExperimentsModel.remove(index);
 					this.updateUI();
 				}
@@ -148,7 +144,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 				int index = this.runExperiments.getSelectedIndex();
 				if (index != -1) {
 					this.availableExperimentsModel
-							.addElement(this.runExperiments.getSelectedValue());
+					.addElement(this.runExperiments.getSelectedValue());
 					this.runExperimentsModel.remove(index);
 					this.updateUI();
 				}
@@ -269,6 +265,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+
 				for (File f : listOfFiles) {
 					boolean insertFlag = true;
 					for (int i = 0; i < SimulationTab.this.availableExperiments
@@ -291,10 +288,14 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 					if (insertFlag) {
 						SimulationTab.this.availableExperimentsModel
-								.addElement(f);
+						.addElement(f);
 					}
 				}
 			}
 		});
+	}
+
+	public JTabbedPane getResultsPanel() {
+		return this.south;
 	}
 }
