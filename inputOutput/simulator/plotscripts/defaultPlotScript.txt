@@ -27,7 +27,7 @@ set grid
 
 # BEGIN do not modify section
 #_NONE_OVERWRITABLE_PARAMETERS
-plot "WILL_BE_SET_AUTOMATICALLY"
+# plot "WILL_BE_SET_AUTOMATICALLY"
 # END do not modify section
 
 

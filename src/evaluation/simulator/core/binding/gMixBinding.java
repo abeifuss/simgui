@@ -36,9 +36,9 @@ public class gMixBinding extends Thread {
 				Logger.Log(LogLevel.INFO, "Finished simulator with results");
 			}
 
-			for (PlotType plotType:results.getDesiredPlotTypes()) {
-				plotType.plot(results);
-			}
+//			for (PlotType plotType:results.getDesiredPlotTypes()) {
+//				plotType.plot(results);
+//			}
 
 			SimulationTab.getInstance().getResultsPanel().addTab(this.getGnuplotConsoleOutputFileName(), ResultPanelFactory.getGnuplotResultPanel(this.getGnuplotConsoleOutputFileName()));
 

@@ -20,6 +20,8 @@ package evaluation.simulator.core.statistics.plotEngine;
 import evaluation.simulator.Simulator;
 import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.core.statistics.ResultSet;
+import evaluation.simulator.log.LogLevel;
+import evaluation.simulator.log.Logger;
 import framework.core.config.Paths;
 import framework.core.util.Util;
 
@@ -150,6 +152,7 @@ public class PlotScript {
 
 
 	public void plot() {
+		Logger.Log(LogLevel.DEBUG, this.plotScript);
 		new GnuPlotTask(this.plotScriptFileName, this.gnuplotConsoleOutputFileName).start();
 		// TODO build hack properly to notify GUI
 		gMixBinding.getInstance().setGnuplotConsoleOutputFileName(this.resultDiagramFileName);
