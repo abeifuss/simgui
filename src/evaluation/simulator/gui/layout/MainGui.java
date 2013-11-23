@@ -81,47 +81,13 @@ public class MainGui extends JFrame {
 
 		this.setVisible(true);
 
-		try {
-			this.mainGuiXPos = UserConfigService.getInstance().getInteger(
-					"MAINGUI_XPOS");
-		} catch (Exception e) {
-			this.mainGuiXPos = 100;
-		}
-
-		try {
-			this.mainGuiYPos = UserConfigService.getInstance().getInteger(
-					"MAINGUI_YPOS");
-		} catch (Exception e) {
-			this.mainGuiYPos = 100;
-		}
-
-		try {
-			this.mainGuiWidth = UserConfigService.getInstance().getInteger(
-					"MAINGUI_WIDTH");
-		} catch (Exception e) {
-			this.mainGuiWidth = 500;
-		}
-
-		try {
-			this.mainGuiHeight = UserConfigService.getInstance().getInteger(
-					"MAINGUI_HEIGTH");
-		} catch (Exception e) {
-			this.mainGuiHeight = 750;
-		}
-
-		try {
-			this.horizontalSplitPlaneDeviderLocation = UserConfigService
-					.getInstance().getInteger("HSPLIT_DEVIDER_LOCATION");
-		} catch (Exception e) {
-			this.horizontalSplitPlaneDeviderLocation = 200;
-		}
-
-		try {
-			this.consoleHeight = UserConfigService.getInstance().getInteger(
-					"CONSOLE_HEIGHT");
-		} catch (Exception e) {
-			this.consoleHeight = 650;
-		}
+		
+		this.mainGuiXPos = UserConfigService.getMAINGUI_XPOS();
+		this.mainGuiYPos =  UserConfigService.getMAINGUI_YPOS();
+		this.mainGuiWidth =  UserConfigService.getMAINGUI_WIDTH();
+		this.mainGuiHeight =  UserConfigService.getMAINGUI_HEIGHT();
+		this.horizontalSplitPlaneDeviderLocation = UserConfigService.getMAINGUI_HSPLIT_DEVIDER_LOCATION();
+		this.consoleHeight = UserConfigService.getMAINGUI_CONSOLE_HEIGHT();
 
 		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth,
 				this.mainGuiHeight);
@@ -271,16 +237,12 @@ public class MainGui extends JFrame {
 	}
 
 	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("CONSOLE_HEIGHT",
-				this.consoleHeight);
-		UserConfigService.getInstance().setInteger("HSPLIT_DEVIDER_LOCATION",
-				this.horizontalSplitPlaneDeviderLocation);
-		UserConfigService.getInstance().setInteger("MAINGUI_XPOS", this.getX());
-		UserConfigService.getInstance().setInteger("MAINGUI_YPOS", this.getY());
-		UserConfigService.getInstance().setInteger("MAINGUI_WIDTH",
-				this.getWidth());
-		UserConfigService.getInstance().setInteger("MAINGUI_HEIGTH",
-				this.getHeight());
+		UserConfigService.setMAINGUI_CONSOLE_HEIGHT(this.consoleHeight);
+		UserConfigService.setMAINGUI_HEIGHT(this.getHeight());
+		UserConfigService.setMAINGUI_HSPLIT_DEVIDER_LOCATION(this.horizontalSplitPlaneDeviderLocation);
+		UserConfigService.setMAINGUI_WIDTH(this.getWidth());
+		UserConfigService.setMAINGUI_XPOS(this.getX());
+		UserConfigService.setMAINGUI_YPOS(this.getY());
 	}
 
 	private void setupMenu() {

@@ -21,14 +21,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.conf.service.SimulationConfigService;
 import framework.core.config.MatchingMechanism;
 import framework.core.config.Paths;
 import framework.core.config.Settings;
 
 
 public class CommandLineParameters {
+	
+	private static Logger logger = Logger.getLogger(CommandLineParameters.class);
 	
 	public boolean useGui = true;
 	public ToolName gMixTool = null; // the "Launcher" to be started (see framework.core.launcher)
@@ -82,7 +87,7 @@ public class CommandLineParameters {
 			passthroughParameters = new String[0];
 		}
 		
-		Logger.Log(LogLevel.DEBUG, "Parameters: " + toString());
+		logger.log(Level.DEBUG, "Parameters: " + toString());
 	}
 	
 	

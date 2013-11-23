@@ -1,10 +1,14 @@
 package evaluation.simulator.gui.pluginRegistry;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.conf.service.SimulationConfigService;
 
 class InjectionParser {
 	
+	private static Logger logger = Logger.getLogger(InjectionParser.class);
 	public String getLayer() {
 		return layer;
 	}
@@ -66,7 +70,7 @@ class InjectionParser {
 					layerConfigName = tmp[1];
 				}
 				if ( tmp.length > 2){
-					Logger.Log(LogLevel.DEBUG, "Inject annotation for " + 
+					logger.log(Level.DEBUG, "Inject annotation for " + 
 							   propertyKey + " is not well formed \n Injection string is " + arguments);
 					// This might not be critical, but it is better to quit
 					System.exit(-1);
@@ -76,7 +80,7 @@ class InjectionParser {
 				layerDisplayName = layerSplit[1];
 			}
 			if ( layerSplit.length >= 3 ) {
-				Logger.Log(LogLevel.DEBUG, "Inject annotation for " + 
+				logger.log(Level.DEBUG, "Inject annotation for " + 
 						   propertyKey+ " is not well formed \n Injection string is " + arguments);
 				// This might not be critical, but it is better to quit
 				System.exit(-1);
@@ -95,7 +99,7 @@ class InjectionParser {
 					pluginConfigName = tmp[1];
 				}
 				if ( tmp.length > 2){
-					Logger.Log(LogLevel.DEBUG, "Inject annotatioin for " + 
+					logger.log(Level.DEBUG, "Inject annotatioin for " + 
 							   propertyKey + " is not well formed \n Injection string is " + arguments);
 					// This might not be critical, but it is better to quit
 					System.exit(-1);
@@ -105,7 +109,7 @@ class InjectionParser {
 				pluginDisplayName = pluginSplit[1];
 			}
 			if ( pluginSplit.length >= 3 ) {
-				Logger.Log(LogLevel.DEBUG, "Inject annotatioin for " + 
+				logger.log(Level.DEBUG, "Inject annotatioin for " + 
 						   propertyKey + " is not well formed \n Injection string is " + arguments);
 				// This might not be critical, but it is better to quit
 				System.exit(-1);
@@ -117,11 +121,11 @@ class InjectionParser {
 		} 
 		
 		if ( injectionArguments.length >= 3 ) {
-			Logger.Log(LogLevel.ERROR, "Can not inject " + propertyKey + 
+			logger.log(Level.ERROR, "Can not inject " + propertyKey + 
 					   " due to bad injection arguments! \n Injection string is " + arguments);
 			System.exit(-1);
 		}else{
-			Logger.Log(LogLevel.DEBUG, "Injected property " + propertyKey + " into " + layer + "@" + plugin);
+			logger.log(Level.DEBUG, "Injected property " + propertyKey + " into " + layer + "@" + plugin);
 		}
 	}
 	

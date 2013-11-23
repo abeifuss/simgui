@@ -14,9 +14,11 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -24,6 +26,8 @@ import evaluation.simulator.log.Logger;
  *
  */
 public class ConfigParser {
+	
+	private static Logger logger = Logger.getLogger(ConfigParser.class);
 
 	
 	/**
@@ -54,7 +58,7 @@ public class ConfigParser {
 		
 		for (String s : configNamesForPluginLayers ) {
 				String tmp = props.getProperty(s);
-				Logger.Log(LogLevel.DEBUG, "Set " + s + " to " + tmp);
+				logger.log(Level.DEBUG, "Set " + s + " to " + tmp);
 				activePlugins.add(tmp);
 				generalProperties.add(s);
 		}

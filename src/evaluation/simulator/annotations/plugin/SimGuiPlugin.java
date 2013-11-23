@@ -2,10 +2,13 @@ package evaluation.simulator.annotations.plugin;
 
 import com.google.common.collect.Sets;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+import evaluation.simulator.conf.service.SimulationConfigService;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 public class SimGuiPlugin {
+	private static Logger logger = Logger.getLogger(SimGuiPlugin.class);
 
 	private String documentationURL;
 	private String id;
@@ -92,7 +95,7 @@ public class SimGuiPlugin {
 		// This can just happen if someone screwed the code!
 		if ( !pluginClass.isAnnotationPresent( Plugin.class ) ){
 			if ( !pluginClass.isInstance( this )){
-				Logger.Log(LogLevel.ERROR, this + " parameter pluginClass is not an instance of Plugin!!!");
+				logger.log(Level.ERROR, this + " parameter pluginClass is not an instance of Plugin!!!");
 				System.exit(-1);
 			}
 			return null;
@@ -101,7 +104,7 @@ public class SimGuiPlugin {
 		Class<?> thisClass = pluginClass.getSuperclass();
 		while ( !thisClass.isAnnotationPresent( PluginSuperclass.class ) && 
 				!thisClass.getCanonicalName().equals("java.lang.Object") ){
-			Logger.Log(LogLevel.DEBUG, thisClass.getCanonicalName());
+			logger.log(Level.DEBUG, thisClass.getCanonicalName());
 			thisClass = thisClass.getSuperclass();
 		}
 		

@@ -13,7 +13,8 @@ import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.SimHelpContentPanel;
 import evaluation.simulator.gui.customElements.SimHelpMenuPanel;
 import evaluation.simulator.gui.service.GuiService;
-// import log.LogLevel;
+import framework.core.userDatabase.User;
+// import log.Level;
 // import log.Logger;
 
 @SuppressWarnings("serial")
@@ -28,11 +29,11 @@ public class HelpFrame extends JFrame {
 		return _instance;
 	}
 
-	private int _helpFrameHeight;
-	private int _helpFrameWidth;
-	private int _helpFrameXPos;
+	private int helpFrameHeight;
+	private int helpFrameWidth;
+	private int helpFrameXPos;
 
-	private int _helpFrameYPos;
+	private int helpFrameYPos;
 
 	private JPanel panel;
 
@@ -106,46 +107,19 @@ public class HelpFrame extends JFrame {
 
 		this.pack();
 
-		try {
-			this._helpFrameXPos = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_XPOS");
-		} catch (Exception e) {
-			this._helpFrameXPos = 600;
-		}
+		this.helpFrameXPos = UserConfigService.getHELPFRAME_XPOS();
+		this.helpFrameYPos = UserConfigService.getHELPFRAME_XPOS();
+		this.helpFrameWidth = UserConfigService.getHELPFRAME_WIDTH();
+		this.helpFrameHeight = UserConfigService.getHELPFRAME_HEIGHT();
 
-		try {
-			this._helpFrameYPos = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_YPOS");
-		} catch (Exception e) {
-			this._helpFrameYPos = 100;
-		}
-
-		try {
-			this._helpFrameWidth = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_WIDTH");
-		} catch (Exception e) {
-			this._helpFrameWidth = 700;
-		}
-
-		try {
-			this._helpFrameHeight = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_HEIGTH");
-		} catch (Exception e) {
-			this._helpFrameHeight = 750;
-		}
-
-		this.setBounds(this._helpFrameXPos, this._helpFrameYPos,
-				this._helpFrameWidth, this._helpFrameHeight);
+		this.setBounds(this.helpFrameXPos, this.helpFrameYPos,
+				this.helpFrameWidth, this.helpFrameHeight);
 	}
 
 	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("HELPFRAME_XPOS",
-				this.getX());
-		UserConfigService.getInstance().setInteger("HELPFRAME_YPOS",
-				this.getY());
-		UserConfigService.getInstance().setInteger("HELPFRAME_WIDTH",
-				this.getWidth());
-		UserConfigService.getInstance().setInteger("HELPFRAME_HEIGTH",
-				this.getHeight());
+		UserConfigService.setHELPFRAME_HEIGHT(this.getHeight());
+		UserConfigService.setHELPFRAME_WIDTH(this.getWidth());
+		UserConfigService.setHELPFRAME_XPOS(this.getX());
+		UserConfigService.setHELPFRAME_YPOS(this.getY());
 	}
 }

@@ -26,12 +26,15 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.gui.layout.TutorialPlayer;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class SimHelpMenuPanel extends JPanel implements HyperlinkListener {
+	
+	private static Logger logger = Logger.getLogger(SimHelpMenuPanel.class);
 
 	static JEditorPane _htmlPane;
 	private static SimHelpMenuPanel _instance = null;
@@ -84,12 +87,12 @@ public class SimHelpMenuPanel extends JPanel implements HyperlinkListener {
 				JFrame jf = new TutorialPlayer("TEST");
 				jf.setVisible(true);
 				jf.setBounds(400, 400, 640, 480);
-				Logger.Log(LogLevel.DEBUG,
+				logger.log(Level.DEBUG,
 						"VIDEO Event for " + e.getDescription());
 			} else {
 				SimHelpContentPanel.getInstance().loadURL(
 						e.getDescription() + "index.html");
-				Logger.Log(LogLevel.DEBUG,
+				logger.log(Level.DEBUG,
 						"Hyperlink Event for " + e.getDescription());
 			}
 		}

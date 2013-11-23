@@ -6,14 +6,17 @@ import java.io.File;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+import evaluation.simulator.conf.service.SimulationConfigService;
 
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
+	
+	private static Logger logger = Logger.getLogger(SimHelpContentPanel.class);
 
 	private static SimHelpContentPanel _instance = null;
 
@@ -47,7 +50,7 @@ public class SimHelpContentPanel extends JPanel {
 	}
 
 	public void loadURL(String url) {
-		Logger.Log(LogLevel.DEBUG, "Loading help-page: " + url);
+		logger.log(Level.DEBUG, "Loading help-page: " + url);
 		try {
 			this._htmlContent.setDocument(new File(url));
 		} catch (Exception e) {

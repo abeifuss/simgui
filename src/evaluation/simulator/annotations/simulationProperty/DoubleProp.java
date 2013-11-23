@@ -2,10 +2,15 @@ package evaluation.simulator.annotations.simulationProperty;
 
 import javax.swing.JOptionPane;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.conf.service.SimulationConfigService;
 
 public class DoubleProp extends SimProp {
+	
+	private static Logger logger = Logger.getLogger(DoubleProp.class);
 
 	private double maxValue;
 	private double minValue;
@@ -54,7 +59,7 @@ public class DoubleProp extends SimProp {
 			return;
 		}
 
-		Logger.Log(LogLevel.ERROR, "For " + super.getPropertyID() + " Value not in range! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
+		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in range! " + tmp + "(double) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}

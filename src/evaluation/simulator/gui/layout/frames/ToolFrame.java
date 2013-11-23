@@ -81,33 +81,10 @@ public class ToolFrame extends JFrame {
 		this.add(panel);
 		this.pack();
 
-		try {
-			this.confToolFrameXPos = UserConfigService.getInstance()
-					.getInteger("CONFTOOLFRAME_XPOS");
-		} catch (Exception e) {
-			this.confToolFrameXPos = 100;
-		}
-
-		try {
-			this.confToolFrameYPos = UserConfigService.getInstance()
-					.getInteger("CONFTOOLFRAME_YPOS");
-		} catch (Exception e) {
-			this.confToolFrameYPos = 100;
-		}
-
-		try {
-			this.confToolFrameWidth = UserConfigService.getInstance()
-					.getInteger("CONFTOOLFRAME_WIDTH");
-		} catch (Exception e) {
-			this.confToolFrameWidth = 500;
-		}
-
-		try {
-			this.confToolFrameHeight = UserConfigService.getInstance()
-					.getInteger("CONFTOOLFRAME_HEIGTH");
-		} catch (Exception e) {
-			this.confToolFrameHeight = 750;
-		}
+		this.confToolFrameXPos  = UserConfigService.getCONFTOOLFRAME_XPOS();
+		this.confToolFrameYPos  = UserConfigService.getCONFTOOLFRAME_YPOS();
+		this.confToolFrameWidth = UserConfigService.getCONFTOOLFRAME_WIDTH();
+		this.confToolFrameHeight = UserConfigService.getCONFTOOLFRAME_HEIGHT();
 
 		this.setBounds(this.confToolFrameXPos, this.confToolFrameYPos,
 				this.confToolFrameWidth, this.confToolFrameHeight);
@@ -115,13 +92,10 @@ public class ToolFrame extends JFrame {
 	}
 
 	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_XPOS",
-				this.getX());
-		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_YPOS",
-				this.getY());
-		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_WIDTH",
-				this.getWidth());
-		UserConfigService.getInstance().setInteger("CONFTOOLFRAME_HEIGTH",
-				this.getHeight());
+		
+		UserConfigService.setCONFTOOLFRAME_HEIGHT(this.getHeight());
+		UserConfigService.setCONFTOOLFRAME_WIDTH(this.getWidth());
+		UserConfigService.setCONFTOOLFRAME_XPOS(this.getX());
+		UserConfigService.setCONFTOOLFRAME_YPOS(this.getY());
 	}
 }

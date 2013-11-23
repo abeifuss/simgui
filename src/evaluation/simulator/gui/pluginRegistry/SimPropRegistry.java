@@ -17,6 +17,8 @@ import java.util.Vector;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -37,10 +39,10 @@ import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.annotations.simulationProperty.StringProp;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.gui.customElements.accordion.ListEntry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 public class SimPropRegistry {
+	
+	private static Logger logger = Logger.getLogger(SimPropRegistry.class);
 
 	private static SimPropRegistry _instance = null;
 
@@ -130,14 +132,13 @@ public class SimPropRegistry {
 		// TODO: Obsolete or even deprecated?
 		// this.scanPlugins();
 
-		Logger.Log(LogLevel.DEBUG, "Now it's time to process defered plugins");
+		logger.log(Level.DEBUG, "Now it's time to process defered plugins");
 		this.processDefered();
 		this.scanForStaticProperties();
 		this.toString();
 	}
 
 	public void dumpConfiguration() {
-
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
@@ -203,15 +204,15 @@ public class SimPropRegistry {
 			}
 
 		} else if ( !this.properties.containsKey(s.getPropertyID()) && isSuperClass) {
-			Logger.Log(LogLevel.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
+			logger.log(Level.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
 			s.setIsGlobal(true);
 			this.properties.put(s.getPropertyID(), s);
 		} else if ( !this.properties.containsKey(s.getPropertyID()) && isGlobal ) {
-			Logger.Log(LogLevel.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
+			logger.log(Level.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
 			s.setIsGlobal(true);
 			this.properties.put(s.getPropertyID(), s);
 		} else {
-			Logger.Log(LogLevel.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
+			logger.log(Level.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
 			s.setIsGlobal(false);
 			this.properties.put(s.getPropertyID(), s);
 		}
@@ -286,8 +287,8 @@ public class SimPropRegistry {
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
@@ -341,8 +342,8 @@ public class SimPropRegistry {
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
@@ -395,8 +396,8 @@ public class SimPropRegistry {
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
@@ -449,8 +450,8 @@ public class SimPropRegistry {
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						}
 						else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
@@ -503,8 +504,8 @@ public class SimPropRegistry {
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
-							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
-							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
@@ -566,7 +567,7 @@ public class SimPropRegistry {
 			boolean autodetectPluginLayer = pluginAnnotation.pluginLayerKey().equals("");
 
 			if ( !autodetectPluginLayer ){
-				Logger.Log(LogLevel.DEBUG, "Disable autodetect for plugin " + plugin.getName() );
+				logger.log(Level.DEBUG, "Disable autodetect for plugin " + plugin.getName() );
 
 				// we need this for invisible plugins
 				plugin.setFallbackLayer(pluginAnnotation.pluginLayerKey());
@@ -607,7 +608,7 @@ public class SimPropRegistry {
 				// readFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayerKey(), false );
 
 			}else{ // AUTODETECT PLUGINLAYER (Lookup superclass)
-				Logger.Log(LogLevel.DEBUG, "Enable autodetect for plugin " + plugin.getName() + ", PluginSuperclass=" + pluginSuperclass.getSimpleName());
+				logger.log(Level.DEBUG, "Enable autodetect for plugin " + plugin.getName() + ", PluginSuperclass=" + pluginSuperclass.getSimpleName());
 
 				String layerDisplayName = "";
 				String layerConfigName = "";
@@ -623,7 +624,7 @@ public class SimPropRegistry {
 					if (directSuperlass.isAnnotationPresent( Plugin.class ) &&
 							(directSuperlass.getAnnotation( Plugin.class ).pluginKey() != pluginAnnotation.pluginKey()) ){
 
-						Logger.Log( LogLevel.ERROR , "Check the annotation in class " + directSuperlass.getCanonicalName() +
+						logger.log( Level.ERROR , "Check the annotation in class " + directSuperlass.getCanonicalName() +
 								" it should be @Plugin( name = \""+ plugin.getName() +"\" ... ) or a valid @PluginSuperclass annotation.");
 					}
 
@@ -637,10 +638,10 @@ public class SimPropRegistry {
 
 					// Process PluginSuperclass fields if not already done
 					if ( !this.layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
-						Logger.Log(LogLevel.DEBUG, "Register PluginSuperclass for " + pluginSuperclassLayerKey);
+						logger.log(Level.DEBUG, "Register PluginSuperclass for " + pluginSuperclassLayerKey);
 
 						// register the plugin layer manually
-						Logger.Log(LogLevel.DEBUG, "Associate plugin layer (" +
+						logger.log(Level.DEBUG, "Associate plugin layer (" +
 								pluginSuperclassLayerKey + ", " + pluginSuperclassLayerName + ")");
 
 						this.readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
@@ -649,7 +650,7 @@ public class SimPropRegistry {
 
 						int layerPosition = pluginSuperclass.getAnnotation( PluginSuperclass.class ).position();
 
-						Logger.Log( LogLevel.DEBUG, "Set position for plugin layer " + pluginSuperclassLayerKey + " to " + layerPosition);
+						logger.log( Level.DEBUG, "Set position for plugin layer " + pluginSuperclassLayerKey + " to " + layerPosition);
 						this.layerMapDisplayNameToOrder.put( pluginSuperclassLayerName, layerPosition );
 						this.layerMapConfigNameToOrder.put( pluginSuperclassLayerKey, layerPosition );
 
@@ -659,13 +660,13 @@ public class SimPropRegistry {
 						if ( !fakePlugins.equals("") ){
 							String[] fakedPlugins = fakePlugins.split(",");
 							for (String fakedPlugin : fakedPlugins) {
-								Logger.Log(LogLevel.DEBUG, "Inject fake plugin " + fakedPlugin + " to " + layerConfigName );
+								logger.log(Level.DEBUG, "Inject fake plugin " + fakedPlugin + " to " + layerConfigName );
 								this.registerPlugin(fakedPlugin, pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), true);
 							}
 						}
 
 					}else{
-						Logger.Log(LogLevel.DEBUG, plugin.getName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
+						logger.log(Level.DEBUG, plugin.getName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
 						this.registerPlugin( plugin.getName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );
 					}
 
@@ -673,7 +674,7 @@ public class SimPropRegistry {
 				}
 				else{
 					// The plugin is not O.K.! Each plugin must be caped by a pluginSuperclass
-					Logger.Log(LogLevel.ERROR, plugin.getName() + " is not caped by a superclass");
+					logger.log(Level.ERROR, plugin.getName() + " is not caped by a superclass");
 					System.exit(-1);
 				}
 
@@ -691,7 +692,7 @@ public class SimPropRegistry {
 
 	private void deferedReadFields(SimGuiPlugin plugin, Field[] declaredFields, String pluginLayerKey, boolean isSuperclass) {
 
-		Logger.Log(LogLevel.DEBUG, "Defer " + plugin.getName() );
+		logger.log(Level.DEBUG, "Defer " + plugin.getName() );
 
 		Vector<Object> deferInformation = new Vector<Object>();
 		deferInformation.add( plugin );
@@ -759,11 +760,11 @@ public class SimPropRegistry {
 			// pluginlayer's corresponging jcombobox!
 			// Plugins which are not registered are not visible in the gui.
 			else {
-				Logger.Log(LogLevel.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
+				logger.log(Level.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
 				this.registeredPlugins.put(plugin, plugInLayer);
 			}
 		} else{
-			Logger.Log(LogLevel.DEBUG, "Plugin (" + plugin + ", " + plugInLayer + ") is set to invisible");
+			logger.log(Level.DEBUG, "Plugin (" + plugin + ", " + plugInLayer + ") is set to invisible");
 		}
 
 	}
@@ -776,7 +777,7 @@ public class SimPropRegistry {
 
 		// Skip invisible plugins
 		if ( !plugin.isVisible() && !(plugin.isGlobal() || plugin.allowGlobalFields()) ){
-			Logger.Log(LogLevel.DEBUG,
+			logger.log(Level.DEBUG,
 					plugin.getName() + " is ignored due to isVisible=" +
 							plugin.isVisible()	+ " and makeFieldsGlobal=" +
 							plugin.isGlobal() + " and allowGlobalFields=" + plugin.allowGlobalFields());
@@ -797,7 +798,7 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								Logger.Log(LogLevel.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -815,7 +816,7 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
@@ -835,15 +836,15 @@ public class SimPropRegistry {
 								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
-									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
+									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
 									property.setPluginLayerID(plugin.getFallbackLayer());
 								}else{
-									Logger.Log(LogLevel.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
+									logger.log(Level.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
 									System.exit(-1);
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -858,7 +859,7 @@ public class SimPropRegistry {
 						property = new IntProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								Logger.Log(LogLevel.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -876,7 +877,7 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
@@ -896,15 +897,15 @@ public class SimPropRegistry {
 								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
-									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
+									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
 									property.setPluginLayerID(plugin.getFallbackLayer());
 								}else{
-									Logger.Log(LogLevel.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
+									logger.log(Level.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
 									System.exit(-1);
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -921,7 +922,7 @@ public class SimPropRegistry {
 						property = new FloatProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								Logger.Log(LogLevel.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -939,7 +940,7 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
@@ -959,15 +960,15 @@ public class SimPropRegistry {
 								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
-									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
+									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
 									property.setPluginLayerID(plugin.getFallbackLayer());
 								}else{
-									Logger.Log(LogLevel.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
+									logger.log(Level.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
 									System.exit(-1);
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -984,7 +985,7 @@ public class SimPropRegistry {
 						property = new DoubleProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								Logger.Log(LogLevel.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -1002,7 +1003,7 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
@@ -1022,15 +1023,15 @@ public class SimPropRegistry {
 								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
-									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
+									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
 									property.setPluginLayerID(plugin.getFallbackLayer());
 								}else{
-									Logger.Log(LogLevel.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
+									logger.log(Level.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
 									System.exit(-1);
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -1047,7 +1048,7 @@ public class SimPropRegistry {
 						property = new StringProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								Logger.Log(LogLevel.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -1065,7 +1066,7 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
@@ -1085,15 +1086,15 @@ public class SimPropRegistry {
 								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
-									Logger.Log(LogLevel.DEBUG, "Fallback to " + plugin.getFallbackLayer());
+									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
 									property.setPluginLayerID(plugin.getFallbackLayer());
 								}else{
-									Logger.Log(LogLevel.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
+									logger.log(Level.ERROR, "Can not determine the Layer for " + property.getName() + "! Reason unknown");
 									System.exit(-1);
 								}
 							}
 
-							Logger.Log(LogLevel.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -1104,7 +1105,7 @@ public class SimPropRegistry {
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else {
-						Logger.Log(LogLevel.ERROR, this + "Bad property type for field" + field.getName() );
+						logger.log(Level.ERROR, this + "Bad property type for field" + field.getName() );
 						continue;
 					}
 				}
@@ -1120,7 +1121,7 @@ public class SimPropRegistry {
 		if ( this.registeredPlugins.containsKey(pluginName) ){
 			return this.registeredPlugins.get(pluginName);
 		}
-		Logger.Log(LogLevel.ERROR, "Plugin " + pluginName + " is unknown");
+		logger.log(Level.ERROR, "Plugin " + pluginName + " is unknown");
 		return null;
 	}
 
@@ -1150,7 +1151,7 @@ public class SimPropRegistry {
 			}
 
 			if ( !insertFlag ) {
-				Logger.Log(LogLevel.ERROR, "No such plugin layer: " + layer );
+				logger.log(Level.ERROR, "No such plugin layer: " + layer );
 			}
 		}
 
@@ -1167,7 +1168,7 @@ public class SimPropRegistry {
 
 	public void setValue(String key, Object arg0) {
 
-		Logger.Log(LogLevel.DEBUG, "key " + key + " arg " + arg0);
+		logger.log(Level.DEBUG, "key " + key + " arg " + arg0);
 
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
@@ -1231,13 +1232,13 @@ public class SimPropRegistry {
 	}
 
 	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
-		Logger.Log(LogLevel.DEBUG, "Set " + pluginLevel + " plugin to " + selectedPlugin);
+		logger.log(Level.DEBUG, "Set " + pluginLevel + " plugin to " + selectedPlugin);
 		this.activePlugins.put(pluginLevel, selectedPlugin);
 		this.activePluginsMapped.put( this.pluginNameToConfigName(pluginLevel), selectedPlugin);
 	}
 
 	public void setActivePluginsMapped(String plugLayer, String selectedPlugin) {
-		Logger.Log(LogLevel.DEBUG, "Set mapped " + this.pluginNameToConfigName(plugLayer) + " plugin to " + selectedPlugin);
+		logger.log(Level.DEBUG, "Set mapped " + this.pluginNameToConfigName(plugLayer) + " plugin to " + selectedPlugin);
 		this.activePlugins.put(this.configNameToPluginName(plugLayer), selectedPlugin);
 		this.activePluginsMapped.put(plugLayer, selectedPlugin);
 	}
