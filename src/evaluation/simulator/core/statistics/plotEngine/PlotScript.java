@@ -39,7 +39,7 @@ public class PlotScript {
 		this.plotScript = Util.getFileContent(Paths.SIM_PLOTSCRIPT_FOLDER_PATH +Simulator.settings.getProperty("NAME_OF_PLOT_SCRIPT"));
 		this.resultFileName = resultSet.ep.experimentStart +"-" +plotName +"-results.txt";
 		this.plotScriptFileName = resultSet.ep.experimentStart +"-" +plotName +"-plotScript.txt";
-		this.resultDiagramFileName = resultSet.ep.experimentStart +"-" +plotName +"-diagram.png";
+		this.resultDiagramFileName = resultSet.ep.experimentStart +"-" +plotName +"-diagram.svg";
 		this.gnuplotConsoleOutputFileName = resultSet.ep.experimentStart +"-" +plotName +"-gnuPlotConsoleOutput";
 		this.setInputFile(this.resultFileName);
 	}
@@ -156,6 +156,7 @@ public class PlotScript {
 		new GnuPlotTask(this.plotScriptFileName, this.gnuplotConsoleOutputFileName).start();
 		// TODO build hack properly to notify GUI
 		gMixBinding.getInstance().setGnuplotConsoleOutputFileName(this.resultDiagramFileName);
+		Logger.Log(LogLevel.DEBUG, "SVG: " + this.resultDiagramFileName);
 	}
 
 }

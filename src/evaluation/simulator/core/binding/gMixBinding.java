@@ -1,8 +1,12 @@
 package evaluation.simulator.core.binding;
 
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import evaluation.simulator.Simulator;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.Statistics;
+import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.ResultPanelFactory;
 import evaluation.simulator.log.LogLevel;
@@ -40,9 +44,19 @@ public class gMixBinding extends Thread {
 //				plotType.plot(results);
 //			}
 
-			SimulationTab.getInstance().getResultsPanel().addTab(this.getGnuplotConsoleOutputFileName(), ResultPanelFactory.getGnuplotResultPanel(this.getGnuplotConsoleOutputFileName()));
-
-
+			final JPanel resultPlot = ResultPanelFactory.getGnuplotResultPanel(this.getGnuplotConsoleOutputFileName());
+			
+			
+			SwingUtilities.invokeLater(new Runnable() {
+			    public void run() {
+			    	SimulationTab.getInstance().getResultsPanel().addTab(getGnuplotConsoleOutputFileName(), resultPlot);
+			    	resultPlot.updateUI();
+			    	resultPlot.repaint();
+			    }
+			});
+			
+			// TODO: The tab has to be refreshed!!!
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

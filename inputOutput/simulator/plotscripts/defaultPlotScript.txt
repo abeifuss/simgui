@@ -32,7 +32,7 @@ set grid
 
 
 # BEGIN modify output for file
-set terminal png
+set terminal svg font "Helvetica, 9"
 
 #set size 0.6
 #set terminal postscript eps "Helvetica" 16
