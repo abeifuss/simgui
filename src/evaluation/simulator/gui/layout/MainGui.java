@@ -81,6 +81,7 @@ public class MainGui extends JFrame {
 
 		this.setVisible(true);
 
+
 		
 		this.mainGuiXPos = UserConfigService.getMAINGUI_XPOS();
 		this.mainGuiYPos =  UserConfigService.getMAINGUI_YPOS();
@@ -88,6 +89,7 @@ public class MainGui extends JFrame {
 		this.mainGuiHeight =  UserConfigService.getMAINGUI_HEIGHT();
 		this.horizontalSplitPlaneDeviderLocation = UserConfigService.getMAINGUI_HSPLIT_DEVIDER_LOCATION();
 		this.consoleHeight = UserConfigService.getMAINGUI_CONSOLE_HEIGHT();
+	
 
 		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth,
 				this.mainGuiHeight);

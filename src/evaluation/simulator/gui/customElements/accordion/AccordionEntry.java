@@ -34,10 +34,11 @@ public class AccordionEntry extends JPanel {
 	private final JButton entryButton;
 	private JTable entryTable = null;
 	private final String localName;
+	private final int tableHeight = 25;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
-		
+
 		if ( jComboBox == null ){
 			logger.log(Level.ERROR, "jComboBox == null");
 		}
@@ -74,14 +75,14 @@ public class AccordionEntry extends JPanel {
 
 			}
 		});
-		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"); 
-		
+		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
 		if ( this.comboBox.getModel().getSize() > 1 ){
 			this.add(this.comboBox, BorderLayout.CENTER);
 		}
-		
-		setDefaultTable();
-		
+
+		this.setDefaultTable();
+
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
@@ -99,10 +100,10 @@ public class AccordionEntry extends JPanel {
 
 			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
-			
+
 			// Select all SimProps which either match the plugin or are global in the plugin layer
 			List<SimProp> tmpListOfAllSimPropertiesForPlugin = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
-			
+
 			for (SimProp s : tmpListOfAllSimPropertiesForPlugin ){
 				logger.log( Level.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
 
@@ -124,13 +125,15 @@ public class AccordionEntry extends JPanel {
 			};
 
 			this.entryTable
-					.addMouseMotionListener(new AccordionMouseMotionAdapter(
-							tmpListOfAllSimPropertiesForPlugin,
-							this.entryTable));
+			.addMouseMotionListener(new AccordionMouseMotionAdapter(
+					tmpListOfAllSimPropertiesForPlugin,
+					this.entryTable));
 
 			this.entryTable.setDefaultRenderer(Object.class,
 					new AccordionTableCellRenderer(
 							tmpListOfAllSimPropertiesForPlugin));
+
+			this.entryTable.setRowHeight(this.tableHeight);
 
 			this.entryTable.setVisible(true);
 
@@ -150,16 +153,15 @@ public class AccordionEntry extends JPanel {
 		if (this.entryTable != null) {
 			this.remove(this.entryTable);
 		}
-		
+
 		// Select all global SimProps for the given plugin layer
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		String pluginLayer = this.localName;
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
-	
 		for (SimProp s : tmpListOfAllVisibleSimProperties ){
 			logger.log( Level.DEBUG, "Load " +s.getPluginID() + " " + s.getName());
 		}
-		
+
 		this.entryTable = new JTable(new AccordionModel(
 				tmpListOfAllVisibleSimProperties)) {
 
@@ -176,13 +178,15 @@ public class AccordionEntry extends JPanel {
 		};
 
 		this.entryTable
-				.addMouseMotionListener(new AccordionMouseMotionAdapter(
-						tmpListOfAllVisibleSimProperties,
-						this.entryTable));
+		.addMouseMotionListener(new AccordionMouseMotionAdapter(
+				tmpListOfAllVisibleSimProperties,
+				this.entryTable));
 
 		this.entryTable.setDefaultRenderer(Object.class,
 				new AccordionTableCellRenderer(
 						tmpListOfAllVisibleSimProperties));
+
+		this.entryTable.setRowHeight(this.tableHeight );
 
 		this.entryTable.setVisible(true);
 
@@ -192,7 +196,7 @@ public class AccordionEntry extends JPanel {
 		this.add(this.entryTable, BorderLayout.SOUTH);
 		this.entryTable.setVisible(false);
 		this.updateUI();
-		
+
 	}
 
 	public void setVibility(boolean b) {

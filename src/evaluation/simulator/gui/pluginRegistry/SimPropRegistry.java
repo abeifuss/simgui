@@ -4,6 +4,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -121,7 +122,13 @@ public class SimPropRegistry {
 		return this.layerMapConfigNameToOrder;
 	}
 
+	public Map<String, Boolean> getIsStaticLayerMap() {
+		return this.isStaticLayerMap;
+	}
+
 	private final Map<String, Integer>  layerMapConfigNameToOrder = new HashMap<String, Integer>();
+
+	private final Map<String, Boolean> isStaticLayerMap = new HashMap<String, Boolean>();
 
 	private SimPropRegistry() {
 		this.numberOfPluginLayers = 0;
@@ -284,15 +291,22 @@ public class SimPropRegistry {
 
 						this.properties.put(property.getPropertyID(), property);
 
+<<<<<<< HEAD
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+=======
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+>>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+							this.isStaticLayerMap.put(layerDisplayName,property.isStatic());
 						} else if ( !globalProperty  && !property.isStatic()){
 							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
 						}
@@ -339,15 +353,23 @@ public class SimPropRegistry {
 
 						this.properties.put(property.getPropertyID(), property);
 
+<<<<<<< HEAD
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+=======
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+>>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+							this.isStaticLayerMap.put(layerDisplayName,property.isStatic());
+
 						} else if ( !globalProperty  && !property.isStatic()){
 							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
 						}
@@ -393,15 +415,23 @@ public class SimPropRegistry {
 
 						this.properties.put(property.getPropertyID(), property);
 
+<<<<<<< HEAD
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+=======
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+>>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+							this.isStaticLayerMap.put(layerDisplayName,property.isStatic());
+
 						} else if ( !globalProperty  && !property.isStatic()){
 							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
 						}
@@ -446,16 +476,24 @@ public class SimPropRegistry {
 						((DoubleProp) property).setValue(annotation.value());
 
 						this.properties.put(property.getPropertyID(), property);
+<<<<<<< HEAD
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						}
 						else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+=======
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+>>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+							this.isStaticLayerMap.put(layerConfigName,property.isStatic());
+
 						}
 						else if ( !globalProperty  && !property.isStatic()){
 							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
@@ -501,15 +539,23 @@ public class SimPropRegistry {
 
 						this.properties.put(property.getPropertyID(), property);
 
+<<<<<<< HEAD
 						if(property.isStatic()){
 							this.staticConfigurationDisplay.put(layerDisplayName, injection.getLayerPosition());
 						} else if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+=======
+						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+							Logger.Log( LogLevel.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
+							Logger.Log( LogLevel.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
+>>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
+							this.isStaticLayerMap.put(layerConfigName,property.isStatic());
+
 						} else if ( !globalProperty  && !property.isStatic()){
 							this.registerPlugin(pluginDisplayName, layerDisplayName, true);
 						}
@@ -1278,7 +1324,6 @@ public class SimPropRegistry {
 
 		String tree = "";
 		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
-			System.err.println( this.layerMapDisplayNameToConfigName.get(layer) );
 			for ( String prop : this.properties.keySet() ){
 				if ( this.properties.get(prop).getPluginID().equals("") &&
 						( this.properties.get(prop).isSuperclass() || this.properties.get(prop).isGlobal() ) &&
@@ -1302,9 +1347,6 @@ public class SimPropRegistry {
 	}
 
 	public String[] getPluginsInLayer( String pluginLayer ) {
-
-		// TODO: order jcombobox items for accordion entries here!
-
 		List<String> tmp = new LinkedList<>();
 
 		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
@@ -1316,7 +1358,7 @@ public class SimPropRegistry {
 				}
 			}
 		}
-
+		Collections.sort(tmp);
 		String[] ret = new String[tmp.size()];
 		ret = tmp.toArray(ret);
 		return ret;

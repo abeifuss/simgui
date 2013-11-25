@@ -18,4 +18,7 @@ public class ResultPanelFactory {
 		//return new TextResult();
 	}
 
+	public static JPanel getGnuplotResultPanel(String gnuplotResultFileName){
+		return new GnuplotPanel(gnuplotResultFileName);
+	}
 }

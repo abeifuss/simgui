@@ -27,12 +27,12 @@ set grid
 
 # BEGIN do not modify section
 #_NONE_OVERWRITABLE_PARAMETERS
-plot "WILL_BE_SET_AUTOMATICALLY"
+# plot "WILL_BE_SET_AUTOMATICALLY"
 # END do not modify section
 
 
 # BEGIN modify output for file
-set terminal postscript color eps solid
+set terminal svg font "Helvetica, 9"
 
 #set size 0.6
 #set terminal postscript eps "Helvetica" 16

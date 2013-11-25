@@ -37,6 +37,7 @@ public class SimConfigPanel extends JPanel {
 
 	private SimConfigPanel() {
 		this.init();
+		this.resize(this.pluginPanel.getWidth(), this.pluginPanel.getHeight());
 	}
 
 	private void init() {
@@ -65,7 +66,8 @@ public class SimConfigPanel extends JPanel {
 
 		this.add(this.pluginPanel, BorderLayout.CENTER);
 		this.add(this.buttonBar, BorderLayout.SOUTH);
-	};
+
+	}
 
 	public void update() {
 		this.pluginPanel.update();
