@@ -14,16 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
-import evaluation.simulator.conf.service.SimulationConfigService;
-import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
-import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
-	
+
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
 
 	private JPanel panel;
@@ -139,7 +138,7 @@ public class PluginPanel extends JScrollPane {
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
-				Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
 				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 				this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
 
@@ -151,44 +150,14 @@ public class PluginPanel extends JScrollPane {
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
-				Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
 				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 				this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;
 			}
-
-<<<<<<< HEAD
-			levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
-
-			String key = layer;
-			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
-			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
-			this.pluginListsMap.get(key).setSelectedIndex(0);
-
-			logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
-
-			i++;
-=======
->>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 		}
 
-<<<<<<< HEAD
-			String key = layer;
-			this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
-			this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
-			this.pluginListsMap.get(key).setSelectedIndex(0);
-
-			logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-			accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
-			this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsGeneral);
-
-			i++;
-		}
-=======
->>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
 		this.panel.add(this.pluginSelectionPanel,gridBagConstraints);

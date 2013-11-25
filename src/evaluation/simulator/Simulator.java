@@ -21,7 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import evaluation.simulator.conf.service.UserConfigService;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -33,11 +34,6 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.core.statistics.GeneralStatistics;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.Statistics;
-<<<<<<< HEAD
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-=======
->>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 import evaluation.simulator.pluginRegistry.ClientSendStyle;
 import evaluation.simulator.pluginRegistry.OutputStrategy;
 import evaluation.simulator.pluginRegistry.PlotType;
@@ -54,7 +50,7 @@ import gnu.trove.TDoubleArrayList;
 
 
 public class Simulator extends GMixTool implements Identifiable {
-	
+
 	private static Logger logger = Logger.getLogger(Simulator.class);
 
 	private final int numericIdentifier;
@@ -98,14 +94,7 @@ public class Simulator extends GMixTool implements Identifiable {
 				Simulator.currentSimulator = this;
 				Statistics.setSimulator(this);
 				Simulator.trafficSourceStatistics = new Statistics(this);
-<<<<<<< HEAD
-				results = performExperimentReturnResults(Simulator.settings);
-				//TODO MURKS???
-				logger.log(Level.ERROR, "MURKS");
-
-=======
 				this.results = performExperimentReturnResults(Simulator.settings);
->>>>>>> c48c4a2c1d9eb8b25a8490dd2c5d8ab7ab73e006
 			} else if (commandLineParameters.globalConfigFile != null) {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(Paths.SIM_EXPERIMENT_DEFINITION_FOLDER_PATH +commandLineParameters.globalConfigFile);
