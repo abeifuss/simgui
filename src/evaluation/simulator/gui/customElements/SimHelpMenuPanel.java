@@ -90,8 +90,10 @@ public class SimHelpMenuPanel extends JPanel implements HyperlinkListener {
 				logger.log(Level.DEBUG,
 						"VIDEO Event for " + e.getDescription());
 			} else {
-				SimHelpContentPanel.getInstance().loadURL(
-						e.getDescription() + "index.html");
+				SimHelpContentPanel p = SimHelpContentPanel.getInstance();
+				p.loadURL(
+						e.getDescription() /* + "index.html"*/);
+				p.repaint();
 				logger.log(Level.DEBUG,
 						"Hyperlink Event for " + e.getDescription());
 			}
