@@ -8,14 +8,18 @@ import java.util.concurrent.Future;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
 
 public class GuiLauncher {
 
-	public static void main(String[] args) {
+	private static Logger logger = Logger.getLogger(GuiLauncher.class);
 
+	public static void main(String[] args) {
+		logger.debug("simGUI start.");
 		@SuppressWarnings("unused")
 		SimPropRegistry simPropRegistry;
 
