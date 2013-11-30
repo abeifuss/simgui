@@ -18,22 +18,22 @@ public class SimHelpContentPanel extends JPanel {
 	
 	private static Logger logger = Logger.getLogger(SimHelpContentPanel.class);
 
-	private static SimHelpContentPanel _instance = null;
+	private static SimHelpContentPanel instance = null;
 
 	public static SimHelpContentPanel getInstance() {
-		if (_instance == null) {
-			_instance = new SimHelpContentPanel();
+		if (instance == null) {
+			instance = new SimHelpContentPanel();
 		}
-		return _instance;
+		return instance;
 	}
 
 	XHTMLPanel _htmlContent;
 
 	private SimHelpContentPanel() {
-		this.init();
+		this.initialize();
 	}
 
-	private void init() {
+	private void initialize() {
 
 		try {
 			this._htmlContent = new XHTMLPanel();

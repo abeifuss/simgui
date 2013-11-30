@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.SimConsoleContentPanel;
-import evaluation.simulator.gui.service.GuiService;
 
 public class ConsoleFrame extends JFrame {
 
@@ -77,11 +76,11 @@ public class ConsoleFrame extends JFrame {
 
 	public void update() {
 		this.simConsoleContentPanel.textArea
-				.setText(this.simConsoleContentPanel._log);
+		.setText(this.simConsoleContentPanel._log);
 		// this.textArea.setCaretPosition(0);
 		this.simConsoleContentPanel.scroll.getVerticalScrollBar().setValue(
 				this.simConsoleContentPanel.scroll.getVerticalScrollBar()
-						.getMaximum());
+				.getMaximum());
 		this.simConsoleContentPanel.scroll.repaint();
 	}
 
@@ -112,7 +111,7 @@ public class ConsoleFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				ConsoleFrame.this.safeProperties();
-				GuiService.getInstance().toggleConsole();
+				//				GuiService.getInstance().toggleConsole();
 			}
 
 			@Override

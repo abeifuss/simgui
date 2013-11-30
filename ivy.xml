@@ -59,5 +59,8 @@
 		<dependency org="javax.media" name="jmf" rev="2.1.1e" />
 		<dependency org="commons-configuration" name="commons-configuration" rev="1.10"/>
 		<dependency org="batik" name="batik-swing" rev="1.6-1"/>
+		<dependency	org="com.jtattoo" name="JTattoo" rev="1.6.9">
+</dependency>
+            
 	</dependencies>
 </ivy-module>

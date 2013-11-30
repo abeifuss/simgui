@@ -18,40 +18,41 @@ public class GuiLauncher {
 
 		@SuppressWarnings("unused")
 		SimPropRegistry simPropRegistry;
-		
+
 		class simPropInitializer implements Callable<SimPropRegistry>
 		{
-		    public SimPropRegistry call()
-		    {
-		    	SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		    	// initial dependency-check for per plugin configurations
+			@Override
+			public SimPropRegistry call()
+			{
+				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+				// initial dependency-check for per plugin configurations
 				DependencyChecker.checkAll(simPropRegistry);
-				
-		        return simPropRegistry;
-		    }
-		}
-		
-		final ExecutorService service;
-        final Future<SimPropRegistry>  task;
-		
-        service = Executors.newFixedThreadPool(1);
-        task    = service.submit(new simPropInitializer());
-        
-        try 
-        {
-        	// block until finished
-        	simPropRegistry = task.get();
-        }
-        catch(final InterruptedException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch(final ExecutionException ex)
-        {
-            ex.printStackTrace();
-        }
 
-        service.shutdownNow();
+				return simPropRegistry;
+			}
+		}
+
+		final ExecutorService service;
+		final Future<SimPropRegistry>  task;
+
+		service = Executors.newFixedThreadPool(1);
+		task    = service.submit(new simPropInitializer());
+
+		try
+		{
+			// block until finished
+			simPropRegistry = task.get();
+		}
+		catch(final InterruptedException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(final ExecutionException ex)
+		{
+			ex.printStackTrace();
+		}
+
+		service.shutdownNow();
 
 		// Change Look and Feel to GTK
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
