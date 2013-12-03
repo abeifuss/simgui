@@ -1,50 +1,17 @@
 package evaluation.simulator.gui.layout;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileFilter;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
-import evaluation.simulator.core.binding.gMixBinding;
-import evaluation.simulator.gui.service.ConfigParser;
 
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
 
-	private JButton addExperiment;
-	JList<File> availableExperiments;
-	final DefaultListModel<File> availableExperimentsModel;
-	gMixBinding callSimulation;
-	private JButton deleteExperiment;
-	private JPanel leftNorth;
-	JScrollPane leftScrollPane;
-
-	private final JPanel north;
-	private final int resultCounter;
-	JScrollPane rightScrollPane;
-	JList<File> runExperiments;
-	final DefaultListModel<File> runExperimentsModel;
-	private final JTabbedPane south;
-	private JButton startButton;
-
-	private JButton stopButton;
-
+	JTabbedPane resultsTabs;
 	private static SimulationTab instance = null;
 
 	public static SimulationTab getInstance() {
@@ -56,8 +23,25 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 	public SimulationTab() {
 		// dirty workaround because of lazyness
-		instance=this;
 
+		JSplitPane splitPane = new JSplitPane();
+		this.add(splitPane);
+
+		JSplitPane rightSplitPane = new JSplitPane();
+		rightSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setRightComponent(rightSplitPane);
+
+		JPanel consolePanel = new JPanel();
+		rightSplitPane.setLeftComponent(consolePanel);
+
+		this.resultsTabs = new JTabbedPane(JTabbedPane.TOP);
+		rightSplitPane.setRightComponent(this.resultsTabs);
+
+		JPanel experimenSelectionPanel = new JPanel();
+		splitPane.setLeftComponent(experimenSelectionPanel);
+		experimenSelectionPanel.setLayout(new BorderLayout(0, 0));
+
+		/*
 		this.availableExperimentsModel = new DefaultListModel<File>();
 		this.runExperimentsModel = new DefaultListModel<File>();
 
@@ -93,9 +77,9 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.deleteExperiment.addActionListener(this);
 
 		this.update();
-
+		 */
 	}
-
+	/*
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
@@ -294,8 +278,15 @@ public class SimulationTab extends JPanel implements ActionListener {
 			}
 		});
 	}
+	 */
 
 	public JTabbedPane getResultsPanel() {
-		return this.south;
+		return this.resultsTabs;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
