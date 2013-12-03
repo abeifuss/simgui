@@ -113,6 +113,8 @@ public class SimPropRegistry {
 
 	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
 
+	private final Map<String, SimGuiPlugin>  pluginMap = new HashMap<String, SimGuiPlugin>();
+
 	// TODO: Merge both order functions
 	public Map<String, Integer> getLayerMapDisplayNameToOrder() {
 		return this.layerMapDisplayNameToOrder;
@@ -688,8 +690,8 @@ public class SimPropRegistry {
 
 				this.deferedReadFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
 			}
+			this.pluginMap.put(plugin.getName(), plugin);
 		}
-
 		// call initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(this);
 	}
@@ -1325,5 +1327,9 @@ public class SimPropRegistry {
 
 	public Map<String, Integer> getStaticConfigurationDisplay() {
 		return this.staticConfigurationDisplay;
+	}
+
+	public Map<String, SimGuiPlugin> getPluginMap() {
+		return this.pluginMap;
 	}
 }
