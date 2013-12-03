@@ -1285,18 +1285,25 @@ public class SimPropRegistry {
 
 		String tree = "";
 		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
+			System.err.println("[" + layer + "]" );
 			for ( String prop : this.properties.keySet() ){
 				if ( this.properties.get(prop).getPluginID().equals("") &&
 						( this.properties.get(prop).isSuperclass() || this.properties.get(prop).isGlobal() ) &&
 						this.properties.get(prop).getPluginLayerID().equals(this.layerMapDisplayNameToConfigName.get(layer)) ){
+					
+					// injected to plugin configuration
 					System.err.println("(" + prop + ")" );
 				}
 			}
 			for ( String plugin : this.registeredPlugins.keySet() ){
 				if ( this.registeredPlugins.get(plugin).equals(this.layerMapDisplayNameToConfigName.get(layer))){
+					
+					// plugins
 					System.err.println("----" + plugin);
 					for ( String prop : this.properties.keySet() ){
 						if ( this.properties.get(prop).getPluginID().equals(plugin) ){
+							
+							// plugin dependent properties
 							System.err.println("------" + prop );
 						}
 					}
