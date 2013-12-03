@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
+import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
 
@@ -25,14 +26,14 @@ public class GuiService {
 	private final ToolFrame configToolFrame;
 	private final HelpFrame helpToolFrame;
 	private final MainGui mainGui;
-	//	private final ConsoleFrame consoleFrame;
+	private final ConsoleFrame consoleFrame;
 
 	private GuiService() {
 
 		this.configToolFrame = ToolFrame.getInstance();
 		this.helpToolFrame = HelpFrame.getInstance();
 		this.mainGui = MainGui.getInstance();
-		//		this.consoleFrame = ConsoleFrame.getInstance();
+		this.consoleFrame = ConsoleFrame.getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -79,6 +80,8 @@ public class GuiService {
 		//			this.consoleFrame.setVisible(false);
 		//			this.mainGui.toogleConsole(true);
 		//		}
+
+		this.consoleFrame.setVisible(true);
 
 		if (showHomeTab) {
 			logger.log(Level.DEBUG, "Show home tab");

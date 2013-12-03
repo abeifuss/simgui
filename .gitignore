@@ -40,3 +40,6 @@ log/*
 # # PDT-specific
 .buildpath
 /bin
+
+/inputOutput
+/doc

@@ -244,7 +244,7 @@ public class MainGui extends JFrame {
 	//	}
 
 	public void update() {
-		this.simulationTab.update();
+		//		this.simulationTab.update();
 	}
 
 }

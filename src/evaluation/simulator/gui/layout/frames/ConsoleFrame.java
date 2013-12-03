@@ -1,8 +1,6 @@
 package evaluation.simulator.gui.layout.frames;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -11,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import evaluation.simulator.conf.service.UserConfigService;
-import evaluation.simulator.gui.customElements.SimConsoleContentPanel;
+import evaluation.simulator.gui.customElements.ConsolePanel;
 
 public class ConsoleFrame extends JFrame {
 
@@ -21,7 +19,7 @@ public class ConsoleFrame extends JFrame {
 	private int consoleFrameWidth;
 	private int consoleFrameXPos;
 	private int consoleFrameYPos;
-	private SimConsoleContentPanel simConsoleContentPanel;
+	private ConsolePanel simConsolePanel;
 	private JPanel panel;
 
 	public static ConsoleFrame getInstance() {
@@ -35,21 +33,12 @@ public class ConsoleFrame extends JFrame {
 		return this.panel;
 	}
 
-	private void init() {
+	private void initialize() {
 		this.panel = new JPanel();
-		this.simConsoleContentPanel = SimConsoleContentPanel.getInstance();
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		gridBagConstraints.anchor = GridBagConstraints.NORTH;
-		gridBagConstraints.weightx = 1;
-		gridBagConstraints.weighty = 1;
-		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
-		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayout.setConstraints(this, gridBagConstraints);
 
-		this.panel.setLayout(gridBagLayout);
-		this.panel.add(this.simConsoleContentPanel, gridBagConstraints);
+		this.panel.setLayout(new BorderLayout());
+		this.simConsolePanel = ConsolePanel.getInstance();
+		this.panel.add(this.simConsolePanel,BorderLayout.CENTER);
 		this.add(this.panel);
 
 		this.consoleFrameXPos = UserConfigService.getCONSOLEFRAME_XPOS();
@@ -68,27 +57,9 @@ public class ConsoleFrame extends JFrame {
 		UserConfigService.setCONSOLEFRAME_YPOS(this.getY());
 	}
 
-	public void append(String msg) {
-		this.simConsoleContentPanel._log = this.simConsoleContentPanel._log
-				+ "\n" + msg;
-		this.update();
-	}
-
-	public void update() {
-		this.simConsoleContentPanel.textArea
-		.setText(this.simConsoleContentPanel._log);
-		// this.textArea.setCaretPosition(0);
-		this.simConsoleContentPanel.scroll.getVerticalScrollBar().setValue(
-				this.simConsoleContentPanel.scroll.getVerticalScrollBar()
-				.getMaximum());
-		this.simConsoleContentPanel.scroll.repaint();
-	}
-
 	private ConsoleFrame() {
 
-		this.getContentPane().setLayout(new BorderLayout());
-
-		this.init();
+		this.initialize();
 
 		this.setTitle("Console");
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
