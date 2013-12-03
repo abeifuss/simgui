@@ -14,11 +14,16 @@ import javax.media.NoPlayerException;
 import javax.media.Player;
 import javax.swing.JFrame;
 
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.conf.service.UserConfigService;
 
 @SuppressWarnings("serial")
 public class TutorialPlayer extends JFrame {
+	
+	private static Logger logger = Logger.getLogger(TutorialPlayer.class);
 
 	private Player _player;
 
@@ -100,12 +105,12 @@ public class TutorialPlayer extends JFrame {
 
 		Component comp;
 		if ((comp = this._player.getVisualComponent()) != null) {
-			Logger.Log(LogLevel.DEBUG, "VISUAL OK");
+			logger.log(Level.DEBUG, "VISUAL OK");
 			this.add(comp, BorderLayout.CENTER);
 		}
 		if ((comp = this._player.getControlPanelComponent()) != null) {
 			this.add(comp, BorderLayout.SOUTH);
-			Logger.Log(LogLevel.DEBUG, "CONTROL OK");
+			logger.log(Level.DEBUG, "CONTROL OK");
 		}
 
 		this._player.start();

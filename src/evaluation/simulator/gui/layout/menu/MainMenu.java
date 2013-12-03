@@ -109,7 +109,7 @@ public class MainMenu extends JMenuBar {
 		this._toggleConsole.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				GuiService.getInstance().toggleConsole();
+				//				GuiService.getInstance().toggleConsole();
 			}
 		});
 	}

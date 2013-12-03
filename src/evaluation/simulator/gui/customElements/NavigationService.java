@@ -1,6 +1,12 @@
 package evaluation.simulator.gui.customElements;
 
+import java.util.Map;
+
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+
 public class NavigationService {
+	
+	private static String path = "etc/html/pluginHelp/";
 
 	private static String content() {
 //		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
@@ -20,6 +26,23 @@ public class NavigationService {
 
 		return menu;
 	}
+	
+	private static String contentdummy() {
+		/*
+		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		Map<String, String>[] pluginLayerMap = simPropRegistry.getPluginLayerMap();
+		
+		for (int i = 0; i < pluginLayerMap.length; i++) {
+			Map<String, String> map = pluginLayerMap[i];
+			for(String string : map.keySet()){
+				System.err.println(string);
+				break;
+			}
+		}
+		*/
+		
+		return "<a href=\"" + path + "dummyPluginHelp.html\">Der Name</a><br/>";
+	}
 
 	public static String getMenu() {
 		String head = ""
@@ -29,6 +52,6 @@ public class NavigationService {
 				+ "<a href=\"VIDEO1\">VIDEOTUTORIAL_TEST</a><br/>";
 		String tail = "</p>\n" + "</body>\n" + "</html>";
 
-		return head + content() + tail;
+		return head + contentdummy() + tail;
 	}
 }

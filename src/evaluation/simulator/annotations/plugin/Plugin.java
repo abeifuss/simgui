@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Plugin {
 
-	public String documentationURL() default "";
+	public String documentationURL() default "dummyPlugin.html";
 
-	public String pluginKey() default "";
+	public String pluginKey() default "";	
 
 	public String pluginLayerKey() default "";
 
@@ -24,4 +24,5 @@ public @interface Plugin {
 	public boolean isPlugin() default true;
 
 	public boolean allowGlobalFields() default true;
+	
 }

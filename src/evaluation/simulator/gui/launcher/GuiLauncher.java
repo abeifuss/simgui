@@ -8,50 +8,55 @@ import java.util.concurrent.Future;
 
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
 
 public class GuiLauncher {
 
-	public static void main(String[] args) {
+	private static Logger logger = Logger.getLogger(GuiLauncher.class);
 
+	public static void main(String[] args) {
+		logger.debug("simGUI start.");
 		@SuppressWarnings("unused")
 		SimPropRegistry simPropRegistry;
-		
+
 		class simPropInitializer implements Callable<SimPropRegistry>
 		{
-		    public SimPropRegistry call()
-		    {
-		    	SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		    	// initial dependency-check for per plugin configurations
+			@Override
+			public SimPropRegistry call()
+			{
+				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+				// initial dependency-check for per plugin configurations
 				DependencyChecker.checkAll(simPropRegistry);
-				
-		        return simPropRegistry;
-		    }
-		}
-		
-		final ExecutorService service;
-        final Future<SimPropRegistry>  task;
-		
-        service = Executors.newFixedThreadPool(1);
-        task    = service.submit(new simPropInitializer());
-        
-        try 
-        {
-        	// block until finished
-        	simPropRegistry = task.get();
-        }
-        catch(final InterruptedException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch(final ExecutionException ex)
-        {
-            ex.printStackTrace();
-        }
 
-        service.shutdownNow();
+				return simPropRegistry;
+			}
+		}
+
+		final ExecutorService service;
+		final Future<SimPropRegistry>  task;
+
+		service = Executors.newFixedThreadPool(1);
+		task    = service.submit(new simPropInitializer());
+
+		try
+		{
+			// block until finished
+			simPropRegistry = task.get();
+		}
+		catch(final InterruptedException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(final ExecutionException ex)
+		{
+			ex.printStackTrace();
+		}
+
+		service.shutdownNow();
 
 		// Change Look and Feel to GTK
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager

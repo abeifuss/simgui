@@ -14,13 +14,16 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
+
+	private static Logger logger = Logger.getLogger(PluginPanel.class);
 
 	private JPanel panel;
 	private JPanel pluginSelectionPanel;
@@ -135,7 +138,7 @@ public class PluginPanel extends JScrollPane {
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
-				Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
 				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 				this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
 
@@ -147,13 +150,12 @@ public class PluginPanel extends JScrollPane {
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
-				Logger.Log(LogLevel.DEBUG, "New Accordion Entry for " + key);
+				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
 				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
 				this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;
 			}
-
 		}
 
 		gridBagConstraints.gridx = 0;
@@ -177,7 +179,7 @@ public class PluginPanel extends JScrollPane {
 
 	void setPlugin(String configName, String selectedPlugin) {
 		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
-		Logger.Log(LogLevel.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
+		logger.log(Level.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
 
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
@@ -189,7 +191,7 @@ public class PluginPanel extends JScrollPane {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
 				accordianEntry.setVibility(true);
 			} else {
-				// Logger.Log(LogLevel.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
+				// Logger.Log(Level.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
 			}
 		}
 

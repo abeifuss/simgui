@@ -9,13 +9,15 @@ import javax.swing.filechooser.FileFilter;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 public class LoadButtonAction implements ActionListener {
+	private static Logger logger = Logger.getLogger(LoadButtonAction.class);
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Logger.Log( LogLevel.DEBUG , "Load config");
+		logger.log( Level.DEBUG , "Load config");
 		
 		// Open FileChooser and load config file. Check whether config file is
 		// of expected type.

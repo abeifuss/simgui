@@ -19,12 +19,17 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
+	
+	private static Logger logger = Logger.getLogger(AccordionEntry.class);
+	
 	private final JComboBox<String> comboBox;
 	private final JButton entryButton;
 	private JTable entryTable = null;
@@ -35,7 +40,7 @@ public class AccordionEntry extends JPanel {
 		this.localName = name;
 
 		if ( jComboBox == null ){
-			Logger.Log(LogLevel.ERROR, "jComboBox == null");
+			logger.log(Level.ERROR, "jComboBox == null");
 		}
 		this.comboBox = jComboBox;
 
@@ -87,20 +92,20 @@ public class AccordionEntry extends JPanel {
 				this.setDefaultTable();
 			}
 
-			Logger.Log(LogLevel.DEBUG, "Reload table");
+			logger.log(Level.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
 			String pluginLevel = this.localName;
 			String pluginName = (String) jComboBox.getSelectedItem();
 
-			Logger.Log( LogLevel.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
+			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 
 			// Select all SimProps which either match the plugin or are global in the plugin layer
 			List<SimProp> tmpListOfAllSimPropertiesForPlugin = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
 
 			for (SimProp s : tmpListOfAllSimPropertiesForPlugin ){
-				Logger.Log( LogLevel.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
+				logger.log( Level.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
 
 			}
 
@@ -154,7 +159,7 @@ public class AccordionEntry extends JPanel {
 		String pluginLayer = this.localName;
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
 		for (SimProp s : tmpListOfAllVisibleSimProperties ){
-			Logger.Log( LogLevel.DEBUG, "Load " +s.getPluginID() + " " + s.getName());
+			logger.log( Level.DEBUG, "Load " +s.getPluginID() + " " + s.getName());
 		}
 
 		this.entryTable = new JTable(new AccordionModel(

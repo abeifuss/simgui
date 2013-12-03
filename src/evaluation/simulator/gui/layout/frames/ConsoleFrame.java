@@ -1,9 +1,6 @@
 package evaluation.simulator.gui.layout.frames;
 
-
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -12,13 +9,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import evaluation.simulator.conf.service.UserConfigService;
-import evaluation.simulator.gui.customElements.SimConsoleContentPanel;
-import evaluation.simulator.gui.service.GuiService;
+import evaluation.simulator.gui.customElements.ConsolePanel;
 
-@SuppressWarnings("serial")
 public class ConsoleFrame extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private static ConsoleFrame instance = null;
+	private int consoleFrameHeight;
+	private int consoleFrameWidth;
+	private int consoleFrameXPos;
+	private int consoleFrameYPos;
+	private ConsolePanel simConsolePanel;
+	private JPanel panel;
 
 	public static ConsoleFrame getInstance() {
 		if (instance == null) {
@@ -27,20 +29,37 @@ public class ConsoleFrame extends JFrame {
 		return instance;
 	}
 
-	private int consoleFrameHeight;
-	private int consoleFrameWidth;
-	private int consoleFrameXPos;
-	private int consoleFrameYPos;
+	public JPanel getPanel() {
+		return this.panel;
+	}
 
-	private SimConsoleContentPanel simConsoleContentPanel;
+	private void initialize() {
+		this.panel = new JPanel();
 
-	private JPanel panel;
+		this.panel.setLayout(new BorderLayout());
+		this.simConsolePanel = ConsolePanel.getInstance();
+		this.panel.add(this.simConsolePanel,BorderLayout.CENTER);
+		this.add(this.panel);
+
+		this.consoleFrameXPos = UserConfigService.getCONSOLEFRAME_XPOS();
+		this.consoleFrameYPos = UserConfigService.getCONSOLEFRAME_YPOS();
+		this.consoleFrameWidth = UserConfigService.getCONSOLEFRAME_WIDTH();
+		this.consoleFrameHeight =  UserConfigService.getCONSOLEFRAME_HEIGHT();
+
+		this.setBounds(this.consoleFrameXPos, this.consoleFrameYPos,
+				this.consoleFrameWidth, this.consoleFrameHeight);
+	}
+
+	private void safeProperties() {
+		UserConfigService.setCONSOLEFRAME_HEIGHT(this.getHeight());
+		UserConfigService.setCONSOLEFRAME_WIDTH(this.getWidth());
+		UserConfigService.setCONSOLEFRAME_XPOS(this.getX());
+		UserConfigService.setCONSOLEFRAME_YPOS(this.getY());
+	}
 
 	private ConsoleFrame() {
 
-		this.getContentPane().setLayout(new BorderLayout());
-
-		this.init();
+		this.initialize();
 
 		this.setTitle("Console");
 		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
@@ -63,7 +82,7 @@ public class ConsoleFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				ConsoleFrame.this.safeProperties();
-				GuiService.getInstance().toggleConsole();
+				//				GuiService.getInstance().toggleConsole();
 			}
 
 			@Override
@@ -84,84 +103,5 @@ public class ConsoleFrame extends JFrame {
 			}
 		});
 	}
-
-	public JPanel getPanel() {
-		return this.panel;
-	}
-
-	public void init() {
-		this.panel = new JPanel();
-
-		this.simConsoleContentPanel = SimConsoleContentPanel.getInstance();
-
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		gridBagConstraints.anchor = GridBagConstraints.NORTH;
-		gridBagConstraints.weightx = 1;
-		gridBagConstraints.weighty = 1;
-		gridBagConstraints.gridx = GridBagConstraints.RELATIVE;
-		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayout.setConstraints(this, gridBagConstraints);
-
-		this.panel.setLayout( gridBagLayout );
-		this.panel.add(this.simConsoleContentPanel,gridBagConstraints);
-		this.add(this.panel);
-
-		try {
-			this.consoleFrameXPos = UserConfigService.getInstance().getInteger(
-					"CONSOLEFRAME_XPOS");
-		} catch (Exception e) {
-			this.consoleFrameXPos = 600;
-		}
-
-		try {
-			this.consoleFrameYPos = UserConfigService.getInstance().getInteger(
-					"CONSOLEFRAME_YPOS");
-		} catch (Exception e) {
-			this.consoleFrameYPos = 100;
-		}
-
-		try {
-			this.consoleFrameWidth = UserConfigService.getInstance().getInteger(
-					"CONSOLEFRAME_WIDTH");
-		} catch (Exception e) {
-			this.consoleFrameWidth = 700;
-		}
-
-		try {
-			this.consoleFrameHeight = UserConfigService.getInstance().getInteger(
-					"CONSOLEFRAME_HEIGTH");
-		} catch (Exception e) {
-			this.consoleFrameHeight = 750;
-		}
-
-		this.setBounds(this.consoleFrameXPos, this.consoleFrameYPos,
-				this.consoleFrameWidth, this.consoleFrameHeight);
-	}
-
-	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("CONSOLEFRAME_XPOS",
-				this.getX());
-		UserConfigService.getInstance().setInteger("CONSOLEFRAME_YPOS",
-				this.getY());
-		UserConfigService.getInstance().setInteger("CONSOLEFRAME_WIDTH",
-				this.getWidth());
-		UserConfigService.getInstance().setInteger("CONSOLEFRAME_HEIGTH",
-				this.getHeight());
-	}
-
-	public void append(String msg) {
-		this.simConsoleContentPanel._log = this.simConsoleContentPanel._log + "\n" + msg;
-		this.update();
-	}
-
-	public void update() {
-		this.simConsoleContentPanel.textArea.setText(this.simConsoleContentPanel._log);
-		//	this.textArea.setCaretPosition(0);
-		this.simConsoleContentPanel.scroll.getVerticalScrollBar().setValue( this.simConsoleContentPanel.scroll.getVerticalScrollBar().getMaximum() );
-		this.simConsoleContentPanel.scroll.repaint();
-	}
-
 
 }

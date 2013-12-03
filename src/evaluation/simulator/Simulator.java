@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -48,6 +50,8 @@ import gnu.trove.TDoubleArrayList;
 
 
 public class Simulator extends GMixTool implements Identifiable {
+
+	private static Logger logger = Logger.getLogger(Simulator.class);
 
 	private final int numericIdentifier;
 	public static Settings settings;

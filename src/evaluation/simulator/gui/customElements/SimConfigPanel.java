@@ -12,18 +12,17 @@ import evaluation.simulator.gui.actionListeners.SaveButtonAction;
 @SuppressWarnings("serial")
 public class SimConfigPanel extends JPanel {
 
-	private static SimConfigPanel _instance = null;
+	private static SimConfigPanel instance = null;
 
 	public static SimConfigPanel getInstance() {
-		if (_instance == null) {
-			_instance = new SimConfigPanel();
+		if (instance == null) {
+			instance = new SimConfigPanel();
 		}
-		return _instance;
+		return instance;
 	}
 
 	public static void setStatusofSaveButton(Boolean enabled) {
 		getInstance().saveButton.setEnabled(enabled);
-		// getInstance()._accordian.repaint();
 	}
 
 	// private Accordion _accordian;
@@ -36,11 +35,11 @@ public class SimConfigPanel extends JPanel {
 	private JButton saveButton;
 
 	private SimConfigPanel() {
-		this.init();
+		this.initialize();
 		this.resize(this.pluginPanel.getWidth(), this.pluginPanel.getHeight());
 	}
 
-	private void init() {
+	private void initialize() {
 
 		// this._accordian = new Accordion();
 		// this.plugInSelection = new PlugInSelection();

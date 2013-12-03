@@ -6,13 +6,16 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 public class AccordionModel implements TableModel {
+	private static Logger logger = Logger.getLogger(AccordionModel.class);
 
 	private final List<SimProp> properties;
 	private final SimPropRegistry simPropRegistry;
@@ -22,7 +25,7 @@ public class AccordionModel implements TableModel {
 		this.properties = tmpListOfAllSimPropertiesInANamespace;
 		
 		for ( SimProp property : properties ){
-			Logger.Log(LogLevel.DEBUG, "Show: " + property.getPropertyID());
+			logger.log(Level.DEBUG, "Show: " + property.getPropertyID());
 		}
 	}
 
@@ -89,7 +92,7 @@ public class AccordionModel implements TableModel {
 	public void setValueAt(Object arg0, int arg1, int arg2) {
 
 		String id = this.properties.get(arg1).getPropertyID();
-		Logger.Log(LogLevel.DEBUG, "Changed " + id);
+		logger.log(Level.DEBUG, "Changed " + id);
 		this.simPropRegistry.setValue(id, arg0);
 
 		DependencyChecker.checkAll(this.simPropRegistry);

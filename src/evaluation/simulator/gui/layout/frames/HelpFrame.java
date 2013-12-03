@@ -1,53 +1,41 @@
 package evaluation.simulator.gui.layout.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 import evaluation.simulator.conf.service.UserConfigService;
-import evaluation.simulator.gui.customElements.SimHelpContentPanel;
-import evaluation.simulator.gui.customElements.SimHelpMenuPanel;
+import evaluation.simulator.gui.customElements.SimHelpPanel;
 import evaluation.simulator.gui.service.GuiService;
-// import log.LogLevel;
+// import log.Level;
 // import log.Logger;
 
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
-	private static HelpFrame _instance = null;
+	private static HelpFrame instance = null;
+	private JPanel panel;
 
 	public static HelpFrame getInstance() {
-		if (_instance == null) {
-			_instance = new HelpFrame();
+		if (instance == null) {
+			instance = new HelpFrame();
 		}
-		return _instance;
+		return instance;
 	}
 
-	private int _helpFrameHeight;
-	private int _helpFrameWidth;
-	private int _helpFrameXPos;
-
-	private int _helpFrameYPos;
-
-	private JPanel panel;
+	private int helpFrameHeight;
+	private int helpFrameWidth;
+	private int helpFrameXPos;
+	private int helpFrameYPos;
 
 	private HelpFrame() {
 
-		this.getContentPane().setLayout(new BorderLayout());
-
-		this.init();
-
-		this.setTitle("Help Tool");
-		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
-				"etc/img/icons/icon128.png"));
-
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setVisible(false);
+		this.initialize();
 
 		this.addWindowListener(new WindowListener() {
 
@@ -89,63 +77,47 @@ public class HelpFrame extends JFrame {
 		return this.panel;
 	}
 
-	public void init() {
-		this.panel = new JPanel();
-		this.panel.setLayout(new BorderLayout());
-		JSplitPane splitPlane = new JSplitPane();
-		// splitPlane.setLayout(new BorderLayout());
+	public void initialize() {
 
-		SimHelpContentPanel content = SimHelpContentPanel.getInstance();
-		SimHelpMenuPanel navigation = SimHelpMenuPanel.getInstance();
+		this.loadProperties();
+		this.getContentPane().setLayout(new BorderLayout());
 
-		splitPlane.setLeftComponent(navigation);
-		splitPlane.setRightComponent(content);
+		this.setPanel(SimHelpPanel.getInstance());
+		this.add(this.getPanel());
 
-		this.panel.add(splitPlane);
-		this.add(this.panel);
+		this.setTitle("Help Tool");
+		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
+				"etc/img/icons/icon128.png"));
 
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setPreferredSize(new Dimension(this.helpFrameWidth, this.helpFrameHeight));
 		this.pack();
+		this.setVisible(false);
 
-		try {
-			this._helpFrameXPos = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_XPOS");
-		} catch (Exception e) {
-			this._helpFrameXPos = 600;
-		}
-
-		try {
-			this._helpFrameYPos = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_YPOS");
-		} catch (Exception e) {
-			this._helpFrameYPos = 100;
-		}
-
-		try {
-			this._helpFrameWidth = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_WIDTH");
-		} catch (Exception e) {
-			this._helpFrameWidth = 700;
-		}
-
-		try {
-			this._helpFrameHeight = UserConfigService.getInstance().getInteger(
-					"HELPFRAME_HEIGTH");
-		} catch (Exception e) {
-			this._helpFrameHeight = 750;
-		}
-
-		this.setBounds(this._helpFrameXPos, this._helpFrameYPos,
-				this._helpFrameWidth, this._helpFrameHeight);
 	}
 
 	private void safeProperties() {
-		UserConfigService.getInstance().setInteger("HELPFRAME_XPOS",
-				this.getX());
-		UserConfigService.getInstance().setInteger("HELPFRAME_YPOS",
-				this.getY());
-		UserConfigService.getInstance().setInteger("HELPFRAME_WIDTH",
-				this.getWidth());
-		UserConfigService.getInstance().setInteger("HELPFRAME_HEIGTH",
-				this.getHeight());
+		UserConfigService.setHELPFRAME_HEIGHT(this.getHeight());
+		UserConfigService.setHELPFRAME_WIDTH(this.getWidth());
+		UserConfigService.setHELPFRAME_XPOS(this.getX());
+		UserConfigService.setHELPFRAME_YPOS(this.getY());
 	}
+
+	private void loadProperties(){
+		this.helpFrameXPos = UserConfigService.getHELPFRAME_XPOS();
+		this.helpFrameYPos = UserConfigService.getHELPFRAME_XPOS();
+		this.helpFrameWidth = UserConfigService.getHELPFRAME_WIDTH();
+		this.helpFrameHeight = UserConfigService.getHELPFRAME_HEIGHT();
+
+		System.out.println(this.helpFrameXPos);
+		System.out.println(this.helpFrameYPos);
+		System.out.println(this.helpFrameWidth);
+		System.out.println(this.helpFrameHeight);
+
+	}
+
+	public void setPanel(JPanel panel) {
+		this.panel = panel;
+	}
+
 }

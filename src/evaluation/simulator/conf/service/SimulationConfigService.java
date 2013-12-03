@@ -13,15 +13,17 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 public class SimulationConfigService {
+	
+	private static Logger logger = Logger.getLogger(SimulationConfigService.class);
 
 	private SimPropRegistry simPropRegistry;
 
@@ -49,7 +51,7 @@ public class SimulationConfigService {
 		// This value is not in range
 		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
-			Logger.Log(LogLevel.DEBUG, "Load value for " + s.getKey());
+			logger.log(Level.DEBUG, "Load value for " + s.getKey());
 			try {
 				if (s.getValue().getValueType() == String.class) {
 					s.getValue().setValue((props.get(s.getKey())));
@@ -78,7 +80,7 @@ public class SimulationConfigService {
 											.getKey())));
 				}
 			} catch (NullPointerException e) {
-				Logger.Log(LogLevel.DEBUG,
+				logger.log(Level.DEBUG,
 						"Can not read value for " + s.getKey());
 			}
 		}
@@ -117,9 +119,9 @@ public class SimulationConfigService {
 			// static part
 			Map<String, String> plugins = this.simPropRegistry
 					.getActivePlugins(true);
-			Logger.Log(LogLevel.DEBUG, "Active plugins are:");
+			logger.log(Level.DEBUG, "Active plugins are:");
 			for (String key : plugins.keySet()) {
-				Logger.Log(LogLevel.DEBUG, key + " with " + plugins.get(key));
+				logger.log(Level.DEBUG, key + " with " + plugins.get(key));
 				props.setProperty(key, plugins.get(key));
 			}
 
@@ -130,7 +132,7 @@ public class SimulationConfigService {
 					props.setProperty(s.getKey(), s.getValue().getValue()
 							.toString());
 				} catch (Exception e) {
-					Logger.Log(LogLevel.DEBUG, s.getKey()
+					logger.log(Level.DEBUG, s.getKey()
 							+ " has not associated property -> SKIP");
 				}
 			}

@@ -2,15 +2,17 @@ package evaluation.simulator.gui.service;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 public class GuiService {
+	private static Logger logger = Logger.getLogger(GuiService.class);
 
 	private static GuiService instance = null;
 
@@ -23,15 +25,15 @@ public class GuiService {
 
 	private final ToolFrame configToolFrame;
 	private final HelpFrame helpToolFrame;
-	private final ConsoleFrame consoleFrame;
 	private final MainGui mainGui;
+	private final ConsoleFrame consoleFrame;
 
 	private GuiService() {
 
 		this.configToolFrame = ToolFrame.getInstance();
 		this.helpToolFrame = HelpFrame.getInstance();
-		this.consoleFrame = ConsoleFrame.getInstance();
 		this.mainGui = MainGui.getInstance();
+		this.consoleFrame = ConsoleFrame.getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -43,50 +45,49 @@ public class GuiService {
 	}
 
 	public void loadOldWinConf() {
-		boolean showConfToolInSeparateWindow = UserConfigService.getInstance()
-				.getBool("SEPERATE_CONF_TOOL");
-		boolean showConfHelpInSeparateWindow = UserConfigService.getInstance()
-				.getBool("SEPERATE_HELP_TOOL");
-		boolean showConfConsoleInSeparateWindow = UserConfigService.getInstance()
-				.getBool("SEPERATE_CONSOLE");
-		boolean showHomeTab = UserConfigService.getInstance().getBool(
-				"TOGGLE_HOME_TAB");
+		boolean showConfToolInSeparateWindow = UserConfigService.getGUISERVICE_SEPERATE_CONF_TOOL();
+		boolean showConfHelpInSeparateWindow = UserConfigService.getGUISERVICE_SEPERATE_HELP_TOOL();
+		boolean showHomeTab = UserConfigService.getGUISERVICE_TOGGLE_HOME_TAB();
+		//		boolean showConfConsoleInSeparateWindow = UserConfigService.getGUISERVICE_SEPERATE_CONSOLE();
 
 		if (showConfToolInSeparateWindow) {
-			Logger.Log(LogLevel.DEBUG, "Seperate config tool");
+			logger.log(Level.DEBUG, "Seperate config tool");
+			this.configToolFrame.initialize();
 			this.configToolFrame.setVisible(true);
 			this.mainGui.toogleConfTool(false);
 		} else {
-			Logger.Log(LogLevel.DEBUG, "Integrate config tool");
+			logger.log(Level.DEBUG, "Integrate config tool");
 			this.configToolFrame.setVisible(false);
 			this.mainGui.toogleConfTool(true);
 		}
 
 		if (showConfHelpInSeparateWindow) {
-			Logger.Log(LogLevel.DEBUG, "Seperate help tool");
+			logger.log(Level.DEBUG, "Seperate help tool");
 			this.helpToolFrame.setVisible(true);
 			this.mainGui.toogleHelpTool(false);
 		} else {
-			Logger.Log(LogLevel.DEBUG, "Integrate help tool");
+			logger.log(Level.DEBUG, "Integrate help tool");
 			this.helpToolFrame.setVisible(false);
 			this.mainGui.toogleHelpTool(true);
 		}
 
-		if (showConfConsoleInSeparateWindow) {
-			Logger.Log(LogLevel.DEBUG, "Seperate console");
-			this.consoleFrame.setVisible(true);
-			this.mainGui.toogleConsole(false);
-		} else {
-			Logger.Log(LogLevel.DEBUG, "Integrate console");
-			this.consoleFrame.setVisible(false);
-			this.mainGui.toogleConsole(true);
-		}
+		//		if (showConfConsoleInSeparateWindow) {
+		//			logger.log(Level.DEBUG, "Seperate console");
+		//			this.consoleFrame.setVisible(true);
+		//			this.mainGui.toogleConsole(false);
+		//		} else {
+		//			logger.log(Level.DEBUG, "Integrate console");
+		//			this.consoleFrame.setVisible(false);
+		//			this.mainGui.toogleConsole(true);
+		//		}
+
+		this.consoleFrame.setVisible(true);
 
 		if (showHomeTab) {
-			Logger.Log(LogLevel.DEBUG, "Show home tab");
+			logger.log(Level.DEBUG, "Show home tab");
 			this.mainGui.toggleHomeTab(true);
 		} else {
-			Logger.Log(LogLevel.DEBUG, "Hide home tab");
+			logger.log(Level.DEBUG, "Hide home tab");
 			this.mainGui.toggleHomeTab(false);
 		}
 	}
@@ -95,55 +96,52 @@ public class GuiService {
 		if (this.configToolFrame.isVisible()) {
 			this.configToolFrame.setVisible(false);
 			this.mainGui.toogleConfTool(true);
-			UserConfigService.getInstance()
-			.setBool("SEPERATE_CONF_TOOL", false);
+			UserConfigService.setGUISERVICE_SEPERATE_CONF_TOOL(false);
 			return;
+		} else{
+			this.configToolFrame.initialize();
+			this.configToolFrame.setVisible(true);
+			this.mainGui.toogleConfTool(false);
+			UserConfigService.setGUISERVICE_SEPERATE_CONF_TOOL(true);
 		}
-		this.configToolFrame.setVisible(true);
-		this.configToolFrame.init();
-		this.mainGui.toogleConfTool(false);
-		UserConfigService.getInstance().setBool("SEPERATE_CONF_TOOL", true);
 	}
 
 	public void toogleHelpTools() {
 		if (this.helpToolFrame.isVisible()) {
 			this.helpToolFrame.setVisible(false);
 			this.mainGui.toogleHelpTool(true);
-			UserConfigService.getInstance()
-			.setBool("SEPERATE_HELP_TOOL", false);
+			UserConfigService.setGUISERVICE_SEPERATE_HELP_TOOL(false);
 			return;
 		}
+		this.helpToolFrame.initialize();
 		this.helpToolFrame.setVisible(true);
-		this.helpToolFrame.init();
 		this.mainGui.toogleHelpTool(false);
-		UserConfigService.getInstance().setBool("SEPERATE_HELP_TOOL", true);
+		UserConfigService.setGUISERVICE_SEPERATE_HELP_TOOL(true);
 
 	}
 
-	public void toggleConsole() {
-		if (this.consoleFrame.isVisible()) {
-			this.consoleFrame.setVisible(false);
-			this.mainGui.toogleConsole(true);
-			UserConfigService.getInstance()
-			.setBool("SEPERATE_CONSOLE", false);
-			return;
-		}
-		this.consoleFrame.setVisible(true);
-		this.consoleFrame.init();
-		this.mainGui.toogleConsole(false);
-		UserConfigService.getInstance().setBool("SEPERATE_CONSOLE", true);
-
-	}
+	//	public void toggleConsole() {
+	//		if (this.consoleFrame.isVisible()) {
+	//			this.consoleFrame.setVisible(false);
+	//			this.mainGui.toogleConsole(true);
+	//			UserConfigService.setGUISERVICE_SEPERATE_CONSOLE(false);
+	//			return;
+	//		} else {
+	//			this.consoleFrame.setVisible(true);
+	//			// FIXME is this the bug?
+	//			//	this.consoleFrame.init();
+	//			this.mainGui.toogleConsole(false);
+	//			UserConfigService.setGUISERVICE_SEPERATE_CONSOLE(true);
+	//		}
+	//	}
 
 	public void toggleHomeTab() {
-
-		if (MainGui.getInstance().homeTabIsShown()) {
+		if (MainGui.getInstance().homeTabStatus) {
 			this.mainGui.toggleHomeTab(false);
-			UserConfigService.getInstance().setBool("TOGGLE_HOME_TAB", false);
+			UserConfigService.setGUISERVICE_TOGGLE_HOME_TAB(false);
 			return;
 		}
 		this.mainGui.toggleHomeTab(true);
-		UserConfigService.getInstance().setBool("TOGGLE_HOME_TAB", true);
-
+		UserConfigService.setGUISERVICE_TOGGLE_HOME_TAB(true);
 	}
 }

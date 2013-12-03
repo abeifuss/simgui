@@ -7,18 +7,20 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.log.LogLevel;
-import evaluation.simulator.log.Logger;
 
 public class SaveButtonAction implements ActionListener {
+	private static Logger logger = Logger.getLogger(SaveButtonAction.class);
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		Logger.Log( LogLevel.DEBUG , "Save config");
+		logger.log( Level.DEBUG , "Save config");
 		
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("etc/experiments/"));
