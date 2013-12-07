@@ -33,7 +33,7 @@ import evaluation.simulator.gui.layout.TutorialPlayer;
 
 @SuppressWarnings("serial")
 public class SimHelpMenuPanel extends JPanel implements HyperlinkListener {
-	
+
 	private static Logger logger = Logger.getLogger(SimHelpMenuPanel.class);
 
 	static JEditorPane _htmlPane;

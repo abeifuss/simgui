@@ -2,46 +2,55 @@ package evaluation.simulator.gui.customElements;
 
 import java.util.Map;
 
+import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 public class NavigationService {
-	
+
 	private static String path = "etc/html/pluginHelp/";
+	private static Map<String, String> layerMapDisplayNameToConfigName;
+	private static Map<String, SimProp> propertyMap;
+	private static Map<String, String> registeredPlugins;
 
 	private static String content() {
-//		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
-//		Map<String, String>[] plugins = simPropRegistry.getPluginLayerMap();
-
+		layerMapDisplayNameToConfigName = SimPropRegistry.getInstance().getLayerMapDisplayNameToConfigName();
+		propertyMap = SimPropRegistry.getInstance().getProperties();
+		registeredPlugins = SimPropRegistry.getInstance().getRegisteredPlugins();
 		String menu = "";
-//		for (Map<String, String> plugin : plugins) {
-//			// TODO: Reimplement
-//			Set<Entry<String, String>> pluginsInLayer = plugin.entrySet();
-//			for (Entry<String, String> entry : pluginsInLayer) {
-//				menu += "<a href=\"etc/html/plugins/"
-//						+ entry.getKey().replaceAll("\\.class", "/") + "\">"
-//						+ entry.getKey().split("\\.", 2)[0] + "</a><br/>\n";
-//			}
-//		}
 
-		return menu;
-	}
-	
-	private static String contentdummy() {
-		/*
-		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		Map<String, String>[] pluginLayerMap = simPropRegistry.getPluginLayerMap();
-		
-		for (int i = 0; i < pluginLayerMap.length; i++) {
-			Map<String, String> map = pluginLayerMap[i];
-			for(String string : map.keySet()){
-				System.err.println(string);
-				break;
+		for ( String layer : layerMapDisplayNameToConfigName.keySet() ){
+			menu+="<h1>"+layer+"</h1>";
+			for ( String prop : propertyMap.keySet() ){
+				if ( propertyMap.get(prop).getPluginID().equals("") &&
+						( propertyMap.get(prop).isSuperclass() || propertyMap.get(prop).isGlobal() ) &&
+						propertyMap.get(prop).getPluginLayerID().equals(layerMapDisplayNameToConfigName.get(layer)) ){
+
+					menu += "<h2><a href=\"etc/html/plugins/"
+							+ prop+".html\">"
+							+ prop + "</a></h2><br/>\n";
+				}
+			}
+			for ( String plugin : registeredPlugins.keySet() ){
+				if ( registeredPlugins.get(plugin).equals(layerMapDisplayNameToConfigName.get(layer))){
+
+					// plugins
+					menu += "<h2><a href=\"etc/html/plugins/"
+							+ plugin+".html\">"
+							+ plugin + "</a></h2><br/>\n";
+					for ( String prop : propertyMap.keySet() ){
+						if ( propertyMap.get(prop).getPluginID().equals(plugin) ){
+
+							// plugin dependent properties
+							menu += "<a href=\"etc/html/plugins/"
+									+ prop+".html\">"
+									+ prop + "</a><br/>\n";
+						}
+					}
+				}
 			}
 		}
-		*/
-		
-		return "<a href=\"" + path + "dummyPluginHelp.html\">Der Name</a><br/>";
+		return menu;
 	}
 
 	public static String getMenu() {
@@ -52,6 +61,6 @@ public class NavigationService {
 				+ "<a href=\"VIDEO1\">VIDEOTUTORIAL_TEST</a><br/>";
 		String tail = "</p>\n" + "</body>\n" + "</html>";
 
-		return head + contentdummy() + tail;
+		return head + content() + tail;
 	}
 }

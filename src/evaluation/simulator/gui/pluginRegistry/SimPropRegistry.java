@@ -151,14 +151,14 @@ public class SimPropRegistry {
 	}
 
 	public Set<Entry<String, SimProp>> getAllSimProps() {
-		return this.properties.entrySet();
+		return this.getProperties().entrySet();
 	}
 
 	public List<Entry<String, String>> getPluginItems(String pluginName) {
 
 		List<Entry<String, String>> mapIdToName = new LinkedList<Entry<String, String>>();
 
-		Iterator<Entry<String, SimProp>> iter = this.properties.entrySet().iterator();
+		Iterator<Entry<String, SimProp>> iter = this.getProperties().entrySet().iterator();
 		while (iter.hasNext()) {
 			SimProp entry = iter.next().getValue();
 			if (pluginName.equals(entry.getPluginID())) {
@@ -175,12 +175,12 @@ public class SimPropRegistry {
 
 	public SimProp getValue(String key) {
 
-		return this.properties.get(key);
+		return this.getProperties().get(key);
 	}
 
 	public void register(SimProp s, boolean isSuperClass, boolean isGlobal, String pluginLayer) {
-		if (this.properties.containsKey(s.getPropertyID()) &&
-				!this.properties.get( s.getPropertyID() ).getPluginLayerID().equals(this.pluginNameToConfigName(pluginLayer))) {
+		if (this.getProperties().containsKey(s.getPropertyID()) &&
+				!this.getProperties().get( s.getPropertyID() ).getPluginLayerID().equals(this.pluginNameToConfigName(pluginLayer))) {
 
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -188,10 +188,10 @@ public class SimPropRegistry {
 			int y = graphicsDevice.getDisplayMode().getHeight();
 
 			//
-			if ( !this.properties.get( s.getPropertyID() ).equals(pluginLayer) ) {
+			if ( !this.getProperties().get( s.getPropertyID() ).equals(pluginLayer) ) {
 				JOptionPane alert = new JOptionPane("Redefinition of property '" + s.getPropertyID()
 						+ "' at superclass level detected \n (" +
-						this.properties.get( s.getPropertyID() ).getPluginLayerID() + "" +
+						this.getProperties().get( s.getPropertyID() ).getPluginLayerID() + "" +
 						", " + this.pluginNameToConfigName(pluginLayer) + ") \n" +
 						"Please fix the problem!");
 
@@ -212,18 +212,18 @@ public class SimPropRegistry {
 				dialog.setVisible(true);
 			}
 
-		} else if ( !this.properties.containsKey(s.getPropertyID()) && isSuperClass) {
+		} else if ( !this.getProperties().containsKey(s.getPropertyID()) && isSuperClass) {
 			logger.log(Level.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
 			s.setIsGlobal(true);
-			this.properties.put(s.getPropertyID(), s);
-		} else if ( !this.properties.containsKey(s.getPropertyID()) && isGlobal ) {
+			this.getProperties().put(s.getPropertyID(), s);
+		} else if ( !this.getProperties().containsKey(s.getPropertyID()) && isGlobal ) {
 			logger.log(Level.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
 			s.setIsGlobal(true);
-			this.properties.put(s.getPropertyID(), s);
+			this.getProperties().put(s.getPropertyID(), s);
 		} else {
 			logger.log(Level.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
 			s.setIsGlobal(false);
-			this.properties.put(s.getPropertyID(), s);
+			this.getProperties().put(s.getPropertyID(), s);
 		}
 	}
 
@@ -291,12 +291,12 @@ public class SimPropRegistry {
 
 						((BoolProp) property).setValue(annotation.value());
 
-						this.properties.put(property.getPropertyID(), property);
+						this.getProperties().put(property.getPropertyID(), property);
 
-						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.getLayerMapDisplayNameToConfigName().put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
@@ -345,12 +345,12 @@ public class SimPropRegistry {
 						((IntProp) property).setMinValue(annotation.min());
 						((IntProp) property).setMaxValue(annotation.max());
 
-						this.properties.put(property.getPropertyID(), property);
+						this.getProperties().put(property.getPropertyID(), property);
 
-						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.getLayerMapDisplayNameToConfigName().put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
@@ -399,12 +399,12 @@ public class SimPropRegistry {
 						((FloatProp) property).setMaxValue(annotation.max());
 						((FloatProp) property).setValue(annotation.value());
 
-						this.properties.put(property.getPropertyID(), property);
+						this.getProperties().put(property.getPropertyID(), property);
 
-						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.getLayerMapDisplayNameToConfigName().put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
@@ -453,11 +453,11 @@ public class SimPropRegistry {
 						((DoubleProp) property).setMaxValue(annotation.max());
 						((DoubleProp) property).setValue(annotation.value());
 
-						this.properties.put(property.getPropertyID(), property);
-						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+						this.getProperties().put(property.getPropertyID(), property);
+						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.getLayerMapDisplayNameToConfigName().put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
@@ -506,12 +506,12 @@ public class SimPropRegistry {
 						((StringProp) property).setValue(annotation.value());
 						((StringProp) property).setPossibleValues(annotation.possibleValues());
 
-						this.properties.put(property.getPropertyID(), property);
+						this.getProperties().put(property.getPropertyID(), property);
 
-						if ( !this.layerMapDisplayNameToConfigName.containsKey(layerDisplayName)){
+						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
 							logger.log( Level.DEBUG , "Register plugin layer (" + layerConfigName + ", " + layerDisplayName + ")");
 							logger.log( Level.DEBUG, "Set position for injected plugin layer " + layerConfigName + " to " + layerPosition);
-							this.layerMapDisplayNameToConfigName.put(layerDisplayName, layerConfigName);
+							this.getLayerMapDisplayNameToConfigName().put(layerDisplayName, layerConfigName);
 							this.layerMapConfigNameToDisplayName.put(layerConfigName, layerDisplayName);
 							this.layerMapDisplayNameToOrder.put( layerDisplayName, layerPosition );
 							this.layerMapConfigNameToOrder.put( layerConfigName, layerPosition );
@@ -596,11 +596,11 @@ public class SimPropRegistry {
 					plugin.setFallbackLayer(pluginSuperclassLayerKey);
 
 					// Process PluginSuperclass fields if not already done
-					if ( !this.layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
+					if ( !this.getLayerMapDisplayNameToConfigName().containsKey( pluginSuperclassLayerName )){
 
 						// We can/must read PluginSuperclass fields without registering a plugin
 						this.readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
-						this.layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
+						this.getLayerMapDisplayNameToConfigName().put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
 						this.layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
 					}
 				}
@@ -644,7 +644,7 @@ public class SimPropRegistry {
 					plugin.setFallbackLayer(pluginSuperclassLayerKey);
 
 					// Process PluginSuperclass fields if not already done
-					if ( !this.layerMapDisplayNameToConfigName.containsKey( pluginSuperclassLayerName )){
+					if ( !this.getLayerMapDisplayNameToConfigName().containsKey( pluginSuperclassLayerName )){
 						logger.log(Level.DEBUG, "Register PluginSuperclass for " + pluginSuperclassLayerKey);
 
 						// register the plugin layer manually
@@ -652,7 +652,7 @@ public class SimPropRegistry {
 								pluginSuperclassLayerKey + ", " + pluginSuperclassLayerName + ")");
 
 						this.readFields( plugin, pluginSuperclass.getDeclaredFields(), pluginSuperclassLayerKey, true );
-						this.layerMapDisplayNameToConfigName.put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
+						this.getLayerMapDisplayNameToConfigName().put( pluginSuperclassLayerName, pluginSuperclassLayerKey);
 						this.layerMapConfigNameToDisplayName.put( pluginSuperclassLayerKey, pluginSuperclassLayerName );
 
 						int layerPosition = pluginSuperclass.getAnnotation( PluginSuperclass.class ).position();
@@ -745,11 +745,11 @@ public class SimPropRegistry {
 
 			// Check if this plugin is already known for a different pluginlayer.
 			// In this case show an alert an exit. The Pluginprogrammer has to fix ist
-			if ( this.registeredPlugins.containsKey(plugin) ){
-				if ( !this.registeredPlugins.get(plugin).equals(plugInLayer) ){
+			if ( this.getRegisteredPlugins().containsKey(plugin) ){
+				if ( !this.getRegisteredPlugins().get(plugin).equals(plugInLayer) ){
 					JOptionPane alert = new JOptionPane("Reuse of Plugin name '" + plugin +
 							"' in plugin layers: \n" +
-							this.registeredPlugins.get(plugin) + " \n" +
+							this.getRegisteredPlugins().get(plugin) + " \n" +
 							plugInLayer + " \n" +
 							"Please fix the problem!");
 
@@ -768,7 +768,7 @@ public class SimPropRegistry {
 			// Plugins which are not registered are not visible in the gui.
 			else {
 				logger.log(Level.DEBUG, "Register plugin (" + plugin + ", " + plugInLayer + ")");
-				this.registeredPlugins.put(plugin, plugInLayer);
+				this.getRegisteredPlugins().put(plugin, plugInLayer);
 			}
 		} else{
 			logger.log(Level.DEBUG, "Plugin (" + plugin + ", " + plugInLayer + ") is set to invisible");
@@ -776,7 +776,7 @@ public class SimPropRegistry {
 
 	}
 
-	private Map<String, String> getRegisteredPlugins(){
+	public Map<String, String> getRegisteredPlugins(){
 		return this.registeredPlugins;
 	}
 
@@ -1125,8 +1125,8 @@ public class SimPropRegistry {
 
 	private String getPluginLayer(String pluginName) {
 
-		if ( this.registeredPlugins.containsKey(pluginName) ){
-			return this.registeredPlugins.get(pluginName);
+		if ( this.getRegisteredPlugins().containsKey(pluginName) ){
+			return this.getRegisteredPlugins().get(pluginName);
 		}
 		logger.log(Level.ERROR, "Plugin " + pluginName + " is unknown");
 		return null;
@@ -1146,7 +1146,7 @@ public class SimPropRegistry {
 			String layer = entry.getValue();
 
 			boolean insertFlag = false;
-			for (int i = 0; i < this.layerMapDisplayNameToConfigName.size(); i++){
+			for (int i = 0; i < this.getLayerMapDisplayNameToConfigName().size(); i++){
 
 				// Append plugins config name and corresponding layers display name
 				// if plugin's layer matches
@@ -1179,19 +1179,19 @@ public class SimPropRegistry {
 
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
-			this.properties.get(key).setValue(arg0);
+			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == Float.class) {
 			//System.out.println("Float");
-			this.properties.get(key).setValue(arg0);
+			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == Double.class) {
 			//System.out.println("Double");
-			this.properties.get(key).setValue(arg0);
+			this.getProperties().get(key).setValue(arg0);
 		}else if (arg0.getClass() == Integer.class) {
 			//System.out.println("Integer");
-			this.properties.get(key).setValue(arg0);
+			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == String.class) {
 			//System.out.println("String");
-			this.properties.get(key).setValue(arg0);
+			this.getProperties().get(key).setValue(arg0);
 
 		} else {
 
@@ -1204,11 +1204,11 @@ public class SimPropRegistry {
 
 		List<SimProp> simPropsInPluginLayer = new LinkedList<SimProp>();
 
-		for ( String key : this.properties.keySet() ) {
-			SimProp simProp = this.properties.get(key);
+		for ( String key : this.getProperties().keySet() ) {
+			SimProp simProp = this.getProperties().get(key);
 
 			if ( ( simProp.isSuperclass() || simProp.isGlobal() )
-					&& simProp.getPluginLayerID().equals(this.layerMapDisplayNameToConfigName.get(pluginLayer)
+					&& simProp.getPluginLayerID().equals(this.getLayerMapDisplayNameToConfigName().get(pluginLayer)
 							) ){
 
 				simPropsInPluginLayer.add( simProp );
@@ -1224,12 +1224,12 @@ public class SimPropRegistry {
 
 		List<SimProp> simPropertiesInANamespace = new LinkedList<SimProp>();
 
-		for ( String key : this.properties.keySet() ) {
-			SimProp simProp = this.properties.get(key);
+		for ( String key : this.getProperties().keySet() ) {
+			SimProp simProp = this.getProperties().get(key);
 
 			if ( simProp.getPluginID().equals(pluginName) ||
 					( simProp.isSuperclass() && simProp.getPluginLayerID().equals(
-							this.layerMapDisplayNameToConfigName.get(pluginLayer)
+							this.getLayerMapDisplayNameToConfigName().get(pluginLayer)
 							)) ){
 				simPropertiesInANamespace.add( simProp );
 			}
@@ -1259,11 +1259,11 @@ public class SimPropRegistry {
 	}
 
 	public List<String> getPluginLevels() {
-		return new LinkedList<String>(this.layerMapDisplayNameToConfigName.keySet());
+		return new LinkedList<String>(this.getLayerMapDisplayNameToConfigName().keySet());
 	}
 
 	public String pluginNameToConfigName(String pluginLayer) {
-		return this.layerMapDisplayNameToConfigName.get(pluginLayer);
+		return this.getLayerMapDisplayNameToConfigName().get(pluginLayer);
 	}
 
 	public String configNameToPluginName(String pluginName) {
@@ -1284,25 +1284,25 @@ public class SimPropRegistry {
 	public String toString(){
 
 		String tree = "";
-		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
+		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
 			System.err.println("[" + layer + "]" );
-			for ( String prop : this.properties.keySet() ){
-				if ( this.properties.get(prop).getPluginID().equals("") &&
-						( this.properties.get(prop).isSuperclass() || this.properties.get(prop).isGlobal() ) &&
-						this.properties.get(prop).getPluginLayerID().equals(this.layerMapDisplayNameToConfigName.get(layer)) ){
-					
+			for ( String prop : this.getProperties().keySet() ){
+				if ( this.getProperties().get(prop).getPluginID().equals("") &&
+						( this.getProperties().get(prop).isSuperclass() || this.getProperties().get(prop).isGlobal() ) &&
+						this.getProperties().get(prop).getPluginLayerID().equals(this.getLayerMapDisplayNameToConfigName().get(layer)) ){
+
 					// injected to plugin configuration
 					System.err.println("(" + prop + ")" );
 				}
 			}
-			for ( String plugin : this.registeredPlugins.keySet() ){
-				if ( this.registeredPlugins.get(plugin).equals(this.layerMapDisplayNameToConfigName.get(layer))){
-					
+			for ( String plugin : this.getRegisteredPlugins().keySet() ){
+				if ( this.getRegisteredPlugins().get(plugin).equals(this.getLayerMapDisplayNameToConfigName().get(layer))){
+
 					// plugins
 					System.err.println("----" + plugin);
-					for ( String prop : this.properties.keySet() ){
-						if ( this.properties.get(prop).getPluginID().equals(plugin) ){
-							
+					for ( String prop : this.getProperties().keySet() ){
+						if ( this.getProperties().get(prop).getPluginID().equals(plugin) ){
+
 							// plugin dependent properties
 							System.err.println("------" + prop );
 						}
@@ -1317,10 +1317,10 @@ public class SimPropRegistry {
 	public String[] getPluginsInLayer( String pluginLayer ) {
 		List<String> tmp = new LinkedList<>();
 
-		for ( String layer : this.layerMapDisplayNameToConfigName.keySet() ){
+		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
 			if ( layer.equals( pluginLayer )){
-				for ( String plugin : this.registeredPlugins.keySet() ){
-					if ( this.registeredPlugins.get(plugin).equals(this.layerMapDisplayNameToConfigName.get(layer))){
+				for ( String plugin : this.getRegisteredPlugins().keySet() ){
+					if ( this.getRegisteredPlugins().get(plugin).equals(this.getLayerMapDisplayNameToConfigName().get(layer))){
 						tmp.add(plugin);
 					}
 				}
@@ -1338,5 +1338,13 @@ public class SimPropRegistry {
 
 	public Map<String, SimGuiPlugin> getPluginMap() {
 		return this.pluginMap;
+	}
+
+	public Map<String, String> getLayerMapDisplayNameToConfigName() {
+		return this.layerMapDisplayNameToConfigName;
+	}
+
+	public Map<String, SimProp> getProperties() {
+		return this.properties;
 	}
 }
