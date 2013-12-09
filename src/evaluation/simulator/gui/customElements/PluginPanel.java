@@ -3,7 +3,6 @@ package evaluation.simulator.gui.customElements;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,6 +17,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
+import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -34,24 +34,6 @@ public class PluginPanel extends JScrollPane {
 
 	public PluginPanel() {
 		this.initPanel();
-	}
-
-	private class ValueComparator implements Comparator<String> {
-
-		Map<String, Integer> base;
-		public ValueComparator(Map<String, Integer> base) {
-			this.base = base;
-		}
-
-		// Note: this comparator imposes orderings that are inconsistent with equals.
-		@Override
-		public int compare(String a, String b) {
-			if (this.base.get(a) <= this.base.get(b)) {
-				return 1;
-			} else {
-				return -1;
-			}
-		}
 	}
 
 	private void initPanel() {
