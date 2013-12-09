@@ -56,6 +56,10 @@ public class LossySynchronousBatch extends OutputStrategyImpl implements Identif
 	@DoubleSimulationProperty( name = "Request rate", propertykey = "LSB_REQUEST_RATE" )
 	private double requestRate;
 	
+	@DoubleSimulationProperty( name = "Reply rate", propertykey = "LSB_REPLY_RATE" )
+	private double replyRate;
+	
+	
 	public LossySynchronousBatch(Mix mix, Simulator simulator) {
 		super(mix, simulator);
 		this.statistics = new Statistics(this);
@@ -64,7 +68,7 @@ public class LossySynchronousBatch extends OutputStrategyImpl implements Identif
 		this.requestRate = Simulator.settings.getPropertyAsDouble("LSB_REQUEST_RATE");
 		this.requestBatch = new SimplexLossySynchronousBatch(true, requestRate, numberOfClients);
 		if (Simulator.settings.getProperty("COMMUNICATION_MODE").equals("SIMPLEX_REPLY") || Simulator.settings.getProperty("COMMUNICATION_MODE").equals("DUPLEX")) {
-			double replyRate = Simulator.settings.getPropertyAsDouble("LSB_REPLY_RATE");
+			replyRate = Simulator.settings.getPropertyAsDouble("LSB_REPLY_RATE");
 			this.replyBatch = new SimplexLossySynchronousBatch(true, replyRate, numberOfClients);
 			if (mix.isLastMix())
 				clientReplyWaitingQueues = new HashMap<String, Vector<TransportMessage>>();
