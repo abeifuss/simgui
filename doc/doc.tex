@@ -21,6 +21,9 @@
 %\usepackage{calc}
 %\usepackage{pgfopts}
 
+\setlength\parindent{0pt}%Festlegen des Absatzeinzuges
+\setlength\mathindent{0pt}%Festlegen des Einzuges für abgesetzte Formeln
+
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
 \renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
@@ -65,32 +68,129 @@ Benutzer- / Entwicklerhandbuch} % Subtitle
 \section{Einleitung} % (fold)
 \label{sec:einleitung}
 
-\subsection{gMix} % (fold)
+\subsection{gMix (Todo Malte)} % (fold)
 \label{sub:gmix}
 Dieser Abschnitt behandelt das Thema Mixe und motiviert die Entwicklung des gMix-Simulators.
 % subsection gmix (end)
 
-\subsection{Ziele der GUI} % (fold)ssu
+\subsection{Ziele der GUI (Todo Malte)} % (fold)ssu
 \label{sub:ziele_der_gui}
-In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, für die die GUI gedacht ist. Es wird analysiert, welche Anforderungen und Bedürfnisse die jeweiligen Anwendergruppen haben. Entlang der gewonnenen Erkenntnissen soll dann die GUI entwickelt werden, so dass nach Möglichkeit die Anforderungen aller Gruppen zufriedengestellt werden können.
+In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, für die GUI gedacht ist. Es wird analysiert, welche Anforderungen und Bedürfnisse die jeweiligen Anwendergruppen haben. Entlang der gewonnenen Erkenntnissen soll dann die GUI entwickelt werden, so dass nach Möglichkeit die Anforderungen aller Gruppen zufriedengestellt werden können.
 % subsection ziele_der_gui (end)
 
-\subsection{XML vs. Annotations} % (fold)
+\subsection{XML vs. Annotations (Todo Alex)} % (fold)
 \label{sub:xml}
-In diesem Abschnitt werden wir motivieren, warum wir in der GUI auf Annotations setzen und XML vermeiden.
+In diesem Abschnitt werden wir kurz motivieren, warum wir uns entschieden haben in der GUI auf Annotations zu setzen und XML vermeiden. 
+
+Flexibilität / Erweiterbarkeit
+Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} pluginbasiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise neue Eigenschaften erhalten. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotations enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emphSimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.
+
+Dezentralisierung:
+Im Gegensatz zu XML werden Annotations direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden, was bei Plugin-System sehr wichtig ist. Dieses wäre auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins. 
+
+Ein dritter Aspekt ist, das Annotations Teil der Sprache Java sind. Dieses bedeutet für den Entwickler, dass er bei den Programmieraufgaben mehr Unterstützung durch die IDE bekommt. So wird er bei der Erweiterung von Annotations beispielsweise frühzeitig auf syntaktische Fehler aufmerksam gemacht. Bei der Verwendung von XML ist dieses nicht gegeben, da zwischen der XML-Datei und Java-Code kein syntaktischer Zusammenhang besteht. 
+
 % subsection xml (end)
 
 % section einleitung (end)
 
+\subsection{Annotations} % (fold)
+\label{sub:annotations}
+Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Bevor die Architektur der GUI erklärt wird, ist es sinnvoll über die Annotations selbst zu sprechen.
+% subsection annotations (end)
+
+\subsubsection{Property Annotation} % (fold)
+\label{ssub:feld_annotation}
+
+\begin{itemize}
+	\item name:
+	\item propertykey:
+	\item order:
+	\item tooltip:
+	\item inject:
+	\item global:
+	\item value:
+	\item valueType:
+	\item isStatic:
+	\item value_requirements:
+	\item enable_requirements:
+\end{itemize}
+
+% subsubsection feld_annotation (end)
+
+\subsubsection{Plugin Annotation} % (fold)
+\label{ssub:plugin_annotation}
+Neben den \emph{Property Annotations} gibt es zwei weitere Typen von Annotations. Hierzu gehören unter anderem die \emph{Plugin Annotations}. Die Einführung dieser Annotations erschien uns aus dem Grund sinnvoll, da es für einen Pluginentwickler vorteilhaft ist, wenn dieser Eigenschaften die logisch gesehen zu einem Plugin gehören auch direkt am Plugin setzten kann. Ein Beispiel hierfür sind der Pluginname, der in der GUI auftaucht (z.B. ''Basic delay box'') oder aber der Schlüssel, unter dem das Plugin in der Experiment-Konfiguration auftaucht (z.B. ''BASIC\_DELAY\_BOX''). Des weiteren erlaubt eine Annotation auf Pluginebene das pluginweite setzen von Eigenschaften. So kann beispielsweise über eine \emph{Property Annotation} festgelegt werden, dass alle Properties, welche in einem Plugin liegen global sind, wodurch sich der Pluginentwickler ggf. ein wenig Schreibarbeit sparen kann. \emph{Property Annotations} haben folgende Felder:
+
+\begin{itemize}
+	\item pluginName: TODO: Muss noch implementiert werden!
+	Ein String, der den Namen festlegt, unter dem das Plugin in der GUI auftritt. Entspricht der bereitgestellt String dem leeren String, so wird stattdessen \emph{pluginKey} als angezeigter Name in der GUI verwendet.\\
+	Default: Der leere String
+	\item pluginKey:
+	Ein String, der dem Namen festlegt, unter dem das Plugin in der Experiment-Konfiguration auftritt. Dieser String muss dabei genau dem String entsprechen, der das Plugin gegenüber dem den \emph{gMix-Simulator} identifiziert (siehe Enums in \emph{evaluation.simulator.pluginRegistry}).
+	Default: kein
+	\item pluginLayerKey:
+	Ein String, der den Layer (die Kategorie) festlegt, unter dessen Pluginauswahl das Plugin auftauchen soll. Dieses Feld ist dafür gedacht, dass der Entwickler von Hand festlegen kann, in welchem Layer das Plugin aufgelistet wird. Dieses ist notwendig, wenn ein Plugin aus mehreren Klassen besteht die keine gemeinsame Oberklasse haben. Ein Beispiel Für die Anwendung dieses Feldes ist in der Klasse \emph{StopAndGoMessage} zu finden. Dort wird mittels dieses Feld mitgeteilt, dass dieses Plugin in den Layer \"{}OUTPUT\_STRATEGY" gehört. Der Layer selbst wird aber durch die \emph{Plugin Superclass Annotation} in \emph{OutputStrategyImpl} erstellt, welches eine Oberklasse von \emph{StopAndGo} ist. ACHTUNG: Hier dürfen tatsächlich nur Keys eingetragen werden, die auch in einer \emph{Plugin Superclass Annotation} festgelegt wurden. Anderenfalls kommt es zu Fehlern!\\
+	Default: leerer Sting (autodetection via \emph{Plugin Superclass})
+	\item documentationURL:
+	Ein String der den Pfad/Dateiname zu der Dokumentation des Plugins. Sofern hier ein Wert angegeben wird (und die referenzierte Datei existiert), wird die Dokumentation in den \emph{Help View} mit aufgenommen.\\
+	Default: leerer Sting (keine Dokumentation verfügbar)
+	\item visible:
+	Ein boolean über das festgelegt werden kann, ob das Plugin in der Pluginauswahl auftaucht oder nicht\\
+	Default: true (sichtbar)
+	\item global:
+	Ein boolean über das alle Properties, die zu dem Plugin gehören gobal gesetzt werden können. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
+	Default: false (nicht global)
+	\item allowGlobalFields:
+	Ein boolean über das festgelegt wird, ob Properties aus des Plugins global sein dürfen. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
+	Default: true (globale Properties sind erlaubt)
+\end{itemize}
+% subsection plugin_annotation (end)
+
+\subsubsection{Plugin Superclass Annotation} % (fold)
+\label{ssub:plugin_annotation}
+Eine weitere Klasse von Annotations sind die \emph{Plugin Superclass Annoations}. 
+Mit dieser Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBoxImpl, ClientSendStyleImpl usw. ). Alle Properties die in einer solchen Oberklasse deklariert sind, werden als globale Properties aufgefasst und werden daher unabhängig von der im Layer getroffenen Pluginauswahl in der GUI dargestellt. 
+% subsection plugin_annotation (end)
+
+\begin{itemize}
+	\item layerKey:
+	Ein String der den Schlüssel festlegt, unter dem der \emph{pluginKey} des aktiven Plugins in der Experiment-Konfiguration geschrieben wird. Aktuelle LayerKeys sind: 
+	\begin{itemize}
+		\item CLIENT\_SEND\_STYLE
+		\item TYPE\_OF\_DELAY\_BOX
+		\item MIX\_SEND\_STYLE
+		\item OUTPUT\_STRATEGY
+		\item TOPOLOGY\_SCRIPT 
+		\item TYPE\_OF\_TRAFFIC\_GENERATOR
+	\end{itemize}
+	Default: kein
+	\item layerName:
+	Ein String der den Namen des Layers festlegt, welcher in der GUI angezeigt werden soll.\\
+	Default: kein
+	\item fakePlugins:
+	Ein String der es erlaubt eine Pluginauswahl zu erstellen, für Pugins die real garnicht existieren. Diese Technik kommt beispielsweise bei \emph{TopologyScript} zum Eisatz. Die Plugins  
+	\begin{itemize} 
+		\item NO\_MIXES,ONE\_MIX
+		\item THREE\_MIX\_CASCADE 
+		\item FIVE\_MIX\_CASCADE 
+	\end{itemize}
+	existieren in Wirklichkeit garnicht. Sie sind lediglich Namen von Enums, die auf die auf Instanzen der echten Plugins \emph{NoMixTopology} und \emph{NMixCascadeTopology} in verschiedenen Konfigurationen abbilden. Es ist jedoch nicht gewünscht, dass der Endanwender die tatsächlichen Plugins verwendet sondern auf die vordefinierten Konfigurationen zurückgreift. \emph{fakePlugins} kann daher ein String zugewiesen werden, der eine Menge von pseudo Plugins darstellt (die Namen der pseudo Plugins werden innerhalb des Strings durch Kommata separiert, siehe \emph{TopologyScript}). Diese pseudo Plugins werden dann in die Pluginauswahl injiziert und können dort durch den Benutzer anschließend ausgewählt werden.\\
+	Default: leerer String (keine gefakten Plugins in der Pluginauswahl verfügbar)
+	\item position:
+	Ein Integer (größer als 0) über den angegeben werden kann an welcher Position der Pluginlayer in der GUI auftaucht. Je kleiner der angegebene Wert ist, desto weiter oben wird der Pluginlayer in der GUI angezeigt. Haben zwei unterschiedliche Pluginlayer den selben Wert bei der Position, so wird lexikalisch sortiert.\\
+	Default: 100 
+\end{itemize}
+
 \section{Architektur} % (fold)
 \label{sec:architektur}
-Die GUI Komponente für den gMix-Simulator basiert gurndlegen auf dem Einsatz von Annotations. Jedes Plug-In, welches für den gMix-Simulator geschrieben wird, muss seine konfigurierbaren Felder über Annotations bekanntmachen. Die GUI ließt bei jedem Start die Plug-Ins aus und erstellt dann dynamisch das Menü, über welches der Benutzer die Plug-Ins konfiguriert. In diesem Abschnitt wird die Architektur der GUI ausführlich dargestellt und das Zusammenspiel der einzelnen Komponenten erklärt.
+In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt und das Zusammenspiel der einzelnen Komponenten ausführlich erläutert. 
 
 \subsection{Uebersicht der Architektur} % (fold)
 \label{ssub:uebersicht}
 
 \begin{figure}[!htp]
-\includegraphics[width=\textwidth]{dot/arch.dot}
+\includegraphics[width=\textwidth]{dot/arch}
 \caption{Aufrufhierarchie}
 \label{fig:callgraph}
 \end{figure}
@@ -99,18 +199,72 @@ Die GUI Komponente für den gMix-Simulator basiert gurndlegen auf dem Einsatz vo
 
 \subsection{Einzelne Komponenten} % (fold)
 \label{ssub:einzelne_komponenten}
+In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt.
 
 \subsubsection{SimPropRegistry}
 \label{sssub:simpropregistry}
-TODO: Alex
+Die Klasse \emph{SimPropRegistry} ist die wichtigste Hauptkomponenten der gMix-Simulator-GUI. Ihre Aufgabe besteht darin, den gesamten Code des gMix-Simulators nach Annotations abzusuchen und die in den Annotations enthaltenen Informationen zu verarbeiten. Die \emph{SimPropRegistry} kennt dabei drei unterschiedliche Typen von Annotationen.
+
+\begin{enumerate}
+	\item Property Annotations (aka. SimProp)
+	\item Plugin Annotations (aka. SimGuiPlugin)
+	\item PluginSuperclass Annotations (aka. SimGuiPluginSuperclass)
+\end{enumerate}
+
+Die einzelnen Annotation-Typen und ihr Einsatz werden in Abschnitt \ref{sub:annotations} näher erläutert. Die \emph{SimPropRegistry} erzeugt anhand dieser Annotations dann Plugin- und Property-Objekte, welche zur Laufzeit in verschiedenen Maps verwaltet werden. Neben den beiden wichtigsten Maps (mit dem \emph{properties} und \emph{plugins}), werden noch weitere Maps gehalten, welche beispielsweise die Menge der aktuell in der GUI ausgewählten Plugins halten (\emph{activePlugins}) oder 
+
+Des weiteren bietet die \emph{SimPropRegistry} einige Methoden an, um auf die Inhalte eben dieser Maps zuzugreifen. So beispielsweise eine Methode (\emph{setValue}), um Werte einer vorhandenen Property zu ändern. Die Plugin-Objekte hingegen sind komplett unveränderlich, da sie keine Informationen halten, die vom Benutzer editierbar sind --- zur Zeit enthält ein Plugin-Objekt lediglich die Information, wo die zugehörige Dokumentation zu finden ist. Es gibt allerdings die Methode (\emph{setActivePlugins}, damit die Auswahl der aktiven Plugins festgelegt werden kann. Die Information darüber welche Plugins aktiv sind, muss der \emph{SimPropRegistry} bekannt zugänglich sein, da dieses beim Schreiben der Konfiguration wichtig ist. Es wäre auch denkbar gewesen, dass die \emph{SimPropRegistry} das entsprechende GUI-Element nach seinem aktuellen Zustand fragt, dieses würde jedoch eine höhere Kopplung bedeuten, da der \emph{SimPropRegistry} dann die GUI-Elemente bekannt sein müssten.
+
+Die \emph{SimPropRegistry} selbst ist als Singleton implementiert. Der Zugriff auf die \emph{SimPropRegistry} erfolgt über eine statische Methode (\emph{getInstance}) und kann an jeder Stelle im Code durchgeführt werden --- Diese Entscheidung wurde getroffen, da dieser Dienst in sehr vielen Komponenten der GUI verwendet wird und ein Durchreichen der Referenz in alle Komponenten sehr aufwändig und unübersichtlich wäre. 
 
 \subsubsection{SimProp} % (fold)
 \label{ssub:simprop}
-TODO: Alex
+Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann.
 
-\subsubsection{GUI}
+\begin{figure}[!htp]
+\begin{tikzpicture}
+\umlsimpleclass[fill=blue!10]{SimProp}
+\umlemptyclass[x=-3.5, y=-2, fill=blue!10]{BoolProp}
+\umlemptyclass[x=-1.2, y=-2, fill=blue!10]{IntProp}
+\umlemptyclass[x=1.2, y=-2, fill=blue!10]{FloatProp}
+\umlemptyclass[x=3.9, y=-2, fill=blue!10]{DoubleProp}
+\umlemptyclass[x=6.7, y=-2, fill=blue!10]{StringProp}
+\umlVHVinherit[arm2=-1.2cm]{BoolProp}{SimProp}
+\umlVHVinherit[arm2=-1.2cm]{IntProp}{SimProp}
+\umlVHVinherit[arm2=-1.2cm]{FloatProp}{SimProp}
+\umlVHVinherit[arm2=-1.2cm]{DoubleProp}{SimProp}
+\umlVHVinherit[arm2=-1.2cm]{StringProp}{SimProp}
+\end{tikzpicture}
+\caption{Vererbung der Property Annotations}
+\label{fig:field_annotation}
+\end{figure}
+
+ Obwohl alle Typen sehr viele Gemeinsamkeiten aufweisen, ist eine Typunterscheidung notwendig, da je nach Typ sich die Annotations ein klein wenig unterscheiden (siehe \ref{ssub:feld_annotation}). So ergibt es beispielsweise keinen Sinn, einem \emph{boolean} oder \emph{String} einen Minimal- oder Maximalwert zuweisen zu wollen, während dieses bei \emph{int}, \emph{float} und \emph{double} durchaus sinnvoll erscheint. Ein weiterer Vorteil ist, dass die Typkonversion und die Prüfung auf gültige Eingaben (sowie die Fehlerbehandlung) auch in die Unterklassen ausgelagert werden können, was der Lesbarkeit des Codes sehr dienlich ist. 
+
+\subsubsection{SimGuiPlugin} % (fold)
+\label{ssub:simprop}
+Der Zweck der Klasse \emph{SimGuiPlugin} besteht darin, statische Informationen bezüglich eines Plugins zu halten, wie beispielsweise den Pfad zu der Plugin-Dokumentation. Diese Information kann nämlich vom \emph{Help View} abgefragt werden, so dass dort ein entsprechend verlinkter Eintrag auftaucht.  
+
+Weiterhin ist eine Funktionalität in \emph{SimGuiPlugin} ausgelagert, welche es erlaubt als \emph{PluginSuperClass} annotierte Oberklassen ausfindig zu machen. 
+
+\subsubsection{GUI-Elemente}
 \label{sssub:guiservice}
 TODO: Jan
+
+\textbf{Configuration View} % (fold)
+\label{ssub:accordion}
+
+\textbf{Simulation View} % (fold)
+\label{ssub:accordion}
+
+\textbf{Result View} % (fold)
+\label{ssub:accordion}
+
+\textbf{Help View} % (fold)
+\label{ssub:accordion}
+
+\textbf{Konsole} % (fold)
+\label{ssub:accordion}
 
 \subsubsection{UserConfigService} % (fold)
 \label{ssub:userconfigservice}
@@ -125,48 +279,13 @@ TODO: Jörg
 Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen SimProperties. Beispiele sind minimale und maximale Werte aber auch Abhängigkeiten zwischen einem oder mehreren SimProperties.
 TODO: Jörg + Entwicklerhandbuch
 
-
-\subsubsection{Accordion} % (fold)
-\label{ssub:accordion}
-
 % subsubsection accordion (end)
 
 \subsubsection{gMixBinding} % (fold)
 \label{ssub:gmixbinding}
+Die Klasse \emph{gMixBinding} ist eine Helfer-Klasse, die von der GUI verwendet wird, um dem \emph{gMix-Simulator} mit der Konfiguration aus der GUI aufzurufen. Dazu war es notwendig, den Konstruktor des \emph{gMix-Simulators} so zu erweitern, dass er die Konfiguration als \emph{passthroughParameters} entgegennimmt. Der Aufruf des Simulators erfolgt als neuer Thread. Damit blockiert die GUI nicht, während die Simulation durchgeführt wird. Nachdem der Aufruf des \emph{gMix-Simulators} zurückkehrt, wird der Pfad zum Plot an eine Factory weitergereicht, welche ein GUI-Element (\emph{}) erstellt, das für die Darstellung der Ergebnisse verantwortlich ist.
 
-TODO: Alex
-
-\subsection{Feld Annotations} % (fold)
-TODO: Alex
-\label{sub:annotations}
-Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI bereistellt.
-% subsection annotations (end)
-
-\subsubsection{Feld Annotations} % (fold)
-\label{ssub:feld_annotations}
-
-\begin{figure}[!htp]
-\begin{tikzpicture}
-\umlsimpleclass[fill=blue!10]{SimProp}
-\umlemptyclass[x=-4.5, y=-2, fill=blue!10]{BoolProp}
-\umlemptyclass[x=-1.5, y=-2, fill=blue!10]{IntProp}
-\umlemptyclass[x=1.5, y=-2, fill=blue!10]{FloatProp}
-\umlemptyclass[x=4.5, y=-2, fill=blue!10]{StringProp}
-\umlVHVinherit[arm2=-1.2cm]{BoolProp}{SimProp}
-\umlVHVinherit[arm2=-1.2cm]{IntProp}{SimProp}
-\umlVHVinherit[arm2=-1.2cm]{FloatProp}{SimProp}
-\umlVHVinherit[arm2=-1.2cm]{StringProp}{SimProp}
-\end{tikzpicture}
-\caption{Vererbung der Feld Annotations}
-\label{fig:field_annotations}
-\end{figure}
-
-% subsubsection feld_annotations (end)
-
-\subsubsection{Plug-In Annotations} % (fold)
-\label{ssub:subsection_name}
-Neben den Feld Annotations gibt es eine weitere Klasse von Annotations, die Plug-In Annotations. 
-% subsection subsection_name (end)
+Ein bislang ungenutztes Feature, welches aber berücksichtigt wurde ist, dass in dem \emph{gMixBinding} das \emph{ResultSet} bereitgestellt wird des Simulators. Dieses beinhaltet die während der Simulation aufgezeichneten Statistik und kann dazu verwendet werden Ergebnisse in einer anderen Weise zu plotten, als es in der Konfiguration steht --- dieses Feature ist allerdings noch Zukunftsmusik. 
 
 \section{Features} % (fold)
 \label{sec:features}

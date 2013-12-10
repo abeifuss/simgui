@@ -10,9 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BoolSimulationProperty {
-
-	public String description() default "No Description available";
-
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
@@ -39,5 +36,4 @@ public @interface BoolSimulationProperty {
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
-
 }

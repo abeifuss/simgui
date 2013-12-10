@@ -11,8 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StringSimulationProperty {
 
-	public String description() default "No Description available";
-
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
 

@@ -6,7 +6,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +38,6 @@ import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.annotations.simulationProperty.StringProp;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
-import evaluation.simulator.gui.customElements.accordion.ListEntry;
 
 public class SimPropRegistry {
 
@@ -60,18 +58,12 @@ public class SimPropRegistry {
 	private final List<Vector> deferList = new LinkedList<>();
 
 	private int numberOfPluginLayers;
-	private int numberOfNonPluginLayers;
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	private final Map<String, String>[] pluginLayerMap = new HashMap[100];
-	/**
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	private final Map<String, String>[] nonPluginLayerMap = new HashMap[100];
 	/**
 	 * Maps all registered properties.
 	 * key:	config name of the property
@@ -113,7 +105,7 @@ public class SimPropRegistry {
 
 	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
 
-	private final Map<String, SimGuiPlugin>  pluginMap = new HashMap<String, SimGuiPlugin>();
+	private final Map<String, SimGuiPlugin>  plugins = new HashMap<String, SimGuiPlugin>();
 
 	// TODO: Merge both order functions
 	public Map<String, Integer> getLayerMapDisplayNameToOrder() {
@@ -134,7 +126,6 @@ public class SimPropRegistry {
 
 	private SimPropRegistry() {
 		this.numberOfPluginLayers = 0;
-		this.numberOfNonPluginLayers = 0;
 
 		this.scanForPluginProperties();
 
@@ -147,37 +138,22 @@ public class SimPropRegistry {
 		this.toString();
 	}
 
-	public void dumpConfiguration() {
-	}
-
+	// TODO: remove this peace of code
 	public Set<Entry<String, SimProp>> getAllSimProps() {
 		return this.getProperties().entrySet();
 	}
-
-	public List<Entry<String, String>> getPluginItems(String pluginName) {
-
-		List<Entry<String, String>> mapIdToName = new LinkedList<Entry<String, String>>();
-
-		Iterator<Entry<String, SimProp>> iter = this.getProperties().entrySet().iterator();
-		while (iter.hasNext()) {
-			SimProp entry = iter.next().getValue();
-			if (pluginName.equals(entry.getPluginID())) {
-				mapIdToName.add(new ListEntry<String, String>(entry.getPropertyID(), entry.getName()));
-			}
-		}
-
-		return mapIdToName;
-	}
-
+	
 	public Map<String, String>[] getPluginLayerMap() {
 		return this.pluginLayerMap;
 	}
 
+	// TODO: remove this peace of code
 	public SimProp getValue(String key) {
 
 		return this.getProperties().get(key);
 	}
 
+	
 	public void register(SimProp s, boolean isSuperClass, boolean isGlobal, String pluginLayer) {
 		if (this.getProperties().containsKey(s.getPropertyID()) &&
 				!this.getProperties().get( s.getPropertyID() ).getPluginLayerID().equals(this.pluginNameToConfigName(pluginLayer))) {
@@ -272,7 +248,6 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						property.setId(annotation.propertykey());
 						property.setName(annotation.name());
-						property.setDescription(annotation.description());
 						property.setTooltip(annotation.propertykey());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
@@ -324,7 +299,6 @@ public class SimPropRegistry {
 						property = new IntProp();
 						property.setId(annotation.propertykey());
 						property.setName(annotation.name());
-						property.setDescription(annotation.description());
 						property.setTooltip(annotation.propertykey());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
@@ -379,7 +353,6 @@ public class SimPropRegistry {
 						property = new FloatProp();
 						property.setId(annotation.propertykey());
 						property.setName(annotation.name());
-						property.setDescription(annotation.description());
 						property.setTooltip(annotation.propertykey());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
@@ -433,7 +406,6 @@ public class SimPropRegistry {
 						property = new DoubleProp();
 						property.setId(annotation.propertykey());
 						property.setName(annotation.name());
-						property.setDescription(annotation.description());
 						property.setTooltip(annotation.propertykey());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
@@ -487,7 +459,6 @@ public class SimPropRegistry {
 						property = new StringProp();
 						property.setId(annotation.propertykey());
 						property.setName(annotation.name());
-						property.setDescription(annotation.description());
 						property.setTooltip(annotation.propertykey());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
@@ -556,7 +527,7 @@ public class SimPropRegistry {
 			plugin.setName(pluginAnnotation.pluginKey());
 			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 			plugin.setPluginLayer(pluginAnnotation.pluginLayerKey());
-			plugin.isVisible(pluginAnnotation.vilible());
+			plugin.isVisible(pluginAnnotation.visible());
 			plugin.isGlobal(pluginAnnotation.global());
 			plugin.allowGlobalFields(pluginAnnotation.allowGlobalFields());
 
@@ -690,7 +661,7 @@ public class SimPropRegistry {
 
 				this.deferedReadFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
 			}
-			this.pluginMap.put(plugin.getName(), plugin);
+			this.plugins.put(plugin.getName(), plugin);
 		}
 		// call initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(this);
@@ -830,7 +801,6 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 
 							// This is why we have to defer all readFields() calls
@@ -891,7 +861,6 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 
 							// This is why we have to defer all readFields() calls
@@ -954,7 +923,6 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 
 							// This is why we have to defer all readFields() calls
@@ -1017,7 +985,6 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 
 							// This is why we have to defer all readFields() calls
@@ -1080,7 +1047,6 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setDescription(annotation.description());
 							property.setTooltip(annotation.propertykey());
 
 							// This is why we have to defer all readFields() calls
@@ -1161,16 +1127,6 @@ public class SimPropRegistry {
 				logger.log(Level.ERROR, "No such plugin layer: " + layer );
 			}
 		}
-
-		this.numberOfNonPluginLayers++;
-	}
-
-	public int getNumberOfPluginLayers(){
-		return this.numberOfPluginLayers;
-	}
-
-	public int getNumberOfNonPluginLayers(){
-		return this.numberOfNonPluginLayers;
 	}
 
 	public void setValue(String key, Object arg0) {
@@ -1258,10 +1214,12 @@ public class SimPropRegistry {
 		}
 	}
 
+	// TODO: remove this peace of code
 	public List<String> getPluginLevels() {
 		return new LinkedList<String>(this.getLayerMapDisplayNameToConfigName().keySet());
 	}
 
+	// TODO: remove this peace of code
 	public String pluginNameToConfigName(String pluginLayer) {
 		return this.getLayerMapDisplayNameToConfigName().get(pluginLayer);
 	}
@@ -1337,7 +1295,7 @@ public class SimPropRegistry {
 	}
 
 	public Map<String, SimGuiPlugin> getPluginMap() {
-		return this.pluginMap;
+		return this.plugins;
 	}
 
 	public Map<String, String> getLayerMapDisplayNameToConfigName() {

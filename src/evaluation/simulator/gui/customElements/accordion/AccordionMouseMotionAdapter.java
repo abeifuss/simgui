@@ -30,7 +30,6 @@ public class AccordionMouseMotionAdapter implements MouseMotionListener {
 		Point point = event.getPoint();
 		int row = this.table.rowAtPoint(point);
 		DescriptionService ds = DescriptionService.getInstance();
-		ds.setDescription(this.simulationProperties.get(row).getDescription());
 	}
 
 }

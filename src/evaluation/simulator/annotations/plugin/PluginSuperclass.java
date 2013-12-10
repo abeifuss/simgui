@@ -17,11 +17,8 @@ public @interface PluginSuperclass {
 	
 	public String layerName();
 
-	public boolean writeToConfig() default true;
-
 	public String fakePlugins() default "";
 
 	public int position() default 100;
 
-	public boolean isStatic() default false;
 }

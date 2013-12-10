@@ -10,9 +10,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FloatSimulationProperty {
-
-	public String description() default "No Description available";
-
+	
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
 

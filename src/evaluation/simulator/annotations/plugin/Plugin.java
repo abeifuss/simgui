@@ -13,15 +13,15 @@ public @interface Plugin {
 
 	public String documentationURL() default "dummyPlugin.html";
 
-	public String pluginKey() default "";	
+	public String pluginName() default "";
+	
+	public String pluginKey();	
 
 	public String pluginLayerKey() default "";
 
-	public boolean vilible() default true;
+	public boolean visible() default true;
 
 	public boolean global() default false;
-
-	public boolean isPlugin() default true;
 
 	public boolean allowGlobalFields() default true;
 	

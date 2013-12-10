@@ -3,7 +3,6 @@ package evaluation.simulator.annotations.simulationProperty;
 // pojo
 public abstract class SimProp {
 
-	private String description;
 	private Class<? extends Requirement>[] enable_requirements;
 	// dependencies
 	boolean enabled;
@@ -19,9 +18,6 @@ public abstract class SimProp {
 	private boolean isGlobal;
 	private boolean isStatic;
 
-	public String getDescription() {
-		return this.description;
-	}
 
 	public boolean getEnable() {
 		return this.enabled;
@@ -71,9 +67,6 @@ public abstract class SimProp {
 	@Override
 	public abstract String toString();
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public void setEnable(boolean enableFlag) {
 		this.enabled = enableFlag;

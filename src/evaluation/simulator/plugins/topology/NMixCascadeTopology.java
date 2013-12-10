@@ -29,7 +29,7 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 import evaluation.simulator.pluginRegistry.DelayBox;
 import evaluation.simulator.pluginRegistry.DelayBox.TypeOfNode;
 
-@Plugin( pluginKey = "NMIX", vilible = false )
+@Plugin( pluginKey = "NMIX", visible = false )
 public class NMixCascadeTopology extends TopologyScript {
 	
 	private int numberOfMixes;
