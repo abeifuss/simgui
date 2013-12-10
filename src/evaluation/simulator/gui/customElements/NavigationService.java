@@ -28,7 +28,7 @@ public class NavigationService {
 
 					menu += "<h2><a href=\"etc/html/plugins/"
 							+ prop+".html\">"
-							+ prop + "</a></h2><br/>\n";
+							+ prop + "</a></h2>\n";
 				}
 			}
 			for ( String plugin : registeredPlugins.keySet() ){
@@ -37,16 +37,15 @@ public class NavigationService {
 					// plugins
 					menu += "<h2><a href=\"etc/html/plugins/"
 							+ plugin+".html\">"
-							+ plugin + "</a></h2><br/>\n";
-					for ( String prop : propertyMap.keySet() ){
-						if ( propertyMap.get(prop).getPluginID().equals(plugin) ){
-
-							// plugin dependent properties
-							menu += "<a href=\"etc/html/plugins/"
-									+ prop+".html\">"
-									+ prop + "</a><br/>\n";
-						}
-					}
+							+ plugin + "</a></h2>\n";
+					//					for ( String prop : propertyMap.keySet() ){
+					//						if ( propertyMap.get(prop).getPluginID().equals(plugin) ){
+					//							// plugin dependent properties
+					//							menu += "<a href=\"etc/html/plugins/"
+					//									+ prop+".html\">"
+					//									+ prop + "</a><br/>\n";
+					//						}
+					//					}
 				}
 			}
 		}
