@@ -1,8 +1,10 @@
 package evaluation.simulator.gui.customElements;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 public class NavigationService {
@@ -18,8 +20,14 @@ public class NavigationService {
 		propertyMap = SimPropRegistry.getInstance().getProperties();
 		registeredPlugins = SimPropRegistry.getInstance().getRegisteredPlugins();
 		String menu = "";
+		
+		Map<String, Integer> layerMap = SimPropRegistry.getInstance().getLayerMapDisplayNameToOrder();
+		// Sort the map by value (first) and key (second)
+		ValueComparator comperatorLayer =  new ValueComparator(layerMap);
+		TreeMap<String,Integer> sortedLayerMap = new TreeMap<String,Integer>(comperatorLayer);
+		sortedLayerMap.putAll(layerMap);
 
-		for ( String layer : layerMapDisplayNameToConfigName.keySet() ){
+		for ( String layer : sortedLayerMap.keySet() ){
 			menu+=layer+"<br>";
 			for ( String prop : propertyMap.keySet() ){
 				if ( propertyMap.get(prop).getPluginID().equals("") &&
