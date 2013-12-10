@@ -20,83 +20,82 @@ package evaluation.simulator.core.message;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 
 public class BasicMixMessage extends MixMessage {
 
-	@IntSimulationProperty( 
-			name = "Mix request playload size (byte)", 
-			propertykey = "MIX_REQUEST_PAYLOAD_SIZE", 
-			order = 1, 
-			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
+	@IntSimulationProperty(
+			name = "Mix request playload size (byte)",
+			propertykey = "MIX_REQUEST_PAYLOAD_SIZE",
+			order = 1,
+			inject = "5:RECODING_SCHEME,Recoding Scheme")
 	private int requestPlayloadSize;
-	@IntSimulationProperty( 
-			name = "Mix reply playload size (byte)", 
-			propertykey = "MIX_REPLY_PAYLOAD_SIZE", 
-			order = 3, 
-			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
+	@IntSimulationProperty(
+			name = "Mix reply playload size (byte)",
+			propertykey = "MIX_REPLY_PAYLOAD_SIZE",
+			order = 3,
+			inject = "5:RECODING_SCHEME,Recoding Scheme")
 	private int replyPlayloadSize;
-	@IntSimulationProperty( 
-			name = "Mix request header size (byte)", 
-			propertykey = "MIX_REQUEST_HEADER_SIZE", 
+	@IntSimulationProperty(
+			name = "Mix request header size (byte)",
+			propertykey = "MIX_REQUEST_HEADER_SIZE",
 			order = 2,
-			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
+			inject = "5:RECODING_SCHEME,Recoding Scheme")
 	private int requestHeaderSize;
-	@IntSimulationProperty( 
-			name = "Mix reply header size (byte)", 
-			propertykey = "MIX_REPLY_HEADER_SIZE", 
+	@IntSimulationProperty(
+			name = "Mix reply header size (byte)",
+			propertykey = "MIX_REPLY_HEADER_SIZE",
 			order = 4,
-			inject = "5:RECODING_SCHEME,Recoding Scheme (injected)")
+			inject = "5:RECODING_SCHEME,Recoding Scheme")
 	private int replyHeaderSize;
-	
+
 	private int payloadSize;
-	private int maxPayloadSize; // byte
-	private int headerSize; // byte
-	private int totalSize; // byte
-	private Vector<PayloadObject> payloadObjectsContained;
+	private final int maxPayloadSize; // byte
+	private final int headerSize; // byte
+	private final int totalSize; // byte
+	private final Vector<PayloadObject> payloadObjectsContained;
 	private int transportMessagesContained = 0;
 	//private int messageFragmentsContained = 0;
-	
+
 	// RECORDING_SCHEME
-	
+
 	protected BasicMixMessage(boolean isRequest, NetworkNode source,
 			NetworkNode destination, AbstractClient owner, long creationTime,
 			boolean isDummy) {
-		
+
 		super(isRequest, source, destination, owner, creationTime, isDummy, null);
 		this.maxPayloadSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		this.headerSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_HEADER_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_HEADER_SIZE");
-		this.totalSize = maxPayloadSize + headerSize;
-		payloadObjectsContained = new Vector<PayloadObject>(10,10); // TODO calculate instead of fixed 10,10
-		super.setPayload(payloadObjectsContained);
-		
+		this.totalSize = this.maxPayloadSize + this.headerSize;
+		this.payloadObjectsContained = new Vector<PayloadObject>(10,10); // TODO calculate instead of fixed 10,10
+		super.setPayload(this.payloadObjectsContained);
+
 	}
 
 
 	@Override
 	public int getLength() {
-		return totalSize;
+		return this.totalSize;
 	}
-	
+
 
 	@Override
 	public int getPayloadLength() {
-		return payloadSize;
+		return this.payloadSize;
 	}
 
 
 	@Override
 	public int getNumberOfMessagesContained() {
-		return transportMessagesContained;
+		return this.transportMessagesContained;
 	}
 
 
 	@Override
 	public int getMaxPayloadLength() {
-		return maxPayloadSize;
+		return this.maxPayloadSize;
 	}
 
 
@@ -112,51 +111,55 @@ public class BasicMixMessage extends MixMessage {
 			this.transportMessagesContained++;
 		} else if (payloadObject instanceof MessageFragment) {
 			//this.messageFragmentsContained++;
-			if (((MessageFragment)payloadObject).isLastFragment())
+			if (((MessageFragment)payloadObject).isLastFragment()) {
 				this.transportMessagesContained++;
-		} else
-			throw new RuntimeException("ERROR: unknown PayloadObject" +payloadObject); 
-		
-		if (payloadObject.getLength() <= maxPayloadSize - payloadSize) { // enough space
-			
-			payloadSize += payloadObject.getLength();
-			payloadObjectsContained.add(payloadObject);
-			if (payloadObject instanceof TransportMessage)
+			}
+		} else {
+			throw new RuntimeException("ERROR: unknown PayloadObject" +payloadObject);
+		}
+
+		if (payloadObject.getLength() <= (this.maxPayloadSize - this.payloadSize)) { // enough space
+
+			this.payloadSize += payloadObject.getLength();
+			this.payloadObjectsContained.add(payloadObject);
+			if (payloadObject instanceof TransportMessage) {
 				((TransportMessage)payloadObject).setAssociatedMixMessage(this);
-			
+			}
+
 			return true;
-			
+
 		} else { // not enough space
-			
+
 			return false;
-			
+
 		}
 	}
 
 
 	@Override
 	public TransportMessage[] getTransportMessagesContained() {
-		
-		if (isDummy)
+
+		if (this.isDummy) {
 			return new TransportMessage[0];
-		
-		Vector<TransportMessage> transportMessagesContained = new Vector<TransportMessage>(payloadObjectsContained.size());
-		
-		for (PayloadObject po: payloadObjectsContained) {
+		}
+
+		Vector<TransportMessage> transportMessagesContained = new Vector<TransportMessage>(this.payloadObjectsContained.size());
+
+		for (PayloadObject po: this.payloadObjectsContained) {
 			if (po instanceof TransportMessage) {
-				//System.out.println("its a complete TransportMessage (" +(TransportMessage)po +"), size: " +((TransportMessage)po).getLength()); 
+				//System.out.println("its a complete TransportMessage (" +(TransportMessage)po +"), size: " +((TransportMessage)po).getLength());
 				transportMessagesContained.add((TransportMessage)po);
 			} else {
 				if (((MessageFragment)po).isLastFragment()) {
-					//System.out.println("its the final fragment (" +((MessageFragment)po).getAssociatedTransportMessage() +", "  +(MessageFragment)po +"), size: " +((MessageFragment)po).getLength()); 
+					//System.out.println("its the final fragment (" +((MessageFragment)po).getAssociatedTransportMessage() +", "  +(MessageFragment)po +"), size: " +((MessageFragment)po).getLength());
 					transportMessagesContained.add(((MessageFragment)po).getAssociatedTransportMessage());
 				} else {
-					//System.out.println("its a fragment (" +((MessageFragment)po).getAssociatedTransportMessage() +", " +(MessageFragment)po +"), size: " +((MessageFragment)po).getLength()); 
+					//System.out.println("its a fragment (" +((MessageFragment)po).getAssociatedTransportMessage() +", " +(MessageFragment)po +"), size: " +((MessageFragment)po).getLength());
 				}
 			}
 		}
 		return transportMessagesContained.toArray(new TransportMessage[0]);
-		
+
 	}
-	
+
 }
