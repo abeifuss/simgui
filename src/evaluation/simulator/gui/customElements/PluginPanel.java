@@ -23,10 +23,12 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
 
+
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
 
 	private JPanel panel;
 	private JPanel pluginSelectionPanel;
+	private JPanel propertiesToVaryPanel;
 	private JPanel generalPreferencesPanel;
 	HashMap<String, JComboBox<String>> pluginListsMap = new HashMap<>();
 
@@ -46,6 +48,10 @@ public class PluginPanel extends JScrollPane {
 		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
+		this.propertiesToVaryPanel = new JPanel();
+		this.propertiesToVaryPanel.setBorder(new TitledBorder(null, "Properties To Vary",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
 		this.generalPreferencesPanel = new JPanel();
 		this.generalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -63,6 +69,18 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraintsPlugins.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayoutPlugins.setConstraints(this.pluginSelectionPanel, gridBagConstraintsPlugins);
 		this.pluginSelectionPanel.setLayout(gridBagLayoutPlugins);
+
+		//GridBagLayout for properties to vary configuration
+		GridBagLayout gridBagLayoutPropertiesToVary= new GridBagLayout();
+		GridBagConstraints gridBagContraintsPropertiesToVary = new GridBagConstraints();
+		gridBagConstraintsPlugins.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraintsPlugins.anchor = GridBagConstraints.NORTH;
+		gridBagConstraintsPlugins.weightx = 1;
+		gridBagConstraintsPlugins.weighty = 1;
+		gridBagConstraintsPlugins.gridx = GridBagConstraints.RELATIVE;
+		gridBagConstraintsPlugins.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayoutPlugins.setConstraints(this.propertiesToVaryPanel, gridBagConstraintsPlugins);
+		this.propertiesToVaryPanel.setLayout(gridBagLayoutPlugins);
 
 		//GridBagLayout for general configuration
 		GridBagLayout gridBagLayoutGeneral = new GridBagLayout();
@@ -145,10 +163,12 @@ public class PluginPanel extends JScrollPane {
 		this.panel.add(this.pluginSelectionPanel,gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
-		this.panel.add(this.generalPreferencesPanel,gridBagConstraints);
+		this.panel.add(this.propertiesToVaryPanel,gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
-
+		this.panel.add(this.generalPreferencesPanel,gridBagConstraints);
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 3;
 		// Spring element to push all other elements to the top
 		// needed for alignment
 		gridBagConstraints.weighty = 1;
