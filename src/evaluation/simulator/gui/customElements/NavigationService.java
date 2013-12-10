@@ -20,24 +20,24 @@ public class NavigationService {
 		String menu = "";
 
 		for ( String layer : layerMapDisplayNameToConfigName.keySet() ){
-			menu+="<h1>"+layer+"</h1>";
+			menu+=layer+"<br>";
 			for ( String prop : propertyMap.keySet() ){
 				if ( propertyMap.get(prop).getPluginID().equals("") &&
 						( propertyMap.get(prop).isSuperclass() || propertyMap.get(prop).isGlobal() ) &&
 						propertyMap.get(prop).getPluginLayerID().equals(layerMapDisplayNameToConfigName.get(layer)) ){
 
-					menu += "<h2><a href=\"etc/html/plugins/"
-							+ prop+".html\">"
-							+ prop + "</a></h2>\n";
+					menu += "<a href=\"etc/html/plugins/"
+							+ prop+".html\">&nbsp;&nbsp;&nbsp;&nbsp;"
+							+ prop + "</a><br>\n";
 				}
 			}
 			for ( String plugin : registeredPlugins.keySet() ){
 				if ( registeredPlugins.get(plugin).equals(layerMapDisplayNameToConfigName.get(layer))){
 
 					// plugins
-					menu += "<h2><a href=\"etc/html/plugins/"
-							+ plugin+".html\">"
-							+ plugin + "</a></h2>\n";
+					menu += "<a href=\"etc/html/plugins/"
+							+ plugin+".html\">&nbsp;&nbsp;&nbsp;&nbsp;"
+							+ plugin + "</a><br>\n";
 					//					for ( String prop : propertyMap.keySet() ){
 					//						if ( propertyMap.get(prop).getPluginID().equals(plugin) ){
 					//							// plugin dependent properties
