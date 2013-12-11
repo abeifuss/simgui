@@ -32,8 +32,6 @@ public class MainMenu extends JMenuBar {
 	private final JMenuItem _preferences;
 	private final JMenuItem _seperateConfigTool;
 	private final JMenuItem _seperateHelpTool;
-	private final JMenuItem _toggleHomeTab;
-	private final JMenuItem _toggleConsole;
 
 	private final JMenu _windowMenu;
 
@@ -57,16 +55,6 @@ public class MainMenu extends JMenuBar {
 		this._seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_H, java.awt.Event.CTRL_MASK));
 
-		this._toggleHomeTab = new JMenuItem("Toggle Home Tab");
-		this._seperateHelpTool.setMnemonic('G');
-		this._seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_G, java.awt.Event.CTRL_MASK));
-
-		this._toggleConsole = new JMenuItem("Toggle Console");
-		this._seperateHelpTool.setMnemonic('O');
-		this._seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_O, java.awt.Event.CTRL_MASK));
-
 		this._faq = new JMenuItem("F.A.Q.");
 		this._about = new JMenuItem("About");
 
@@ -77,8 +65,6 @@ public class MainMenu extends JMenuBar {
 		this._windowMenu.add(this._preferences);
 		this._windowMenu.add(this._seperateConfigTool);
 		this._windowMenu.add(this._seperateHelpTool);
-		this._windowMenu.add(this._toggleHomeTab);
-		this._windowMenu.add(this._toggleConsole);
 
 		this._helpMenu.add(this._faq);
 		this._helpMenu.add(this._about);
@@ -98,18 +84,6 @@ public class MainMenu extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GuiService.getInstance().toogleHelpTools();
-			}
-		});
-		this._toggleHomeTab.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				GuiService.getInstance().toggleHomeTab();
-			}
-		});
-		this._toggleConsole.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//				GuiService.getInstance().toggleConsole();
 			}
 		});
 	}

@@ -4,21 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import evaluation.simulator.gui.service.GuiService;
-
 @SuppressWarnings("serial")
-public class HomeTab extends JPanel implements ActionListener {
-	
-	private final JButton _closeButton = new JButton("Close");	
+public class HomeTab extends JPanel {
+
 
 	public HomeTab() {
 
@@ -53,8 +47,8 @@ public class HomeTab extends JPanel implements ActionListener {
 				"If you have touble with the configuration of an experiment, you will propably find helpful information in the [Help] section.");
 		HelpText.setLineWrap(true);
 		HelpText.setWrapStyleWord(true);
-		HelpText.setBackground(bg);	
-		
+		HelpText.setBackground(bg);
+
 
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -75,17 +69,7 @@ public class HomeTab extends JPanel implements ActionListener {
 		this.add(simulatorText, gbc);
 		this.add(resultsText, gbc);
 		this.add(HelpText, gbc);
-		this.add(_closeButton);
 
-		_closeButton.addActionListener(this);
 	}
-	
-	public void actionPerformed(ActionEvent event) {
-
-		if (event.getSource() == this._closeButton) {
-			GuiService.getInstance().toggleHomeTab();
-		}
-	}
-
 
 }

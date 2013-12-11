@@ -18,18 +18,17 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import evaluation.simulator.annotations.simulationProperty.SimProp;
-import evaluation.simulator.conf.service.SimulationConfigService;
-import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
-	
+
 	private static Logger logger = Logger.getLogger(AccordionEntry.class);
-	
+
 	private final JComboBox<String> comboBox;
 	private final JButton entryButton;
 	private JTable entryTable = null;

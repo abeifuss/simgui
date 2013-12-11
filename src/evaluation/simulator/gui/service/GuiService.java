@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.layout.MainGui;
-import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
 
@@ -26,14 +25,12 @@ public class GuiService {
 	private final ToolFrame configToolFrame;
 	private final HelpFrame helpToolFrame;
 	private final MainGui mainGui;
-	private final ConsoleFrame consoleFrame;
 
 	private GuiService() {
 
 		this.configToolFrame = ToolFrame.getInstance();
 		this.helpToolFrame = HelpFrame.getInstance();
 		this.mainGui = MainGui.getInstance();
-		this.consoleFrame = ConsoleFrame.getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -71,25 +68,6 @@ public class GuiService {
 			this.mainGui.toogleHelpTool(true);
 		}
 
-		//		if (showConfConsoleInSeparateWindow) {
-		//			logger.log(Level.DEBUG, "Seperate console");
-		//			this.consoleFrame.setVisible(true);
-		//			this.mainGui.toogleConsole(false);
-		//		} else {
-		//			logger.log(Level.DEBUG, "Integrate console");
-		//			this.consoleFrame.setVisible(false);
-		//			this.mainGui.toogleConsole(true);
-		//		}
-
-		this.consoleFrame.setVisible(true);
-
-		if (showHomeTab) {
-			logger.log(Level.DEBUG, "Show home tab");
-			this.mainGui.toggleHomeTab(true);
-		} else {
-			logger.log(Level.DEBUG, "Hide home tab");
-			this.mainGui.toggleHomeTab(false);
-		}
 	}
 
 	public void toogleConfTools() {
@@ -120,28 +98,4 @@ public class GuiService {
 
 	}
 
-	//	public void toggleConsole() {
-	//		if (this.consoleFrame.isVisible()) {
-	//			this.consoleFrame.setVisible(false);
-	//			this.mainGui.toogleConsole(true);
-	//			UserConfigService.setGUISERVICE_SEPERATE_CONSOLE(false);
-	//			return;
-	//		} else {
-	//			this.consoleFrame.setVisible(true);
-	//			// FIXME is this the bug?
-	//			//	this.consoleFrame.init();
-	//			this.mainGui.toogleConsole(false);
-	//			UserConfigService.setGUISERVICE_SEPERATE_CONSOLE(true);
-	//		}
-	//	}
-
-	public void toggleHomeTab() {
-		if (MainGui.getInstance().homeTabStatus) {
-			this.mainGui.toggleHomeTab(false);
-			UserConfigService.setGUISERVICE_TOGGLE_HOME_TAB(false);
-			return;
-		}
-		this.mainGui.toggleHomeTab(true);
-		UserConfigService.setGUISERVICE_TOGGLE_HOME_TAB(true);
-	}
 }

@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
@@ -49,10 +48,7 @@ public class MainGui extends JFrame {
 
 	private int consoleHeight;
 
-	private JPanel consoleView;
-	private HomeTab homeTab;
 	public boolean homeTabStatus;
-	private JSplitPane horizontalSplitPlane;
 	private int horizontalSplitPlaneDeviderLocation;
 
 	private int mainGuiHeight;
@@ -60,14 +56,8 @@ public class MainGui extends JFrame {
 	private int mainGuiXPos;
 	private int mainGuiYPos;
 
-	private JTabbedPane mainView;
-	private SimulationTab simulationTab;
-	private JSplitPane verticalSplitPlane;
-	private JPanel bottom;
-
 	public MainGui() {
-		//		this.getContentPane().setLayout(new BorderLayout());
-		//		this.init();
+
 		this.initialize();
 
 		this.addWindowListener(new WindowListener() {
@@ -105,10 +95,6 @@ public class MainGui extends JFrame {
 		});
 	}
 
-	//	public boolean homeTabIsShown() {
-	//		return this.homeTabStatus;
-	//	}
-
 	private void initialize() {
 
 		this.mainGuiXPos = UserConfigService.getMAINGUI_XPOS();
@@ -128,10 +114,8 @@ public class MainGui extends JFrame {
 		this.splitPane.setLeftComponent(ToolFrame.getInstance().getPanel());
 
 		this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		this.homeTab = new HomeTab();
-		//		this.simulationTab = new SimulationTab();
 		this.helpFrame = HelpFrame.getInstance();
-		this.tabbedPane.addTab("Simulator", this.simulationTab);
+		this.tabbedPane.addTab("Simulator", SimulationTab.getInstance());
 		this.splitPane.setRightComponent(this.tabbedPane);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -197,21 +181,6 @@ public class MainGui extends JFrame {
 		UserConfigService.setMAINGUI_YPOS(this.getY());
 	}
 
-	//	private void setupMenu() {
-	//		this.setJMenuBar(MainMenu.getInstance());
-	//	}
-
-	// Close/Open the home frame
-	public void toggleHomeTab(boolean b) {
-		if (b) {
-			this.tabbedPane.addTab("Home", this.homeTab);
-			this.homeTabStatus = true;
-		} else {
-			this.tabbedPane.remove(this.homeTab);
-			this.homeTabStatus = false;
-		}
-	}
-
 	// (De)seperate the configuration tool
 	public void toogleConfTool(boolean b) {
 		if (b) {
@@ -229,19 +198,6 @@ public class MainGui extends JFrame {
 			this.tabbedPane.remove(this.helpFrame.getPanel());
 		}
 	}
-
-	//	public void toogleConsole(boolean b) {
-	//		if (b) {
-	//			this.consoleView = ConsoleFrame.getInstance().getPanel();
-	//			this.bottom = new JPanel();
-	//			this.bottom.setLayout(new BorderLayout());
-	//			this.bottom.add(this.consoleView, BorderLayout.CENTER);
-	//			this.verticalSplitPlane.setBottomComponent(this.bottom);
-	//			this.verticalSplitPlane.repaint();
-	//		} else {
-	//			this.verticalSplitPlane.remove(this.bottom);
-	//		}
-	//	}
 
 	public void update() {
 		//		this.simulationTab.update();

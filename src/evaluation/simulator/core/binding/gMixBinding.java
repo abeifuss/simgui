@@ -23,6 +23,7 @@ public class gMixBinding extends Thread {
 	private CommandLineParameters params;
 	private String resultsFileName;
 	Statistics stats;
+	private int experimentsPerformed = 0;
 
 	public gMixBinding() {
 
@@ -53,9 +54,10 @@ public class gMixBinding extends Thread {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					SimulationTab.getInstance().getResultsPanel().addTab(gMixBinding.this.getGnuplotConsoleOutputFileName(), resultPlot);
+					SimulationTab.getInstance().getResultsPanel().addTab("Experiment "+gMixBinding.this.experimentsPerformed, resultPlot);
 					resultPlot.updateUI();
 					resultPlot.repaint();
+					gMixBinding.this.experimentsPerformed++;
 				}
 			});
 
@@ -76,6 +78,10 @@ public class gMixBinding extends Thread {
 	public void setGnuplotConsoleOutputFileName(
 			String gnuplotConsoleOutputFileName) {
 		this.resultsFileName = gnuplotConsoleOutputFileName;
+	}
+
+	public void resetExperiments(){
+		this.experimentsPerformed = 0;
 	}
 
 	public String getGnuplotConsoleOutputFileName() {

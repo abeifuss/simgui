@@ -7,11 +7,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
+
+import net.miginfocom.swing.MigLayout;
+import evaluation.simulator.gui.customElements.ConfigChooserPanel;
+import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
 
-	JTabbedPane resultsTabs;
+	public HomeTab homeTab = new HomeTab();
+	private final JTabbedPane resultsTabs;
+	private final JSplitPane splitPane;
+	private final JSplitPane rightSplitPane;
 	private static SimulationTab instance = null;
 
 	public static SimulationTab getInstance() {
@@ -24,24 +33,42 @@ public class SimulationTab extends JPanel implements ActionListener {
 	public SimulationTab() {
 		// dirty workaround because of lazyness
 
-		JSplitPane splitPane = new JSplitPane();
-		this.add(splitPane);
+		MigLayout migLayout = new MigLayout();
+		this.setLayout(migLayout);
 
-		JSplitPane rightSplitPane = new JSplitPane();
-		rightSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setRightComponent(rightSplitPane);
+		this.splitPane = new JSplitPane();
+		this.add(this.splitPane,"grow,push");
 
-		JPanel consolePanel = new JPanel();
-		rightSplitPane.setLeftComponent(consolePanel);
+		this.rightSplitPane = new JSplitPane();
+		this.rightSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
-		this.resultsTabs = new JTabbedPane(JTabbedPane.TOP);
-		rightSplitPane.setRightComponent(this.resultsTabs);
+		JPanel configChooserPanelInstance = new JPanel(new BorderLayout());
+		configChooserPanelInstance.add(ConfigChooserPanel.getInstance(),BorderLayout.CENTER);
 
-		JPanel experimenSelectionPanel = new JPanel();
-		splitPane.setLeftComponent(experimenSelectionPanel);
-		experimenSelectionPanel.setLayout(new BorderLayout(0, 0));
+		this.splitPane.setLeftComponent(configChooserPanelInstance);
+		this.splitPane.setRightComponent(this.rightSplitPane);
 
-		/*
+		JPanel consolePanel = ConsoleFrame.getInstance().getPanel();
+		consolePanel.setBorder(new TitledBorder(null, "Console",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.rightSplitPane.setLeftComponent(consolePanel);
+
+		this.resultsTabs = new JTabbedPane(JTabbedPane.VERTICAL);
+		this.resultsTabs.setBorder(new TitledBorder(null, "Results",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.resultsTabs.addTab("Welcome",this.homeTab);
+		this.rightSplitPane.setRightComponent(this.resultsTabs);
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				SimulationTab.getInstance().getRightSplitPane().setResizeWeight(0.5);
+			}
+		});
+
+	}
+
+	/*
 		this.availableExperimentsModel = new DefaultListModel<File>();
 		this.runExperimentsModel = new DefaultListModel<File>();
 
@@ -77,8 +104,7 @@ public class SimulationTab extends JPanel implements ActionListener {
 		this.deleteExperiment.addActionListener(this);
 
 		this.update();
-		 */
-	}
+	 */
 	/*
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -281,12 +307,24 @@ public class SimulationTab extends JPanel implements ActionListener {
 	 */
 
 	public JTabbedPane getResultsPanel() {
-		return this.resultsTabs;
+		return this.getResultsTabs();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public JSplitPane getSplitPane() {
+		return this.splitPane;
+	}
+
+	public JSplitPane getRightSplitPane() {
+		return this.rightSplitPane;
+	}
+
+	public JTabbedPane getResultsTabs() {
+		return this.resultsTabs;
 	}
 }
