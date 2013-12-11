@@ -22,6 +22,7 @@ import gnu.trove.TDoubleArrayList;
 import java.math.BigDecimal;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.networkComponent.Identifiable;
@@ -41,6 +42,11 @@ public class Statistics implements EventExecutor {
 	private static boolean recordStatistics = false;
 	private static Simulator simulator;
 	
+	@IntSimulationProperty( name = "Simulation time limit (ms)",
+			propertykey = "SIMULATION_TIME_LIMIT_IN_MS",
+			inject = "4:SIMULATION,Simulation",
+			isStatic = true)
+	private static int recordStatisticsEnd;
 	
 	public Statistics(Identifiable owner) { // is "owner" still needed?
 		//this.owner = owner;
@@ -67,7 +73,7 @@ public class Statistics implements EventExecutor {
 		}
 		// set fixed end (if specified)
 		if (Simulator.settings.getProperty("SIMULATION_END").equals("SIMULATION_TIME_END")) {
-			int recordStatisticsEnd = Simulator.settings.getPropertyAsInt("SIMULATION_TIME_LIMIT_IN_MS");
+			recordStatisticsEnd = Simulator.settings.getPropertyAsInt("SIMULATION_TIME_LIMIT_IN_MS");
 			simulator.scheduleEvent(new Event(s, recordStatisticsEnd, StatisticsEvent.STOP_RECORDING), s);
 		}
 	}

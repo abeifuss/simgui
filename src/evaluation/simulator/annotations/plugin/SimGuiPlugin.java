@@ -1,7 +1,6 @@
 package evaluation.simulator.annotations.plugin;
 
 import com.google.common.collect.Sets;
-
 import evaluation.simulator.conf.service.SimulationConfigService;
 
 import org.apache.log4j.Level;
@@ -12,6 +11,7 @@ public class SimGuiPlugin {
 
 	private String documentationURL;
 	private String id;
+	private String displayName;
 	private String name;
 	private String pluginLayer;
 	private boolean visible;
@@ -67,7 +67,7 @@ public class SimGuiPlugin {
 		this.globalFields = globalFields;
 	}
 	
-	public void setFallbackLayer(String pluginLayer) {
+	public void setFallbackLayer( String pluginLayer ) {
 		this.fallbackLayer = pluginLayer;		
 	}
 	
@@ -81,6 +81,14 @@ public class SimGuiPlugin {
 	
 	public boolean allowGlobalFields() {
 		return this.allowGlobalFields;
+	}
+
+	public void setDisplayName( String name ){
+		this.displayName = name;
+	}
+	
+	public String getDisplayName( ){
+		return this.displayName;
 	}
 
 	/**

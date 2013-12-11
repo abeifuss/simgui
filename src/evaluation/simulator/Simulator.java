@@ -23,6 +23,10 @@ import java.util.PriorityQueue;
 
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -55,6 +59,13 @@ public class Simulator extends GMixTool implements Identifiable {
 
 	private final int numericIdentifier;
 	public static Settings settings;
+	
+	
+	@BoolSimulationProperty( name = "Debug output",
+			propertykey = "DEBUG_OUTPUT",
+			inject = "0:SIMULATION,Simulation",
+			value=false,
+			isStatic = true)
 	public static boolean DEBUG_ON = true;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
@@ -69,8 +80,38 @@ public class Simulator extends GMixTool implements Identifiable {
 	//private static XMLResource generalConfig;
 	private volatile boolean stopSimulation = false;
 	private int voteStopCounter = 0;
+	
+	@IntSimulationProperty( name = "Recording start",
+			propertykey = "START_RECORDING_STATISTICS_AT",
+			inject = "1:SIMULATION,Simulation",
+			isStatic = true)
 	public long ts_recordStatisticsStart = Util.NOT_SET; // timestamp
 	public long ts_recordStatisticsEnd = Util.NOT_SET;
+	
+	@DoubleSimulationProperty( name = "Real time limit (s)",
+			propertykey = "REAL_TIME_LIMIT_IN_SEC",
+			inject = "5:SIMULATION,Simulation",
+			isStatic = true)
+	int delay;
+	
+	@StringSimulationProperty( name = "Experiments to perform",
+			propertykey = "EXPERIMENTS_TO_PERFORM",
+			inject = "2:SIMULATION,Simulation",
+			possibleValues = "AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE",
+			value="AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE",
+			// gui = "multiSelection",
+			isStatic = true)
+	private static String desiredExperiments;
+	
+	@StringSimulationProperty( name = "Simulation end condition",
+			propertykey = "SIMULATION_END",
+			inject = "3:SIMULATION,Simulation",
+			possibleValues = "REAL_TIME_END,SIMULATION_TIME_END,END_OF_TRACE_FILE_REACHED",
+			value="REAL_TIME_END",
+			// gui = "singleSelection",
+			isStatic = true)
+	private static String endCondition;
+	
 	public static Statistics trafficSourceStatistics;
 	private Topology topology;
 	private TrafficSource trafficSource;
@@ -105,7 +146,7 @@ public class Simulator extends GMixTool implements Identifiable {
 				performExperiment(Simulator.settings);
 			} else {
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
-				String desiredExperiments = settings.getProperty("EXPERIMENTS_TO_PERFORM");
+				Simulator.desiredExperiments = settings.getProperty("EXPERIMENTS_TO_PERFORM");
 				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
 				for (String desiredExperiment: desiredExperiments.split(",")) {
 					Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
@@ -150,7 +191,9 @@ public class Simulator extends GMixTool implements Identifiable {
 				}
 			}
 		}
-		if (Simulator.settings.getProperty("SIMULATION_END").equals("REAL_TIME_END")) {
+		
+		Simulator.endCondition = Simulator.settings.getProperty("SIMULATION_END");
+		if (Simulator.endCondition.equals("REAL_TIME_END")) {
 			new StopSimulationTimer(this);
 		}
 	}

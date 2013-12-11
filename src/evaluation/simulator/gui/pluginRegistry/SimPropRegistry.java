@@ -530,6 +530,7 @@ public class SimPropRegistry {
 			plugin.isVisible(pluginAnnotation.visible());
 			plugin.isGlobal(pluginAnnotation.global());
 			plugin.allowGlobalFields(pluginAnnotation.allowGlobalFields());
+			plugin.setDisplayName(pluginAnnotation.pluginName());
 
 			// This is the direct superclass. The direct superclass does not need
 			// to be annotated with @PluginSuperclass. It also can be annotated with
