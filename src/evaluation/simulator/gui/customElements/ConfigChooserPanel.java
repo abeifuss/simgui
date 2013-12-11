@@ -183,6 +183,7 @@ public class ConfigChooserPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SimulationTab.getInstance().getResultsPanel().removeAll();
+				gMixBinding.getInstance().resetExperiments();
 				SimulationTab.getInstance().getResultsPanel().add("Welcome", SimulationTab.getInstance().homeTab);
 			}
 		});
