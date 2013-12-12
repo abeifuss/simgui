@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -21,7 +22,9 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.annotations.simulationProperty.IntProp;
 import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -31,9 +34,8 @@ public class AccordionEntry extends JPanel {
 
 	private final JComboBox<String> comboBox;
 	private final JButton entryButton;
-	private JTable entryTable = null;
 	private final String localName;
-	private final int tableHeight = 25;
+	private final PropertyPanel propertyPanel;
 
 	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
 		this.localName = name;
@@ -79,17 +81,15 @@ public class AccordionEntry extends JPanel {
 		if ( this.comboBox.getModel().getSize() > 1 ){
 			this.add(this.comboBox, BorderLayout.CENTER);
 		}
-
-		this.setDefaultTable();
+		
+		propertyPanel = new PropertyPanel(this.localName);
+		propertyPanel.setVisible(false);
+		this.add(propertyPanel, BorderLayout.SOUTH);
 
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
 		if (jComboBox.getSelectedIndex() != 0) {
-
-			if (this.entryTable != null) {
-				this.setDefaultTable();
-			}
 
 			logger.log(Level.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
@@ -100,134 +100,35 @@ public class AccordionEntry extends JPanel {
 			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
 
-			// Select all SimProps which either match the plugin or are global in the plugin layer
-			List<SimProp> tmpListOfAllSimPropertiesForPlugin = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, pluginLevel);
-
-			for (SimProp s : tmpListOfAllSimPropertiesForPlugin ){
-				logger.log( Level.DEBUG, "Load: " +s.getPluginID() + "::" + s.getName());
-
-			}
-
-			this.entryTable = new JTable(new AccordionModel(
-					tmpListOfAllSimPropertiesForPlugin)) {
-
-				// This takes care that the non-editable cells are grayed out.
-				@Override
-				public Component prepareRenderer(TableCellRenderer renderer,
-						int row, int column) {
-					Component c = super.prepareRenderer(renderer, row, column);
-					if ((column == 1) && !this.isCellEditable(row, column)) {
-						c.setBackground(new Color(255, 200, 200));
-					}
-					return c;
-				}
-			};
-
-			this.entryTable
-			.addMouseMotionListener(new AccordionMouseMotionAdapter(
-					tmpListOfAllSimPropertiesForPlugin,
-					this.entryTable));
-
-			this.entryTable.setDefaultRenderer(Object.class,
-					new AccordionTableCellRenderer(
-							tmpListOfAllSimPropertiesForPlugin));
-
-			this.entryTable.setRowHeight(this.tableHeight);
-
-			this.entryTable.setVisible(true);
-
-			TableColumn col = this.entryTable.getColumnModel().getColumn(1);
-			col.setCellEditor(new AccordionCellEditor());
-			this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
-			this.add(this.entryTable, BorderLayout.SOUTH);
-			this.entryTable.setVisible(true);
+			propertyPanel.realoadContent(pluginName);
+			propertyPanel.setVisible(true);
+			
 			this.updateUI();
 		} else {
-			this.remove(this.entryTable);
+			propertyPanel.realoadContent("");
+			propertyPanel.setVisible(false);
 			this.updateUI();
 		}
 	}
 
-	private void setDefaultTable() {
-		if (this.entryTable != null) {
-			this.remove(this.entryTable);
-		}
-
-		// Select all global SimProps for the given plugin layer
-		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		String pluginLayer = this.localName;
-		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
-		for (SimProp s : tmpListOfAllVisibleSimProperties ){
-			logger.log( Level.DEBUG, "Load " +s.getPluginID() + " " + s.getName());
-		}
-
-		this.entryTable = new JTable(new AccordionModel(
-				tmpListOfAllVisibleSimProperties)) {
-
-			// This takes care that the non-editable cells are grayed out.
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer,
-					int row, int column) {
-				Component c = super.prepareRenderer(renderer, row, column);
-				if ((column == 1) && !this.isCellEditable(row, column)) {
-					c.setBackground(new Color(255, 200, 200));
-				}
-				return c;
-			}
-		};
-
-		this.entryTable
-		.addMouseMotionListener(new AccordionMouseMotionAdapter(
-				tmpListOfAllVisibleSimProperties,
-				this.entryTable));
-
-		this.entryTable.setDefaultRenderer(Object.class,
-				new AccordionTableCellRenderer(
-						tmpListOfAllVisibleSimProperties));
-
-		this.entryTable.setRowHeight(this.tableHeight );
-
-		this.entryTable.setVisible(true);
-
-		TableColumn col = this.entryTable.getColumnModel().getColumn(1);
-		col.setCellEditor(new AccordionCellEditor());
-		this.entryTable.setAlignmentX(Component.LEFT_ALIGNMENT);
-		this.add(this.entryTable, BorderLayout.SOUTH);
-		this.entryTable.setVisible(false);
-		this.updateUI();
-
-	}
-
-	public void setVibility(boolean b) {
-
-		this.comboBox.setVisible(b);
-		if (this.entryTable != null) {
-			this.entryTable.setVisible(b);
-		}
-		this.entryButton.setIcon(new ImageIcon(
-				"etc/img/icons/red/arrow-144-24.png"));
-	}
+//	public void setVibility(boolean b) {
+//
+//		this.propertyPanel.setVisible(b);
+//		this.comboBox.setVisible(b);
+//		this.entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
+//	}
 
 	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
 
 		JButton btn = (JButton) source;
-		if (this.entryTable == null) {
-			if (!jComboBox.isVisible()) {
-				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-			} else {
-				btn.setIcon(new ImageIcon(
-						"etc/img/icons/green/arrow-144-24.png"));
-			}
-			jComboBox.setVisible(!jComboBox.isVisible());
+		if (!jComboBox.isVisible()) {
+			btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
+			propertyPanel.setVisible(true);
+			jComboBox.setVisible(true);
 		} else {
-			if (!this.entryTable.isVisible()) {
-				btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-			} else {
-				btn.setIcon(new ImageIcon(
-						"etc/img/icons/green/arrow-144-24.png"));
-			}
-			this.entryTable.setVisible(!this.entryTable.isVisible());
-			jComboBox.setVisible(!jComboBox.isVisible());
+			btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+			propertyPanel.setVisible(false);
+			jComboBox.setVisible(false);
 		}
 		this.repaint();
 	}

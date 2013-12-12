@@ -13,6 +13,7 @@ public abstract class SimProp {
 	private String pluginLayer;
 	private String propertykey;
 	private String tooltip;
+	private String info;
 	private Class<? extends Requirement>[] value_requirements;
 	private boolean isSuperclassProperty;
 	private boolean isGlobal;
@@ -134,6 +135,14 @@ public abstract class SimProp {
 
 	public boolean isStatic() {
 		return this.isStatic;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }

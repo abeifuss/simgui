@@ -14,6 +14,47 @@ public class FloatProp extends SimProp {
 	private float maxValue;
 	private float minValue;
 	private float value;
+	
+	private boolean auto;
+	private boolean enableAuto;
+	private boolean unlimited;
+	private boolean enableUnlimited;
+	
+	private String guiElement;
+	
+	private float stepSize; 
+	
+	public boolean getAuto(){
+		return this.auto;
+	}
+	
+	public void setAuto( boolean auto ){
+		this.auto = auto;
+	}
+	
+	public boolean getEnableAuto(){
+		return this.enableAuto;
+	}
+	
+	public void setEnableAuto( boolean auto ){
+		this.enableAuto = auto;
+	}
+	
+	public boolean getUnlimited(){
+		return this.unlimited;
+	}
+	
+	public void setUnlimited( boolean unlimited ){
+		this.unlimited = unlimited;
+	}
+	
+	public boolean getEnableUnlimited(){
+		return this.enableUnlimited;
+	}
+	
+	public void setEnableUnlimited( boolean unlimited ){
+		this.enableUnlimited = unlimited;
+	}
 
 	public float getMaxValue() {
 		return this.maxValue;
@@ -67,4 +108,21 @@ public class FloatProp extends SimProp {
 	public String toString() {
 		return super.getName() + "" + this.value;
 	}
+
+	public float getStepSize() {
+		return stepSize;
+	}
+
+	public void setStepSize(float stepSize) {
+		this.stepSize = stepSize;
+	}
+
+	public String getGuiElement() {
+		return guiElement;
+	}
+
+	public void setGuiElement(String guiElement) {
+		this.guiElement = guiElement;
+	}
+
 }

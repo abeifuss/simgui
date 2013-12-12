@@ -255,6 +255,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setValue(annotation.value());
 						property.setEnable(true);
+						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -305,6 +306,7 @@ public class SimPropRegistry {
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
+						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -314,10 +316,14 @@ public class SimPropRegistry {
 							property.setPluginID("");
 						}
 
-						;
+						// IntProp specific annotation processing
 						((IntProp) property).setValue(annotation.value());
 						((IntProp) property).setMinValue(annotation.min());
 						((IntProp) property).setMaxValue(annotation.max());
+						((IntProp) property).setEnableAuto(annotation.enableAuto());
+						((IntProp) property).setEnableUnlimited(annotation.enableUnlimited());
+						((IntProp) property).setStepSize(annotation.stepSize());
+						((IntProp) property).setGuiElement(annotation.guiElement());
 
 						this.getProperties().put(property.getPropertyID(), property);
 
@@ -359,6 +365,7 @@ public class SimPropRegistry {
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
+						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -371,7 +378,11 @@ public class SimPropRegistry {
 						((FloatProp) property).setMinValue(annotation.min());
 						((FloatProp) property).setMaxValue(annotation.max());
 						((FloatProp) property).setValue(annotation.value());
-
+						((FloatProp) property).setEnableAuto(annotation.enableAuto());
+						((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
+						((FloatProp) property).setStepSize(annotation.stepSize());
+						((FloatProp) property).setGuiElement(annotation.guiElement());
+						
 						this.getProperties().put(property.getPropertyID(), property);
 
 						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
@@ -412,6 +423,7 @@ public class SimPropRegistry {
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
+						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -424,6 +436,10 @@ public class SimPropRegistry {
 						((DoubleProp) property).setMinValue(annotation.min());
 						((DoubleProp) property).setMaxValue(annotation.max());
 						((DoubleProp) property).setValue(annotation.value());
+						((DoubleProp) property).setEnableAuto(annotation.enableAuto());
+						((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
+						((DoubleProp) property).setStepSize(annotation.stepSize());
+						((DoubleProp) property).setGuiElement(annotation.guiElement());
 
 						this.getProperties().put(property.getPropertyID(), property);
 						if ( !this.getLayerMapDisplayNameToConfigName().containsKey(layerDisplayName)){
@@ -465,6 +481,7 @@ public class SimPropRegistry {
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
+						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -803,6 +820,7 @@ public class SimPropRegistry {
 
 							property.setName(annotation.name());
 							property.setTooltip(annotation.propertykey());
+							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -863,6 +881,7 @@ public class SimPropRegistry {
 
 							property.setName(annotation.name());
 							property.setTooltip(annotation.propertykey());
+							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -891,6 +910,10 @@ public class SimPropRegistry {
 							((IntProp) property).setValue(annotation.value());
 							((IntProp) property).setMinValue(annotation.min());
 							((IntProp) property).setMaxValue(annotation.max());
+							((IntProp) property).setEnableAuto(annotation.enableAuto());
+							((IntProp) property).setEnableUnlimited(annotation.enableUnlimited());
+							((IntProp) property).setStepSize(annotation.stepSize());
+							((IntProp) property).setGuiElement(annotation.guiElement());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == FloatSimulationProperty.class) {
@@ -925,6 +948,7 @@ public class SimPropRegistry {
 
 							property.setName(annotation.name());
 							property.setTooltip(annotation.propertykey());
+							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -953,6 +977,10 @@ public class SimPropRegistry {
 							((FloatProp) property).setMinValue(annotation.min());
 							((FloatProp) property).setMaxValue(annotation.max());
 							((FloatProp) property).setValue(annotation.value());
+							((FloatProp) property).setEnableAuto(annotation.enableAuto());
+							((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
+							((FloatProp) property).setStepSize(annotation.stepSize());
+							((FloatProp) property).setGuiElement(annotation.guiElement());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == DoubleSimulationProperty.class) {
@@ -987,6 +1015,7 @@ public class SimPropRegistry {
 
 							property.setName(annotation.name());
 							property.setTooltip(annotation.propertykey());
+							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -1015,6 +1044,10 @@ public class SimPropRegistry {
 							((DoubleProp) property).setMinValue(annotation.min());
 							((DoubleProp) property).setMaxValue(annotation.max());
 							((DoubleProp) property).setValue(annotation.value());
+							((DoubleProp) property).setEnableAuto(annotation.enableAuto());
+							((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
+							((DoubleProp) property).setStepSize(annotation.stepSize());
+							((DoubleProp) property).setGuiElement(annotation.guiElement());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == StringSimulationProperty.class) {
@@ -1049,6 +1082,7 @@ public class SimPropRegistry {
 
 							property.setName(annotation.name());
 							property.setTooltip(annotation.propertykey());
+							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this

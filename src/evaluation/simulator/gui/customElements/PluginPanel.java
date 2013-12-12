@@ -91,7 +91,7 @@ public class PluginPanel extends JScrollPane {
 		gridBagConstraintsGeneral.weighty = 1;
 		gridBagConstraintsGeneral.gridx = gridBagConstraintsPlugins.gridx;
 		gridBagConstraintsGeneral.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayoutGeneral.setConstraints(this.pluginSelectionPanel, gridBagConstraintsGeneral);
+		gridBagLayoutGeneral.setConstraints(this.generalPreferencesPanel, gridBagConstraintsGeneral);
 		this.generalPreferencesPanel.setLayout(gridBagLayoutGeneral);
 
 		//GridBagLayout for overall configuration-panel
@@ -191,7 +191,7 @@ public class PluginPanel extends JScrollPane {
 		for (Component component : this.panel.getComponents()) {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
-				accordianEntry.setVibility(true);
+				//accordianEntry.setVibility(true);
 			} else {
 				// Logger.Log(Level.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
 			}

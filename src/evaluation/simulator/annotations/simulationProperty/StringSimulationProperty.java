@@ -15,7 +15,7 @@ public @interface StringSimulationProperty {
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
-	public String id() default "";
+//	public String id() default "";
 
 	public String name() default "";
 
@@ -26,6 +26,8 @@ public @interface StringSimulationProperty {
 	public String propertykey() default "";
 
 	public String tooltip() default "No Tooltip available";
+	
+	public String info() default "";
 
 	public String inject() default "";
 

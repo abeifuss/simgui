@@ -65,7 +65,8 @@ public class Simulator extends GMixTool implements Identifiable {
 			propertykey = "DEBUG_OUTPUT",
 			inject = "0:SIMULATION,Simulation",
 			value=false,
-			isStatic = true)
+			isStatic = true,
+			info = "If this option is enabled the simulator will generate debug output. Simulations with debug output may take significantly longer!")
 	public static boolean DEBUG_ON = true;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
@@ -84,15 +85,19 @@ public class Simulator extends GMixTool implements Identifiable {
 	@IntSimulationProperty( name = "Recording start",
 			propertykey = "START_RECORDING_STATISTICS_AT",
 			inject = "1:SIMULATION,Simulation",
-			isStatic = true)
+			isStatic = true,
+			min = 0)
 	public long ts_recordStatisticsStart = Util.NOT_SET; // timestamp
 	public long ts_recordStatisticsEnd = Util.NOT_SET;
 	
 	@DoubleSimulationProperty( name = "Real time limit (s)",
 			propertykey = "REAL_TIME_LIMIT_IN_SEC",
 			inject = "5:SIMULATION,Simulation",
-			isStatic = true)
-	int delay;
+			isStatic = true,
+			min = 0,
+			max = 3600,
+			guiElement = "slider")
+	int delay; // TODO: pass throug constructor to the statistics
 	
 	@StringSimulationProperty( name = "Experiments to perform",
 			propertykey = "EXPERIMENTS_TO_PERFORM",

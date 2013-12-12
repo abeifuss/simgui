@@ -15,7 +15,7 @@ public @interface DoubleSimulationProperty {
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
-	public String id() default "";
+//	public String id() default "";
 
 	public double max() default Double.MAX_VALUE;
 
@@ -28,6 +28,8 @@ public @interface DoubleSimulationProperty {
 	public String propertykey() default "";
 
 	public String tooltip() default "No Tooltip available";
+	
+	public String info() default "";
 
 	public String inject() default "";
 
@@ -41,5 +43,13 @@ public @interface DoubleSimulationProperty {
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
+	
+	public boolean enableAuto() default false;
+	
+	public boolean enableUnlimited() default false;
+	
+	public double stepSize() default 0.001f;
+
+	public String guiElement() default "spinner";
 
 }

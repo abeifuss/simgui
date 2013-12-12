@@ -38,8 +38,8 @@ public class ConfigChooserPanel extends JPanel{
 	ButtonGroup radioButtonGroup;
 	JTextField expertOptions;
 
-	JButton rightButton = new JButton(">>");
-	JButton leftButton = new JButton("<<");
+//	JButton rightButton = new JButton(">>");
+//	JButton leftButton = new JButton("<<");
 
 	private JButton setSaveFolderButton;
 	private JButton exportPictureButton;

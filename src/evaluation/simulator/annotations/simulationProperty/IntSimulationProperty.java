@@ -15,7 +15,7 @@ public @interface IntSimulationProperty {
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
-	public String id() default "";
+//	public String id() default "";
 
 	public int max() default Integer.MAX_VALUE;
 
@@ -29,6 +29,8 @@ public @interface IntSimulationProperty {
 
 	public String tooltip() default "No Tooltip available";
 	
+	public String info() default "";
+	
 	public String inject() default "";
 
 	public boolean global() default false;
@@ -41,5 +43,13 @@ public @interface IntSimulationProperty {
 	public Class<?> valueType() default Integer.class;
 
 	public boolean isStatic() default false;
+	
+	public boolean enableAuto() default false;
+	
+	public boolean enableUnlimited() default false;
+	
+	public int stepSize() default 1;
+
+	public String guiElement() default "spinner";
 
 }

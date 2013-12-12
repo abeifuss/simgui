@@ -23,4 +23,5 @@ public class BoolProp extends SimProp {
 	public String toString() {
 		return super.getName() + "" + this.value;
 	}
+
 }
