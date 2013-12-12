@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
@@ -59,6 +59,7 @@ public class GuiLauncher {
 		service.shutdownNow();
 
 		// Change Look and Feel to GTK
+		/*
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 				.getInstalledLookAndFeels()) {
 			if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info
@@ -77,8 +78,30 @@ public class GuiLauncher {
 				break;
 			}
 		}
-
-		//
+		*/
+		
+		
+		/*
+		 * Mogliche Look an feels:
+		 * Nimbus: "javax.swing.plaf.nimbus.NimbusLookAndFeel"
+		 * Cross Platform aka. Metal: "javax.swing.plaf.metal.MetalLookAndFeel" oder UIManager.getCrossPlatformLookAndFeelClassName()
+		 * 
+		 */
+		
+		try {
+			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+	        } 
+		catch (Exception e) {
+	          System.out.println("failed to set look and feel");
+	          e.printStackTrace();
+	    }
+		
+		//Show installed look and feels
+		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
+				.getInstalledLookAndFeels()) {
+			logger.debug(info);
+		}
+		
 		GuiService.getInstance();
 
 	}
