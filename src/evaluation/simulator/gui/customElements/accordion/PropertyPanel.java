@@ -67,10 +67,6 @@ public class PropertyPanel extends JPanel {
 			this.remove(c);
 		}
 		
-		if (pluginName.equals("")){
-			return;
-		}
-		
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, this.localName);
 		

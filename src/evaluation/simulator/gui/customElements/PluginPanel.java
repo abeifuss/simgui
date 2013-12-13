@@ -197,8 +197,7 @@ public class PluginPanel extends JScrollPane {
 			}
 		}
 
-		final Map<String, String> activePlugins = this.simPropRegistry
-				.getActivePlugins(true);
+		final Map<String, String> activePlugins = this.simPropRegistry.getActivePlugins(true);
 
 		for (final String pluginLevel : activePlugins.keySet()) {
 			SwingUtilities.invokeLater(new Runnable() {

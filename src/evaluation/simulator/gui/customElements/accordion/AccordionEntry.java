@@ -33,17 +33,19 @@ public class AccordionEntry extends JPanel {
 	private static Logger logger = Logger.getLogger(AccordionEntry.class);
 
 	private final JComboBox<String> comboBox;
+	private boolean fresh;
 	private final JButton entryButton;
 	private final String localName;
 	private final PropertyPanel propertyPanel;
 
-	public AccordionEntry(String name, final JComboBox<String> jComboBox) {
+	public AccordionEntry(String name, JComboBox<String> jComboBox) {
 		this.localName = name;
 
 		if ( jComboBox == null ){
 			logger.log(Level.ERROR, "jComboBox == null");
 		}
 		this.comboBox = jComboBox;
+		this.fresh = true;
 
 		this.setLayout(new BorderLayout(0, 0));
 		this.entryButton = new JButton(this.localName, new ImageIcon(
@@ -89,7 +91,7 @@ public class AccordionEntry extends JPanel {
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
-		if (jComboBox.getSelectedIndex() != 0) {
+		
 
 			logger.log(Level.DEBUG, "Reload table");
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
@@ -99,16 +101,17 @@ public class AccordionEntry extends JPanel {
 
 			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
 			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
+			
+			if(this.fresh==true){			
+				fresh=false;
+				jComboBox.removeItemAt(0);
+			}
 
 			propertyPanel.realoadContent(pluginName);
-			propertyPanel.setVisible(true);
+			propertyPanel.setVisible(true);			
 			
-			this.updateUI();
-		} else {
-			propertyPanel.realoadContent("");
-			propertyPanel.setVisible(false);
-			this.updateUI();
-		}
+			this.updateUI();	
+			
 	}
 
 //	public void setVibility(boolean b) {
