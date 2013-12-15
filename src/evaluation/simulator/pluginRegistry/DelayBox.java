@@ -34,23 +34,23 @@ public enum DelayBox {
 	public static enum TypeOfNode {CLIENT, MIX, DISTANT_PROXY};
 	public static int UNLIMITD_BANDWIDTH = -1;
 	
-	@IntSimulationProperty( name="Client send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND")
+	@IntSimulationProperty( name="Client send bandwidth", key="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND", enableUnlimited = true)
 	private static int bandwidthSend_client;
-	@IntSimulationProperty( name="Client receive bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE")
+	@IntSimulationProperty( name="Client receive bandwidth", key="BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE", enableUnlimited = true)
 	private static int bandwidthReceive_client;
-	@IntSimulationProperty( name="Client latency", propertykey="BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY")
+	@IntSimulationProperty( name="Client latency", key="BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY")
 	private static int latency_client;
-	@IntSimulationProperty( name="Mix send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND")
+	@IntSimulationProperty( name="Mix send bandwidth", key="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_SEND", enableUnlimited = true)
 	private static int bandwidthSend_mix;
-	@IntSimulationProperty( name="Mix receive banwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE")
+	@IntSimulationProperty( name="Mix receive banwidth", key="BASIC_DELAY_BOX_DEFAULT_MIX_BANDWIDTH_RECEIVE", enableUnlimited = true)
 	private static int bandwidthReceive_mix;
-	@IntSimulationProperty( name="Mix latency", propertykey="BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY")
+	@IntSimulationProperty( name="Mix latency", key="BASIC_DELAY_BOX_DEFAULT_MIX_LATENCY")
 	private static int latency_mix;
-	@IntSimulationProperty( name="Distant proxy send bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND")
+	@IntSimulationProperty( name="Distant proxy send bandwidth", key="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_SEND", enableUnlimited = true)
 	private static int bandwidthSend_proxy;
-	@IntSimulationProperty( name="Distant proxy receive bandwidth", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE")
+	@IntSimulationProperty( name="Distant proxy receive bandwidth", key="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_BANDWIDTH_RECEIVE", enableUnlimited = true)
 	private static int bandwidthReceive_proxy;
-	@IntSimulationProperty( name="Distant proxy latency", propertykey="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY")
+	@IntSimulationProperty( name="Distant proxy latency", key="BASIC_DELAY_BOX_DEFAULT_DISTANT_PROXY_LATENCY")
 	private static int latency_proxy;
 		
 	public static DelayBoxImpl getInstance(int bandwidthSend, int bandwidthReceive, int latency) {

@@ -36,11 +36,11 @@ public class TraceFileModel extends TrafficSourceImplementation {
 
 	private TraceReplayClient[] clients;
 	
-	@StringSimulationProperty( name = "Path to trace", propertykey = "PATH_TO_TRACE" )
+	@StringSimulationProperty( name = "Path to trace", key = "PATH_TO_TRACE" )
 	private String pathToTrace;
-	@BoolSimulationProperty( name = "Limit client number", propertykey = "LIMIT_CLIENT_NUMBER" )
+	@BoolSimulationProperty( name = "Limit client number", key = "LIMIT_CLIENT_NUMBER" )
 	private boolean limitClients;
-	@IntSimulationProperty( name = "Client limit", propertykey = "CLIENT_LIMIT" )
+	@IntSimulationProperty( name = "Client limit", key = "CLIENT_LIMIT" )
 	private int limit;
 	
 	@Override

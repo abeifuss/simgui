@@ -46,7 +46,7 @@ public class CottrellPool extends OutputStrategyImpl {
 	
 	@IntSimulationProperty(
 		name = "Pool size",
-		propertykey = "POOL_SIZE"
+		key = "POOL_SIZE"
 	)
 	private int poolSize;
 	

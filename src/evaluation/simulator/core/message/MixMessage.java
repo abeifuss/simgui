@@ -27,8 +27,8 @@ import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;
 public abstract class MixMessage extends NetworkMessage {
 
 	@StringSimulationProperty(name = "Message format",
-			propertykey = "MESSAGE_FORMAT",
-			order = 5,
+			key = "MESSAGE_FORMAT",
+			position = 5,
 			inject = "0:RECODING_SCHEME,Recoding Scheme")
 	private static String type;
 

@@ -46,9 +46,9 @@ public class ThresholdPool extends OutputStrategyImpl {
 	private SimplexTresholdPool requestPool;
 	private SimplexTresholdPool replyPool;
 	
-	@IntSimulationProperty( name = "Pool size", propertykey = "THRESHOLD_POOL_MIN_POOL_SIZE")
+	@IntSimulationProperty( name = "Pool size", key = "THRESHOLD_POOL_MIN_POOL_SIZE")
 	private int poolSize;
-	@IntSimulationProperty( name = "Threshold", propertykey = "THRESHOLD_POOL_THRESHOLD")
+	@IntSimulationProperty( name = "Threshold", key = "THRESHOLD_POOL_THRESHOLD")
 	private int threshold;
 	
 	public ThresholdPool(Mix mix, Simulator simulator) {

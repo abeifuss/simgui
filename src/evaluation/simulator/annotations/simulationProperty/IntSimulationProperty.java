@@ -23,9 +23,9 @@ public @interface IntSimulationProperty {
 
 	public String name() default "";
 
-	public int order() default 0;
+	public int position() default 0;
 
-	public String propertykey() default "";
+	public String key() default "";
 
 	public String tooltip() default "No Tooltip available";
 	

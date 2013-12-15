@@ -28,27 +28,27 @@ public class BasicMixMessage extends MixMessage {
 
 	@IntSimulationProperty(
 			name = "Mix request playload size (byte)",
-			propertykey = "MIX_REQUEST_PAYLOAD_SIZE",
-			order = 1,
-			inject = "5:RECODING_SCHEME,Recoding Scheme")
+			key = "MIX_REQUEST_PAYLOAD_SIZE",
+			position = 1,
+			inject = "1:RECODING_SCHEME,Recoding Scheme")
 	private int requestPlayloadSize;
 	@IntSimulationProperty(
 			name = "Mix reply playload size (byte)",
-			propertykey = "MIX_REPLY_PAYLOAD_SIZE",
-			order = 3,
-			inject = "5:RECODING_SCHEME,Recoding Scheme")
+			key = "MIX_REPLY_PAYLOAD_SIZE",
+			position = 2,
+			inject = "2:RECODING_SCHEME,Recoding Scheme")
 	private int replyPlayloadSize;
 	@IntSimulationProperty(
 			name = "Mix request header size (byte)",
-			propertykey = "MIX_REQUEST_HEADER_SIZE",
-			order = 2,
-			inject = "5:RECODING_SCHEME,Recoding Scheme")
+			key = "MIX_REQUEST_HEADER_SIZE",
+			position = 3,
+			inject = "3:RECODING_SCHEME,Recoding Scheme")
 	private int requestHeaderSize;
 	@IntSimulationProperty(
 			name = "Mix reply header size (byte)",
-			propertykey = "MIX_REPLY_HEADER_SIZE",
-			order = 4,
-			inject = "5:RECODING_SCHEME,Recoding Scheme")
+			key = "MIX_REPLY_HEADER_SIZE",
+			position = 4,
+			inject = "4:RECODING_SCHEME,Recoding Scheme")
 	private int replyHeaderSize;
 
 	private int payloadSize;

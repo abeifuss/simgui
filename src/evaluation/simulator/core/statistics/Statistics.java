@@ -43,7 +43,7 @@ public class Statistics implements EventExecutor {
 	private static Simulator simulator;
 	
 	@IntSimulationProperty( name = "Simulation time limit (ms)",
-			propertykey = "SIMULATION_TIME_LIMIT_IN_MS",
+			key = "SIMULATION_TIME_LIMIT_IN_MS",
 			inject = "4:SIMULATION,Simulation",
 			isStatic = true)
 	private static int recordStatisticsEnd;

@@ -26,7 +26,7 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 public class RequestReplyModel extends TrafficSourceImplementation {
 	
 	private RequestReplyClient[] clients;
-	@IntSimulationProperty( name = "Number of Clients", propertykey = "REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE")
+	@IntSimulationProperty( name = "Number of Clients", key = "REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE")
 	private int numberOfClients;
 	
 	@Override

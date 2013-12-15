@@ -21,6 +21,8 @@
 %\usepackage{calc}
 %\usepackage{pgfopts}
 
+\usepackage{listings}
+
 \setlength\parindent{0pt}%Festlegen des Absatzeinzuges
 \setlength\mathindent{0pt}%Festlegen des Einzuges für abgesetzte Formeln
 
@@ -96,25 +98,89 @@ Ein dritter Aspekt ist, das Annotations Teil der Sprache Java sind. Dieses bedeu
 
 \subsection{Annotations} % (fold)
 \label{sub:annotations}
-Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Bevor die Architektur der GUI erklärt wird, ist es sinnvoll über die Annotations selbst zu sprechen.
+Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Bevor die Architektur der GUI erklärt wird, ist es sinnvoll kurz über die verschiedenen Annotations zu sprechen. Dazu gehört die Annotations-Typen zu motivieren, die Unterschiede zu erklären, auf die Felder der Annotationen einzugehen.
+
+Zuvor wollen wir jedoch eine Grafik betrachten, um den Leser mit der von uns verwendeten Bezeichnungen in Bezug auf die GUI bekannt zu machen. In Abb. 
+
+\includegraphics[scale=0.56]{img/configtool_edit.png}
 % subsection annotations (end)
+
+\begin{lstlisting}
+#-OUTPUT_STRATEGY--OR--FLUSHING_ALGORITHM----------
+# ...
+# Some possible values: NO_DELAY, ... 
+# BATCH_WITH_TIMEOUT, BINOMIAL_POOL, ... 
+# COTTRELL_TIMED_POOL, DISTINCT_USER_BATCH, ... 
+# DLPA_HEURISTIC_2, LOSSY_SYNCHRONOUS_BATCH, ...
+# THRESHOLD_AND_TIMED_BATCH, THRESHOLD_OR_TIMED_BATCH, ... 
+# TIMED_BATCH, TIMED_DYNAMIC_POOL
+#	
+OUTPUT_STRATEGY = BASIC_BATCH
+...
+BASIC_BATCH_BATCH_SIZE = 100
+...
+\end{lstlisting}
+
+Hier ist 'OUTPU\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene des Mix-Servers argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das Plugin. Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird.
+
+Nachdem nun die grundlegenden Terminologien eingeführt wurden, ist es an der Zeit die Annotations zu betrachten, welche den Aufbau der GUI regeln. Wir gehen dabei bottom-up vor, da weniger vorweggenommen werden muss und es somit für den Leser verständlicher sein sollte.
 
 \subsubsection{Property Annotation} % (fold)
 \label{ssub:feld_annotation}
+Die Property-Anotations sind wohl die wichtigsten und auch komplexesten Annotations, die wir in der GUI verwenden. Diese Annotations werden dazu verwendet um Felder im Quellcode des Simulators und im Quellcode der Plugins zu annotieren. Dabei werden solche Felder annotiert, die tatsächlich Simulation-Properties halten. Diese sind daran zu erkenne, dass ihr Wert über \emph{Simulator.settings.getProperty()}
 
+Alle \emph{Properties} haben eine Grundmenge an Feldern, die in der folgenden Auflistung erläutert werden. Besonders sei hier \emph{BoolSimulationProperty} hervorgehoben. Dieses ist die einzige Property-Annotation, die außer dieser Grundmenge keine weiteren Felder besitzt.
 \begin{itemize}
-	\item name:
-	\item propertykey:
-	\item order:
-	\item tooltip:
-	\item inject:
-	\item global:
-	\item value:
-	\item valueType:
-	\item isStatic:
-	\item value_requirements:
-	\item enable_requirements:
+	\item name: Es handelt sich um einen String, der den Namen der Property festlegt, wie er in der GUI angezeigt werden soll. Analog zur obigen Grafik entspricht dieses dem \emph{PropertyName}.\\
+	Default: keinen (Der Entwickler muss diesen Wert händisch setzen)
+	\item key: Ein String der die Property innerhalb der Experiment-Konfiguration eindeutig identifiziert. Analog zum obigen Listing entspricht dieses dem \emph{PropertyKey}).
+	\item value: TODO: entfernen und auf eine Default-Config umstellen!
+	\item position: TODO: Muss noch implementiert werden. Dieses ist ein Integer (>= 0), der die Position des zugehörigen GUI-Elementes steuert. Je größer der Wert desto weiter unten taucht das GUI-Element der jeweiligen Proerty auf. Sollten zwei Properties eines Plugins hier den selben Wert haben, so wird lexikalisch geordnet.\\
+	Defalut: 0 
+	\item tooltip: Dieses ist ein String, der angezeigt wird, wenn sich die Maus über dem entsprechenden GUI-Element befindet.\\
+	Default: leerer String 
+	\item info: Ein String der (sofern festgelegt) als Infotext an dem entsprechenden GUI-Element der Property auftaucht.  
+	Default: leerer String
+	\item global: Ein Boolean über das festgelegt werden kann, dass die Property global (im gesamten PluginLayer angezeigt werden soll).\\
+	Default: leerer String
+	\item inject: TODO: <PluginPosition> muss wieder entfernt werden. Ein String der es erlaubt Properties an eine beliebige Stelle in der GUI zu injizieren. Dieses ist notwendig, wenn Properties beispielsweise zu einem pseudo Plugin gehören (\emph{'Recoding Scheme'} ist z.B. ein solches pseudo Plugin, das in Wirklichkeit nicht als Plugin existiert sondern viel Mehr direkt im Simulator integriert ist, dem Benutzer jedoch als Plugin dargestellt werden soll). \\
+	Syntax: \"{}<LayerPosition>:<LayerKey>,<LayerName> [@<PluginPosition>:<PluginKey>,<PluginName>]\"{}\\
+	Wird hier der optionale Plugin-Teil weggelassen, so gibt die Property als Layerweit (global) sichtbar.\\
+	Default: false (nur im Plugin sichtbar)
+	\item valueType: TODO: Entfernen! Dieser Wert sollte unter keinen Umständen von Hand gesetzt werden! 
+	\item isStatic: Ein Boolean das angibt, ob eine Property im Plugin-Abschnitt (\emph{Plugin Configuration}) auftauchen soll oder aber im Abschnitt für statische Properties (\emph{General Configuration}). Dieses Feld wird nur in Kombination mit dem Feld \emph{inject} verwendet. Sinnvoll ist der Einsatz meist dort, wo es sich um Properties handelt, die nicht zu einem Plugin gehören und aus logischer Sicht auch nicht auf einer Pluginschicht liegen.\\
+	Default: false (Property wird in der \emph{Plugin Configuration} angezeigt)
+	\item value\_requirements: TODO: Jörg
+	\item enable\_requirements: TODO: Jörg
 \end{itemize}
+
+Die Annotations für die numerischen \emph{Properties} (\emph{IntSimulationProperty}, \emph{FloatSimulationProperty} und \emph{DoubleSimulationProperty}) haben neben den Standardfeldern  
+\begin{itemize}
+	\item min: Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Minimalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
+	Default: Integer.MIN\_VALUE bzw. Float|Double.NEGATIVE\_INFINITY
+	\item max: Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Maximalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
+	Default: Integer|Float|Double.MAX\_VALUE
+	\item guiElement: Ein String über den festgelegt werden kann, über was für ein GUI-Element der Wert Property in der GUI konfiguriert werden kann. Aktuell sind für Ganzzahl und Gleitkomma zahlen die beiden Elemente JSpinner (\emph{\"{}spinner\"{}}) und JSlider (\emph{\"{}slider\"{}}) implementiert. Beide Elemente verwenden die durch die Felder \emph{min} und \emph{max} festgelegten Grenzen und schützen den Benutzer vor Fehleingaben.\\
+	Default: \emph{\"{}spinner\"{}} (JSpinner)
+	\item stepSize: Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der die Schrittweite eines JSpinners angibt. Dieses Feld ist in Kombination mit \emph{guiElement=\"{}spinner\"{}} sinnvoll um die Schrittweite manuell festzulegen. So ist es bei einigen Properties vlt. besser eine Schrittweite von 0.1 zu haben, während zu anderen Properties vielleicht kleinere Schrittweiten wie 0.001 besser passen.\\
+	Default: Integer 1, Gleitkomma 0.001f
+	\item enableAuto: Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}AUTO\"{} annehmen kann. Der Simulator sieht dieses für einige Properties vor. Im Falle, dass eine numerische Property den Wert \"{}AUTO\"{} hat, wird aus der tatsächliche Wert automatisch anhand von anderen Properties bestimmt. Wird dieses Feld auf true gesetzt, so gibt es im entsprechenden GUI-Element eine Checkbox, über die der Benutzer festlegen kann, dass die Property automatisch bestimmt werden soll. Für denn Fall, dass  die Checkbox aktiviert ist, wird das eigentliche Eingabeelement (siehe \emph{guiElement}) ausgegraut.\\
+	Beispiele: Request und Reply Size in ParetoClient, PoissonClient, RequestReplyClient und SendConstantClient\\
+	Default: false (keine Checkbox für \"{}AUTO\"{}) 
+	\item enableUnlimited: Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}UNLIMMITED\"{} annehmen kann. Dieses funktioniert analog zu \emph{enableAuto}.\\
+	Beispiel: DelayBox alle sechs Bandwidth-Properties
+	Default: false (keine Checkbox für \"{}UNLIMITED\"{})
+\end{itemize}
+
+Die Annotation \emph{StringSimulationProperty} hat (wie auch die numerischen \emph{Properties}) zusätzliche Felder.
+\begin{itemize}
+	\item possibleValues: Ein String über den vordefinierte Werte festgelegt werden können. Die einzelnen Werte werden innerhalb des Strings durch Kommata separiert. Ist dieser String ungleich dem leeren String, so wird die GUI dem Benutzer eine JCombobox zur Manipulation des Property-Wertes anbieten (es sei denn, dass \emph{multiSelection=true} ist, siehe nächstes Feld).\\
+	Default: leerer String
+	\item multiSelection: TODO: Implementieren. Ein Boolean über den festgelegt werden kann, dass eine Mehrfachauswahl der vordefinierten Werte möglich ist. Ist dieses Feld auf true gesetzt und sind mittels \emph{possibleValues} mehrere vordefinierte Werte angegeben, so wird ein auf einer JList basierendes GUI-Element erstellt, um eine Mehrfachauswahl zu erlauben.\\
+	Default: false (Mehrfachauswahl ist deaktiviert) 
+	\item regex: TODO: Implementieren! Ein String der eine Regex darstellt, die dazu verwendet wird, um Benutzereingaben auf Gültigkeit zu prüfen (kann dann ggf. auch in den ValueRequirements verwendet werden!)
+\end{itemize}
+
 
 % subsubsection feld_annotation (end)
 
@@ -155,7 +221,7 @@ Mit dieser Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBox
 
 \begin{itemize}
 	\item layerKey:
-	Ein String der den Schlüssel festlegt, unter dem der \emph{pluginKey} des aktiven Plugins in der Experiment-Konfiguration geschrieben wird. Aktuelle LayerKeys sind: 
+	Ein String der den Schlüssel festlegt, unter dem der \emph{pluginKey} des aktiven Plugins in der Experiment-Konfiguration geschrieben wird. Die aktuell verwendeten \emph{LayerKeys} der Plugins sind: 
 	\begin{itemize}
 		\item CLIENT\_SEND\_STYLE
 		\item TYPE\_OF\_DELAY\_BOX
@@ -164,7 +230,7 @@ Mit dieser Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBox
 		\item TOPOLOGY\_SCRIPT 
 		\item TYPE\_OF\_TRAFFIC\_GENERATOR
 	\end{itemize}
-	Default: kein
+	Default: kein (muss händisch vom Pluginentwickler gesetzt werden)
 	\item layerName:
 	Ein String der den Namen des Layers festlegt, welcher in der GUI angezeigt werden soll.\\
 	Default: kein
@@ -186,8 +252,10 @@ Mit dieser Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBox
 \label{sec:architektur}
 In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt und das Zusammenspiel der einzelnen Komponenten ausführlich erläutert. 
 
-\subsection{Uebersicht der Architektur} % (fold)
+\subsection{Übersicht der Architektur} % (fold)
 \label{ssub:uebersicht}
+
+TODO: Muss auf einen neuen Stand gebracht werden!!!
 
 \begin{figure}[!htp]
 \includegraphics[width=\textwidth]{dot/arch}
@@ -211,9 +279,9 @@ Die Klasse \emph{SimPropRegistry} ist die wichtigste Hauptkomponenten der gMix-S
 	\item PluginSuperclass Annotations (aka. SimGuiPluginSuperclass)
 \end{enumerate}
 
-Die einzelnen Annotation-Typen und ihr Einsatz werden in Abschnitt \ref{sub:annotations} näher erläutert. Die \emph{SimPropRegistry} erzeugt anhand dieser Annotations dann Plugin- und Property-Objekte, welche zur Laufzeit in verschiedenen Maps verwaltet werden. Neben den beiden wichtigsten Maps (mit dem \emph{properties} und \emph{plugins}), werden noch weitere Maps gehalten, welche beispielsweise die Menge der aktuell in der GUI ausgewählten Plugins halten (\emph{activePlugins}) oder 
+Die einzelnen Annotation-Typen wurden in Abschnitt \ref{sub:annotations} erläutert. Die \emph{SimPropRegistry} erzeugt anhand dieser Annotations dann Plugin- und Property-Objekte, welche zur Laufzeit in verschiedenen Maps verwaltet werden. Neben den beiden wichtigsten Maps (\emph{properties} und \emph{plugins}), werden noch weitere Maps gehalten, welche beispielsweise die Menge der aktuell in der GUI ausgewählten Plugins halten (\emph{activePlugins}) oder ...
 
-Des weiteren bietet die \emph{SimPropRegistry} einige Methoden an, um auf die Inhalte eben dieser Maps zuzugreifen. So beispielsweise eine Methode (\emph{setValue}), um Werte einer vorhandenen Property zu ändern. Die Plugin-Objekte hingegen sind komplett unveränderlich, da sie keine Informationen halten, die vom Benutzer editierbar sind --- zur Zeit enthält ein Plugin-Objekt lediglich die Information, wo die zugehörige Dokumentation zu finden ist. Es gibt allerdings die Methode (\emph{setActivePlugins}, damit die Auswahl der aktiven Plugins festgelegt werden kann. Die Information darüber welche Plugins aktiv sind, muss der \emph{SimPropRegistry} bekannt zugänglich sein, da dieses beim Schreiben der Konfiguration wichtig ist. Es wäre auch denkbar gewesen, dass die \emph{SimPropRegistry} das entsprechende GUI-Element nach seinem aktuellen Zustand fragt, dieses würde jedoch eine höhere Kopplung bedeuten, da der \emph{SimPropRegistry} dann die GUI-Elemente bekannt sein müssten.
+Des weiteren bietet die \emph{SimPropRegistry} einige Methoden an, um auf die Inhalte eben dieser Maps zuzugreifen. So beispielsweise eine Methode (\emph{setValue}), um Werte einer vorhandenen Property zu ändern. Die Plugin-Objekte hingegen sind komplett unveränderlich, da sie keine Informationen halten, die vom Benutzer editierbar sind --- zur Zeit enthält ein Plugin-Objekt lediglich die Information, wo die zugehörige Dokumentation zu finden ist. Es gibt allerdings die Methode (\emph{setActivePlugins}. Mit ihr kann die Auswahl der aktiven Plugins festgelegt werden. Die Information darüber welche Plugins aktiv sind, muss der \emph{SimPropRegistry} bekannt sein, da dieses beim Schreiben der Konfiguration wichtig ist. Wir haben uns entschieden diese Informationen direkt in der \emph{SimPropRegistry} zu halten. Bei einer Zustandsänderung wird dann die \emph{SimPropRegistry} informiert. Alternativ wäre es auch möglich gewesen, dass die \emph{SimPropRegistry} an kritischen Stellen das entsprechende GUI-Element nach seinem aktuellen Zustand fragt, dieses würde jedoch eine höhere Kopplung bedeuten, da die \emph{SimPropRegistry} dann die relevanten GUI-Elemente kennen müsste.
 
 Die \emph{SimPropRegistry} selbst ist als Singleton implementiert. Der Zugriff auf die \emph{SimPropRegistry} erfolgt über eine statische Methode (\emph{getInstance}) und kann an jeder Stelle im Code durchgeführt werden --- Diese Entscheidung wurde getroffen, da dieser Dienst in sehr vielen Komponenten der GUI verwendet wird und ein Durchreichen der Referenz in alle Komponenten sehr aufwändig und unübersichtlich wäre. 
 

@@ -48,13 +48,13 @@ public class CottrellTimedPool extends OutputStrategyImpl {
 	
 	@IntSimulationProperty(
 			name = "Sending Interval (ms)",
-			propertykey = "COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS"
+			key = "COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS"
 	)
 	private int sendingRate;
 	
 	@IntSimulationProperty(
 			name = "Minimum pool size",
-			propertykey = "COTTRELL_TIMED_POOL_MIN_POOL_SIZE"
+			key = "COTTRELL_TIMED_POOL_MIN_POOL_SIZE"
 	)
 	private int poolSize;
 	

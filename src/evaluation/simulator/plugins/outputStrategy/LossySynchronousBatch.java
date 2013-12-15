@@ -53,10 +53,10 @@ public class LossySynchronousBatch extends OutputStrategyImpl implements Identif
 	private SimplexLossySynchronousBatch replyBatch;
 	private Map<String, Vector<TransportMessage>> clientReplyWaitingQueues;
 	
-	@DoubleSimulationProperty( name = "Request rate", propertykey = "LSB_REQUEST_RATE" )
+	@DoubleSimulationProperty( name = "Request rate", key = "LSB_REQUEST_RATE" )
 	private double requestRate;
 	
-	@DoubleSimulationProperty( name = "Reply rate", propertykey = "LSB_REPLY_RATE" )
+	@DoubleSimulationProperty( name = "Reply rate", key = "LSB_REPLY_RATE" )
 	private double replyRate;
 	
 	

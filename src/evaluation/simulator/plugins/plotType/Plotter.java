@@ -26,7 +26,7 @@ import evaluation.simulator.core.statistics.ResultSet;
 public abstract class Plotter {
 
 	@StringSimulationProperty( name = "Plot script",
-			propertykey = "NAME_OF_PLOT_SCRIPT",
+			key = "NAME_OF_PLOT_SCRIPT",
 			inject = "0:PLOTTYPE,Plottype",
 			isStatic = true)
 	String plotscript;

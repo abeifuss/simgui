@@ -42,7 +42,7 @@ public class TimedBatch extends OutputStrategyImpl {
 	private SimplexTimedMix requestBatch;
 	private SimplexTimedMix replyBatch;
 	
-	@IntSimulationProperty( name = "Sending rate (ms)", propertykey = "TIMED_BATCH_SEND_INTERVAL_IN_MS" )
+	@IntSimulationProperty( name = "Sending rate (ms)", key = "TIMED_BATCH_SEND_INTERVAL_IN_MS" )
 	private int sendingRate;
 	
 	

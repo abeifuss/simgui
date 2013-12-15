@@ -25,7 +25,7 @@ import evaluation.simulator.pluginRegistry.DelayBox;
 @Plugin(pluginKey = "BASIC_DELAY_BOX" )
 public class BasicDelayBox extends DelayBoxImpl {
 
-	@IntSimulationProperty(	name = "Packet Size (byte)", propertykey = "NETWORK_PACKET_PAYLOAD_SIZE")
+	@IntSimulationProperty(	name = "Packet Size (byte)", key = "NETWORK_PACKET_PAYLOAD_SIZE")
 	private int packetSize = new Integer(Simulator.settings.getProperty("NETWORK_PACKET_PAYLOAD_SIZE"));
 	
 	private class SimplexDelayBox {

@@ -35,15 +35,15 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 public class ParetoClient extends AbstractClient {
 
 	// Properties
-	@IntSimulationProperty( name = "Request size", propertykey = "PARETO_REQUEST_SIZE")
+	@IntSimulationProperty( name = "Request size", key = "PARETO_REQUEST_SIZE", enableAuto = true)
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "PARETO_REPLY_SIZE")
+	@IntSimulationProperty( name = "Reply size", key = "PARETO_REPLY_SIZE", enableAuto = true)
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "PARETO_RESOLVE_TIME")
+	@IntSimulationProperty( name = "Resolve time (ms)", key = "PARETO_RESOLVE_TIME")
 	private int RESOLVE_TIME;
-	@DoubleSimulationProperty( name = "Alpha", propertykey = "PARETO_ALPHA")
+	@DoubleSimulationProperty( name = "Alpha", key = "PARETO_ALPHA")
 	private double ALPHA;
-	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+	@DoubleSimulationProperty( name = "Average requests per second", key = "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
 	private double AVERAGE_REQUESTS_PER_SECOND;
 	
 	private NormalizedPareto pareto;

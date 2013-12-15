@@ -35,7 +35,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @Plugin(pluginKey = "BASIC_BATCH")
 public class Batch extends OutputStrategyImpl {
 
-	@IntSimulationProperty( name = "Batch size", propertykey = "BASIC_BATCH_BATCH_SIZE")
+	@IntSimulationProperty( name = "Batch size", key = "BASIC_BATCH_BATCH_SIZE")
 	private int batchSize;
 	
 	public class SimplexBatch {

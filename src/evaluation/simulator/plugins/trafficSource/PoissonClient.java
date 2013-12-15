@@ -34,13 +34,13 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @Plugin(pluginKey = "POISSON")
 public class PoissonClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "POISSON_REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", key = "POISSON_REQUEST_SIZE", enableAuto = true )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "POISSON_REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", key = "POISSON_REPLY_SIZE", enableAuto = true )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", propertykey = "POISSON_RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time (ms)", key = "POISSON_RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
-	@DoubleSimulationProperty( name = "Average requests per second", propertykey = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
+	@DoubleSimulationProperty( name = "Average requests per second", key = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
 	private double LAMBDA;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();

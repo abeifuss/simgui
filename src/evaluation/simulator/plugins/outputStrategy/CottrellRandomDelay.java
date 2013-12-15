@@ -43,7 +43,7 @@ public class CottrellRandomDelay extends OutputStrategyImpl implements EventExec
 	
 	@IntSimulationProperty(
 			name = "Maximum delay (ms)",
-			propertykey = "COTTRELL_MAX_RANDOM_DELAY_IN_MS"
+			key = "COTTRELL_MAX_RANDOM_DELAY_IN_MS"
 	)
 	private int maxDelay;
 	

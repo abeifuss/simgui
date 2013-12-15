@@ -30,7 +30,7 @@ public class ParetoModel extends TrafficSourceImplementation implements EventExe
 
 	private ParetoClient[] clients;
 	private Simulator simulator;
-	@IntSimulationProperty(name = "Number of Clients", propertykey = "PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE")
+	@IntSimulationProperty(name = "Number of Clients", key = "PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE")
 	private int numberOfClients;
 	
 	@Override

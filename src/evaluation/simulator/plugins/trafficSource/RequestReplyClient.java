@@ -27,11 +27,11 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @Plugin(pluginKey = "REQUEST_REPLY")
 public class RequestReplyClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "REQUEST_REPLY_REQUEST_SIZE" )
+	@IntSimulationProperty( name = "Request size", key = "REQUEST_REPLY_REQUEST_SIZE", enableAuto = true )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "REQUEST_REPLY_REPLY_SIZE" )
+	@IntSimulationProperty( name = "Reply size", key = "REQUEST_REPLY_REPLY_SIZE", enableAuto = true )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", propertykey = "REQUEST_REPLY_RESOLVE_TIME" )
+	@IntSimulationProperty( name = "Resolve time", key = "REQUEST_REPLY_RESOLVE_TIME" )
 	private int RESOLVE_TIME; // in ms
 	
 	

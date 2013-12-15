@@ -62,7 +62,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	
 	
 	@BoolSimulationProperty( name = "Debug output",
-			propertykey = "DEBUG_OUTPUT",
+			key = "DEBUG_OUTPUT",
 			inject = "0:SIMULATION,Simulation",
 			value=false,
 			isStatic = true,
@@ -83,7 +83,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	private int voteStopCounter = 0;
 	
 	@IntSimulationProperty( name = "Recording start",
-			propertykey = "START_RECORDING_STATISTICS_AT",
+			key = "START_RECORDING_STATISTICS_AT",
 			inject = "1:SIMULATION,Simulation",
 			isStatic = true,
 			min = 0)
@@ -91,7 +91,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	public long ts_recordStatisticsEnd = Util.NOT_SET;
 	
 	@DoubleSimulationProperty( name = "Real time limit (s)",
-			propertykey = "REAL_TIME_LIMIT_IN_SEC",
+			key = "REAL_TIME_LIMIT_IN_SEC",
 			inject = "5:SIMULATION,Simulation",
 			isStatic = true,
 			min = 0,
@@ -100,7 +100,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	int delay; // TODO: pass throug constructor to the statistics
 	
 	@StringSimulationProperty( name = "Experiments to perform",
-			propertykey = "EXPERIMENTS_TO_PERFORM",
+			key = "EXPERIMENTS_TO_PERFORM",
 			inject = "2:SIMULATION,Simulation",
 			possibleValues = "AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE",
 			value="AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE",
@@ -109,7 +109,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	private static String desiredExperiments;
 	
 	@StringSimulationProperty( name = "Simulation end condition",
-			propertykey = "SIMULATION_END",
+			key = "SIMULATION_END",
 			inject = "3:SIMULATION,Simulation",
 			possibleValues = "REAL_TIME_END,SIMULATION_TIME_END,END_OF_TRACE_FILE_REACHED",
 			value="REAL_TIME_END",

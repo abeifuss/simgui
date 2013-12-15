@@ -41,10 +41,10 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @Plugin(pluginKey = "BATCH_WITH_TIMEOUT")
 public class BatchWithTimeout extends OutputStrategyImpl {
 
-	@IntSimulationProperty( name = "Timeout (in ms)", propertykey = "TIMEOUT_IN_MS" )
+	@IntSimulationProperty( name = "Timeout (in ms)", key = "TIMEOUT_IN_MS", position=51 )
 	private int timeout;
 	
-	@IntSimulationProperty( name = "Batch size", propertykey = "BATCH_WITH_TIMEOUT_BATCH_SIZE" )
+	@IntSimulationProperty( name = "Batch size", key = "BATCH_WITH_TIMEOUT_BATCH_SIZE", position=52 )
 	private int batchSize;
 	
 	public class SimplexBatchWithTimeout implements EventExecutor {

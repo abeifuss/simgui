@@ -34,7 +34,7 @@ public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 
 	@IntSimulationProperty(
 			name = "Time to wait for further data from distant proxy (in ms)", 
-			propertykey="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY"
+			key="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY"
 	)
 	private final int timeToWaitForFurtherDataFromDistantProxy;
 	

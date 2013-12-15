@@ -55,7 +55,7 @@ public class DistinctUserBatch extends OutputStrategyImpl implements EventExecut
 	
 	@IntSimulationProperty(
 		name = "Maximum reply delay",
-		propertykey = "MAX_REPLY_DELAY_DISTINCT_USER_BATCH"
+		key = "MAX_REPLY_DELAY_DISTINCT_USER_BATCH"
 	)
 	private int timeout;
 	private Event timeoutEvent = null;

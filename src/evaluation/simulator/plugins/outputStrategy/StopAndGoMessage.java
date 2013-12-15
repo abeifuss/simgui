@@ -47,17 +47,17 @@ public class StopAndGoMessage extends BasicMixMessage {
 	private int identifier;
 	private static int idCounter = 0;
 	
-	@FloatSimulationProperty ( name = "Security parameter mu", propertykey = "SGMIX_SECURITY_PARAMETER_MU" )
+	@FloatSimulationProperty ( name = "Security parameter mu", key = "SGMIX_SECURITY_PARAMETER_MU" )
 	private double securityParameterMu;
-	@IntSimulationProperty( name = "Minimum inter mix delay", propertykey = "SGMIX_MIN_INTER_MIX_DELAY" )
+	@IntSimulationProperty( name = "Minimum inter mix delay", key = "SGMIX_MIN_INTER_MIX_DELAY" )
 	private int minInterMixDelay;
-	@IntSimulationProperty( name = "Maximum inter mix delay", propertykey = "SGMIX_MAX_INTER_MIX_DELAY" )
+	@IntSimulationProperty( name = "Maximum inter mix delay", key = "SGMIX_MAX_INTER_MIX_DELAY" )
 	private int maxInterMixDelay;
-	@IntSimulationProperty( name = "Minimum client mix delay", propertykey = "SGMIX_MIN_CLIENT_MIX_DELAY" )
+	@IntSimulationProperty( name = "Minimum client mix delay", key = "SGMIX_MIN_CLIENT_MIX_DELAY" )
 	private int minClientMixDelay;
-	@IntSimulationProperty( name = "Maximum client mix delay", propertykey = "SGMIX_MAX_CLIENT_MIX_DELAY" )
+	@IntSimulationProperty( name = "Maximum client mix delay", key = "SGMIX_MAX_CLIENT_MIX_DELAY" )
 	private int maxClientMixDelay;
-	@IntSimulationProperty( name = "Maximum clock deviation", propertykey = "SGMIX_MAX_CLOCK_DEVITION" )
+	@IntSimulationProperty( name = "Maximum clock deviation", key = "SGMIX_MAX_CLOCK_DEVITION" )
 	private int maxClockDeviation;
 	
 	

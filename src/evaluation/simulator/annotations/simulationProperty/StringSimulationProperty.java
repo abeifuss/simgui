@@ -19,11 +19,13 @@ public @interface StringSimulationProperty {
 
 	public String name() default "";
 
-	public int order() default 0;
+	public int position() default 0;
 
 	public String possibleValues() default "";
+	
+	public boolean multiSelection() default false;
 
-	public String propertykey() default "";
+	public String key() default "";
 
 	public String tooltip() default "No Tooltip available";
 	
@@ -41,5 +43,7 @@ public @interface StringSimulationProperty {
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
+	
+	public String regex() default "";
 
 }

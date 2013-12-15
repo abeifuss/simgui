@@ -37,7 +37,7 @@ public class ClientWaitForFurtherDataBeforeSend extends ClientSendStyleImpl
 
 	@IntSimulationProperty(
 			name = "Time to wait for further data from user (in ms)", 
-			propertykey = "TIME_TO_WAIT_FOR_FURTHER_DATA_FROM_USER")
+			key = "TIME_TO_WAIT_FOR_FURTHER_DATA_FROM_USER")
 	private final int timeToWaitForFurtherDataFromUser;
 
 	public ClientWaitForFurtherDataBeforeSend(AbstractClient owner,

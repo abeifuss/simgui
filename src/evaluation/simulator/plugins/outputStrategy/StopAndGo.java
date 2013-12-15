@@ -36,7 +36,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @Plugin(pluginKey = "STOP_AND_GO")
 public class StopAndGo extends OutputStrategyImpl implements EventExecutor {
 
-	@BoolSimulationProperty( name = "Use timestamps", propertykey="SGMIX_USE_TIMESTAMPS")
+	@BoolSimulationProperty( name = "Use timestamps", key="SGMIX_USE_TIMESTAMPS")
 	private boolean useTimeStamps;
 	
 	

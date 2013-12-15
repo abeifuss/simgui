@@ -236,7 +236,7 @@ public class SimPropRegistry {
 					BoolSimulationProperty annotation = field.getAnnotation(BoolSimulationProperty.class);
 					if ( !annotation.inject().equals("") ){
 
-						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.key() );
 
 						String layerDisplayName = injection.getLayerDisplayName();
 						String layerConfigName = injection.getLayerConfigName();
@@ -246,9 +246,9 @@ public class SimPropRegistry {
 						int pluginPosition = injection.getPluginPosition();
 
 						property = new BoolProp();
-						property.setId(annotation.propertykey());
+						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip(annotation.propertykey());
+						property.setTooltip(annotation.key());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -288,7 +288,7 @@ public class SimPropRegistry {
 					IntSimulationProperty annotation = field.getAnnotation(IntSimulationProperty.class);
 					if ( !annotation.inject().equals("") ){
 
-						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.key() );
 
 						String layerDisplayName = injection.getLayerDisplayName();
 						String layerConfigName = injection.getLayerConfigName();
@@ -298,9 +298,9 @@ public class SimPropRegistry {
 						int pluginPosition = injection.getPluginPosition();
 
 						property = new IntProp();
-						property.setId(annotation.propertykey());
+						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip(annotation.propertykey());
+						property.setTooltip(annotation.key());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -347,7 +347,7 @@ public class SimPropRegistry {
 					FloatSimulationProperty annotation = field.getAnnotation(FloatSimulationProperty.class);
 					if ( !annotation.inject().equals("") ){
 
-						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.key() );
 
 						String layerDisplayName = injection.getLayerDisplayName();
 						String layerConfigName = injection.getLayerConfigName();
@@ -357,9 +357,9 @@ public class SimPropRegistry {
 						int pluginPosition = injection.getPluginPosition();
 
 						property = new FloatProp();
-						property.setId(annotation.propertykey());
+						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip(annotation.propertykey());
+						property.setTooltip(annotation.key());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -405,7 +405,7 @@ public class SimPropRegistry {
 					DoubleSimulationProperty annotation = field.getAnnotation(DoubleSimulationProperty.class);
 					if ( !annotation.inject().equals("") ){
 
-						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.key() );
 
 						String layerDisplayName = injection.getLayerDisplayName();
 						String layerConfigName = injection.getLayerConfigName();
@@ -415,9 +415,9 @@ public class SimPropRegistry {
 						int pluginPosition = injection.getPluginPosition();
 
 						property = new DoubleProp();
-						property.setId(annotation.propertykey());
+						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip(annotation.propertykey());
+						property.setTooltip(annotation.key());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -463,7 +463,7 @@ public class SimPropRegistry {
 					StringSimulationProperty annotation = field.getAnnotation(StringSimulationProperty.class);
 					if ( !annotation.inject().equals("") ){
 
-						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.propertykey() );
+						InjectionParser injection = new InjectionParser( annotation.inject(), annotation.key() );
 
 						String layerDisplayName = injection.getLayerDisplayName();
 						String layerConfigName = injection.getLayerConfigName();
@@ -473,9 +473,9 @@ public class SimPropRegistry {
 						int pluginPosition = injection.getPluginPosition();
 
 						property = new StringProp();
-						property.setId(annotation.propertykey());
+						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip(annotation.propertykey());
+						property.setTooltip(annotation.key());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -794,7 +794,7 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -804,7 +804,7 @@ public class SimPropRegistry {
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
 
-							property.setId(annotation.propertykey());
+							property.setId(annotation.key());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
 								property.setIsGlobal( false );
@@ -812,14 +812,14 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.key() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip(annotation.propertykey());
+							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
@@ -840,7 +840,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -855,7 +855,7 @@ public class SimPropRegistry {
 						property = new IntProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -865,7 +865,7 @@ public class SimPropRegistry {
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
 
-							property.setId(annotation.propertykey());
+							property.setId(annotation.key());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
 								property.setIsGlobal( false );
@@ -873,14 +873,14 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.key() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip(annotation.propertykey());
+							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
@@ -901,7 +901,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -922,7 +922,7 @@ public class SimPropRegistry {
 						property = new FloatProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -932,7 +932,7 @@ public class SimPropRegistry {
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
 
-							property.setId(annotation.propertykey());
+							property.setId(annotation.key());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
 								property.setIsGlobal( false );
@@ -940,14 +940,14 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.key() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip(annotation.propertykey());
+							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
@@ -968,7 +968,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -989,7 +989,7 @@ public class SimPropRegistry {
 						property = new DoubleProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -999,7 +999,7 @@ public class SimPropRegistry {
 							// will become a global plugin layer property ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
 
-							property.setId(annotation.propertykey());
+							property.setId(annotation.key());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
 								property.setIsGlobal( false );
@@ -1007,14 +1007,14 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.key() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip(annotation.propertykey());
+							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
@@ -1035,7 +1035,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -1056,7 +1056,7 @@ public class SimPropRegistry {
 						property = new StringProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.propertykey() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
 								continue;
 							}
 
@@ -1066,7 +1066,7 @@ public class SimPropRegistry {
 							// The property itself is global ( e.g. LineChartPlotterCf.java )
 							isGlobal = isSuperClass || ( plugin.isGlobal() || annotation.global() );
 
-							property.setId(annotation.propertykey());
+							property.setId(annotation.key());
 							if ( !isGlobal ){
 								property.setPluginID(plugin.getName());
 								property.setIsGlobal( false );
@@ -1074,14 +1074,14 @@ public class SimPropRegistry {
 								property.setPluginID("");
 								property.setIsGlobal( true );
 							}
-							logger.log(Level.DEBUG, annotation.propertykey() + " is global=" +
+							logger.log(Level.DEBUG, annotation.key() + " is global=" +
 									property.isGlobal() + " so plugin is " + property.getPluginID() );
 
 							property.setIsSuperclass( isSuperClass );
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip(annotation.propertykey());
+							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
 
 							// This is why we have to defer all readFields() calls
@@ -1102,7 +1102,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.propertykey() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());

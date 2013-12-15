@@ -16,11 +16,11 @@ public @interface BoolSimulationProperty {
 	// general
 //	public String id() default "";
 
-	public String name() default "";
+	public String name();
 
-	public int order() default 0;
+	public int position() default 0;
 
-	public String propertykey() default "";
+	public String key();
 
 	public String tooltip() default "No Tooltip available";
 	

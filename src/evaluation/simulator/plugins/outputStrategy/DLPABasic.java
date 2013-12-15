@@ -38,9 +38,9 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 @Plugin(pluginKey = "DLPA", documentationURL = "DLPA.html")
 public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 
-	@IntSimulationProperty( name="Maximum request delay", propertykey="MAX_DLPA_REQUEST_DELAY" )
+	@IntSimulationProperty( name="Maximum request delay", key="MAX_DLPA_REQUEST_DELAY" )
 	private int maxRequestDelay;
-	@IntSimulationProperty( name="Maximum reply delay", propertykey="MAX_DLPA_REPLY_DELAY" )
+	@IntSimulationProperty( name="Maximum reply delay", key="MAX_DLPA_REPLY_DELAY" )
 	private int maxReplyDelay;
 	
 	public Vector<DLPAOutputSlot> requestOutputSlots = new Vector<DLPAOutputSlot>(100,100);

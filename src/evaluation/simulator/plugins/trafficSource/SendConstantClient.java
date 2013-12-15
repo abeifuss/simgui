@@ -33,13 +33,13 @@ import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 @Plugin(pluginKey = "CONSTANT")
 public class SendConstantClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", propertykey = "CONSTANT_REQUEST_SIZE", order = 3 )
+	@IntSimulationProperty( name = "Request size", key = "CONSTANT_REQUEST_SIZE", position = 3, enableAuto = true )
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", propertykey = "CONSTANT_REPLY_SIZE", order = 4 )
+	@IntSimulationProperty( name = "Reply size", key = "CONSTANT_REPLY_SIZE", position = 4, enableAuto = true )
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", propertykey = "CONSTANT_RESOLVE_TIME", order = 5 )
+	@IntSimulationProperty( name = "Resolve time", key = "CONSTANT_RESOLVE_TIME", position = 5 )
 	private int RESOLVE_TIME; // in ms
-	@IntSimulationProperty( name = "Average requests per second", propertykey = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", order = 2 )
+	@IntSimulationProperty( name = "Average requests per second", key = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", position = 2 )
 	private long TIME_BETWEEN_SENDS;
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
@@ -47,12 +47,12 @@ public class SendConstantClient extends AbstractClient {
 	
 	public SendConstantClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
-		// TODO: Find a workaround, AUTO is no int
+
 		if (Simulator.settings.getProperty("CONSTANT_REQUEST_SIZE").equals("AUTO"))
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
 		else
 			this.REQUEST_SIZE = Simulator.settings.getPropertyAsInt("CONSTANT_REQUEST_SIZE");
-		// TODO: Find a workaround, AUTO is no int
+
 		if (Simulator.settings.getProperty("CONSTANT_REPLY_SIZE").equals("AUTO"))
 			this.REPLY_SIZE = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
 		else

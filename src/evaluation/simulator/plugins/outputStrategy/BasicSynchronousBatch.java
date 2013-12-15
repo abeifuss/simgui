@@ -87,7 +87,7 @@ public class BasicSynchronousBatch extends OutputStrategyImpl implements
 	
 	@IntSimulationProperty(
 			name = "Reply interval (in ms)", 
-			propertykey = "BASIC_SYNCHRONOUS_REPLY_INTERVAL_IN_MS"
+			key = "BASIC_SYNCHRONOUS_REPLY_INTERVAL_IN_MS"
 	)
 	private int replyInterval;
 

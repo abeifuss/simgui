@@ -51,25 +51,25 @@ public class BinomialPool extends OutputStrategyImpl {
 	
 	@DoubleSimulationProperty(
 			name = "Sending interval (ms)",
-			propertykey = "BINOMIAL_POOL_SENDING_INTERVAL_IN_MS"
+			key = "BINOMIAL_POOL_SENDING_INTERVAL_IN_MS"
 	)
 	private int sendingInterval;
 	
 	@DoubleSimulationProperty(
 			name = "Maximum output fraction",
-			propertykey = "BINOMIAL_POOL_MAX_OUTPUT_FRACTION"
+			key = "BINOMIAL_POOL_MAX_OUTPUT_FRACTION"
 	)
 	private double maxOutputFraction;
 	
 	@DoubleSimulationProperty(
 			name = "Mean",
-			propertykey = "BINOMIAL_POOL_MEAN"
+			key = "BINOMIAL_POOL_MEAN"
 	)
 	private double mean;
 	
 	@DoubleSimulationProperty(
 			name = "Standard deviation",
-			propertykey = "BINOMIAL_POOL_STANDARD_DEVIATION"
+			key = "BINOMIAL_POOL_STANDARD_DEVIATION"
 	)
 	private double stdDev;
 	

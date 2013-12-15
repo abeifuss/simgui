@@ -44,9 +44,9 @@ public class ThresholdAndTimedBatch extends OutputStrategyImpl {
 	private SimplexThresholdAndTimedBatch requestBatch;
 	private SimplexThresholdAndTimedBatch replyBatch;
 	
-	@IntSimulationProperty( name = "Sending Rate (ms)", propertykey = "THRESHOLD_AND_TIMED_BATCH_SENDING_RATE_IN_MS")
+	@IntSimulationProperty( name = "Sending Rate (ms)", key = "THRESHOLD_AND_TIMED_BATCH_SENDING_RATE_IN_MS")
 	private int sendingRate;
-	@IntSimulationProperty( name = "Batch Size", propertykey = "THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE")
+	@IntSimulationProperty( name = "Batch Size", key = "THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE")
 	private int batchSize;
 	
 	public ThresholdAndTimedBatch(Mix mix, Simulator simulator) {
