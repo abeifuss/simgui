@@ -188,14 +188,19 @@ public class PluginPanel extends JScrollPane {
 
 	public void update() {
 
-//		for (Component component : this.panel.getComponents()) {
-//			if (component.getClass().equals(AccordionEntry.class)) {
-//				AccordionEntry accordianEntry = (AccordionEntry) (component);
-//				accordianEntry.setVibility(true);
-//			} else {
-//				// Logger.Log(Level.DEBUG, "Found component "+ component.getClass().getName() + " / " + AccordionEntry.class);
-//			}
-//		}
+		for (Component component : this.pluginSelectionPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(true);
+			}
+		}
+		
+		for (Component component : this.generalPreferencesPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(true);
+			}
+		}
 
 		final Map<String, String> activePlugins = this.simPropRegistry.getActivePlugins(true);
 

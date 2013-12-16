@@ -137,9 +137,9 @@ public class AccordionEntry extends JPanel {
 	}
 
 	public void setVibility(boolean b) {
-		entryButton.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
-		propertyPanel.setVisible(false);
-		comboBox.setVisible(false);
+		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
+		propertyPanel.setVisible(true);
+		comboBox.setVisible(true);
 		this.repaint();
 	}
 }
