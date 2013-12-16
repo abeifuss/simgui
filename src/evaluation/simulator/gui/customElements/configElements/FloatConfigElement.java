@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -54,7 +55,6 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		this.setLayout(migLayout);
 		
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
-//		this.add( new JLabel(simProp.getName()), "wrap" );
 		this.add( this.spinner, "growx, push, wrap" );
 		
 		if (simProp.getEnableAuto()){
@@ -63,6 +63,14 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		
 		if (simProp.getEnableUnlimited()){
 			this.add(unlimited, "push");;
+		}
+		
+		if (!property.getInfo().equals("")){
+			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
+			textarea.setEditable(false);
+			textarea.setLineWrap(true);
+			textarea.setWrapStyleWord(true);
+			this.add( textarea, "growx, growy" );
 		}
 		
 	}

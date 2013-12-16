@@ -56,6 +56,14 @@ public class StringConfigElement extends JPanel implements ActionListener {
 			textarea.setLineWrap(true);
 			this.add( textarea, "growx, growy, push" );
 		}
+		
+		if (!property.getInfo().equals("")){
+			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
+			textarea.setEditable(false);
+			textarea.setLineWrap(true);
+			textarea.setWrapStyleWord(true);
+			this.add( textarea, "growx, growy" );
+		}
 	}
 
 	@Override

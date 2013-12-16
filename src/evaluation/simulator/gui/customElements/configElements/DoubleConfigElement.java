@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,10 +50,7 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 				property.getMaxValue(),
 				property.getStepSize()) );
 		this.spinner.addChangeListener( this );
-//		checkbox.setToolTipText(property.getTooltip());
-		
-		// there is something buggy with jspinner and double
-		// this is a workaround
+
 		this.spinner.setPreferredSize( new Dimension(1,1));
 		((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setColumns(20);
 		
@@ -60,7 +58,6 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		this.setLayout(migLayout);
 		
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
-//		this.add( new JLabel(property.getName()), "wrap" );
 		this.add( this.spinner, "growx, push, wrap" );
 		
 		if (property.getEnableAuto()){
@@ -69,6 +66,14 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		
 		if (property.getEnableUnlimited()){
 			this.add(unlimited, "push");;
+		}
+		
+		if (!property.getInfo().equals("")){
+			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
+			textarea.setEditable(false);
+			textarea.setLineWrap(true);
+			textarea.setWrapStyleWord(true);
+			this.add( textarea, "growx, growy" );
 		}
 		
 	}

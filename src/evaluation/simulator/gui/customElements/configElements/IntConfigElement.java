@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,8 +50,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.slider.addChangeListener( this );
 			this.add( this.slider, "growx, push, wrap" );
 			this.component = this.slider;
-		}else{ // in case of error, take a spinner
-			// TODO: print an error msg
+		}else{ 
 			this.spinner = new JSpinner();
 			this.spinner.setModel( new SpinnerNumberModel( (int) property.getValue(),
 					property.getMinValue(),
@@ -73,15 +73,20 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
 		
-//		this.add( new JLabel(property.getName()), "wrap" );
-		
-		
 		if (property.getEnableAuto()){
 			this.add(auto, "wrap");
 		}
 		
 		if (property.getEnableUnlimited()){
 			this.add(unlimited, "push");;
+		}
+		
+		if (!property.getInfo().equals("")){
+			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
+			textarea.setEditable(false);
+			textarea.setLineWrap(true);
+			textarea.setWrapStyleWord(true);
+			this.add( textarea, "growx, growy" );
 		}
 		
 	}

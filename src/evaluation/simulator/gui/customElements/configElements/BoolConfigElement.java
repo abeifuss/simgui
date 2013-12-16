@@ -35,13 +35,13 @@ public class BoolConfigElement extends JPanel implements ItemListener {
 		this.setLayout(migLayout);
 		
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
-//		this.add( new JLabel(s.getName()), "wrap" );
 		this.add( checkbox, "growx, push, wrap" );
 		
 		if (!property.getInfo().equals("")){
 			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
+			textarea.setWrapStyleWord(true);
 			this.add( textarea, "growx, growy" );
 		}
 	}
