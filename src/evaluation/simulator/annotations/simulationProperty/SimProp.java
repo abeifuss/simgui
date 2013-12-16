@@ -1,7 +1,12 @@
 package evaluation.simulator.annotations.simulationProperty;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 // pojo
-public abstract class SimProp {
+public abstract class SimProp extends Observable {
 
 	private Class<? extends Requirement>[] enable_requirements;
 	// dependencies
@@ -18,6 +23,7 @@ public abstract class SimProp {
 	private boolean isSuperclassProperty;
 	private boolean isGlobal;
 	private boolean isStatic;
+	private List<Observer> Observers = new LinkedList<Observer>();
 
 
 	public boolean getEnable() {
@@ -71,6 +77,18 @@ public abstract class SimProp {
 
 	public void setEnable(boolean enableFlag) {
 		this.enabled = enableFlag;
+		
+		for ( Observer o : Observers ) {
+			o.update((Observable) o, (Object) this.enabled);
+		} 
+	}
+	
+	public void register(Observer observer){
+		Observers.add(observer);
+	}
+	
+	public void unregister(Observer observer){
+		Observers.remove(observer);
 	}
 
 	public void setEnable_requirements(

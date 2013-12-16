@@ -16,6 +16,9 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.annotations.simulationProperty.DoubleProp;
+import evaluation.simulator.annotations.simulationProperty.FloatProp;
+import evaluation.simulator.annotations.simulationProperty.IntProp;
 import evaluation.simulator.annotations.simulationProperty.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
@@ -47,8 +50,8 @@ public class SimulationConfigService {
 		} catch (IllegalArgumentException e) {
 			JOptionPane.showMessageDialog(null, "Could not read from file.");
 		}
-
 		// This value is not in range
+		
 		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
 			logger.log(Level.DEBUG, "Load value for " + s.getKey());
@@ -56,32 +59,40 @@ public class SimulationConfigService {
 				if (s.getValue().getValueType() == String.class) {
 					s.getValue().setValue((props.get(s.getKey())));
 				} else if (s.getValue().getValueType() == Integer.class) {
-
-					if (props.get(s.getKey()).equals("AUTO")) { // TODO Fix this
-																// in a nice way
-
-					} else if (props.get(s.getKey()).equals("UNLIMITED")) { // TODO Fix this
-																			// in a nice way
-
-					} else {
+					if (props.get(s.getKey()).equals("AUTO")) {
+						((IntProp) s.getValue() ).setAuto(true);
+					} else if (props.get(s.getKey()).equals("UNLIMITED")) {
+						((IntProp) s.getValue() ).setUnlimited(true);
+					}else{
+						((IntProp) s.getValue() ).setAuto(false);
+						((IntProp) s.getValue() ).setUnlimited(false);
 						s.getValue().setValue(Integer.parseInt((String) props.get(s.getKey())));
 					}
-
 				} else if (s.getValue().getValueType() == Float.class) {
-					s.getValue().setValue(
-							Float.parseFloat((String) props.get(s.getKey())));
+					if (props.get(s.getKey()).equals("AUTO")) {
+						((FloatProp) s.getValue() ).setAuto(true);
+					} else if (props.get(s.getKey()).equals("UNLIMITED")) {
+						((FloatProp) s.getValue() ).setUnlimited(true);
+					}else{
+						((FloatProp) s.getValue() ).setAuto(false);
+						((FloatProp) s.getValue() ).setUnlimited(false);
+						s.getValue().setValue(Float.parseFloat((String) props.get(s.getKey())));
+					}
 				} else if (s.getValue().getValueType() == Double.class) {
-					s.getValue().setValue(
-							Double.parseDouble((String) props.get(s.getKey())));
+					if (props.get(s.getKey()).equals("AUTO")) {
+						((DoubleProp) s.getValue() ).setAuto(true);
+					} else if (props.get(s.getKey()).equals("UNLIMITED")) {
+						((DoubleProp) s.getValue() ).setUnlimited(true);
+					}else{
+						((DoubleProp) s.getValue() ).setAuto(false);
+						((DoubleProp) s.getValue() ).setUnlimited(false);
+						s.getValue().setValue(Double.parseDouble((String) props.get(s.getKey())));
+					}
 				} else if (s.getValue().getValueType() == Boolean.class) {
-					s.getValue()
-							.setValue(
-									Boolean.parseBoolean((String) props.get(s
-											.getKey())));
+					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
 				}
 			} catch (NullPointerException e) {
-				logger.log(Level.DEBUG,
-						"Can not read value for " + s.getKey());
+				logger.log(Level.ERROR,"Can not read value for " + s.getKey());
 			}
 		}
 
@@ -89,11 +100,9 @@ public class SimulationConfigService {
 		List<String> pluginLevels = simPropRegistry.getPluginLevels();
 
 		for (String pluginLevel : pluginLevels) {
-			String configName = SimPropRegistry.getInstance()
-					.pluginNameToConfigName(pluginLevel);
+			String configName = SimPropRegistry.getInstance().pluginNameToConfigName(pluginLevel);
 			String selectedPlugin = (String) props.getProperty(configName);
-			SimPropRegistry.getInstance().setActivePluginsMapped(configName,
-					selectedPlugin);
+			SimPropRegistry.getInstance().setActivePluginsMapped(configName,selectedPlugin);
 
 			// Update GUI in order to inform JComboBoxes
 			SimConfigPanel.getInstance().update();
@@ -117,8 +126,7 @@ public class SimulationConfigService {
 			props.setProperty("EDF_VERSION", 1);
 
 			// static part
-			Map<String, String> plugins = this.simPropRegistry
-					.getActivePlugins(true);
+			Map<String, String> plugins = this.simPropRegistry.getActivePlugins(true);
 			logger.log(Level.DEBUG, "Active plugins are:");
 			for (String key : plugins.keySet()) {
 				logger.log(Level.DEBUG, key + " with " + plugins.get(key));
@@ -126,14 +134,32 @@ public class SimulationConfigService {
 			}
 
 			// dynamic part
-			for (Entry<String, SimProp> s : this.simPropRegistry
-					.getAllSimProps()) {
+			for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
 				try {
-					props.setProperty(s.getKey(), s.getValue().getValue()
-							.toString());
+					if (s.getValue().getValueType() == Integer.class && ((IntProp)(s.getValue())).getAuto()) {
+						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
+						props.setProperty(s.getKey(), "AUTO");
+					}else if (s.getValue().getValueType() == Integer.class && ((IntProp)(s.getValue())).getUnlimited()) {
+						logger.log(Level.DEBUG, s.getKey() + "=UNLIMITED");
+						props.setProperty(s.getKey(), "UNLIMITED");
+					}else if (s.getValue().getValueType() == Float.class && ((FloatProp)(s.getValue())).getAuto()) {
+						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
+						props.setProperty(s.getKey(), "AUTO");
+					}else if (s.getValue().getValueType() == Float.class && ((FloatProp)(s.getValue())).getUnlimited()) {
+						logger.log(Level.DEBUG, s.getKey() + "=UNLIMITED");
+						props.setProperty(s.getKey(), "UNLIMITED");
+					}else if (s.getValue().getValueType() == Double.class && ((DoubleProp)(s.getValue())).getAuto()) {
+						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
+						props.setProperty(s.getKey(), "AUTO");
+					}else if (s.getValue().getValueType() == Double.class && ((DoubleProp)(s.getValue())).getUnlimited()) {
+						logger.log(Level.DEBUG, s.getKey() + "=UNLIMITED");
+						props.setProperty(s.getKey(), "UNLIMITED");
+					}else{
+						logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().getValue().toString());
+						props.setProperty(s.getKey(), s.getValue().getValue().toString());
+					}
 				} catch (Exception e) {
-					logger.log(Level.DEBUG, s.getKey()
-							+ " has not associated property -> SKIP");
+					logger.log(Level.DEBUG, s.getKey() + " has no associated property -> SKIP");
 				}
 			}
 

@@ -1,7 +1,10 @@
 package evaluation.simulator.gui.customElements.configElements;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
@@ -15,13 +18,14 @@ import evaluation.simulator.annotations.simulationProperty.StringProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
-public class StringConfigElement extends JPanel implements ActionListener {
+public class StringConfigElement extends JPanel implements ActionListener, Observer {
 
 	StringProp property;
 	JTextField textfield;
 	JComboBox<String> jComboBox;
 	
 	SimPropRegistry simPropRegistry;
+	private Component component;
 	
 	public StringConfigElement(StringProp s) {
 		
@@ -43,11 +47,13 @@ public class StringConfigElement extends JPanel implements ActionListener {
 			this.jComboBox.addActionListener(this);
 			this.jComboBox.setToolTipText(property.getTooltip());
 			this.add( jComboBox, "growx, push" );
+			this.component = this.jComboBox;
 		}else{
 			this.textfield = new JTextField();
 			this.textfield.addActionListener(this);
 			this.textfield.setToolTipText(property.getTooltip());
 			this.add( textfield, "growx, push" );
+			this.component = this.textfield;
 		}
 		
 		if (!property.getInfo().equals("")){
@@ -74,6 +80,20 @@ public class StringConfigElement extends JPanel implements ActionListener {
 		if ( event.getSource() == this.jComboBox ){
 			simPropRegistry.setValue(this.property.getPropertyID(), (String) this.jComboBox.getSelectedItem());
 		}
+	}
+	
+	// calles when the simproperty changed
+	// e.g. when the dependecy checker disables a property
+	@Override
+	public void update(Observable observable, Object o) {
+		
+		if ( (boolean)o ){
+			this.component.setEnabled(true);
+		} else {
+			this.component.setEnabled(false);
+		}
+		
+		updateUI();
 	}
 		
 }

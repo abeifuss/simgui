@@ -2,6 +2,8 @@ package evaluation.simulator.gui.customElements.configElements;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -14,7 +16,7 @@ import evaluation.simulator.annotations.simulationProperty.BoolProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
-public class BoolConfigElement extends JPanel implements ItemListener {
+public class BoolConfigElement extends JPanel implements ItemListener, Observer {
 
 	BoolProp property;
 	JCheckBox checkbox;
@@ -49,6 +51,20 @@ public class BoolConfigElement extends JPanel implements ItemListener {
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		simPropRegistry.setValue(this.property.getPropertyID(), this.checkbox.isSelected());
+	}
+	
+	// calles when the simproperty changed
+	// e.g. when the dependecy checker disables a property
+	@Override
+	public void update(Observable observable, Object o) {
+		
+		if ( (boolean)o ){
+			this.checkbox.setEnabled(true);
+		} else {
+			this.checkbox.setEnabled(false);
+		}
+		
+		updateUI();
 	}
 
 }

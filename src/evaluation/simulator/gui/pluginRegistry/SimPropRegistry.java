@@ -1340,4 +1340,30 @@ public class SimPropRegistry {
 	public Map<String, SimProp> getProperties() {
 		return this.properties;
 	}
+
+	public void setAuto(String key, boolean auto, Class<?> c) {
+		
+		if (c == Float.class) {
+			((FloatProp) this.getProperties().get(key)).setAuto(auto);
+		} else if (c == Double.class) {
+			((DoubleProp) this.getProperties().get(key)).setAuto(auto);
+		}else if (c == Integer.class) {
+			((IntProp) this.getProperties().get(key)).setAuto(auto);
+		} else {
+
+		}
+	}
+
+	public void setUnlimited(String key, boolean unlimited, Class<?> c) {
+
+		if (c == Float.class) {
+			((FloatProp) this.getProperties().get(key)).setUnlimited(unlimited);
+		} else if (c == Double.class) {
+			((DoubleProp) this.getProperties().get(key)).setUnlimited(unlimited);
+		}else if (c == Integer.class) {
+			((IntProp) this.getProperties().get(key)).setUnlimited(unlimited);
+		} else {
+
+		}
+	}
 }

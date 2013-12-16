@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -23,7 +25,7 @@ import evaluation.simulator.annotations.simulationProperty.FloatProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
-public class FloatConfigElement extends JPanel implements ChangeListener, ActionListener, ItemListener {
+public class FloatConfigElement extends JPanel implements ChangeListener, ActionListener, ItemListener, Observer {
 
 	FloatProp property;
 	JCheckBox auto;
@@ -65,6 +67,9 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		this.unlimited.addItemListener( this );
 		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
 		
+		this.auto.setSelected(property.getAuto());
+		this.unlimited.setSelected(property.getUnlimited());
+		
 		if (simProp.getEnableAuto()){
 			this.add(auto, "wrap");
 		}
@@ -99,18 +104,36 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 	public void itemStateChanged(ItemEvent event) {
 		if ( this.auto.isSelected() ){
 			this.unlimited.setEnabled(false);
-			this.spinner.setEnabled(false);
+			this.component.setEnabled(false);
+			this.simPropRegistry.setAuto(this.property.getPropertyID(), true, Float.class);
+		}else if ( this.unlimited.isSelected() ){
+			this.auto.setEnabled(false);
+			this.component.setEnabled(false);
+			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), true, Float.class);
 		}else{
 			this.unlimited.setEnabled(true);
-			this.spinner.setEnabled(true);
+			this.auto.setEnabled(true);
+			this.component.setEnabled(true);
+			this.simPropRegistry.setAuto(this.property.getPropertyID(), false, Float.class);
+			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), false, Float.class);
+		}
+	}
+	
+	// calles when the simproperty changed
+	// e.g. when the dependecy checker disables a property
+	@Override
+	public void update(Observable observable, Object o) {
+		
+		if ( (boolean)o ){
+			this.component.setEnabled(true);
+			this.unlimited.setEnabled(true);
+			this.auto.setEnabled(true);
+		} else {
+			this.component.setEnabled(false);
+			this.unlimited.setEnabled(false);
+			this.auto.setEnabled(false);
 		}
 		
-		if ( this.unlimited.isSelected() ){
-			this.auto.setEnabled(false);
-			this.spinner.setEnabled(false);
-		}else{
-			this.auto.setEnabled(true);
-			this.spinner.setEnabled(true);
-		}
+		updateUI();
 	}
 }

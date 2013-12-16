@@ -72,7 +72,7 @@ public class AccordionEntry extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 
-				if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED && AccordionEntry.this.comboBox.isVisible()) {
 					AccordionEntry.this.comboBoxChanged(AccordionEntry.this.comboBox);
 				}
 
@@ -133,6 +133,13 @@ public class AccordionEntry extends JPanel {
 			propertyPanel.setVisible(false);
 			jComboBox.setVisible(false);
 		}
+		this.repaint();
+	}
+
+	public void setVibility(boolean b) {
+		entryButton.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+		propertyPanel.setVisible(false);
+		comboBox.setVisible(false);
 		this.repaint();
 	}
 }

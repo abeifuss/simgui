@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -23,7 +25,7 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
-public class IntConfigElement extends JPanel implements ChangeListener, ActionListener, ItemListener {
+public class IntConfigElement extends JPanel implements ChangeListener, ActionListener, ItemListener, Observer {
 
 	IntProp property;
 	JCheckBox auto;
@@ -40,6 +42,8 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = property;
+		this.property.register(this);
+		
 		this.valueLabel = new JLabel();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
@@ -75,6 +79,9 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		this.unlimited = new JCheckBox("UNLIMITED");
 		this.unlimited.addItemListener( this );
 		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
+		
+		this.auto.setSelected(property.getAuto());
+		this.unlimited.setSelected(property.getUnlimited());
 		
 		if (property.getEnableAuto()){
 			this.add(auto, "wrap");
@@ -115,17 +122,35 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		if ( this.auto.isSelected() ){
 			this.unlimited.setEnabled(false);
 			this.component.setEnabled(false);
+			this.simPropRegistry.setAuto(this.property.getPropertyID(), true, Integer.class);
+		}else if ( this.unlimited.isSelected() ){
+			this.auto.setEnabled(false);
+			this.component.setEnabled(false);
+			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), true, Integer.class);
 		}else{
 			this.unlimited.setEnabled(true);
+			this.auto.setEnabled(true);
 			this.component.setEnabled(true);
+			this.simPropRegistry.setAuto(this.property.getPropertyID(), false, Integer.class);
+			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), false, Integer.class);
+		}
+	}
+
+	// calles when the simproperty changed
+	// e.g. when the dependecy checker disables a property
+	@Override
+	public void update(Observable observable, Object o) {
+		
+		if ( (boolean)o ){
+			this.component.setEnabled(true);
+			this.unlimited.setEnabled(true);
+			this.auto.setEnabled(true);
+		} else {
+			this.component.setEnabled(false);
+			this.unlimited.setEnabled(false);
+			this.auto.setEnabled(false);
 		}
 		
-//		if ( this.unlimited.isSelected() ){
-//			this.auto.setEnabled(false);
-//			this.component.setEnabled(false);
-//		}else{
-//			this.auto.setEnabled(true);
-//			this.component.setEnabled(true);
-//		}
+		updateUI();
 	}
 }
