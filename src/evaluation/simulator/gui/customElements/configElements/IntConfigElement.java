@@ -31,6 +31,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	JSpinner spinner;
 	JSlider slider;
 	Component component;
+	JLabel valueLabel;
 	
 	SimPropRegistry simPropRegistry;
 	
@@ -39,6 +40,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = property;
+		this.valueLabel = new JLabel();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -48,6 +50,8 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 					this.property.getMaxValue(), 
 					(int) this.property.getValue());
 			this.slider.addChangeListener( this );
+			this.valueLabel.setText( "" + this.property.getValue() + " (ms)" );
+			this.add( this.valueLabel, "growx, push, wrap" );
 			this.add( this.slider, "growx, push, wrap" );
 			this.component = this.slider;
 		}else{ 
@@ -96,6 +100,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			simPropRegistry.setValue(this.property.getPropertyID(), this.spinner.getValue());
 		}
 		if ( event.getSource() == this.slider ){
+			this.valueLabel.setText( "" + this.property.getValue() + " (ms)");
 			simPropRegistry.setValue(this.property.getPropertyID(), this.slider.getValue());
 		}
 	}
