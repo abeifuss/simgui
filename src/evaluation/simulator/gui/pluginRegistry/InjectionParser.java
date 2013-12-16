@@ -92,23 +92,12 @@ class InjectionParser {
 			plugin = injectionArguments[1];
 			String[] pluginSplit = plugin.split(",");
 			if ( pluginSplit.length >= 1 ){
-				pluginConfigName = pluginSplit[0];
-				String[] tmp = pluginConfigName.split(":");
-				if ( tmp.length == 2){
-					pluginPosition = Integer.valueOf(tmp[0]);
-					pluginConfigName = tmp[1];
-				}
-				if ( tmp.length > 2){
-					logger.log(Level.DEBUG, "Inject annotatioin for " + 
-							   propertyKey + " is not well formed \n Injection string is " + arguments);
-					// This might not be critical, but it is better to quit
-					System.exit(-1);
-				}
+				pluginConfigName = pluginSplit[1];
 			}
 			if ( pluginSplit.length >= 2 ){
 				pluginDisplayName = pluginSplit[1];
 			}
-			if ( pluginSplit.length >= 3 ) {
+			if ( pluginSplit.length >= 3 || pluginSplit.length < 1 ) {
 				logger.log(Level.DEBUG, "Inject annotatioin for " + 
 						   propertyKey + " is not well formed \n Injection string is " + arguments);
 				// This might not be critical, but it is better to quit
