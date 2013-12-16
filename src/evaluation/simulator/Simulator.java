@@ -27,6 +27,7 @@ import evaluation.simulator.annotations.simulationProperty.BoolSimulationPropert
 import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.requirements.SimulationEndRealTimeEndRequirement;
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -96,7 +97,8 @@ public class Simulator extends GMixTool implements Identifiable {
 			isStatic = true,
 			min = 0,
 			max = 3600,
-			guiElement = "slider")
+			guiElement = "slider",
+			enable_requirements = SimulationEndRealTimeEndRequirement.class)
 	int delay; // TODO: pass throug constructor to the statistics
 	
 	@StringSimulationProperty( name = "Experiments to perform",

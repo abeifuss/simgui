@@ -11,6 +11,7 @@ public class DependencyChecker {
 	public static Boolean errorsInConfig;
 
 	public static void checkAll(SimPropRegistry gcr) {
+		System.err.println("Call of Check All");
 		errorsInConfig = false;
 
 		Set<Entry<String, SimProp>> allSimProps = gcr.getAllSimProps();
@@ -63,14 +64,12 @@ public class DependencyChecker {
 
 			// Checks if the simprop is not already disabled.
 			if (!disabled) {
-
 				// *********** Check Enabled
 				// Get Value from Annotation
 				Class<? extends Requirement>[] valueRequirements = (Class<? extends Requirement>[]) (entry
 						.getValue()).getValue_requirements();
 				if (valueRequirements != null) {
 					for (Class<? extends Requirement> requirement : valueRequirements) {
-						// Checks if the simprop is not already disabled.
 						try {
 							// Try to instante the Requirement
 							valueRequirement = requirement.newInstance();

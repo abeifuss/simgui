@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.simulationProperty.requirements.SimulationEndSimulationTimeEndRequirement;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.networkComponent.Identifiable;
@@ -47,7 +48,8 @@ public class Statistics implements EventExecutor {
 			inject = "4:SIMULATION,Simulation",
 			min = 0,
 			guiElement = "slider",
-			isStatic = true)
+			isStatic = true,
+			enable_requirements = SimulationEndSimulationTimeEndRequirement.class)
 	private static int recordStatisticsEnd;
 	
 	public Statistics(Identifiable owner) { // is "owner" still needed?

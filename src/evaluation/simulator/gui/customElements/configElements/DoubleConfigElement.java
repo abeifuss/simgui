@@ -136,7 +136,7 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 			this.auto.setEnabled(false);
 		}
 		
-		this.spinner.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		this.spinner.setValue((Double) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		
 		updateUI();
 	}

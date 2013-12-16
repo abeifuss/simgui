@@ -1168,6 +1168,7 @@ public class SimPropRegistry {
 	public void setValue(String key, Object arg0) {
 
 		logger.log(Level.DEBUG, "key " + key + " arg " + arg0);
+		DependencyChecker.checkAll(getInstance());
 
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
