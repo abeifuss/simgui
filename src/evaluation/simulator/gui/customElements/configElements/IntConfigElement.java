@@ -156,10 +156,10 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.auto.setEnabled(false);
 		}
 		
-		if ( property.getGuiElement().equals("slider") ) {
-			this.slider.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		if (property.getGuiElement().equals("slider")) {
+			this.slider.setValue((int) simPropRegistry.getValue(property.getPropertyID()).getValue());
 		}else{
-			this.spinner.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
+			this.spinner.setValue((int) simPropRegistry.getValue(property.getPropertyID()).getValue());
 		}
 		
 		updateUI();
