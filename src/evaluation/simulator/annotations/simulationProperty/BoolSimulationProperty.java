@@ -32,7 +32,7 @@ public @interface BoolSimulationProperty {
 	// bool
 	public boolean value() default true;
 
-	public Class<?> valueType() default Boolean.class;
+	// public Class<?> valueType() default Boolean.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 

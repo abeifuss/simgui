@@ -37,7 +37,7 @@ public class ClientBasicSynchronous extends ClientSendStyleImpl implements
 	private final Vector<TransportMessage> requestWaitingQueue = new Vector<TransportMessage>(
 			10, 10);
 
-	@IntSimulationProperty(name = "Basic synchronous send interval in ms", key = "BASIC_SYNCHRONOUS_SEND_INTERVAL_IN_MS", tooltip = "Basic synchronous send interval in ms", valueType = Integer.class)
+	@IntSimulationProperty(name = "Basic synchronous send interval in ms", key = "BASIC_SYNCHRONOUS_SEND_INTERVAL_IN_MS", tooltip = "Basic synchronous send interval in ms")
 	int sendInterval;
 
 	public ClientBasicSynchronous(AbstractClient owner, Simulator simulator) {

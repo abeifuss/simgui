@@ -40,6 +40,7 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = simProp;
+		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -119,10 +120,12 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		}
 	}
 	
-	// calles when the simproperty changed
-	// e.g. when the dependecy checker disables a property
+	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
+		
+		this.auto.setSelected(property.getAuto());
+		this.unlimited.setSelected(property.getUnlimited());
 		
 		if ( (boolean)o ){
 			this.component.setEnabled(true);
@@ -133,7 +136,9 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 			this.unlimited.setEnabled(false);
 			this.auto.setEnabled(false);
 		}
-		
+
+		this.spinner.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
+
 		updateUI();
 	}
 }

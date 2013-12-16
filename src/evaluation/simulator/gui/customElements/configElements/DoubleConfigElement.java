@@ -40,6 +40,7 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = property;
+		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -118,10 +119,12 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		}
 	}
 	
-	// calles when the simproperty changed
-	// e.g. when the dependecy checker disables a property
+	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
+		
+		this.auto.setSelected(property.getAuto());
+		this.unlimited.setSelected(property.getUnlimited());
 		
 		if ( (boolean)o ){
 			this.component.setEnabled(true);
@@ -132,6 +135,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 			this.unlimited.setEnabled(false);
 			this.auto.setEnabled(false);
 		}
+		
+		this.spinner.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		
 		updateUI();
 	}

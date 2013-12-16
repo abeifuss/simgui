@@ -42,8 +42,10 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = property;
-		this.property.register(this);
+		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
+		// this.property.register(this);
+
 		this.valueLabel = new JLabel();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
@@ -104,6 +106,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		if ( event.getSource() == this.spinner ){
+			System.err.println("CHANGED EVENT");
 			simPropRegistry.setValue(this.property.getPropertyID(), this.spinner.getValue());
 		}
 		if ( event.getSource() == this.slider ){
@@ -136,10 +139,12 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		}
 	}
 
-	// calles when the simproperty changed
-	// e.g. when the dependecy checker disables a property
+	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
+		
+		this.auto.setSelected(property.getAuto());
+		this.unlimited.setSelected(property.getUnlimited());
 		
 		if ( (boolean)o ){
 			this.component.setEnabled(true);
@@ -149,6 +154,12 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.component.setEnabled(false);
 			this.unlimited.setEnabled(false);
 			this.auto.setEnabled(false);
+		}
+		
+		if ( property.getGuiElement().equals("slider") ) {
+			this.slider.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		}else{
+			this.spinner.setValue((int) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		}
 		
 		updateUI();

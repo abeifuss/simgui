@@ -40,7 +40,7 @@ public @interface IntSimulationProperty {
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 
-	public Class<?> valueType() default Integer.class;
+	// public Class<?> valueType() default Integer.class;
 
 	public boolean isStatic() default false;
 	

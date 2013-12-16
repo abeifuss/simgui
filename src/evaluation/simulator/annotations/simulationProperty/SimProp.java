@@ -23,7 +23,6 @@ public abstract class SimProp extends Observable {
 	private boolean isSuperclassProperty;
 	private boolean isGlobal;
 	private boolean isStatic;
-	private List<Observer> Observers = new LinkedList<Observer>();
 
 
 	public boolean getEnable() {
@@ -77,19 +76,12 @@ public abstract class SimProp extends Observable {
 
 	public void setEnable(boolean enableFlag) {
 		this.enabled = enableFlag;
-		
-		for ( Observer o : Observers ) {
-			o.update((Observable) o, (Object) this.enabled);
-		} 
+		changed();
 	}
 	
-	public void register(Observer observer){
-		Observers.add(observer);
-	}
-	
-	public void unregister(Observer observer){
-		Observers.remove(observer);
-	}
+	public abstract void register(Observer observer);
+	public abstract void unregister(Observer observer);
+	public abstract void changed();
 
 	public void setEnable_requirements(
 			Class<? extends Requirement>[] enable_requirements) {
@@ -126,8 +118,7 @@ public abstract class SimProp extends Observable {
 
 	public abstract void setValue(Object value);
 
-	public void setValue_requirements(
-			Class<? extends Requirement>[] value_requirements) {
+	public void setValue_requirements( Class<? extends Requirement>[] value_requirements) {
 		this.value_requirements = value_requirements;
 	}
 

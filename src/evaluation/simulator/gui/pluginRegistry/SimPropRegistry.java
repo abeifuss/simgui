@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Observer;
 import java.util.Set;
 import java.util.Vector;
 
@@ -1364,6 +1365,14 @@ public class SimPropRegistry {
 			((IntProp) this.getProperties().get(key)).setUnlimited(unlimited);
 		} else {
 
+		}
+	}
+
+	public void registerGuiElement(Observer guiElement, String propertyID) {
+		for ( Entry<String, SimProp> entry : this.properties.entrySet() ){
+			if (entry.getValue().getPropertyID().equals(propertyID)) {
+				entry.getValue().register( guiElement );
+			}
 		}
 	}
 }

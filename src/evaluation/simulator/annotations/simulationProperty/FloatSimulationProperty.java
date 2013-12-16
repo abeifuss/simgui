@@ -38,7 +38,7 @@ public @interface FloatSimulationProperty {
 	// float
 	public float value() default 0.0f;
 
-	public Class<?> valueType() default Float.class;
+	// public Class<?> valueType() default Float.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 

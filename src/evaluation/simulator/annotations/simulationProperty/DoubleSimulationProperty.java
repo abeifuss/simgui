@@ -38,7 +38,7 @@ public @interface DoubleSimulationProperty {
 	// float
 	public double value() default 0.0f;
 
-	public Class<?> valueType() default Double.class;
+	// public Class<?> valueType() default Double.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 

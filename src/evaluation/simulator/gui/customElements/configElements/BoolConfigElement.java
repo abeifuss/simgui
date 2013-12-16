@@ -28,6 +28,7 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = s;
+		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
 		checkbox = new JCheckBox("enable");
 		checkbox.addItemListener(this);
@@ -53,17 +54,12 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 		simPropRegistry.setValue(this.property.getPropertyID(), this.checkbox.isSelected());
 	}
 	
-	// calles when the simproperty changed
-	// e.g. when the dependecy checker disables a property
+	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
 		
-		if ( (boolean)o ){
-			this.checkbox.setEnabled(true);
-		} else {
-			this.checkbox.setEnabled(false);
-		}
-		
+		this.checkbox.setSelected((boolean)simPropRegistry.getValue( property.getPropertyID()).getValue());
+
 		updateUI();
 	}
 

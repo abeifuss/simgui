@@ -1,5 +1,10 @@
 package evaluation.simulator.annotations.simulationProperty;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JOptionPane;
 
 
@@ -20,6 +25,8 @@ public class IntProp extends SimProp {
 	private boolean enableAuto;
 	private boolean unlimited;
 	private boolean enableUnlimited;
+	
+	private List<Observer> Observers = new LinkedList<Observer>();
 	
 	private String guiElement;
 	
@@ -85,9 +92,12 @@ public class IntProp extends SimProp {
 
 	@Override
 	public void setValue(Object o) {
+		System.err.println("CHANGED VALUE IN INTPROP");
+		
 		int tmp = (int) (o);
 		if ((tmp <= this.getMaxValue()) && (tmp >= this.getMinValue())) {
 			this.value = tmp;
+			this.changed();
 			return;
 		}
 
@@ -115,6 +125,26 @@ public class IntProp extends SimProp {
 
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
+	}
+	
+	@Override
+	public void register(Observer observer){
+		System.err.println("REGISTER INTEGER OBSERVER");
+		Observers.add(observer);
+	}
+	
+	@Override
+	public void unregister(Observer observer){
+		System.err.println("UNREGISTER INTEGER OBSERVER");
+		Observers.remove(observer);
+	}
+
+	@Override
+	public void changed() {
+		System.err.println("CHANGED");
+		for ( Observer observer : Observers ) {
+			observer.update((Observable) this, (Object) this.enabled);
+		} 
 	}
 
 }

@@ -34,24 +34,30 @@ public class TextAreaConsoleAppender extends WriterAppender {
 			@Override
 			public void run() {
 
-				StyledDocument styledDocMainLowerText = logTextPane.getStyledDocument();
-				Style style = styledDocMainLowerText.addStyle("StyledDocument", null);
-
-				StyleConstants.setFontFamily(style, "Cursive");
-				StyleConstants.setFontSize(style, 12);
-
-				if (currentEvent.getLevel().toString() == "FATAL") {
-					StyleConstants.setForeground(style, Color.red);
-				} else {
-					StyleConstants.setForeground(style, Color.blue);
-				}
-
+				StyledDocument styledDocMainLowerText;
 				try {
-					styledDocMainLowerText.insertString(styledDocMainLowerText.getLength(),
-							message, style);
-				} catch (BadLocationException e) {
-					logger.fatal(e);
+					styledDocMainLowerText = logTextPane.getStyledDocument();
+					Style style = styledDocMainLowerText.addStyle("StyledDocument", null);
+
+					StyleConstants.setFontFamily(style, "Cursive");
+					StyleConstants.setFontSize(style, 12);
+
+					if (currentEvent.getLevel().toString() == "FATAL") {
+						StyleConstants.setForeground(style, Color.red);
+					} else {
+						StyleConstants.setForeground(style, Color.blue);
+					}
+
+					try {
+						styledDocMainLowerText.insertString(styledDocMainLowerText.getLength(),
+								message, style);
+					} catch (BadLocationException e) {
+						logger.fatal(e);
+					}
+				} catch (Exception e) {
+					
 				}
+				
 			}
 		});
 	}

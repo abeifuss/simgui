@@ -32,6 +32,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		simPropRegistry = SimPropRegistry.getInstance();
 		
 		this.property = s;
+		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -82,15 +83,15 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		}
 	}
 	
-	// calles when the simproperty changed
-	// e.g. when the dependecy checker disables a property
+	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
 		
-		if ( (boolean)o ){
-			this.component.setEnabled(true);
-		} else {
-			this.component.setEnabled(false);
+		
+		if ( !this.property.getPossibleValues().equals("") ) {
+			this.jComboBox.setSelectedItem((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		}else{
+			this.textfield.setText((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		}
 		
 		updateUI();

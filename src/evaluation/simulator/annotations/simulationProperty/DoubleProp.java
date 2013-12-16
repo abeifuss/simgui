@@ -1,5 +1,10 @@
 package evaluation.simulator.annotations.simulationProperty;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JOptionPane;
 
 
@@ -24,6 +29,9 @@ public class DoubleProp extends SimProp {
 	private String guiElement;
 	
 	private double stepSize; 
+	
+	private List<Observer> Observers = new LinkedList<Observer>();
+	
 	
 	public boolean getAuto(){
 		return this.auto;
@@ -125,5 +133,25 @@ public class DoubleProp extends SimProp {
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
 	}
+
+	@Override
+	public void register(Observer observer){
+		System.err.println("REGISTER DOUBLE OBSERVER");
+		Observers.add(observer);
+	}
+	
+	@Override
+	public void unregister(Observer observer){
+		System.err.println("UNREGISTER DOUBLE OBSERVER");
+		Observers.remove(observer);
+	}
+
+	@Override
+	public void changed() {
+		System.err.println("CHANGED DOUBLE");
+		for ( Observer observer : Observers ) {
+			observer.update((Observable) this, (Object) this.enabled);
+		} 
+	}	
 
 }
