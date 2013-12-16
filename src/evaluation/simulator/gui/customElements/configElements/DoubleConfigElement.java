@@ -1,5 +1,6 @@
 package evaluation.simulator.gui.customElements.configElements;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
@@ -27,6 +29,7 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 	JCheckBox auto;
 	JCheckBox unlimited;
 	JSpinner spinner;
+	Component component;
 	
 	SimPropRegistry simPropRegistry;
 	
@@ -36,13 +39,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		
 		this.property = property;
 		
-		this.auto = new JCheckBox("AUTO");
-		this.auto.addItemListener( this );
-		this.auto.setToolTipText("Overwrite with AUTO");
-		
-		this.unlimited = new JCheckBox("UNLIMITED");
-		this.unlimited.addItemListener( this );
-		this.unlimited.setToolTipText("Overwrite with AUTO");
+		MigLayout migLayout = new MigLayout("","[grow]","");
+		this.setLayout(migLayout);
 		
 		this.spinner = new JSpinner();
 		this.spinner.setModel( new SpinnerNumberModel( (double) property.getValue(),
@@ -50,15 +48,21 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 				property.getMaxValue(),
 				property.getStepSize()) );
 		this.spinner.addChangeListener( this );
-
+		this.spinner.setToolTipText(property.getTooltip());
 		this.spinner.setPreferredSize( new Dimension(1,1));
 		((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setColumns(20);
-		
-		MigLayout migLayout = new MigLayout("","[grow]","");
-		this.setLayout(migLayout);
-		
-		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
 		this.add( this.spinner, "growx, push, wrap" );
+		this.component = this.spinner;
+				
+		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
+		
+		this.auto = new JCheckBox("AUTO");
+		this.auto.addItemListener( this );
+		this.auto.setToolTipText("Overwrite with AUTO");
+		
+		this.unlimited = new JCheckBox("UNLIMITED");
+		this.unlimited.addItemListener( this );
+		this.unlimited.setToolTipText("Overwrite with AUTO");
 		
 		if (property.getEnableAuto()){
 			this.add(auto, "wrap");

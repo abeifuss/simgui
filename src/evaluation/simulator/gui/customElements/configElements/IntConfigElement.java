@@ -62,6 +62,8 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.component = this.spinner;
 		}
 		
+		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
+		
 		this.auto = new JCheckBox("AUTO");
 		this.auto.addItemListener( this );
 		this.auto.setToolTipText("Overwrite with AUTO");
@@ -69,9 +71,6 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		this.unlimited = new JCheckBox("UNLIMITED");
 		this.unlimited.addItemListener( this );
 		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
-		
-		
-		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
 		
 		if (property.getEnableAuto()){
 			this.add(auto, "wrap");
