@@ -35,15 +35,13 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		
 		this.property = property;
 		
-		this.auto = new JCheckBox("auto");
-//		this.auto.addActionListener( this );
+		this.auto = new JCheckBox("AUTO");
 		this.auto.addItemListener( this );
-//		this.auto.addChangeListener( this );
+		this.auto.setToolTipText("Overwrite with AUTO");
 		
-		this.unlimited = new JCheckBox("unlimited");
-//		this.unlimited.addActionListener( this );
+		this.unlimited = new JCheckBox("UNLIMITED");
 		this.unlimited.addItemListener( this );
-//		this.unlimited.addChangeListener( this );
+		this.unlimited.setToolTipText("Overwrite with AUTO");
 		
 		this.spinner = new JSpinner();
 		this.spinner.setModel( new SpinnerNumberModel( (double) property.getValue(),

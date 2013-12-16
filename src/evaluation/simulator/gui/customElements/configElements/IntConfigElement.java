@@ -62,15 +62,13 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.component = this.spinner;
 		}
 		
-		this.auto = new JCheckBox("auto");
-//		this.auto.addActionListener( this );
+		this.auto = new JCheckBox("AUTO");
 		this.auto.addItemListener( this );
-//		this.auto.addChangeListener( this );
+		this.auto.setToolTipText("Overwrite with AUTO");
 		
-		this.unlimited = new JCheckBox("unlimited");
-//		this.unlimited.addActionListener( this );
+		this.unlimited = new JCheckBox("UNLIMITED");
 		this.unlimited.addItemListener( this );
-//		this.unlimited.addChangeListener( this );
+		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
 		
 		
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));

@@ -34,15 +34,13 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		
 		this.property = simProp;
 		
-		this.auto = new JCheckBox("auto");
-//		this.auto.addActionListener( this );
+		this.auto = new JCheckBox("AUTO");
 		this.auto.addItemListener( this );
-//		this.auto.addChangeListener( this );
+		this.auto.setToolTipText("Overwrite with AUTO");
 		
-		this.unlimited = new JCheckBox("unlimited");
-//		this.unlimited.addActionListener( this );
+		this.unlimited = new JCheckBox("UNLIMITED");
 		this.unlimited.addItemListener( this );
-//		this.unlimited.addChangeListener( this );
+		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
 		
 		this.spinner = new JSpinner();
 		this.spinner.setModel( new SpinnerNumberModel( (float) simProp.getValue(),
