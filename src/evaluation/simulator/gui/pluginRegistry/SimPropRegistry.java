@@ -1168,7 +1168,7 @@ public class SimPropRegistry {
 	public void setValue(String key, Object arg0) {
 
 		logger.log(Level.DEBUG, "key " + key + " arg " + arg0);
-		DependencyChecker.checkAll(getInstance());
+		
 
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
@@ -1189,6 +1189,7 @@ public class SimPropRegistry {
 		} else {
 
 		}
+		DependencyChecker.checkAll(getInstance());
 	}
 
 	public List<SimProp> getGlobalSimPropertiesByPluginLayer(String pluginLayer) {

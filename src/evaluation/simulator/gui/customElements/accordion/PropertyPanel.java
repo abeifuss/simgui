@@ -18,6 +18,7 @@ import evaluation.simulator.gui.customElements.configElements.DoubleConfigElemen
 import evaluation.simulator.gui.customElements.configElements.FloatConfigElement;
 import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.customElements.configElements.StringConfigElement;
+import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -60,6 +61,7 @@ public class PropertyPanel extends JPanel {
 				this.add( new StringConfigElement((StringProp) simProp), "growx, wrap");
 			}
 		}
+		DependencyChecker.checkAll(simPropRegistry);
 	}
 	
 	public void realoadContent(String pluginName){
