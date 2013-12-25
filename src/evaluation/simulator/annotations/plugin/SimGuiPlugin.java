@@ -12,7 +12,7 @@ public class SimGuiPlugin {
 	private String documentationURL;
 	private String id;
 	private String displayName;
-	private String name;
+	private String configName;
 	private String pluginLayer;
 	private boolean visible;
 	private boolean globalFields;
@@ -27,8 +27,8 @@ public class SimGuiPlugin {
 		return this.id;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getConfigName() {
+		return this.configName;
 	}
 
 	public void setDocumentationURL(String documentationURL) {
@@ -39,8 +39,8 @@ public class SimGuiPlugin {
 		this.id = id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setConfigName(String name) {
+		this.configName = name;
 	}
 
 	public String getPluginLayer() {
@@ -88,7 +88,9 @@ public class SimGuiPlugin {
 	}
 	
 	public String getDisplayName( ){
-		return this.displayName;
+		if ( !this.displayName.equals(""))
+			return this.displayName;
+		return this.configName;
 	}
 
 	/**

@@ -22,7 +22,7 @@ import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
 import evaluation.simulator.pluginRegistry.DelayBox;
 
-@Plugin(pluginKey = "BASIC_DELAY_BOX" )
+@Plugin(pluginKey = "BASIC_DELAY_BOX", pluginName = "Basic delay" )
 public class BasicDelayBox extends DelayBoxImpl {
 
 	@IntSimulationProperty(	name = "Packet Size (byte)", key = "NETWORK_PACKET_PAYLOAD_SIZE")

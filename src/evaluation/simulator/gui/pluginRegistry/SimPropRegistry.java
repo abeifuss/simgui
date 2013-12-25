@@ -542,7 +542,7 @@ public class SimPropRegistry {
 
 			plugin = new SimGuiPlugin();
 			plugin.setId(pluginClass.getName());
-			plugin.setName(pluginAnnotation.pluginKey());
+			plugin.setConfigName(pluginAnnotation.pluginKey());
 			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 			plugin.setPluginLayer(pluginAnnotation.pluginLayerKey());
 			plugin.isVisible(pluginAnnotation.visible());
@@ -564,7 +564,7 @@ public class SimPropRegistry {
 			boolean autodetectPluginLayer = pluginAnnotation.pluginLayerKey().equals("");
 
 			if ( !autodetectPluginLayer ){
-				logger.log(Level.DEBUG, "Disable autodetect for plugin " + plugin.getName() );
+				logger.log(Level.DEBUG, "Disable autodetect for plugin " + plugin.getConfigName() );
 
 				// we need this for invisible plugins
 				plugin.setFallbackLayer(pluginAnnotation.pluginLayerKey());
@@ -605,7 +605,7 @@ public class SimPropRegistry {
 				// readFields( plugin, pluginClass.getDeclaredFields(), pluginAnnotation.pluginLayerKey(), false );
 
 			}else{ // AUTODETECT PLUGINLAYER (Lookup superclass)
-				logger.log(Level.DEBUG, "Enable autodetect for plugin " + plugin.getName() + ", PluginSuperclass=" + pluginSuperclass.getSimpleName());
+				logger.log(Level.DEBUG, "Enable autodetect for plugin " + plugin.getConfigName() + ", PluginSuperclass=" + pluginSuperclass.getSimpleName());
 
 				String layerDisplayName = "";
 				String layerConfigName = "";
@@ -622,7 +622,7 @@ public class SimPropRegistry {
 							(directSuperlass.getAnnotation( Plugin.class ).pluginKey() != pluginAnnotation.pluginKey()) ){
 
 						logger.log( Level.ERROR , "Check the annotation in class " + directSuperlass.getCanonicalName() +
-								" it should be @Plugin( name = \""+ plugin.getName() +"\" ... ) or a valid @PluginSuperclass annotation.");
+								" it should be @Plugin( name = \""+ plugin.getConfigName() +"\" ... ) or a valid @PluginSuperclass annotation.");
 					}
 
 					// Set the pluginLayer
@@ -657,30 +657,41 @@ public class SimPropRegistry {
 						if ( !fakePlugins.equals("") ){
 							String[] fakedPlugins = fakePlugins.split(",");
 							for (String fakedPlugin : fakedPlugins) {
+								String[] splitPlugin = fakedPlugin.split(":");
+								
+								SimGuiPlugin fakePlugin = new SimGuiPlugin();
+								if ( splitPlugin.length >= 1){
+									fakePlugin.setDisplayName(splitPlugin[0]);
+									fakePlugin.setConfigName(splitPlugin[0]);
+								}
+								if ( splitPlugin.length > 1 ){
+									fakePlugin.setDisplayName(splitPlugin[1]);
+								}
+								fakePlugin.setPluginLayer(pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
+								fakePlugin.isVisible(true);
+								plugins.put(fakedPlugin, fakePlugin);
+								
 								logger.log(Level.DEBUG, "Inject fake plugin " + fakedPlugin + " to " + layerConfigName );
 								this.registerPlugin(fakedPlugin, pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), true);
 							}
 						}
 
 					}else{
-						logger.log(Level.DEBUG, plugin.getName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
-						this.registerPlugin( plugin.getName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );
+						logger.log(Level.DEBUG, plugin.getConfigName() + " is caped by a superclass " + pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey());
+						this.registerPlugin( plugin.getConfigName(), pluginSuperclass.getAnnotation( PluginSuperclass.class ).layerKey(), plugin.isVisible() );
 					}
-
-
 				}
 				else{
 					// The plugin is not O.K.! Each plugin must be caped by a pluginSuperclass
-					logger.log(Level.ERROR, plugin.getName() + " is not caped by a superclass");
+					logger.log(Level.ERROR, plugin.getConfigName() + " is not caped by a superclass");
 					System.exit(-1);
 				}
 
 				PluginSuperclass pluginSuperclassAnnotation = pluginSuperclass.getAnnotation( PluginSuperclass.class );
 				String pluginSuperclassLayerName = pluginSuperclassAnnotation.layerName();
-
 				this.deferedReadFields( plugin, pluginClass.getDeclaredFields(), layerConfigName, false );
 			}
-			this.plugins.put(plugin.getName(), plugin);
+			this.plugins.put(plugin.getConfigName(), plugin);
 		}
 		// call initial dependency-check for per plugin configurations
 		DependencyChecker.checkAll(this);
@@ -689,7 +700,7 @@ public class SimPropRegistry {
 
 	private void deferedReadFields(SimGuiPlugin plugin, Field[] declaredFields, String pluginLayerKey, boolean isSuperclass) {
 
-		logger.log(Level.DEBUG, "Defer " + plugin.getName() );
+		logger.log(Level.DEBUG, "Defer " + plugin.getConfigName() );
 
 		Vector<Object> deferInformation = new Vector<Object>();
 		deferInformation.add( plugin );
@@ -709,7 +720,7 @@ public class SimPropRegistry {
 			String pluginLayerKey = (String) deferInformation.get( 2 );
 			boolean isSuperclass = (boolean) deferInformation.get( 3 );
 
-			this.registerPlugin( plugin.getName(), plugin.getPluginLayer(), plugin.isVisible() );
+			this.registerPlugin( plugin.getConfigName(), plugin.getPluginLayer(), plugin.isVisible() );
 			this.readFields( plugin, declaredFields, pluginLayerKey, isSuperclass );
 		}
 
@@ -775,7 +786,7 @@ public class SimPropRegistry {
 		// Skip invisible plugins
 		if ( !plugin.isVisible() && !(plugin.isGlobal() || plugin.allowGlobalFields()) ){
 			logger.log(Level.DEBUG,
-					plugin.getName() + " is ignored due to isVisible=" +
+					plugin.getConfigName() + " is ignored due to isVisible=" +
 							plugin.isVisible()	+ " and makeFieldsGlobal=" +
 							plugin.isGlobal() + " and allowGlobalFields=" + plugin.allowGlobalFields());
 			return;
@@ -795,7 +806,7 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getConfigName() + " has injection annotation");
 								continue;
 							}
 
@@ -807,7 +818,7 @@ public class SimPropRegistry {
 
 							property.setId(annotation.key());
 							if ( !isGlobal ){
-								property.setPluginID(plugin.getName());
+								property.setPluginID(plugin.getConfigName());
 								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
@@ -828,9 +839,9 @@ public class SimPropRegistry {
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							String possiblePluginLayer = this.getPluginLayer(plugin.getConfigName());
 							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
+								property.setPluginLayerID(this.getPluginLayer(plugin.getConfigName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -841,7 +852,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getConfigName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -856,7 +867,7 @@ public class SimPropRegistry {
 						property = new IntProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getConfigName() + " has injection annotation");
 								continue;
 							}
 
@@ -868,7 +879,7 @@ public class SimPropRegistry {
 
 							property.setId(annotation.key());
 							if ( !isGlobal ){
-								property.setPluginID(plugin.getName());
+								property.setPluginID(plugin.getConfigName());
 								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
@@ -889,9 +900,9 @@ public class SimPropRegistry {
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							String possiblePluginLayer = this.getPluginLayer(plugin.getConfigName());
 							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
+								property.setPluginLayerID(this.getPluginLayer(plugin.getConfigName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -902,7 +913,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getConfigName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -923,7 +934,7 @@ public class SimPropRegistry {
 						property = new FloatProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getConfigName() + " has injection annotation");
 								continue;
 							}
 
@@ -935,7 +946,7 @@ public class SimPropRegistry {
 
 							property.setId(annotation.key());
 							if ( !isGlobal ){
-								property.setPluginID(plugin.getName());
+								property.setPluginID(plugin.getConfigName());
 								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
@@ -956,9 +967,9 @@ public class SimPropRegistry {
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							String possiblePluginLayer = this.getPluginLayer(plugin.getConfigName());
 							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
+								property.setPluginLayerID(this.getPluginLayer(plugin.getConfigName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -969,7 +980,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getConfigName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -990,7 +1001,7 @@ public class SimPropRegistry {
 						property = new DoubleProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getConfigName() + " has injection annotation");
 								continue;
 							}
 
@@ -1002,7 +1013,7 @@ public class SimPropRegistry {
 
 							property.setId(annotation.key());
 							if ( !isGlobal ){
-								property.setPluginID(plugin.getName());
+								property.setPluginID(plugin.getConfigName());
 								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
@@ -1023,9 +1034,9 @@ public class SimPropRegistry {
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							String possiblePluginLayer = this.getPluginLayer(plugin.getConfigName());
 							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
+								property.setPluginLayerID(this.getPluginLayer(plugin.getConfigName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -1036,7 +1047,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getConfigName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -1057,7 +1068,7 @@ public class SimPropRegistry {
 						property = new StringProp();
 						if (annotation != null) {
 							if ( !annotation.inject().equals("") ){
-								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getName() + " has injection annotation");
+								logger.log(Level.DEBUG, "Skip " + annotation.key() + " from " + plugin.getConfigName() + " has injection annotation");
 								continue;
 							}
 
@@ -1069,7 +1080,7 @@ public class SimPropRegistry {
 
 							property.setId(annotation.key());
 							if ( !isGlobal ){
-								property.setPluginID(plugin.getName());
+								property.setPluginID(plugin.getConfigName());
 								property.setIsGlobal( false );
 							}else{
 								property.setPluginID("");
@@ -1090,9 +1101,9 @@ public class SimPropRegistry {
 							// function builds up dynamically. Therefore, it is possible to get an empty string or
 							// null, if we have bad timing!
 							// CAUTION: do not touch these expressions, we make use of lazy evaluation
-							String possiblePluginLayer = this.getPluginLayer(plugin.getName());
+							String possiblePluginLayer = this.getPluginLayer(plugin.getConfigName());
 							if ( (possiblePluginLayer != null) && !possiblePluginLayer.isEmpty() ){
-								property.setPluginLayerID(this.getPluginLayer(plugin.getName()));
+								property.setPluginLayerID(this.getPluginLayer(plugin.getConfigName()));
 							}else{
 								if ( !plugin.getFallbackLayer().isEmpty() ){
 									logger.log(Level.DEBUG, "Fallback to " + plugin.getFallbackLayer());
@@ -1103,7 +1114,7 @@ public class SimPropRegistry {
 								}
 							}
 
-							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getName()));
+							logger.log(Level.DEBUG, annotation.key() + " set layer to " + this.getPluginLayer(plugin.getConfigName()));
 
 							property.setEnable_requirements(annotation.enable_requirements());
 							property.setValue_requirements(annotation.value_requirements());
@@ -1310,23 +1321,46 @@ public class SimPropRegistry {
 		return tree;
 	}
 
-	public String[] getPluginsInLayer( String pluginLayer ) {
-		List<String> tmp = new LinkedList<>();
+	// Obsolete / Deprecated
+//	public String[] getPluginsInLayer( String pluginLayer ) {
+//		List<String> tmp = new LinkedList<>();
+//
+//		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
+//			if ( layer.equals( pluginLayer )){
+//				for ( String plugin : this.getRegisteredPlugins().keySet() ){
+//					if ( this.getRegisteredPlugins().get(plugin).equals(this.getLayerMapDisplayNameToConfigName().get(layer))){
+//						tmp.add(plugin);
+//					}
+//				}
+//			}
+//		}
+//		Collections.sort(tmp);
+//		String[] ret = new String[tmp.size()];
+//		ret = tmp.toArray(ret);
+//		return ret;
+//	}
+	
+	public Map<String, String> getPluginsInLayer( String pluginLayer ) {
+		Map<String, String> tmp1 = new HashMap<>();
+//		List<String> tmp = new LinkedList<>();
 
 		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
 			if ( layer.equals( pluginLayer )){
-				for ( String plugin : this.getRegisteredPlugins().keySet() ){
-					if ( this.getRegisteredPlugins().get(plugin).equals(this.getLayerMapDisplayNameToConfigName().get(layer))){
-						tmp.add(plugin);
+				
+				for (SimGuiPlugin plugin : this.plugins.values() ){
+					if ( plugin.getPluginLayer().equals(this.layerMapDisplayNameToConfigName.get(pluginLayer)) && plugin.isVisible() ){
+						tmp1.put(plugin.getDisplayName(), plugin.getConfigName());
+//						tmp.add(plugin.getDisplayName());
 					}
 				}
 			}
 		}
-		Collections.sort(tmp);
-		String[] ret = new String[tmp.size()];
-		ret = tmp.toArray(ret);
-		return ret;
+//		Collections.sort(tmp1);
+//		String[] ret = new String[tmp.size()];
+//		ret = tmp.toArray(ret);
+		return tmp1;
 	}
+	
 
 	public Map<String, Integer> getStaticConfigurationDisplay() {
 		return this.staticConfigurationDisplay;

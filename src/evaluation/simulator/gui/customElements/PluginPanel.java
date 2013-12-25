@@ -132,26 +132,24 @@ public class PluginPanel extends JScrollPane {
 		int i = 0;
 		for ( String layer : sortedLayerMap.keySet() ){
 			if((isStaticLayerMap.get(layer) == null) || !isStaticLayerMap.get(layer)){
-				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
-
+				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer ).keySet().toArray(new String[0]);
 				String key = layer;
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
+				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance().getPluginsInLayer( layer ));
 				this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;
 			}else{
-				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer );
-
+				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer ).keySet().toArray(new String[0]);
 				String key = layer;
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key));
+				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance().getPluginsInLayer( layer ));
 				this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;

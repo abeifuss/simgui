@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,9 +38,11 @@ public class AccordionEntry extends JPanel {
 	private final JButton entryButton;
 	private final String localName;
 	private final PropertyPanel propertyPanel;
+	private final Map<String, String> model;
 
-	public AccordionEntry(String name, JComboBox<String> jComboBox) {
+	public AccordionEntry(String name, JComboBox<String> jComboBox, Map<String, String> map) {
 		this.localName = name;
+		this.model = map;
 
 		if ( jComboBox == null ){
 			logger.log(Level.ERROR, "jComboBox == null");
@@ -98,9 +101,9 @@ public class AccordionEntry extends JPanel {
 
 			String pluginLevel = this.localName;
 			String pluginName = (String) jComboBox.getSelectedItem();
-
-			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + pluginName);
-			simPropRegistry.setActivePlugins(pluginLevel, pluginName); // GGF Mapped
+			
+			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + this.model.get(pluginName));
+			simPropRegistry.setActivePlugins(pluginLevel, this.model.get(pluginName)); // GGF Mapped
 			
 			if(this.fresh==true){			
 				fresh=false;

@@ -30,7 +30,7 @@ import evaluation.simulator.core.networkComponent.NetworkConnection;
 @PluginSuperclass( 
 		layerName = "Topology", 
 		layerKey = "TOPOLOGY_SCRIPT",
-		fakePlugins = "NO_MIXES,ONE_MIX,THREE_MIX_CASCADE,FIVE_MIX_CASCADE", 
+		fakePlugins = "NO_MIXES:No mixes,ONE_MIX:One mix,THREE_MIX_CASCADE,FIVE_MIX_CASCADE", 
 		position = 6)
 		// isStatic = true) // TODO: Implement is static functions
 public abstract class TopologyScript {
