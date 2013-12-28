@@ -45,7 +45,7 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
-			this.add( textarea, "growx, growy" );
+			this.add( textarea, "growx, growy, push" );
 		}
 	}
 

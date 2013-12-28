@@ -11,14 +11,12 @@ public class SimulationEndRealTimeEndRequirement extends Requirement {
 
 		SimPropRegistry gcr = SimPropRegistry.getInstance();
 		SimProp simProp = gcr.getProperties().get("REAL_TIME_LIMIT_IN_SEC");
-		
+
 		if (equals("SIMULATION_END", "REAL_TIME_END")){
 			simProp.setEnable(true);
-			System.out.println("Enabled Real Time");
 			return true;
 		} else {
 			simProp.setEnable(false);
-			System.out.println("Disabled Real Time");
 			return false;
 		}
 	}

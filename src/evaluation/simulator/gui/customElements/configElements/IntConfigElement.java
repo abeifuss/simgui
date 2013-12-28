@@ -5,10 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,6 +37,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	JSpinner spinner;
 	JSlider slider;
 	Component component;
+	List<Component> messages;
 	JLabel valueLabel;
 	
 	SimPropRegistry simPropRegistry;
@@ -47,6 +52,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		// this.property.register(this);
 
 		this.valueLabel = new JLabel();
+		this.messages = new LinkedList<Component>();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -139,18 +145,23 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		}
 	}
 
-	// Called when simporp has changed
+	// Called when simprop has changed
 	@Override
 	public void update(Observable observable, Object o) {
+		
+		for (Component message : this.messages){
+			this.remove(message);
+		}
+		this.messages.clear();
 		
 		this.auto.setSelected(property.getAuto());
 		this.unlimited.setSelected(property.getUnlimited());
 		
-		if ( (boolean)o ){
+		if ( (boolean)o ){ // enabled by requirement
 			this.component.setEnabled(true);
 			this.unlimited.setEnabled(true);
 			this.auto.setEnabled(true);
-		} else {
+		} else { // disabled by requirement
 			this.component.setEnabled(false);
 			this.unlimited.setEnabled(false);
 			this.auto.setEnabled(false);
@@ -160,6 +171,28 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.slider.setValue((int) simPropRegistry.getValue(property.getPropertyID()).getValue());
 		}else{
 			this.spinner.setValue((int) simPropRegistry.getValue(property.getPropertyID()).getValue());
+		}
+		
+		if (property.getWarnings() != null && property.getWarnings().size() > 0){
+			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
+			
+			this.messages.add( warning );
+			for (String each : property.getWarnings()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		System.err.println("CHECK ERRORS");
+		if (property.getErrors() != null && property.getErrors().size() > 0){
+			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
+			this.messages.add( error );
+			for (String each : property.getErrors()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		for (Component message : this.messages){
+			this.add(message, "wrap, push");
 		}
 		
 		updateUI();

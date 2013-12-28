@@ -1,7 +1,9 @@
 package evaluation.simulator.annotations.simulationProperty;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 // pojo
 public abstract class SimProp extends Observable {
@@ -21,7 +23,10 @@ public abstract class SimProp extends Observable {
 	private boolean isSuperclassProperty;
 	private boolean isGlobal;
 	private boolean isStatic;
+	private Set<String> warnings;
+	private Set<String> errors;
 
+	
 
 	public boolean getEnable() {
 		return this.enabled;
@@ -150,6 +155,22 @@ public abstract class SimProp extends Observable {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public Set<String> getWarnings() {
+		return warnings;
+	}
+
+	public void setWarnings(Set<String> warnings) {
+		this.warnings = warnings;
+	}
+
+	public Set<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(Set<String> errors) {
+		this.errors = errors;
 	}
 
 }

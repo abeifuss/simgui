@@ -1411,4 +1411,11 @@ public class SimPropRegistry {
 			}
 		}
 	}
+
+	public void setProperty(SimProp simProp) {
+		if (this.properties.containsKey(simProp.getPropertyID())){
+			System.err.println("OVERWRITE PROPERTY");
+		}
+		this.properties.put(simProp.getPropertyID(), simProp);
+	}
 }
