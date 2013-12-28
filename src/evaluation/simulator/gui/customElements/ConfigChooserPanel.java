@@ -2,14 +2,24 @@ package evaluation.simulator.gui.customElements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -18,8 +28,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
+import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.gui.layout.SimulationTab;
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.ConfigParser;
 
 public class ConfigChooserPanel extends JPanel{
@@ -242,11 +254,82 @@ public class ConfigChooserPanel extends JPanel{
 		this.listModel = new DefaultListModel<File>();
 		this.configList = new JList<File>(this.listModel);
 		this.configList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		this.configList.addMouseListener( new MouseAdapter() {
+			
+			public void mousePressed( MouseEvent e ){
+				final int[] selection = configList.getSelectedIndices();
+				final int hoverIndex = configList.locationToIndex(e.getPoint());
+				System.out.println(configList.getModel().getElementAt(hoverIndex) + " selected");
+				if (e.isPopupTrigger()) {
+	                JPopupMenu menu = new JPopupMenu();
+	                JMenuItem item = new JMenuItem("Load into config tool");
+	                item.addActionListener(new ActionListener() {
+	                    public void actionPerformed(ActionEvent e) {
+	                    	File file = configList.getModel().getElementAt(hoverIndex);
+	                    	SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+	            			SimulationConfigService simulationConfigService = new SimulationConfigService(
+	            					simPropRegistry);
+	            			simulationConfigService.loadConfig(file);
+	                    }
+	                });
+	                JMenuItem addItem = new JMenuItem("Add to selection");
+	                addItem.addActionListener(new ActionListener() {
+	                    public void actionPerformed(ActionEvent e) {
+	                    	Set<Integer> newSelection = new HashSet<Integer>();
+	                    	for (int i : selection){
+	                    		newSelection.add(i);
+	                    	}
+	                    	newSelection.add(hoverIndex);
+	                    	int[] newIndexSelection = new int[newSelection.size()];
+	                    	int i = 0;
+	                    	for (int each : newSelection){
+	                    		newIndexSelection[i] = each;
+	                    		i++;
+	                    	}
+	                    	configList.setSelectedIndices(newIndexSelection);
+	                    }
+	                });
+	                JMenuItem delItem = new JMenuItem("Delete from Selection");
+	                delItem.addActionListener(new ActionListener() {
+	                    public void actionPerformed(ActionEvent e) {
+	                    	Set<Integer> newSelection = new HashSet<Integer>();
+	                    	for (int i : selection){
+	                    		newSelection.add(i);
+	                    	}
+	                    	newSelection.remove(hoverIndex);
+	                    	int[] newIndexSelection = new int[newSelection.size()];
+	                    	int i = 0;
+	                    	for (int each : newSelection){
+	                    		newIndexSelection[i] = each;
+	                    		i++;
+	                    	}
+	                    	configList.setSelectedIndices(newIndexSelection);
+	                    }
+	                });
+	                menu.add(item);
+	                
+	                boolean selected = false;
+	                for ( int i = 0; i < selection.length; i++ ){
+	                	if ( selection[i] == hoverIndex )
+	                		selected = true;
+	                }
+	                
+	                if ( !selected ){
+	                	menu.add(addItem);
+	                } else {
+	                	menu.add(delItem);
+	                }
+	                menu.show(configList, e.getX(), e.getY());
+	            }
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(this.configList);
 
 		panel.add(scrollPane,"cell 0 0,growx,growy");
-
+		panel.add(new JLabel("* Multiple selection is possible"),"cell 0 1,growx,growy");
+		
 		panel.setBorder(new TitledBorder(null, "Configuration Selection",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
