@@ -6,10 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +35,7 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 	JCheckBox unlimited;
 	JSpinner spinner;
 	Component component;
+	List<Component> messages;
 	
 	SimPropRegistry simPropRegistry;
 	
@@ -41,6 +45,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		
 		this.property = property;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
+		
+		this.messages = new LinkedList<Component>();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -122,6 +128,11 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
+
+		for (Component message : this.messages){
+			this.remove(message);
+		}
+		this.messages.clear();
 		
 		this.auto.setSelected(property.getAuto());
 		this.unlimited.setSelected(property.getUnlimited());
@@ -137,6 +148,27 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		}
 		
 		this.spinner.setValue((Double) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		
+		if (property.getWarnings() != null && property.getWarnings().size() > 0){
+			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
+			
+			this.messages.add( warning );
+			for (String each : property.getWarnings()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		if (property.getErrors() != null && property.getErrors().size() > 0){
+			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
+			this.messages.add( error );
+			for (String each : property.getErrors()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		for (Component message : this.messages){
+			this.add(message, "wrap, push");
+		}
 		
 		updateUI();
 	}

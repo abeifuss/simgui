@@ -3,12 +3,16 @@ package evaluation.simulator.gui.customElements.configElements;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -26,6 +30,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	
 	SimPropRegistry simPropRegistry;
 	private Component component;
+	List<Component> messages;
 	
 	public StringConfigElement(StringProp s) {
 		
@@ -33,6 +38,8 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		
 		this.property = s;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
+		
+		this.messages = new LinkedList<Component>();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -87,11 +94,36 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	@Override
 	public void update(Observable observable, Object o) {
 		
+		for (Component message : this.messages){
+			this.remove(message);
+		}
+		this.messages.clear();
 		
 		if ( !this.property.getPossibleValues().equals("") ) {
 			this.jComboBox.setSelectedItem((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		}else{
 			this.textfield.setText((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
+		}
+		
+		if (property.getWarnings() != null && property.getWarnings().size() > 0){
+			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
+			
+			this.messages.add( warning );
+			for (String each : property.getWarnings()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		if (property.getErrors() != null && property.getErrors().size() > 0){
+			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
+			this.messages.add( error );
+			for (String each : property.getErrors()){
+				this.messages.add( new JLabel(each) );
+			}
+		}
+		
+		for (Component message : this.messages){
+			this.add(message, "wrap, push");
 		}
 		
 		updateUI();

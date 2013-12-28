@@ -182,7 +182,6 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			}
 		}
 		
-		System.err.println("CHECK ERRORS");
 		if (property.getErrors() != null && property.getErrors().size() > 0){
 			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
 			this.messages.add( error );
