@@ -91,6 +91,7 @@ public class SimulationConfigService {
 				} else if (s.getValue().getValueType() == Boolean.class) {
 					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
 				}
+				s.getValue().changed();
 			} catch (NullPointerException e) {
 				logger.log(Level.ERROR,"Can not read value for " + s.getKey());
 			}

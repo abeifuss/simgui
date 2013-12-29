@@ -5,6 +5,7 @@ import evaluation.simulator.conf.service.SimulationConfigService;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.taskdefs.Sleep;
 
 public class SimGuiPlugin {
 	private static Logger logger = Logger.getLogger(SimGuiPlugin.class);
@@ -88,7 +89,7 @@ public class SimGuiPlugin {
 	}
 	
 	public String getDisplayName( ){
-		if ( !this.displayName.equals(""))
+		if ( this.displayName != null && !this.displayName.equals(""))
 			return this.displayName;
 		return this.configName;
 	}

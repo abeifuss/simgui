@@ -92,7 +92,7 @@ class InjectionParser {
 			plugin = injectionArguments[1];
 			String[] pluginSplit = plugin.split(",");
 			if ( pluginSplit.length >= 1 ){
-				pluginConfigName = pluginSplit[1];
+				pluginConfigName = pluginSplit[0];
 			}
 			if ( pluginSplit.length >= 2 ){
 				pluginDisplayName = pluginSplit[1];

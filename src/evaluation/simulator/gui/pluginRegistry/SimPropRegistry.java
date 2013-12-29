@@ -544,12 +544,12 @@ public class SimPropRegistry {
 			plugin = new SimGuiPlugin();
 			plugin.setId(pluginClass.getName());
 			plugin.setConfigName(pluginAnnotation.pluginKey());
+			plugin.setDisplayName(pluginAnnotation.pluginName());
 			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 			plugin.setPluginLayer(pluginAnnotation.pluginLayerKey());
 			plugin.isVisible(pluginAnnotation.visible());
 			plugin.isGlobal(pluginAnnotation.global());
 			plugin.allowGlobalFields(pluginAnnotation.allowGlobalFields());
-			plugin.setDisplayName(pluginAnnotation.pluginName());
 
 			// This is the direct superclass. The direct superclass does not need
 			// to be annotated with @PluginSuperclass. It also can be annotated with
@@ -662,7 +662,6 @@ public class SimPropRegistry {
 								
 								SimGuiPlugin fakePlugin = new SimGuiPlugin();
 								if ( splitPlugin.length >= 1){
-									fakePlugin.setDisplayName(splitPlugin[0]);
 									fakePlugin.setConfigName(splitPlugin[0]);
 								}
 								if ( splitPlugin.length > 1 ){
@@ -1352,7 +1351,6 @@ public class SimPropRegistry {
 				for (SimGuiPlugin plugin : this.plugins.values() ){
 					if ( plugin.getPluginLayer().equals(this.layerMapDisplayNameToConfigName.get(pluginLayer)) && plugin.isVisible() ){
 						tmp1.put(plugin.getDisplayName(), plugin.getConfigName());
-//						tmp.add(plugin.getDisplayName());
 					}
 				}
 			}

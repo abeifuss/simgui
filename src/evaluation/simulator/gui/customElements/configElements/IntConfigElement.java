@@ -88,8 +88,8 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		this.unlimited.addItemListener( this );
 		this.unlimited.setToolTipText("Overwrite with UNLIMITED");
 		
-		this.auto.setSelected(property.getAuto());
-		this.unlimited.setSelected(property.getUnlimited());
+		this.auto.setSelected(this.property.getAuto());
+		this.unlimited.setSelected(this.property.getUnlimited());
 		
 		if (property.getEnableAuto()){
 			this.add(auto, "wrap");
@@ -129,14 +129,17 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if ( this.auto.isSelected() ){
+			System.err.println("CHANGED AUDO");
 			this.unlimited.setEnabled(false);
 			this.component.setEnabled(false);
 			this.simPropRegistry.setAuto(this.property.getPropertyID(), true, Integer.class);
 		}else if ( this.unlimited.isSelected() ){
+			System.err.println("CHANGED UNLIMITED");
 			this.auto.setEnabled(false);
 			this.component.setEnabled(false);
 			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), true, Integer.class);
 		}else{
+			System.err.println("CHANGED UNDO");
 			this.unlimited.setEnabled(true);
 			this.auto.setEnabled(true);
 			this.component.setEnabled(true);
@@ -154,8 +157,8 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		}
 		this.messages.clear();
 		
-		this.auto.setSelected(property.getAuto());
-		this.unlimited.setSelected(property.getUnlimited());
+		this.auto.setSelected(this.property.getAuto());
+		this.unlimited.setSelected(this.property.getUnlimited());
 		
 		if ( (boolean)o ){ // enabled by requirement
 			this.component.setEnabled(true);

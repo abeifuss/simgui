@@ -46,6 +46,7 @@ public class GuiLauncher {
 		{
 			// block until finished
 			simPropRegistry = task.get();
+			
 		}
 		catch(final InterruptedException ex)
 		{
