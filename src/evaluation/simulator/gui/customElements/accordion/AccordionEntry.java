@@ -110,7 +110,7 @@ public class AccordionEntry extends JPanel {
 				jComboBox.removeItemAt(0);
 			}
 
-			propertyPanel.realoadContent(pluginName);
+			propertyPanel.realoadContent(this.model.get(pluginName));
 			propertyPanel.setVisible(true);			
 			
 			this.updateUI();	
