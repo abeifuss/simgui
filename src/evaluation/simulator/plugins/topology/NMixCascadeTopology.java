@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
 import evaluation.simulator.core.networkComponent.Mix;

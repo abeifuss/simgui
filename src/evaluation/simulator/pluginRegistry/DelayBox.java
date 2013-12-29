@@ -19,7 +19,7 @@ package evaluation.simulator.pluginRegistry;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.plugins.delayBox.BasicDelayBox;
 import evaluation.simulator.plugins.delayBox.DelayBoxImpl;
 import evaluation.simulator.plugins.delayBox.NoDelayDelayBox;

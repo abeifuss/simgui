@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.plotType;
 import java.util.Arrays;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
 import evaluation.simulator.core.statistics.plotEngine.PlotScript;

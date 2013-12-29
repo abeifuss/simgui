@@ -1,10 +1,10 @@
-package evaluation.simulator.annotations.simulationProperty.requirements;
+package evaluation.simulator.annotations.property.requirements;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import evaluation.simulator.annotations.simulationProperty.Requirement;
-import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.annotations.property.Requirement;
+import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 public class SimulationEndRealTimeEndRequirement extends Requirement {

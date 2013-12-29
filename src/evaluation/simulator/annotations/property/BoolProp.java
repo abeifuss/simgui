@@ -1,20 +1,15 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class StringProp extends SimProp {
+public class BoolProp extends SimProp {
 
-	String possibleValues;
-	String value;
+	private boolean value;
 	
 	private List<Observer> Observers = new LinkedList<Observer>();
-	
-	public String getPossibleValues() {
-		return this.possibleValues;
-	}
 
 	@Override
 	public Object getValue() {
@@ -23,19 +18,14 @@ public class StringProp extends SimProp {
 
 	@Override
 	public Class<?> getValueType() {
-		return String.class;
-	}
-
-	public void setPossibleValues(String values) {
-		this.possibleValues = values;
+		return Boolean.class;
 	}
 
 	@Override
 	public void setValue(Object o) {
-		this.value = (String) (o);
-		changed();
+		this.value = (boolean) (o);
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.getName() + "" + this.value;
@@ -43,21 +33,22 @@ public class StringProp extends SimProp {
 
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER STRING OBSERVER");
+		System.err.println("REGISTER BOOL OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER STRING OBSERVER");
+		System.err.println("UNREGISTER BOOL OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED STRING");
+		System.err.println("CHANGED BOOL");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 
 	}
+
 }

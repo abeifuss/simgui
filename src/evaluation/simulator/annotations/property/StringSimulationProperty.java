@@ -1,4 +1,4 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IntSimulationProperty {
+public @interface StringSimulationProperty {
 
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
@@ -17,39 +17,33 @@ public @interface IntSimulationProperty {
 	// general
 //	public String id() default "";
 
-	public int max() default Integer.MAX_VALUE;
-
-	public int min() default Integer.MIN_VALUE;
-
 	public String name() default "";
 
 	public int position() default 0;
+
+	public String possibleValues() default "";
+	
+	public boolean multiSelection() default false;
 
 	public String key() default "";
 
 	public String tooltip() default "No Tooltip available";
 	
 	public String info() default "";
-	
+
 	public String inject() default "";
 
 	public boolean global() default false;
 
-	// int
-	public int value() default 0;
+	// string
+	public String value() default "";
+
+	// public Class<?> valueType() default String.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 
-	// public Class<?> valueType() default Integer.class;
-
 	public boolean isStatic() default false;
 	
-	public boolean enableAuto() default false;
-	
-	public boolean enableUnlimited() default false;
-	
-	public int stepSize() default 1;
-
-	public String guiElement() default "spinner";
+	public String regex() default "";
 
 }

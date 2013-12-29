@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.outputStrategy;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;

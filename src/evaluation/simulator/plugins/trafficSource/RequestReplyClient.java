@@ -19,7 +19,7 @@ package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;

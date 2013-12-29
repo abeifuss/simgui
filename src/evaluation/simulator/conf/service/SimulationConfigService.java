@@ -16,10 +16,10 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.annotations.simulationProperty.DoubleProp;
-import evaluation.simulator.annotations.simulationProperty.FloatProp;
-import evaluation.simulator.annotations.simulationProperty.IntProp;
-import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.annotations.property.DoubleProp;
+import evaluation.simulator.annotations.property.FloatProp;
+import evaluation.simulator.annotations.property.IntProp;
+import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;

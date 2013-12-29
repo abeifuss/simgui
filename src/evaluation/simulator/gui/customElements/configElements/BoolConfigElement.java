@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
-import evaluation.simulator.annotations.simulationProperty.BoolProp;
+import evaluation.simulator.annotations.property.BoolProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")

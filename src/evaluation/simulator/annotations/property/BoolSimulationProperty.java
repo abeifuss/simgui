@@ -1,4 +1,4 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,23 +9,18 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DoubleSimulationProperty {
-	
+public @interface BoolSimulationProperty {
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
 //	public String id() default "";
 
-	public double max() default Double.MAX_VALUE;
-
-	public double min() default Double.NEGATIVE_INFINITY;
-
-	public String name() default "";
+	public String name();
 
 	public int position() default 0;
 
-	public String key() default "";
+	public String key();
 
 	public String tooltip() default "No Tooltip available";
 	
@@ -34,22 +29,12 @@ public @interface DoubleSimulationProperty {
 	public String inject() default "";
 
 	public boolean global() default false;
+	// bool
+	public boolean value() default true;
 
-	// float
-	public double value() default 0.0f;
-
-	// public Class<?> valueType() default Double.class;
+	// public Class<?> valueType() default Boolean.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
-	
-	public boolean enableAuto() default false;
-	
-	public boolean enableUnlimited() default false;
-	
-	public double stepSize() default 0.001f;
-
-	public String guiElement() default "spinner";
-
 }

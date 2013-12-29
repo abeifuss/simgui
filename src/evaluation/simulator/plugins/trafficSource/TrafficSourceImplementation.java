@@ -18,7 +18,7 @@
 package evaluation.simulator.plugins.trafficSource;
 
 import evaluation.simulator.annotations.plugin.PluginSuperclass;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
 @PluginSuperclass( layerName = "Load Generator", layerKey = "TYPE_OF_TRAFFIC_GENERATOR", position = 0)

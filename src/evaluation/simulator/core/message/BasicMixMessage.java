@@ -20,7 +20,7 @@ package evaluation.simulator.core.message;
 import java.util.Vector;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 

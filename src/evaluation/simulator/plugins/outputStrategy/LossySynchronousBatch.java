@@ -26,7 +26,7 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MessageFragment;

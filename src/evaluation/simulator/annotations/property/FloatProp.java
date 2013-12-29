@@ -1,4 +1,4 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,24 +13,24 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 
-public class IntProp extends SimProp {
+public class FloatProp extends SimProp {
+	private static Logger logger = Logger.getLogger(FloatProp.class);
+
+	private float maxValue;
+	private float minValue;
+	private float value;
 	
-	private static Logger logger = Logger.getLogger(IntProp.class);
-
-	private int maxValue;
-	private int minValue;
-	private int value;
-
 	private boolean auto;
 	private boolean enableAuto;
 	private boolean unlimited;
 	private boolean enableUnlimited;
 	
-	private List<Observer> Observers = new LinkedList<Observer>();
-	
 	private String guiElement;
 	
-	private int stepSize; 
+	private float stepSize; 
+	
+	private List<Observer> Observers = new LinkedList<Observer>();
+	
 	
 	public boolean getAuto(){
 		return this.auto;
@@ -64,11 +64,11 @@ public class IntProp extends SimProp {
 		this.enableUnlimited = unlimited;
 	}
 
-	public int getMaxValue() {
+	public float getMaxValue() {
 		return this.maxValue;
 	}
 
-	public int getMinValue() {
+	public float getMinValue() {
 		return this.minValue;
 	}
 
@@ -79,29 +79,35 @@ public class IntProp extends SimProp {
 
 	@Override
 	public Class<?> getValueType() {
-		return Integer.class;
+		return Float.class;
 	}
 
-	public void setMaxValue(int maxValue) {
+	public void setMaxValue(float maxValue) {
 		this.maxValue = maxValue;
 	}
 
-	public void setMinValue(int minValue) {
+	public void setMinValue(float minValue) {
 		this.minValue = minValue;
 	}
 
 	@Override
 	public void setValue(Object o) {
-		System.err.println("CHANGED VALUE IN INTPROP");
-		
-		int tmp = (int) (o);
+		float tmp;
+
+		if (o instanceof Integer) {
+			tmp = new Float((int) (o));
+		} else if (o instanceof String) {
+			tmp = Float.parseFloat((String) (o));
+		} else {
+			tmp = (float) (o);
+		}
+
 		if ((tmp <= this.getMaxValue()) && (tmp >= this.getMinValue())) {
 			this.value = tmp;
-			this.changed();
 			return;
 		}
 
-		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(int) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
+		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(float) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
 		JOptionPane.showMessageDialog(null, "This value is not in range.",
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}
@@ -111,11 +117,11 @@ public class IntProp extends SimProp {
 		return super.getName() + "" + this.value;
 	}
 
-	public int getStepSize() {
+	public float getStepSize() {
 		return stepSize;
 	}
 
-	public void setStepSize(int stepSize) {
+	public void setStepSize(float stepSize) {
 		this.stepSize = stepSize;
 	}
 
@@ -126,22 +132,22 @@ public class IntProp extends SimProp {
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
 	}
-	
+
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER INTEGER OBSERVER");
+		System.err.println("REGISTER FLOAT OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER INTEGER OBSERVER");
+		System.err.println("UNREGISTER FLOAT OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED");
+		System.err.println("CHANGED FLOAT");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 

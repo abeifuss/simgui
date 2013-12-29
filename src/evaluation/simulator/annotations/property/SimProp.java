@@ -1,4 +1,4 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.util.List;
 import java.util.Observable;

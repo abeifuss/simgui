@@ -23,8 +23,8 @@ import javax.swing.table.TableColumn;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.annotations.simulationProperty.IntProp;
-import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.annotations.property.IntProp;
+import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 

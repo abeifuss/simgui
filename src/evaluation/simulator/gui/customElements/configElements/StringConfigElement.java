@@ -10,15 +10,20 @@ import java.util.Observer;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
-import evaluation.simulator.annotations.simulationProperty.StringProp;
+import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -27,10 +32,13 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	StringProp property;
 	JTextField textfield;
 	JComboBox<String> jComboBox;
+	JScrollPane jScrollPane;
+	JList<String> jList;
 	
 	SimPropRegistry simPropRegistry;
 	private Component component;
 	List<Component> messages;
+	int listSize;
 	
 	public StringConfigElement(StringProp s) {
 		
@@ -40,6 +48,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
 		this.messages = new LinkedList<Component>();
+		this.listSize = 0;
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -47,16 +56,32 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
 		
 		if ( !this.property.getPossibleValues().equals("") ){
-			this.jComboBox = new JComboBox<String>();
 			StringTokenizer st = new StringTokenizer(this.property.getPossibleValues(), ",");
-			while (st.hasMoreTokens()) {
-				jComboBox.addItem(st.nextToken());
+			if (this.property.getMultiSelection()){
+				this.jScrollPane = new JScrollPane();
+				DefaultListModel<String> listModel = new DefaultListModel<String>();
+				this.jList = new JList<String>(listModel);
+				this.jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				while (st.hasMoreTokens()) {
+					this.listSize++;
+					listModel.addElement(st.nextToken());
+				}
+//				this.jList.addActionListener(this);
+				this.jList.setToolTipText(property.getTooltip());
+				jScrollPane.setViewportView(jList);
+				this.add( jScrollPane, "growx, push" );
+				this.component = this.jScrollPane;
+			}else{
+				this.jComboBox = new JComboBox<String>();
+				while (st.hasMoreTokens()) {
+					jComboBox.addItem(st.nextToken());
+				}
+				this.jComboBox.addActionListener(this);
+				this.jComboBox.setToolTipText(property.getTooltip());
+				this.add( jComboBox, "growx, push" );
+				this.component = this.jComboBox;
 			}
-			this.jComboBox.addActionListener(this);
-			this.jComboBox.setToolTipText(property.getTooltip());
-			this.add( jComboBox, "growx, push" );
-			this.component = this.jComboBox;
-		}else{
+		}else {
 			this.textfield = new JTextField();
 			this.textfield.addActionListener(this);
 			this.textfield.setToolTipText(property.getTooltip());
@@ -90,7 +115,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		}
 	}
 	
-	// Called when simporp has changed
+	// Called when simprop has changed
 	@Override
 	public void update(Observable observable, Object o) {
 		
@@ -99,9 +124,41 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		}
 		this.messages.clear();
 		
+		// Load properties on update
 		if ( !this.property.getPossibleValues().equals("") ) {
-			this.jComboBox.setSelectedItem((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
+			System.err.println("SELECT A");
+			if ( this.property.getMultiSelection() ){
+				System.err.println("SELECT B");
+				List<Integer> indices = new LinkedList<Integer>();
+				
+				int index = 0;
+				StringTokenizer possibleValueStrings = new StringTokenizer(this.property.getPossibleValues(), ",");
+				while (possibleValueStrings.hasMoreTokens()) {
+					String possible = possibleValueStrings.nextToken();
+					StringTokenizer configValues = new StringTokenizer((String) simPropRegistry.getValue(property.getPropertyID()).getValue(), ",");
+					while (configValues.hasMoreTokens()) {
+						if ( configValues.nextToken().equals(possible) ){
+							indices.add(index);
+							continue;
+						}
+					}
+					index++;
+				}
+				
+				// JAVA SUCKS HARD! THE STL IS TOTALY OVERLOADED BUT...
+				// int[] != Integer[] ... no nice conversion?!?!
+				// Yes, we have to do it this way!!!
+				int[] intIndices = new int[indices.size()];
+				for (int k = 0; k < intIndices.length; k++)
+					intIndices[k] = indices.get(k).intValue();
+				
+				this.jList.setSelectedIndices( intIndices );
+			}else{
+				System.err.println("SELECT C");
+				this.jComboBox.setSelectedItem((String) simPropRegistry.getValue(property.getPropertyID()).getValue());
+			}
 		}else{
+			System.err.println("SELECT D");
 			this.textfield.setText((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		}
 		

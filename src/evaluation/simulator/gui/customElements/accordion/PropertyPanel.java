@@ -7,12 +7,12 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
-import evaluation.simulator.annotations.simulationProperty.BoolProp;
-import evaluation.simulator.annotations.simulationProperty.DoubleProp;
-import evaluation.simulator.annotations.simulationProperty.FloatProp;
-import evaluation.simulator.annotations.simulationProperty.IntProp;
-import evaluation.simulator.annotations.simulationProperty.SimProp;
-import evaluation.simulator.annotations.simulationProperty.StringProp;
+import evaluation.simulator.annotations.property.BoolProp;
+import evaluation.simulator.annotations.property.DoubleProp;
+import evaluation.simulator.annotations.property.FloatProp;
+import evaluation.simulator.annotations.property.IntProp;
+import evaluation.simulator.annotations.property.SimProp;
+import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.gui.customElements.configElements.BoolConfigElement;
 import evaluation.simulator.gui.customElements.configElements.DoubleConfigElement;
 import evaluation.simulator.gui.customElements.configElements.FloatConfigElement;

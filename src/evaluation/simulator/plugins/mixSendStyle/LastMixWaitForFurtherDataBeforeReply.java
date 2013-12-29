@@ -19,7 +19,7 @@ package evaluation.simulator.plugins.mixSendStyle;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MessageFragment;

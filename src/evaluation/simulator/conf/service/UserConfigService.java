@@ -105,7 +105,7 @@ public class UserConfigService {
 	private static Properties configuration = null;
 
 
-	// Always at programm start this will be parsed!
+	// this will be parsed always at program start!
 	static {
 		new UserConfigService();
 	}

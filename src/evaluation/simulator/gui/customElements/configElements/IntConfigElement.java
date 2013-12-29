@@ -23,7 +23,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import evaluation.simulator.annotations.simulationProperty.IntProp;
+import evaluation.simulator.annotations.property.IntProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 import net.miginfocom.swing.MigLayout;

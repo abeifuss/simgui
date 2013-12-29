@@ -18,7 +18,7 @@
 package evaluation.simulator.core.message;
 
 import evaluation.simulator.Simulator;
-import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.outputStrategy.StopAndGoMessage;

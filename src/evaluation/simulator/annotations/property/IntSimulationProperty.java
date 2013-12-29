@@ -1,4 +1,4 @@
-package evaluation.simulator.annotations.simulationProperty;
+package evaluation.simulator.annotations.property;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,17 +9,17 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FloatSimulationProperty {
-	
+public @interface IntSimulationProperty {
+
 	// dependencies
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
 //	public String id() default "";
 
-	public float max() default Float.MAX_VALUE;
+	public int max() default Integer.MAX_VALUE;
 
-	public float min() default Float.NEGATIVE_INFINITY;
+	public int min() default Integer.MIN_VALUE;
 
 	public String name() default "";
 
@@ -30,17 +30,17 @@ public @interface FloatSimulationProperty {
 	public String tooltip() default "No Tooltip available";
 	
 	public String info() default "";
-
+	
 	public String inject() default "";
 
 	public boolean global() default false;
 
-	// float
-	public float value() default 0.0f;
-
-	// public Class<?> valueType() default Float.class;
+	// int
+	public int value() default 0;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
+
+	// public Class<?> valueType() default Integer.class;
 
 	public boolean isStatic() default false;
 	
@@ -48,8 +48,8 @@ public @interface FloatSimulationProperty {
 	
 	public boolean enableUnlimited() default false;
 	
-	public float stepSize() default 0.1f;
-	
+	public int stepSize() default 1;
+
 	public String guiElement() default "spinner";
 
 }

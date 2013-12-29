@@ -3,7 +3,7 @@ package evaluation.simulator.gui.customElements;
 import java.util.Map;
 import java.util.TreeMap;
 
-import evaluation.simulator.annotations.simulationProperty.SimProp;
+import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 

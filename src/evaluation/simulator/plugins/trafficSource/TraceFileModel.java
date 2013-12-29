@@ -24,9 +24,9 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;

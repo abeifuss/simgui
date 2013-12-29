@@ -28,17 +28,17 @@ import org.reflections.util.ClasspathHelper;
 import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.plugin.SimGuiPlugin;
-import evaluation.simulator.annotations.simulationProperty.BoolProp;
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.DoubleProp;
-import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.FloatProp;
-import evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.IntProp;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.SimProp;
-import evaluation.simulator.annotations.simulationProperty.StringProp;
-import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
+import evaluation.simulator.annotations.property.BoolProp;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.DoubleProp;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
+import evaluation.simulator.annotations.property.FloatProp;
+import evaluation.simulator.annotations.property.FloatSimulationProperty;
+import evaluation.simulator.annotations.property.IntProp;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
+import evaluation.simulator.annotations.property.SimProp;
+import evaluation.simulator.annotations.property.StringProp;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 
 public class SimPropRegistry {
 
@@ -213,11 +213,11 @@ public class SimPropRegistry {
 				ClasspathHelper.forPackage("evaluation.simulator.plugins"),
 				new FieldAnnotationsScanner());
 
-		Set<Field> fields = reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.IntSimulationProperty.class);
-		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.FloatSimulationProperty.class));
-		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty.class));
-		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.StringSimulationProperty.class));
-		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty.class));
+		Set<Field> fields = reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.property.IntSimulationProperty.class);
+		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.property.FloatSimulationProperty.class));
+		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.property.DoubleSimulationProperty.class));
+		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.property.StringSimulationProperty.class));
+		fields.addAll(reflections.getFieldsAnnotatedWith(evaluation.simulator.annotations.property.BoolSimulationProperty.class));
 
 		List<Class<? extends Annotation> > annotationTypes = new LinkedList<Class<? extends Annotation> >();
 		annotationTypes.add( IntSimulationProperty.class );
@@ -494,6 +494,7 @@ public class SimPropRegistry {
 
 						((StringProp) property).setValue(annotation.value());
 						((StringProp) property).setPossibleValues(annotation.possibleValues());
+						((StringProp) property).setMultiSelection(annotation.multiSelection());
 
 						this.getProperties().put(property.getPropertyID(), property);
 
@@ -1122,6 +1123,7 @@ public class SimPropRegistry {
 
 							((StringProp) property).setValue(annotation.value());
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
+							((StringProp) property).setMultiSelection(annotation.multiSelection());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else {
@@ -1412,10 +1414,12 @@ public class SimPropRegistry {
 		}
 	}
 
-	public void setProperty(SimProp simProp) {
-		if (this.properties.containsKey(simProp.getPropertyID())){
-			System.err.println("OVERWRITE PROPERTY");
-		}
-		this.properties.put(simProp.getPropertyID(), simProp);
-	}
+// Obsolete
+//
+//	public void setProperty(SimProp simProp) {
+//		if (this.properties.containsKey(simProp.getPropertyID())){
+//			System.err.println("OVERWRITE PROPERTY");
+//		}
+//		this.properties.put(simProp.getPropertyID(), simProp);
+//	}
 }

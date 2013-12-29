@@ -20,7 +20,7 @@ package evaluation.simulator.plugins.plotType;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 
 public abstract class Plotter {

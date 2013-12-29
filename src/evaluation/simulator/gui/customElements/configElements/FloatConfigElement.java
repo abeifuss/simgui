@@ -24,7 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
-import evaluation.simulator.annotations.simulationProperty.FloatProp;
+import evaluation.simulator.annotations.property.FloatProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")

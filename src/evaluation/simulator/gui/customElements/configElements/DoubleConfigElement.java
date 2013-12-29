@@ -24,7 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
-import evaluation.simulator.annotations.simulationProperty.DoubleProp;
+import evaluation.simulator.annotations.property.DoubleProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")

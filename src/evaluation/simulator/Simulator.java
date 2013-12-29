@@ -23,11 +23,11 @@ import java.util.PriorityQueue;
 
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.annotations.simulationProperty.BoolSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.DoubleSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.IntSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.StringSimulationProperty;
-import evaluation.simulator.annotations.simulationProperty.requirements.SimulationEndRealTimeEndRequirement;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
+import evaluation.simulator.annotations.property.requirements.SimulationEndRealTimeEndRequirement;
 import evaluation.simulator.core.ExperimentConfig;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
@@ -99,14 +99,74 @@ public class Simulator extends GMixTool implements Identifiable {
 			max = 3600,
 			guiElement = "slider",
 			enable_requirements = SimulationEndRealTimeEndRequirement.class)
-	int delay; // TODO: pass throug constructor to the statistics
+	int delay; // TODO: pass through constructor
 	
 	@StringSimulationProperty( name = "Experiments to perform",
-			key = "EXPERIMENTS_TO_PERFORM",
+			key = "DESIRED_EVALUATIONS",
 			inject = "2:SIMULATION,Simulation",
-			possibleValues = "AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE",
+			possibleValues = "AVG_CLIENT_RTT_LAYER5MESSAGE," +
+					"AVG_CLIENT_LATENCY_LAYER5MESSAGE," + 
+					"AVG_CLIENT_LATENCY_LAYER5MESSAGE_HIST," + 
+					"AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE," + 
+					"MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE," + 
+					"MIN_CLIENT_LATENCY_REQUESTMIXMESSAGE," + 
+					"AVG_CLIENT_LATENCY_REPLYMIXMESSAGE," + 
+					"SUM_CLIENT_DATAVOLUME_SEND," + 
+					"SUM_CLIENT_DATAVOLUME_RECEIVE," + 
+					"SUM_CLIENT_DATAVOLUME_SENDANDRECEIVE," + 
+					"SUM_CLIENT_PAYLOADVOLUME_SEND," + 
+					"SUM_CLIENT_PAYLOADVOLUME_RECEIVE," + 
+					"SUM_CLIENT_PAYLOADVOLUME_SENDANDRECEIVE," + 
+					"SUM_CLIENT_DATAVOLUME_PER_SECOND_SEND," + 
+					"SUM_CLIENT_DATAVOLUME_PER_SECOND_RECEIVE," + 
+					"SUM_CLIENT_DATAVOLUME_PER_SECOND_SENDANDRECEIVE," + 
+					"SUM_CLIENT_PAYLOADVOLUME_PER_SECOND_AND_CLIENT_SEND," + 
+					"SUM_CLIENT_PAYLOADVOLUME_PER_SECOND_AND_CLIENT_RECEIVE," + 
+					"SUM_CLIENT_PAYLOADVOLUME_PER_SECOND_AND_CLIENT_SENDANDRECEIVE," + 
+					"AVG_CLIENT_PAYLOADPERCENTAGE_SEND," + 
+					"AVG_CLIENT_PAYLOADPERCENTAGE_RECEIVE," + 
+					"AVG_CLIENT_PAYLOADPERCENTAGE_SENDANDRECEIVE," + 
+					"AVG_CLIENT_PADDINGPERCENTAGE_SEND," + 
+					"AVG_CLIENT_PADDINGPERCENTAGE_RECEIVE," + 
+					"AVG_CLIENT_PADDINGPERCENTAGE_SENDANDRECEIVE," + 
+					"SUM_CLIENT_MIXMESSAGES_SENT," + 
+					"SUM_CLIENT_MIXMESSAGES_RECEIVED," + 
+					"SUM_CLIENT_MIXMESSAGES_SENTANDRECEIVED," + 
+					"SUM_CLIENT_LAYER5MESSAGES_SENT," + 
+					"SUM_CLIENT_LAYER5MESSAGES_RECEIVED," + 
+					"SUM_CLIENT_LAYER5MESSAGES_SENTANDRECEIVED," + 
+					"ADU_SIZE_SEND," + 
+					"ADU_SIZE_RECEIVE," + 
+					"ADU_SIZE_SENDANDRECEIVE," + 
+					"CF_ADU_SIZE_SEND," + 
+					"CF_ADU_SIZE_RECEIVE," + 
+					"CF_ADU_SIZE_SENDANDRECEIVE," + 
+					"CF_AVG_THROUGHPUT_PER_CLIENT_SEND," + 
+					"CF_AVG_THROUGHPUT_PER_CLIENT_RECEIVE," + 
+					"CF_AVG_THROUGHPUT_PER_CLIENT_SENDANDRECEIVE," + 
+					"CF_AVG_LATENCY_PER_CLIENT_SEND," + 
+					"SUM_DATAVOLUME_PER_MIX_SEND," + 
+					"SUM_DATAVOLUME_PER_MIX_RECEIVE," + 
+					"SUM_DATAVOLUME_PER_MIX_SENDANDRECEIVE," + 
+					"DLPA_REQUEST_SENDING_RATE_PER_MIX," + 
+					"DLPA_REPLY_SENDING_RATE_PER_MIX," + 
+					"DLPA_REQUEST_AND_REPLY_SENDING_RATE_PER_MIX," + 
+					"DLPA_REQUEST_SENDING_RATE_PER_MIX_AND_CLIENT," + 
+					"DLPA_REPLY_SENDING_RATE_PER_MIX_AND_CLIENT," + 
+					"DLPA_REQUEST_AND_REPLY_SENDING_RATE_PER_MIX_AND_CLIENT," + 
+					"DLPA_REQUEST_DUMMY_PERCENTAGE_PER_MIX," + 
+					"DLPA_REQUEST_MESSAGE_DROP_PERCENTAGE," + 
+					"DLPA_REPLY_MESSAGE_DROP_PERCENTAGE," + 
+					"DLPA_MESSAGE_DROP_PERCENTAGE," + 
+					"DLPA_REQUEST_MESSAGE_DROP_PERCENTAGE_INCL_DUMMIES," + 
+					"DLPA_REPLY_MESSAGE_DROP_PERCENTAGE_INCL_DUMMIES," + 
+					"DLPA_MESSAGE_DROP_PERCENTAGE_INCL_DUMMIES," + 
+					"SUM_DISTANTPROXY_DATAVOLUME_SENDANDRECEIVE," + 
+					"SUM_DISTANTPROXY_MIXMESSAGES_RECEIVED," + 
+					"AVG_TRAFFICSOURCE_SENDING_RATE_PER_CLIENT," + 
+					"AVG_MIXMESSAGE_SENDING_RATE_PER_CLIENT",
 			value="AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE",
-			// gui = "multiSelection",
+			multiSelection = true,
 			isStatic = true)
 	private static String desiredExperiments;
 	
