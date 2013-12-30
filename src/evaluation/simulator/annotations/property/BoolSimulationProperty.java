@@ -30,7 +30,7 @@ public @interface BoolSimulationProperty {
 
 	public boolean global() default false;
 	// bool
-	public boolean value() default true;
+	// public boolean value() default true;
 
 	// public Class<?> valueType() default Boolean.class;
 

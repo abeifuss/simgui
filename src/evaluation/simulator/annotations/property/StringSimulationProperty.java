@@ -36,7 +36,7 @@ public @interface StringSimulationProperty {
 	public boolean global() default false;
 
 	// string
-	public String value() default "";
+	// public String value() default "";
 
 	// public Class<?> valueType() default String.class;
 

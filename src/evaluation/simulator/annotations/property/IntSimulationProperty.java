@@ -36,7 +36,7 @@ public @interface IntSimulationProperty {
 	public boolean global() default false;
 
 	// int
-	public int value() default 0;
+	// public int value() default 0;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 

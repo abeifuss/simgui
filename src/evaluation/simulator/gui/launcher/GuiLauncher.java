@@ -1,15 +1,18 @@
 package evaluation.simulator.gui.launcher;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
@@ -28,7 +31,9 @@ public class GuiLauncher {
 			@Override
 			public SimPropRegistry call()
 			{
+				// initial creation of the simulaton property registry
 				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+				
 				// initial dependency-check for per plugin configurations
 				DependencyChecker.checkAll(simPropRegistry);
 
@@ -46,6 +51,7 @@ public class GuiLauncher {
 		{
 			// block until finished
 			simPropRegistry = task.get();
+			// loading of default values (template config)
 			
 		}
 		catch(final InterruptedException ex)
@@ -101,9 +107,22 @@ public class GuiLauncher {
 		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 				.getInstalledLookAndFeels()) {
 			logger.debug(info);
+			
 		}
 		
 		GuiService.getInstance();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// loading initial experiment configuration (template)
+				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+				File file = new File("etc/conf/experiment_template.cfg");
+				SimulationConfigService simulationConfigService = new SimulationConfigService(
+						simPropRegistry);
+				simulationConfigService.loadConfig(file);
+			}
+		});
 
 	}
 }

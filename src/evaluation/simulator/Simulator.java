@@ -65,7 +65,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	@BoolSimulationProperty( name = "Debug output",
 			key = "DEBUG_OUTPUT",
 			inject = "0:SIMULATION,Simulation",
-			value=false,
+//			value=false,
 			isStatic = true,
 			info = "If this option is enabled the simulator will generate debug output. Simulations with debug output may take significantly longer!")
 	public static boolean DEBUG_ON = true;
@@ -165,7 +165,7 @@ public class Simulator extends GMixTool implements Identifiable {
 					"SUM_DISTANTPROXY_MIXMESSAGES_RECEIVED," + 
 					"AVG_TRAFFICSOURCE_SENDING_RATE_PER_CLIENT," + 
 					"AVG_MIXMESSAGE_SENDING_RATE_PER_CLIENT",
-			value="AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE",
+//			value="AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE",
 			multiSelection = true,
 			isStatic = true)
 	private static String desiredExperiments;
@@ -174,7 +174,7 @@ public class Simulator extends GMixTool implements Identifiable {
 			key = "SIMULATION_END",
 			inject = "3:SIMULATION,Simulation",
 			possibleValues = "REAL_TIME_END,SIMULATION_TIME_END,END_OF_TRACE_FILE_REACHED",
-			value="REAL_TIME_END",
+//			value="REAL_TIME_END",
 			// gui = "singleSelection",
 			isStatic = true)
 	private static String endCondition;

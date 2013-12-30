@@ -254,7 +254,7 @@ public class SimPropRegistry {
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
-						property.setValue(annotation.value());
+						// property.setValue(annotation.value());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
 
@@ -266,7 +266,7 @@ public class SimPropRegistry {
 							property.setPluginID("");
 						}
 
-						((BoolProp) property).setValue(annotation.value());
+						// ((BoolProp) property).setValue(annotation.value());
 
 						this.getProperties().put(property.getPropertyID(), property);
 
@@ -318,7 +318,7 @@ public class SimPropRegistry {
 						}
 
 						// IntProp specific annotation processing
-						((IntProp) property).setValue(annotation.value());
+						// ((IntProp) property).setValue(annotation.value());
 						((IntProp) property).setMinValue(annotation.min());
 						((IntProp) property).setMaxValue(annotation.max());
 						((IntProp) property).setEnableAuto(annotation.enableAuto());
@@ -378,7 +378,7 @@ public class SimPropRegistry {
 
 						((FloatProp) property).setMinValue(annotation.min());
 						((FloatProp) property).setMaxValue(annotation.max());
-						((FloatProp) property).setValue(annotation.value());
+						// ((FloatProp) property).setValue(annotation.value());
 						((FloatProp) property).setEnableAuto(annotation.enableAuto());
 						((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
 						((FloatProp) property).setStepSize(annotation.stepSize());
@@ -436,7 +436,7 @@ public class SimPropRegistry {
 
 						((DoubleProp) property).setMinValue(annotation.min());
 						((DoubleProp) property).setMaxValue(annotation.max());
-						((DoubleProp) property).setValue(annotation.value());
+						// ((DoubleProp) property).setValue(annotation.value());
 						((DoubleProp) property).setEnableAuto(annotation.enableAuto());
 						((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
 						((DoubleProp) property).setStepSize(annotation.stepSize());
@@ -492,7 +492,7 @@ public class SimPropRegistry {
 							property.setPluginID("");
 						}
 
-						((StringProp) property).setValue(annotation.value());
+						// ((StringProp) property).setValue(annotation.value());
 						((StringProp) property).setPossibleValues(annotation.possibleValues());
 						((StringProp) property).setMultiSelection(annotation.multiSelection());
 
@@ -858,7 +858,7 @@ public class SimPropRegistry {
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
 
-							((BoolProp) property).setValue(annotation.value());
+							// ((BoolProp) property).setValue(annotation.value());
 						}
 						this.register(property, isSuperClass, isGlobal, plugInLayer);
 					} else if (element.annotationType() == IntSimulationProperty.class) {
@@ -919,7 +919,7 @@ public class SimPropRegistry {
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
 
-							((IntProp) property).setValue(annotation.value());
+							// ((IntProp) property).setValue(annotation.value());
 							((IntProp) property).setMinValue(annotation.min());
 							((IntProp) property).setMaxValue(annotation.max());
 							((IntProp) property).setEnableAuto(annotation.enableAuto());
@@ -988,7 +988,7 @@ public class SimPropRegistry {
 
 							((FloatProp) property).setMinValue(annotation.min());
 							((FloatProp) property).setMaxValue(annotation.max());
-							((FloatProp) property).setValue(annotation.value());
+//							((FloatProp) property).setValue(annotation.value());
 							((FloatProp) property).setEnableAuto(annotation.enableAuto());
 							((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
 							((FloatProp) property).setStepSize(annotation.stepSize());
@@ -1055,7 +1055,7 @@ public class SimPropRegistry {
 
 							((DoubleProp) property).setMinValue(annotation.min());
 							((DoubleProp) property).setMaxValue(annotation.max());
-							((DoubleProp) property).setValue(annotation.value());
+							// ((DoubleProp) property).setValue(annotation.value());
 							((DoubleProp) property).setEnableAuto(annotation.enableAuto());
 							((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
 							((DoubleProp) property).setStepSize(annotation.stepSize());
@@ -1120,7 +1120,7 @@ public class SimPropRegistry {
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
 
-							((StringProp) property).setValue(annotation.value());
+							// ((StringProp) property).setValue(annotation.value());
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
 							((StringProp) property).setMultiSelection(annotation.multiSelection());
 						}
@@ -1410,6 +1410,15 @@ public class SimPropRegistry {
 				entry.getValue().register( guiElement );
 			}
 		}
+	}
+
+	public String getPluginDisplayName(String pluginLevel) {
+		for ( SimGuiPlugin simPlugin : this.plugins.values() ){
+			if ( simPlugin.getConfigName().equals(pluginLevel) )
+				return simPlugin.getDisplayName();
+		}
+		
+		return pluginLevel;	
 	}
 
 // Obsolete

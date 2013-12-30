@@ -178,9 +178,11 @@ public class PluginPanel extends JScrollPane {
 	}
 
 	void setPlugin(String configName, String selectedPlugin) {
+		
 		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
+		
 		logger.log(Level.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
-
+		
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
@@ -203,10 +205,13 @@ public class PluginPanel extends JScrollPane {
 		final Map<String, String> activePlugins = this.simPropRegistry.getActivePlugins(true);
 
 		for (final String pluginLevel : activePlugins.keySet()) {
+			
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					PluginPanel.this.setPlugin(pluginLevel,activePlugins.get(pluginLevel));
+					String pluginDisplayName = SimPropRegistry.getInstance().getPluginDisplayName(activePlugins.get(pluginLevel));
+					System.err.println(pluginLevel + " -> " + pluginDisplayName);
+					PluginPanel.this.setPlugin(pluginLevel,pluginDisplayName);
 				}
 			});
 		}

@@ -36,7 +36,7 @@ public @interface FloatSimulationProperty {
 	public boolean global() default false;
 
 	// float
-	public float value() default 0.0f;
+	// public float value() default 0.0f;
 
 	// public Class<?> valueType() default Float.class;
 

@@ -36,7 +36,7 @@ public @interface DoubleSimulationProperty {
 	public boolean global() default false;
 
 	// float
-	public double value() default 0.0f;
+	// public double value() default 0.0f;
 
 	// public Class<?> valueType() default Double.class;
 
