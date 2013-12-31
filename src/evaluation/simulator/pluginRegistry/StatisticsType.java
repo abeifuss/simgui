@@ -17,12 +17,13 @@
  */
 package evaluation.simulator.pluginRegistry;
 
+import evaluation.simulator.annotations.helper.PossibleValues;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
 import evaluation.simulator.core.statistics.aggregator.Aggregator.InputDataType;
 import evaluation.simulator.core.statistics.plotEngine.PlotScale;
 import evaluation.simulator.core.statistics.postProcessor.PostProcessor;
 
-
+@PossibleValues(id="StatisticsType")
 public enum StatisticsType {
 	
 	AVG_CLIENT_RTT_LAYER5MESSAGE(			"plot_clientLatencyLayer5", 	PlotType.LINE_CHART_ABS,	PlotScale.LINEAR,	Unit.ms,	Aggregator.AVG, 	new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}),	

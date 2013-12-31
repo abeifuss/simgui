@@ -25,6 +25,7 @@ import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 
+import evaluation.simulator.annotations.helper.PossibleValues;
 import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.plugin.PluginSuperclass;
 import evaluation.simulator.annotations.plugin.SimGuiPlugin;
@@ -107,6 +108,13 @@ public class SimPropRegistry {
 	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
 
 	private final Map<String, SimGuiPlugin>  plugins = new HashMap<String, SimGuiPlugin>();
+	
+	/**
+	 * Maps an unique String to possible Values
+	 * key: id of the Target
+	 * value: possibles Values (comma separated Strings)
+	 */
+	private final Map<String, String> possibleValueTargets = new HashMap<String, String>();
 
 	// TODO: Merge both order functions
 	public Map<String, Integer> getLayerMapDisplayNameToOrder() {
@@ -126,6 +134,9 @@ public class SimPropRegistry {
 	private final Map<String, Boolean> isStaticLayerMap = new HashMap<String, Boolean>();
 
 	private SimPropRegistry() {
+		
+		this.scanForHelpers();
+		
 		this.numberOfPluginLayers = 0;
 
 		this.scanForPluginProperties();
@@ -137,6 +148,31 @@ public class SimPropRegistry {
 		this.processDefered();
 		this.scanForStaticProperties();
 		this.toString();
+	}
+	
+	private void scanForHelpers() {
+
+		Reflections reflections = new Reflections(
+				ClasspathHelper.forPackage("evaluation.simulator"),
+				new FieldAnnotationsScanner());
+		
+		// TODO: Seems not to work properly, scans all packages
+		Reflections reflectionsPlugins = new Reflections(
+				ClasspathHelper.forPackage("evaluation.simulator"),
+				new TypeAnnotationsScanner());
+
+		// Look for classes with PluginAnnotation
+		Set<Class<?>> types = reflectionsPlugins.getTypesAnnotatedWith(evaluation.simulator.annotations.helper.PossibleValues.class);
+
+		for (Class<?> target : types) {
+			String tmp = "";
+			for (Field f : target.getFields()){
+				if (f.isEnumConstant())
+					tmp = tmp + f.getName() + ",";
+			}
+			possibleValueTargets.put(target.getAnnotation(PossibleValues.class).id(),tmp);
+			logger.log( Level.DEBUG ,"Registered PossibleValuesTarget: " + target.getAnnotation(PossibleValues.class).id());
+		}
 	}
 
 	// TODO: remove this peace of code
@@ -493,7 +529,12 @@ public class SimPropRegistry {
 						}
 
 						// ((StringProp) property).setValue(annotation.value());
-						((StringProp) property).setPossibleValues(annotation.possibleValues());
+						String regex = "@\\w*";
+						if (annotation.possibleValues().matches(regex)){
+							((StringProp) property).setPossibleValues(possibleValueTargets.get("StatisticsType"));
+						}else{
+							((StringProp) property).setPossibleValues(annotation.possibleValues());
+						}
 						((StringProp) property).setMultiSelection(annotation.multiSelection());
 
 						this.getProperties().put(property.getPropertyID(), property);
