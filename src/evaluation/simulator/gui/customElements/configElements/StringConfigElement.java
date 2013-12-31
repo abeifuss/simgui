@@ -3,6 +3,8 @@ package evaluation.simulator.gui.customElements.configElements;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -21,6 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 import evaluation.simulator.annotations.property.StringProp;
@@ -66,7 +70,17 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 					this.listSize++;
 					listModel.addElement(st.nextToken());
 				}
-//				this.jList.addActionListener(this);
+				
+				this.jList.addMouseListener( new MouseAdapter() {
+					public void mousePressed(MouseEvent evt) {
+						String tmp = "";
+						for (String str : jList.getSelectedValuesList() ) {
+							tmp = tmp + str + ",";
+						}
+						simPropRegistry.setValue(property.getPropertyID(), tmp);
+		            }
+				});
+				
 				this.jList.setToolTipText(property.getTooltip());
 				jScrollPane.setViewportView(jList);
 				this.add( jScrollPane, "growx, push" );
