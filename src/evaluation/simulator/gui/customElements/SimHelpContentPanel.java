@@ -11,11 +11,9 @@ import org.apache.log4j.Logger;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
 
-import evaluation.simulator.conf.service.SimulationConfigService;
-
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
-	
+
 	private static Logger logger = Logger.getLogger(SimHelpContentPanel.class);
 
 	private static SimHelpContentPanel instance = null;
@@ -54,7 +52,7 @@ public class SimHelpContentPanel extends JPanel {
 		try {
 			this._htmlContent.setDocument(new File(url));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Probably no stylesheet defined... processing.");
 		}
 	}
 }

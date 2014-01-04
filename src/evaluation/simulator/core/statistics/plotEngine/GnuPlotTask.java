@@ -21,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 
+import javax.swing.JOptionPane;
+
 import framework.core.config.Paths;
 import framework.core.config.Settings;
 import framework.core.util.Util;
@@ -84,15 +86,19 @@ public class GnuPlotTask extends Thread {
 			synchronized (monitor) {
 				if (isFirstExecution == true) {
 					isFirstExecution = false;
-					System.err.println(
-							"\nThe simulator could not plot the results as gnuplot was not found on your system\n" +
+					String errorMsg = "\nThe simulator could not plot the results as gnuplot was not found on your system\n" +
 							"or a gnuplot error occured (see the more detailed error log below.). Make sure you\n" +
 							"have gnuplot installed and set the variable \"GNUPLOT_FOLDER\" in \"./inputOutput/\n" +
 							"simulator/config/simulatorConfig.txt\" to point at the folder of the gnuplot executable\n" +
 							"(e.g. \"GNUPLOT_FOLDER = /opt/local/bin/\")\n" +
 							"Note that the results of this run (plotscripts, recorded statistics as txt and a\n" +
 							"config dump) are not lost, but stored in \"./inputOutput/simulator/output/\".\n\n\n" +
-							"Detailed error log:");
+							"Detailed error log:" ;
+					System.err.println(errorMsg);
+					JOptionPane.showMessageDialog(null,
+							errorMsg,
+						    "gnuPlot Error",
+						    JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				}	
 			}
