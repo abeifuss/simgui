@@ -62,6 +62,7 @@
 		<dependency	org="com.jtattoo" name="JTattoo" rev="1.6.9">
 		<dependency org="log4j" name="log4j" rev="1.2.17"/>
 		<dependency org="com.miglayout" name="miglayout-swing" rev="4.2"/>
+		<dependency org="batik" name="batik-transcoder" rev="1.6-1"/>
 </dependency>
             
 	</dependencies>

@@ -9,17 +9,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import evaluation.simulator.conf.service.UserConfigService;
+import evaluation.simulator.gui.helper.IOActions;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
+import evaluation.simulator.gui.results.GnuplotPanel;
 import evaluation.simulator.gui.service.GuiService;
 
 @SuppressWarnings("serial")
@@ -73,6 +77,12 @@ public class MainGui extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				try {
+					IOActions.cleanOutputFolder();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, "Could not clean up Output directory "
+							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
+				}
 				MainGui.this.safeProperties();
 			}
 
@@ -98,9 +108,9 @@ public class MainGui extends JFrame {
 	private void initialize() {
 
 		this.mainGuiXPos = UserConfigService.getMAINGUI_XPOS();
-		this.mainGuiYPos =  UserConfigService.getMAINGUI_YPOS();
-		this.mainGuiWidth =  UserConfigService.getMAINGUI_WIDTH();
-		this.mainGuiHeight =  UserConfigService.getMAINGUI_HEIGHT();
+		this.mainGuiYPos = UserConfigService.getMAINGUI_YPOS();
+		this.mainGuiWidth = UserConfigService.getMAINGUI_WIDTH();
+		this.mainGuiHeight = UserConfigService.getMAINGUI_HEIGHT();
 		this.horizontalSplitPlaneDeviderLocation = UserConfigService.getMAINGUI_HSPLIT_DEVIDER_LOCATION();
 		this.consoleHeight = UserConfigService.getMAINGUI_CONSOLE_HEIGHT();
 
@@ -155,19 +165,16 @@ public class MainGui extends JFrame {
 		mnWindow.add(mntmSeperateConfiguration);
 
 		this.frame.setTitle("gMixSim");
-		this.frame.setIconImage(Toolkit.getDefaultToolkit().createImage(
-				"etc/img/icons/icon128.png"));
+		this.frame.setIconImage(Toolkit.getDefaultToolkit().createImage("etc/img/icons/icon128.png"));
 
 		SystemTray tray = SystemTray.getSystemTray();
 		try {
-			tray.add(new TrayIcon(Toolkit.getDefaultToolkit().createImage(
-					"etc/img/icons/icon16.png")));
+			tray.add(new TrayIcon(Toolkit.getDefaultToolkit().createImage("etc/img/icons/icon16.png")));
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
 
-		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth,
-				this.mainGuiHeight);
+		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth, this.mainGuiHeight);
 
 		this.frame.setVisible(true);
 	}
@@ -200,7 +207,7 @@ public class MainGui extends JFrame {
 	}
 
 	public void update() {
-		//		this.simulationTab.update();
+		// this.simulationTab.update();
 	}
 
 }
