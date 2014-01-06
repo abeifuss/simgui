@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -73,14 +74,14 @@ public class PluginPanel extends JScrollPane {
 		//GridBagLayout for properties to vary configuration
 		GridBagLayout gridBagLayoutPropertiesToVary= new GridBagLayout();
 		GridBagConstraints gridBagContraintsPropertiesToVary = new GridBagConstraints();
-		gridBagConstraintsPlugins.fill = GridBagConstraints.HORIZONTAL;
-		gridBagConstraintsPlugins.anchor = GridBagConstraints.NORTH;
-		gridBagConstraintsPlugins.weightx = 1;
-		gridBagConstraintsPlugins.weighty = 1;
-		gridBagConstraintsPlugins.gridx = GridBagConstraints.RELATIVE;
-		gridBagConstraintsPlugins.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagLayoutPlugins.setConstraints(this.propertiesToVaryPanel, gridBagConstraintsPlugins);
-		this.propertiesToVaryPanel.setLayout(gridBagLayoutPlugins);
+		gridBagContraintsPropertiesToVary.fill = GridBagConstraints.HORIZONTAL;
+		gridBagContraintsPropertiesToVary.anchor = GridBagConstraints.NORTH;
+		gridBagContraintsPropertiesToVary.weightx = 1;
+		gridBagContraintsPropertiesToVary.weighty = 1;
+		gridBagContraintsPropertiesToVary.gridx = GridBagConstraints.RELATIVE;
+		gridBagContraintsPropertiesToVary.gridwidth = GridBagConstraints.REMAINDER;
+		gridBagLayoutPropertiesToVary.setConstraints(this.propertiesToVaryPanel, gridBagConstraintsPlugins);
+		this.propertiesToVaryPanel.setLayout(gridBagLayoutPropertiesToVary);
 
 		//GridBagLayout for general configuration
 		GridBagLayout gridBagLayoutGeneral = new GridBagLayout();
@@ -122,7 +123,7 @@ public class PluginPanel extends JScrollPane {
 		ValueComparator comperatorStatic =  new ValueComparator(staticMap);
 		TreeMap<String,Integer> sortedStaticMap = new TreeMap<String,Integer>(comperatorStatic);
 		Map<String, Boolean> isStaticLayerMap = SimPropRegistry.getInstance().getIsStaticLayerMap();
-		sortedStaticMap.putAll(staticMap);
+		sortedStaticMap.putAll(staticMap);		
 
 		System.out.println("results: "+sortedLayerMap);
 
@@ -155,6 +156,8 @@ public class PluginPanel extends JScrollPane {
 				i++;
 			}
 		}
+		
+		this.propertiesToVaryPanel.add(new PropVaryElement());
 
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
@@ -192,6 +195,13 @@ public class PluginPanel extends JScrollPane {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
 				accordianEntry.setVibility(true);
+			}
+		}	
+		
+		for (Component component : this.propertiesToVaryPanel.getComponents()) {
+			if (component.getClass().equals(PropVaryElement.class)) {
+				PropVaryElement propVaryElement = (PropVaryElement) (component);
+				propVaryElement.repaint();
 			}
 		}
 		
