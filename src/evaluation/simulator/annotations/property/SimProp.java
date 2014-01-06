@@ -163,6 +163,7 @@ public abstract class SimProp extends Observable {
 
 	public void setWarnings(Set<String> warnings) {
 		this.warnings = warnings;
+		this.changed();
 	}
 
 	public Set<String> getErrors() {
@@ -171,6 +172,7 @@ public abstract class SimProp extends Observable {
 
 	public void setErrors(Set<String> errors) {
 		this.errors = errors;
+		this.changed();
 	}
 
 }

@@ -26,6 +26,8 @@ import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.property.FloatSimulationProperty;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
+import evaluation.simulator.annotations.property.requirements.SgMixMaxClientMixDelayRequirement;
+import evaluation.simulator.annotations.property.requirements.SgMixMinClientMixDelayRequirement;
 import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
@@ -53,9 +55,9 @@ public class StopAndGoMessage extends BasicMixMessage {
 	private int minInterMixDelay;
 	@IntSimulationProperty( name = "Maximum inter mix delay", key = "SGMIX_MAX_INTER_MIX_DELAY" )
 	private int maxInterMixDelay;
-	@IntSimulationProperty( name = "Minimum client mix delay", key = "SGMIX_MIN_CLIENT_MIX_DELAY" )
+	@IntSimulationProperty( name = "Minimum client mix delay", key = "SGMIX_MIN_CLIENT_MIX_DELAY",value_requirements=SgMixMinClientMixDelayRequirement.class )
 	private int minClientMixDelay;
-	@IntSimulationProperty( name = "Maximum client mix delay", key = "SGMIX_MAX_CLIENT_MIX_DELAY" )
+	@IntSimulationProperty( name = "Maximum client mix delay", key = "SGMIX_MAX_CLIENT_MIX_DELAY",value_requirements=SgMixMaxClientMixDelayRequirement.class )
 	private int maxClientMixDelay;
 	@IntSimulationProperty( name = "Maximum clock deviation", key = "SGMIX_MAX_CLOCK_DEVITION" )
 	private int maxClockDeviation;
