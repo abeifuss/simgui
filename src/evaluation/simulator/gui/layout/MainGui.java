@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -61,48 +62,8 @@ public class MainGui extends JFrame {
 	private int mainGuiYPos;
 
 	public MainGui() {
-
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.initialize();
-
-		this.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowActivated(WindowEvent arg0) {
-			}
-
-			@Override
-			public void windowClosed(WindowEvent arg0) {
-				MainGui.this.safeProperties();
-			}
-
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				try {
-					IOActions.cleanOutputFolder();
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Could not clean up Output directory "
-							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
-				}
-				MainGui.this.safeProperties();
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent arg0) {
-				MainGui.this.safeProperties();
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent arg0) {
-			}
-
-			@Override
-			public void windowIconified(WindowEvent arg0) {
-			}
-
-			@Override
-			public void windowOpened(WindowEvent arg0) {
-			}
-		});
 	}
 
 	private void initialize() {
@@ -117,6 +78,53 @@ public class MainGui extends JFrame {
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 1024, 768);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.addWindowListener(new WindowListener() {
+			
+		
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				System.out.println("Closing...");
+				try {
+					IOActions.cleanOutputFolder();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, "Could not clean up Output directory "
+							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
+				}
+				MainGui.this.safeProperties();
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+
+			
+		});
 
 		this.splitPane = new JSplitPane();
 		this.frame.getContentPane().add(this.splitPane, BorderLayout.CENTER);
