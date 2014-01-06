@@ -76,7 +76,6 @@ public class MainGui extends JFrame {
 		this.consoleHeight = UserConfigService.getMAINGUI_CONSOLE_HEIGHT();
 
 		this.frame = new JFrame();
-		this.frame.setBounds(100, 100, 1024, 768);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.addWindowListener(new WindowListener() {
 			
@@ -182,18 +181,18 @@ public class MainGui extends JFrame {
 			e.printStackTrace();
 		}
 
-		this.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth, this.mainGuiHeight);
+		this.frame.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth, this.mainGuiHeight);
 
 		this.frame.setVisible(true);
 	}
 
 	private void safeProperties() {
 		UserConfigService.setMAINGUI_CONSOLE_HEIGHT(this.consoleHeight);
-		UserConfigService.setMAINGUI_HEIGHT(this.getHeight());
+		UserConfigService.setMAINGUI_HEIGHT(this.frame.getHeight());
 		UserConfigService.setMAINGUI_HSPLIT_DEVIDER_LOCATION(this.horizontalSplitPlaneDeviderLocation);
-		UserConfigService.setMAINGUI_WIDTH(this.getWidth());
-		UserConfigService.setMAINGUI_XPOS(this.getX());
-		UserConfigService.setMAINGUI_YPOS(this.getY());
+		UserConfigService.setMAINGUI_WIDTH(this.frame.getWidth());
+		UserConfigService.setMAINGUI_XPOS(this.frame.getX());
+		UserConfigService.setMAINGUI_YPOS(this.frame.getY());
 	}
 
 	// (De)seperate the configuration tool
