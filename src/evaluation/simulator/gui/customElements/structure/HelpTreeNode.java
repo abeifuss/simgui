@@ -1,4 +1,4 @@
-package evaluation.simulator.gui.helper.structure;
+package evaluation.simulator.gui.customElements.structure;
 
 public class HelpTreeNode {
 	private String helpTreeNodeName;

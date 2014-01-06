@@ -13,13 +13,12 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class HomeTab extends JPanel {
 
-
 	public HomeTab() {
 
 		Color bg = this.getBackground();
 
-		JLabel wellcomeLabel = new JLabel("Wellcome to gMixSim");
-		wellcomeLabel.setFont(new Font("arial", 1, 35));
+		JLabel welcomeLabel = new JLabel("Welcome to gMixSim");
+		welcomeLabel.setFont(new Font("arial", 1, 35));
 
 		JLabel introduction = new JLabel("gMixSim is a Simulator for Mixes");
 
@@ -49,7 +48,6 @@ public class HomeTab extends JPanel {
 		HelpText.setWrapStyleWord(true);
 		HelpText.setBackground(bg);
 
-
 		GridBagLayout gbl = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -61,7 +59,7 @@ public class HomeTab extends JPanel {
 		gbl.setConstraints(this, gbc);
 		this.setLayout(gbl);
 
-		this.add(wellcomeLabel, gbc);
+		this.add(welcomeLabel, gbc);
 		this.add(introduction, gbc);
 		this.add(logosLabel, gbc);
 

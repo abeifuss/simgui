@@ -16,8 +16,8 @@ import javax.swing.tree.TreeSelectionModel;
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.annotations.property.SimProp;
+import evaluation.simulator.gui.customElements.structure.HelpTreeNode;
 import evaluation.simulator.gui.helper.ValueComparator;
-import evaluation.simulator.gui.helper.structure.HelpTreeNode;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")

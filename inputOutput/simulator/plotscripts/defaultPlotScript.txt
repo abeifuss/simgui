@@ -43,3 +43,8 @@ set terminal svg font "Helvetica, 9"
 set output "WILL_BE_SET_AUTOMATICALLY"
 plot "WILL_BE_SET_AUTOMATICALLY"
 # END do not modify section
+
+set terminal png font "Helvetica, 9"
+set output "WILL_BE_SET_AUTOMATICALLY"
+plot "WILL_BE_SET_AUTOMATICALLY"
+

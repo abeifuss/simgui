@@ -26,7 +26,6 @@ import evaluation.simulator.core.statistics.ResultSet;
 import framework.core.config.Paths;
 import framework.core.util.Util;
 
-
 public class PlotScript {
 
 	private static Logger logger = Logger.getLogger(PlotScript.class);
@@ -37,109 +36,81 @@ public class PlotScript {
 	private final String resultDiagramFileName;
 	private final String gnuplotConsoleOutputFileName;
 
-
 	public PlotScript(String plotName, ResultSet resultSet) {
-		this.plotScript = Util.getFileContent(Paths.SIM_PLOTSCRIPT_FOLDER_PATH +Simulator.settings.getProperty("NAME_OF_PLOT_SCRIPT"));
-		this.resultFileName = resultSet.ep.experimentStart +"-" +plotName +"-results.txt";
-		this.plotScriptFileName = resultSet.ep.experimentStart +"-" +plotName +"-plotScript.txt";
-		this.resultDiagramFileName = resultSet.ep.experimentStart +"-" +plotName +"-diagram.svg";
-		this.gnuplotConsoleOutputFileName = resultSet.ep.experimentStart +"-" +plotName +"-gnuPlotConsoleOutput";
+		this.plotScript = Util.getFileContent(Paths.SIM_PLOTSCRIPT_FOLDER_PATH
+				+ Simulator.settings.getProperty("NAME_OF_PLOT_SCRIPT"));
+		this.resultFileName = resultSet.ep.experimentStart + "-" + plotName + "-results.txt";
+		this.plotScriptFileName = resultSet.ep.experimentStart + "-" + plotName + "-plotScript.txt";
+		this.resultDiagramFileName = resultSet.ep.experimentStart + "-" + plotName + "-diagram";
+		this.gnuplotConsoleOutputFileName = resultSet.ep.experimentStart + "-" + plotName + "-gnuPlotConsoleOutput";
 		this.setInputFile(this.resultFileName);
 	}
-
 
 	public String getResultFileName() {
 		return this.resultFileName;
 	}
 
-
 	public String getPlotScriptFileName() {
 		return this.plotScriptFileName;
 	}
 
-
 	public void setTitle(String title) {
-		this.plotScript = this.plotScript.replace(
-				"varTitle = \"WILL_BE_SET_AUTOMATICALLY\"",
-				"varTitle = \"" +title +"\""
-				);
+		this.plotScript = this.plotScript.replace("varTitle = \"WILL_BE_SET_AUTOMATICALLY\"", "varTitle = \"" + title
+				+ "\"");
 	}
-
 
 	public void setXlabel(String xLabel) {
-		this.plotScript = this.plotScript.replace(
-				"varXLabel = \"WILL_BE_SET_AUTOMATICALLY\"",
-				"varXLabel = \"" +xLabel +"\""
-				);
+		this.plotScript = this.plotScript.replace("varXLabel = \"WILL_BE_SET_AUTOMATICALLY\"", "varXLabel = \""
+				+ xLabel + "\"");
 	}
-
 
 	public void setYlabel(String yLabel) {
-		this.plotScript = this.plotScript.replace(
-				"varYLabel = \"WILL_BE_SET_AUTOMATICALLY\"",
-				"varYLabel = \"" +yLabel +"\""
-				);
+		this.plotScript = this.plotScript.replace("varYLabel = \"WILL_BE_SET_AUTOMATICALLY\"", "varYLabel = \""
+				+ yLabel + "\"");
 	}
-
 
 	public void setScale(PlotScale scale) {
 		if (!scale.getGnuplotCommand().equals("")) {
-			this.plotScript = this.plotScript.replace(
-					"#_VAR",
-					"#_VAR\n" +scale.getGnuplotCommand()
-					);
+			this.plotScript = this.plotScript.replace("#_VAR", "#_VAR\n" + scale.getGnuplotCommand());
 		}
 	}
 
-
 	public void setOverwritableParameter(String parameter) {
-		this.plotScript = this.plotScript.replace(
-				"#_OVERWRITABLE_PARAMETERS",
-				parameter + "\n#_OVERWRITABLE_PARAMETERS"
-				);
+		this.plotScript = this.plotScript.replace("#_OVERWRITABLE_PARAMETERS", parameter
+				+ "\n#_OVERWRITABLE_PARAMETERS");
 	}
-
 
 	public void setNoneOverwritableParameter(String parameter) {
-		this.plotScript = this.plotScript.replace(
-				"#_NONE_OVERWRITABLE_PARAMETERS",
-				parameter + "\n#_NONE_OVERWRITABLE_PARAMETERS"
-				);
+		this.plotScript = this.plotScript.replace("#_NONE_OVERWRITABLE_PARAMETERS", parameter
+				+ "\n#_NONE_OVERWRITABLE_PARAMETERS");
 	}
-
 
 	private void setInputFile(String inputFile) {
-		this.plotScript = this.plotScript.replace(
-				"varInputFile = \"WILL_BE_SET_AUTOMATICALLY\"",
-				"varInputFile = \"" +inputFile +"\""
-				);
-		this.plotScript = this.plotScript.replace(
-				"set output \"WILL_BE_SET_AUTOMATICALLY\"",
-				"set output \"" +this.resultDiagramFileName +"\""
-				);
+		this.plotScript = this.plotScript.replace("varInputFile = \"WILL_BE_SET_AUTOMATICALLY\"", "varInputFile = \""
+				+ inputFile + "\"");
+		this.plotScript = this.plotScript.replace("set output \"1WILL_BE_SET_AUTOMATICALLY\"", "set output \""
+				+ this.resultDiagramFileName + ".svg\"");
+		this.plotScript = this.plotScript.replace("set output \"2WILL_BE_SET_AUTOMATICALLY\"", "set output \""
+				+ this.resultDiagramFileName + ".png\"");
+		this.plotScript = this.plotScript.replace("set output \"3WILL_BE_SET_AUTOMATICALLY\"", "set output \""
+				+ this.resultDiagramFileName + ".eps\"");
 	}
-
 
 	public void setPlotCommand(String plotCommand) {
 		if (plotCommand.endsWith(",")) {
-			plotCommand = plotCommand.substring(0, (plotCommand.length()-1));
+			plotCommand = plotCommand.substring(0, (plotCommand.length() - 1));
 		}
-		this.plotScript = this.plotScript.replace(
-				"plot \"WILL_BE_SET_AUTOMATICALLY\"",
-				plotCommand
-				);
+		this.plotScript = this.plotScript.replace("plot \"WILL_BE_SET_AUTOMATICALLY\"", plotCommand);
 	}
-
 
 	public void writeDataFileToDisk(String content) {
-		Util.writeToFile(content, Paths.SIM_OUTPUT_FOLDER_PATH +this.resultFileName);
+		Util.writeToFile(content, Paths.SIM_OUTPUT_FOLDER_PATH + this.resultFileName);
 	}
-
 
 	public void writePlotScriptToDisk() {
 		String oParams = Simulator.settings.getProperty("OVERWRITABLE_PARAMETERS");
 
-		if ( oParams == null ) {
+		if (oParams == null) {
 			oParams = "";
 		}
 
@@ -150,15 +121,14 @@ public class PlotScript {
 		if (!noParams.equals("")) {
 			this.setNoneOverwritableParameter(noParams);
 		}
-		Util.writeToFile(this.plotScript, Paths.SIM_OUTPUT_FOLDER_PATH +this.plotScriptFileName);
+		Util.writeToFile(this.plotScript, Paths.SIM_OUTPUT_FOLDER_PATH + this.plotScriptFileName);
 	}
-
 
 	public void plot() {
 		logger.log(Level.DEBUG, this.plotScript);
 		new GnuPlotTask(this.plotScriptFileName, this.gnuplotConsoleOutputFileName).start();
 		// TODO build hack properly to notify GUI
-		gMixBinding.getInstance().setGnuplotConsoleOutputFileName(this.resultDiagramFileName);
+		gMixBinding.getInstance().setGnuplotConsoleOutputFileName(this.resultDiagramFileName + ".svg");
 		logger.log(Level.DEBUG, "SVG: " + this.resultDiagramFileName);
 	}
 
