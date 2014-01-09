@@ -30,6 +30,7 @@ import evaluation.simulator.gui.customElements.configElements.DoubleConfigElemen
 import evaluation.simulator.gui.customElements.configElements.FloatConfigElement;
 import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.customElements.configElements.StringConfigElement;
+import evaluation.simulator.gui.customElements.structure.HelpPropValues;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
@@ -39,15 +40,15 @@ public class PropVaryElement extends JPanel{
 	
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
 	
-	JComboBox<String> cBox1;
-	JComboBox<String> cBox2;
-	
-	JTextField propElement1;
-	JTextField propElement2;
+	private JComboBox<String> cBox[];	
+	private JTextField propElement[];
+	private HelpPropValues value[];
+	private Class propType[];
+	private final int numOfPropsToVary = 2;
 		
 	Map<String, SimProp> propMap;
-	Map<JComboBox<String>, JTextField> boxToElementMap;
-	Map<JTextField, String> propValueMap;
+	Map<JComboBox<String>, Integer> boxToIndexMap;
+	Map<JTextField, Integer> propToIndexMap;
 	
 	public PropVaryElement() {
 		 
@@ -62,56 +63,63 @@ public class PropVaryElement extends JPanel{
 		
 		String propertyStrings[] = propMap.keySet().toArray(new String[1]);
 		propertyStrings[0] = "---";
-		this.cBox1 = new JComboBox<String>(propertyStrings);
-		this.cBox2 = new JComboBox<String>(propertyStrings);		
-		addBoxListener(cBox1);
-		addBoxListener(cBox2);		
+		cBox = new JComboBox[numOfPropsToVary];
+		cBox[0] = new JComboBox<String>(propertyStrings);
+		cBox[1] = new JComboBox<String>(propertyStrings);		
+		addBoxListener(cBox[0]);
+		addBoxListener(cBox[1]);		
 		
-		this.propElement1 = new JTextField();		
-		this.propElement2 = new JTextField();
-		addTextListener(propElement1);
-		addTextListener(propElement2);
+		propElement = new JTextField[numOfPropsToVary];
+		propElement[0] = new JTextField();		
+		propElement[1] = new JTextField();
+		addTextListener(propElement[0]);
+		addTextListener(propElement[1]);
 		
-		this.boxToElementMap = new HashMap<>();
-		this.boxToElementMap.put(cBox1, propElement1);
-		this.boxToElementMap.put(cBox2, propElement2);
+		propType = new Class[numOfPropsToVary];
 		
-		this.propValueMap = new HashMap<>();
-		this.propValueMap.put(propElement1, "");
-		this.propValueMap.put(propElement2, "");
+		this.boxToIndexMap = new HashMap<>();
+		this.boxToIndexMap.put(cBox[0], 0);
+		this.boxToIndexMap.put(cBox[1], 1);
+		
+		this.propToIndexMap = new HashMap<>();
+		this.propToIndexMap.put(propElement[0], 0);
+		this.propToIndexMap.put(propElement[1], 1);
 
 					
-		this.add( cBox1, "wrap");
-		this.add(propElement1, "wrap, growx");		
-		this.add( cBox2, "wrap");
-		this.add(propElement2, "wrap, growx");
+		this.add( cBox[0], "wrap");
+		this.add(propElement[0], "wrap, growx");		
+		this.add( cBox[1], "wrap");
+		this.add(propElement[1], "wrap, growx");
 		
-		comboboxChanged(cBox1);
-		comboboxChanged(cBox2);	
+		comboboxChanged(cBox[0]);
+		comboboxChanged(cBox[1]);	
 		
 	}	
 
 	private void comboboxChanged(JComboBox<String> ComboBox){
 		
-		JTextField currentElement = this.boxToElementMap.get(ComboBox);
+		int index = this.boxToIndexMap.get(ComboBox);
+		JTextField currentElement = propElement[index];
 		
-		propValueMap.put(currentElement, "");
+		value[index]=null;
 		currentElement.setText("");
 		
 		String currentItem = (String) ComboBox.getSelectedItem();
 		if(currentItem == "---"){
-			currentElement.setEnabled(false);			
-			if(ComboBox == cBox1){				
-				this.cBox2.setEnabled(false);
-				this.propElement2.setEnabled(false);
+			propElement[index].setEnabled(false);
+			propType[index] = null;
+			if(index == 0){				
+				this.cBox[1].setEnabled(false);
+				this.propElement[1].setEnabled(false);
 			}			
 		}
 		else{			
-			currentElement.setEnabled(true);
+			propElement[index].setEnabled(true);
+			propType[index] = propMap.get(currentItem).getValueType();	
 		}
 		
-		if((ComboBox == cBox1)&&(currentItem != "---")){
-			this.cBox2.setEnabled(true);
+		if((ComboBox == cBox[0])&&(currentItem != "---")){
+			this.cBox[1].setEnabled(true);
 		}
 		
 		logger.log(Level.DEBUG, currentElement.toString());		
@@ -137,13 +145,27 @@ public class PropVaryElement extends JPanel{
 			public void actionPerformed(ActionEvent a) {
 
 				if (a.getActionCommand() != null ) {
-					PropVaryElement.this.propValueMap.put(field, a.getActionCommand().toString());
-					logger.log(Level.DEBUG, "PropertyToVary set to: " + PropVaryElement.this.propValueMap.get(field));					
+					int i= PropVaryElement.this.propToIndexMap.get(field);
+					value[i] = new HelpPropValues(a.getActionCommand().toString(),propType[i]);
+					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i]);
+					logger.log(Level.DEBUG, "Value is: " + value[i].isValid());
 				}
 			}
 			
 		};
 		field.addActionListener(al);
 	}
+	
+//	public int getMin (int i){
+//		return 0;
+//	}
+//	
+//	public int getMax (int i){
+//		return 0;
+//	}
+//	
+//	public List<Object> getValues (int i){
+//		return null;
+//	}
 	
 }
