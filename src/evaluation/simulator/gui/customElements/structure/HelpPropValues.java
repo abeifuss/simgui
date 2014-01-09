@@ -5,14 +5,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.gui.customElements.PluginPanel;
+
 public class HelpPropValues {
+	
+	private static Logger logger = Logger.getLogger(PluginPanel.class);
 	
 	private StringTokenizer tokenizer;
 	
 	private List<String> values;
 	private Class type;
-	private String first;
-	private String last;
 	
 	public HelpPropValues(String value, Class type){
 		
@@ -37,6 +42,7 @@ public class HelpPropValues {
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "testet for int was false");
 				}
 			}
 			
@@ -46,6 +52,7 @@ public class HelpPropValues {
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "testet for bool was false");
 				}
 			}
 			
@@ -55,6 +62,7 @@ public class HelpPropValues {
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "testet for float was false");
 				}
 			}
 			
@@ -64,6 +72,7 @@ public class HelpPropValues {
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "testet for double was false");
 				}
 			}
 			
@@ -76,13 +85,13 @@ public class HelpPropValues {
 		return type;
 	}
 	
-	public String getFirst(){
-		return first;
-	}
-	
-	public String getlast(){
-		return last;
-	}
+//	public String getFirst(){
+//		return values.iterator().;
+//	}
+//	
+//	public String getlast(){
+//		return last;
+//	}
 	
 	public List<String> getValues(){
 		return values;

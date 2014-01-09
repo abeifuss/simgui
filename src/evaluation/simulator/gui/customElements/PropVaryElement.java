@@ -75,6 +75,10 @@ public class PropVaryElement extends JPanel{
 		addTextListener(propElement[0]);
 		addTextListener(propElement[1]);
 		
+		value = new HelpPropValues[numOfPropsToVary];
+		value[0] = null;
+		value[1] = null;
+		
 		propType = new Class[numOfPropsToVary];
 		
 		this.boxToIndexMap = new HashMap<>();
@@ -115,7 +119,8 @@ public class PropVaryElement extends JPanel{
 		}
 		else{			
 			propElement[index].setEnabled(true);
-			propType[index] = propMap.get(currentItem).getValueType();	
+			propType[index] = propMap.get(currentItem).getValueType();
+			logger.log(Level.DEBUG, "Proptype is set to" + propType[index].toString());
 		}
 		
 		if((ComboBox == cBox[0])&&(currentItem != "---")){
@@ -147,8 +152,8 @@ public class PropVaryElement extends JPanel{
 				if (a.getActionCommand() != null ) {
 					int i= PropVaryElement.this.propToIndexMap.get(field);
 					value[i] = new HelpPropValues(a.getActionCommand().toString(),propType[i]);
-					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i]);
-					logger.log(Level.DEBUG, "Value is: " + value[i].isValid());
+					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i].toString());
+					logger.log(Level.DEBUG, "Validity is: " + value[i].isValid());
 				}
 			}
 			
