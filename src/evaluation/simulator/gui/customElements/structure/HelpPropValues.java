@@ -16,7 +16,7 @@ public class HelpPropValues {
 	
 	public HelpPropValues(String value, Class type){
 		
-		values = new LinkedList<>();
+		values = new LinkedList<String>();
 		this.type = type;
 		
 		tokenizer = new StringTokenizer( value, " " );
@@ -31,7 +31,11 @@ public class HelpPropValues {
 		
 		for(String s : values){
 			
-			if (this.type==Integer.class){
+			logger.log(Level.DEBUG, s);
+			logger.log(Level.DEBUG, type.toString());
+			logger.log(Level.DEBUG, Integer.class.toString());
+			
+			if (this.type == Integer.class){
 				try{
 					int i = Integer.parseInt(s);
 				}
@@ -40,7 +44,7 @@ public class HelpPropValues {
 				}
 			}
 			
-			if (this.type==Boolean.class){
+			if (this.type == Boolean.class){
 				try{
 					boolean b = Boolean.parseBoolean(s);
 				}
@@ -49,7 +53,7 @@ public class HelpPropValues {
 				}
 			}
 			
-			if (this.type==Float.class){
+			if (this.type == Float.class){
 				try{
 					float f = Float.parseFloat(s);
 				}
@@ -58,7 +62,7 @@ public class HelpPropValues {
 				}
 			}
 			
-			if (this.type==Double.class){
+			if (this.type == Double.class){
 				try{
 					double d = Double.parseDouble(s);
 				}

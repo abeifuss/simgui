@@ -152,7 +152,7 @@ public class PropVaryElement extends JPanel{
 				if (a.getActionCommand() != null ) {
 					int i= PropVaryElement.this.propToIndexMap.get(field);
 					value[i] = new HelpPropValues(a.getActionCommand().toString(),propType[i]);
-					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i].toString());
+					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i].getType().toString());
 					logger.log(Level.DEBUG, "Validity is: " + value[i].isValid());
 				}
 			}
