@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.gui.customElements.PluginPanel;
 
+
 public class HelpPropValues {
 	
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
@@ -43,6 +44,7 @@ public class HelpPropValues {
 			if (this.type == Integer.class){
 				logger.log(Level.DEBUG, "checking for int");
 				try{
+					logger.log(Level.DEBUG, "int");
 					int i = Integer.parseInt(s);
 				}
 				catch(Exception e){
@@ -54,6 +56,7 @@ public class HelpPropValues {
 			if (this.type == Boolean.class){
 				logger.log(Level.DEBUG, "checking for int");
 				try{
+					logger.log(Level.DEBUG, "bool");
 					boolean b = Boolean.parseBoolean(s);
 				}
 				catch(Exception e){
@@ -65,6 +68,7 @@ public class HelpPropValues {
 			if (this.type == Float.class){
 				logger.log(Level.DEBUG, "checking for int");
 				try{
+					logger.log(Level.DEBUG, "float");
 					float f = Float.parseFloat(s);
 				}
 				catch(Exception e){
@@ -76,6 +80,7 @@ public class HelpPropValues {
 			if (this.type == Double.class){
 				logger.log(Level.DEBUG, "checking for int");
 				try{
+					logger.log(Level.DEBUG, "double");
 					double d = Double.parseDouble(s);
 				}
 				catch(Exception e){
