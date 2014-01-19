@@ -1,0 +1,241 @@
+\documentclass{beamer}
+
+\usepackage{beamerthemesplit}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[justification=centering,figurename=Abb.]{caption}
+\usepackage{pdfpages} 
+\usepackage{listings} 
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\usetheme{Boadilla}
+\useoutertheme[footline=authortitle]{miniframes}
+\useinnertheme{rectangles}
+
+\lstset{
+    language=Java,
+    tabsize=4,
+    keepspaces,
+    extendedchars=true,
+    rulecolor=\color{black},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    basicstyle=\footnotesize,
+    aboveskip=5pt,
+    upquote=true,
+    columns=fixed,
+    showstringspaces=false,
+    extendedchars=true,B
+    breaklines=true,
+    frame=single,
+    showtabs=true,
+    showspaces=false,
+    showstringspaces=false,
+}
+
+\beamertemplatenavigationsymbolsempty
+
+\title{Vortrag II: Weiterentwicklung der GUI für den gMix-Simulator} 
+\author[M. Weinschenk, J. Langnickel, J.C. Lohmüller, A. Beifuß]{Malte Weinschenk, Jörg Langnickel, \\ Jan Carsten Lohmüller \& Alexander Beifuß} 
+\date{\today} 
+
+
+\begin{document}
+
+\frame{\titlepage} 
+
+\frame[t,squeeze]{\frametitle{Inhalt}
+	\tableofcontents
+}
+
+\section[Einleitung]{Einleitung}
+\frame[t,squeeze]{\frametitle{gMix}
+   \begin{itemize}
+		\item Last Generierung
+			\begin{itemize}
+				\item Bestimmung von Lastcharakteristika
+				\item Modellierung der Clients
+			\end{itemize}
+		\item Simulation \& Messung
+			\begin{itemize}
+				\item Modellierung  der Mixe
+				\item Konfiguration der Plug-Ins
+			\end{itemize}
+		\item Evaluation
+			\begin{itemize}
+				\item Auswertungs Plug-Ins
+			\end{itemize}
+	\end{itemize}
+	\begin{block}{Projektziel:}
+    \begin{enumerate}
+        \item Grafisches Werkzeug zur Erstellung von gMix-Konfigurationen
+        \item Augenmerk auf Anwenderfreundlichkeit
+        \item Augenmerk auf Entwicklerfreundlichkeit
+    \end{enumerate}
+    \end{block}
+}
+
+\frame[t,squeeze]{\frametitle{Nutzergruppen}
+	\begin{block}{}
+    \begin{enumerate}
+        \item<+-> Nutzer in der Lehre
+            \begin{itemize}
+                \item Das System muss einfach zu bedienen sein
+                \item Vermeidung einer überladenen GUI mit zu viel Details
+                \item Unterstützung durch die GUI bei der Fehlervermeidung
+                \item Übersichtliche Präsentation der Ergebnisse
+            \end{itemize}
+        \item<+-> Nutzer in der Forschung
+            \begin{itemize}
+                \item Kontrolle über viele / alle Parameter
+                \item Flexible Darstellung der Ergebnisse
+                \item Stapelverarbeitung von Experimenten
+            \end{itemize}
+        \item<+-> Plug-In Entwickler
+            \begin{itemize}
+                \item Möglichst wenig Aufwand bei der GUI
+                \item Plug-in soll entkoppelt betrachtet werden
+                \item Es sollen keine Namenskollisionen mit anderen Plug-ins entstehen
+            \end{itemize}
+    \end{enumerate}
+    \end{block}
+}
+
+\section[Letzter Entwicklungsstand]{Letzter Entwicklungsstand}
+
+\frame[t,squeeze]{\frametitle{Willkommens Reiter}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{wellcome.png}
+    \end{figure}
+}
+
+\frame[t,squeeze]{\frametitle{Tutorial Reiter}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{tutorial.png}
+    \end{figure}
+}
+
+\frame[t,squeeze]{\frametitle{Simulator Reiter}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{simwindow.png}
+    \end{figure}
+}
+
+\frame[t,squeeze]{\frametitle{Ergebnis Reiter}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{results.png}
+    \end{figure}
+}
+
+\frame[t,squeeze]{\frametitle{Hilfe Reiter}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.32]{menu.png}
+    \end{figure}
+}
+
+\frame[t,squeeze]{\frametitle{Aufgaben}
+    \begin{block}{Hauptkritikpunkte aus der letzten Besprechung}
+        \begin{enumerate}
+            \item Fenster (Hilfe und Konfigurationswerkzeug) entkoppelbar machen
+            \item Hilfe und Tutorial in eins zusammenfassen
+            \item Simulator- und Ergebnis-Tabs zusammenfassen
+            \item Visuelle Unterstützung der Accordion-Elemente durch Icons
+        \end{enumerate}
+    \end{block}
+}
+
+\section[Aktueller Entwicklungsstand (live demo)]{Aktueller Entwicklungsstand (Live Demo)}
+
+\frame[t,squeeze]{\frametitle{Fortschritt}
+    \begin{block}{Implementiert}
+        \begin{enumerate}
+            \item Hilfe- und Konfigurationsfenster entkoppelbar
+            \item Hilfe und Tutorial zusammengefasst (basieren auf HTML)
+            \item Benutzer Konfigurationen bzgl. GUI können gespeichert werden
+            \item Abhängigkeiten zwischen Konfigurations-Attributen können festgelegt werden
+            \item Problematische Werte werden durch Fehlermeldung aufgezeigt
+            \item Plug-Ins können anhand des Classpaths eingelesen werden
+            \item Typspezifische Annotations für String, Bool, Int und Float
+            \item Simulator ist aus der GUI aufrufbar
+            \item Visuelle Unterstützung der Accordion-Elemente durch Icons
+        \end{enumerate}
+    \end{block}
+}
+
+\frame{\frametitle{}
+    \centering
+    \fontsize{32pt}{7.2}\selectfont{Live Demonstration}
+}
+
+
+\section[Ausblick auf geplante Features]{Ausblick auf geplante Features}
+
+\frame[t,squeeze]{\frametitle{Ausblick auf geplante Features I}
+	\begin{block}{Quick Wins}
+		\begin{enumerate}
+            \item Ausblenden des Home-Tabs ermöglichen
+			\item Laden und Speichern von Konfigurationen
+				\begin{itemize}
+					\item Sowie Übergabe der Konfigurationen an den Simulator
+				\end{itemize}
+			\item Rendern der Simulationsergebnisse
+                \begin{itemize}
+                    \item In gesonderten Tabs oder entkoppelten Fenstern
+                \end{itemize}
+			\item Annotations auf das gMix-Projekt anwenden
+            \item GUI für den Simulator-Tab
+		\end{enumerate}
+	\end{block}
+}
+
+\frame[t,squeeze]{\frametitle{Ausblick auf geplante Features II}
+	\begin{block}{Weitere Entwicklung der Annotations}
+        \begin{enumerate}
+		\item Dependency-Violations
+			\begin{itemize}
+				\item Visuelle Unterstützung des Benutzers durch Anzeige von Abhängigkeiten (\texttt{Feature Models})
+			\end{itemize}
+		\item Plugin-Annotations
+			\begin{itemize}
+				\item Modellierung von Plugin-Abhängigkeiten (Level 1 bis Level 5)
+			\end{itemize}
+		\item (Dependency-)Service-Plugin 
+			\begin{itemize}
+				\item Ebenfalls Modellierung von Plugin-Abhängigkeiten
+			\end{itemize}
+		\item Dynamisches Erstellen der Hilfe basierend auf Annotations
+            \begin{itemize}
+                \item z.B. Minimum- und Maximumwerte aus den Annotations extrahieren
+            \end{itemize}
+		\item Grafische Elemente anstatt Attribut-Tabelle
+			\begin{itemize}
+				\item z.B. Spinner für Integer, Textbox für freie Strings, Dropdownmenu für vordefinierte Werte
+			\end{itemize}
+		\end{enumerate}
+	\end{block}
+}
+%\begin{frame}[allowframebreaks]
+%\frametitle{Quellen}
+%\nocite{*}
+%\printbibliography
+%\end{frame}
+
+\section{Diskussion}
+\frame{
+\begin{center}
+	\huge{Diskussion}
+\end{center}
+}
+
+
+\end{document}
