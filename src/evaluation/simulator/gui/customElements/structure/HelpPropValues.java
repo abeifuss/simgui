@@ -5,14 +5,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import evaluation.simulator.gui.customElements.PluginPanel;
+
 public class HelpPropValues {
+	
+	private static Logger logger = Logger.getLogger(PluginPanel.class);
 	
 	private StringTokenizer tokenizer;
 	
 	private List<String> values;
 	private Class type;
-	private String first;
-	private String last;
 	
 	public HelpPropValues(String value, Class type){
 		
@@ -36,38 +41,46 @@ public class HelpPropValues {
 			logger.log(Level.DEBUG, Integer.class.toString());
 			
 			if (this.type == Integer.class){
+				logger.log(Level.DEBUG, "checking for int");
 				try{
 					int i = Integer.parseInt(s);
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "was false");
 				}
 			}
 			
 			if (this.type == Boolean.class){
+				logger.log(Level.DEBUG, "checking for int");
 				try{
 					boolean b = Boolean.parseBoolean(s);
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "was false");
 				}
 			}
 			
 			if (this.type == Float.class){
+				logger.log(Level.DEBUG, "checking for int");
 				try{
 					float f = Float.parseFloat(s);
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "was false");
 				}
 			}
 			
 			if (this.type == Double.class){
+				logger.log(Level.DEBUG, "checking for int");
 				try{
 					double d = Double.parseDouble(s);
 				}
 				catch(Exception e){
 					valid = false;
+					logger.log(Level.DEBUG, "was false");
 				}
 			}
 			
@@ -80,13 +93,13 @@ public class HelpPropValues {
 		return type;
 	}
 	
-	public String getFirst(){
-		return first;
-	}
-	
-	public String getlast(){
-		return last;
-	}
+//	public String getFirst(){
+//		return values.iterator().;
+//	}
+//	
+//	public String getlast(){
+//		return last;
+//	}
 	
 	public List<String> getValues(){
 		return values;
