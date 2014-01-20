@@ -2,8 +2,10 @@ package evaluation.simulator.gui.customElements.accordion;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.Collections;
 
 import javax.swing.JPanel;
+
 
 import net.miginfocom.swing.MigLayout;
 
@@ -18,6 +20,8 @@ import evaluation.simulator.gui.customElements.configElements.DoubleConfigElemen
 import evaluation.simulator.gui.customElements.configElements.FloatConfigElement;
 import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.customElements.configElements.StringConfigElement;
+import evaluation.simulator.gui.helper.SimpropComparator;
+import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
@@ -42,6 +46,8 @@ public class PropertyPanel extends JPanel {
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		String pluginLayer = this.localName;
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
+		Collections.sort(tmpListOfAllVisibleSimProperties,new SimpropComparator());
+		
 		
 		// add content
 		for (SimProp simProp : tmpListOfAllVisibleSimProperties ){
@@ -71,6 +77,7 @@ public class PropertyPanel extends JPanel {
 		
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, this.localName);
+		Collections.sort(tmpListOfAllVisibleSimProperties,new SimpropComparator());
 		
 		for (SimProp simProp : tmpListOfAllVisibleSimProperties ){
 			if ( simProp.getValueType() == Integer.class ){
