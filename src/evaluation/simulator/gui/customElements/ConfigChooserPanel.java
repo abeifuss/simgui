@@ -190,7 +190,6 @@ public class ConfigChooserPanel extends JPanel {
 					}
 				});
 				i++;
-
 			}
 			return null;
 		}
