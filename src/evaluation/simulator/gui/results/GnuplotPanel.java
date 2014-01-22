@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.apache.batik.swing.JSVGCanvas;
 
@@ -48,7 +49,7 @@ public class GnuplotPanel extends JPanel {
 			this.svgCanvas.addMouseListener(new MouseAdapter() {
 
 				public void mousePressed(MouseEvent e) {
-					if (e.isPopupTrigger()) {
+					if (SwingUtilities.isRightMouseButton(e)) {
 						JPopupMenu menu = new JPopupMenu();
 						JMenuItem item = new JMenuItem("Show in seperate window");
 						item.addActionListener(new ActionListener() {
