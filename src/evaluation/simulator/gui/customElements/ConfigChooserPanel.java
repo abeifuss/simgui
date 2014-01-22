@@ -208,7 +208,11 @@ public class ConfigChooserPanel extends JPanel {
 		this.startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ProgressWorker().execute();
+				if (configList.getSelectedIndices().length == 0) {
+					JOptionPane.showMessageDialog(null, "Please select at least one config!");
+				} else {
+					new ProgressWorker().execute();
+				}
 			}
 		});
 
