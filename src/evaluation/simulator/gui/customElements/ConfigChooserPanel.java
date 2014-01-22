@@ -301,7 +301,7 @@ public class ConfigChooserPanel extends JPanel {
 				final int[] selection = configList.getSelectedIndices();
 				final int hoverIndex = configList.locationToIndex(e.getPoint());
 				System.out.println(configList.getModel().getElementAt(hoverIndex) + " selected");
-				if (e.isPopupTrigger()) {
+				if (SwingUtilities.isRightMouseButton(e)) {
 					JPopupMenu menu = new JPopupMenu();
 					JMenuItem item = new JMenuItem("Load into config tool");
 					item.addActionListener(new ActionListener() {
