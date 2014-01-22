@@ -19,11 +19,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -46,6 +48,7 @@ public class ConfigChooserPanel extends JPanel {
 	public DefaultListModel<File> listModel;
 	JButton startButton;
 	JButton stopButton;
+	private static JProgressBar progressBar;
 
 	JRadioButton defaultPlot;
 	JRadioButton expertPlot;
@@ -83,13 +86,15 @@ public class ConfigChooserPanel extends JPanel {
 		JPanel additionalPlotOptionsPanel = this.createAdditionalPlotOptionsPanel();
 		JPanel simulationControlPanel = this.createSimulationControlPanel();
 		JPanel exportResultsPanel = this.createExportResultsPanel();
+		JPanel statusPanel = this.createStatusPanel();
 
 		MigLayout migLayout = new MigLayout("", "[grow]", "[grow][grow][grow][grow]");
 		this.setLayout(migLayout);
-		this.add(configurationSelectionPanel, "cell 0 0,growx,growy");
-		this.add(additionalPlotOptionsPanel, "cell 0 1,growx");
-		this.add(simulationControlPanel, "cell 0 2,growx");
-		this.add(exportResultsPanel, "cell 0 3,growx");
+		this.add(configurationSelectionPanel, "cell 0 0,grow");
+		// this.add(additionalPlotOptionsPanel, "cell 0 1,growx");
+		this.add(simulationControlPanel, "cell 0 1,growx");
+		this.add(exportResultsPanel, "cell 0 2,growx");
+		this.add(statusPanel, "cell 0 3,growx");
 
 		// Read names of existing experiment configurations
 		final File folder = new File("etc/experiments/");
@@ -130,6 +135,18 @@ public class ConfigChooserPanel extends JPanel {
 
 	}
 
+	private JPanel createStatusPanel() {
+		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
+		JPanel panel = new JPanel(migLayout);
+
+		progressBar = new JProgressBar(0, 100);
+		progressBar.setIndeterminate(true);
+		progressBar.setVisible(false);
+		panel.add(progressBar, "growx,push");
+		panel.setBorder(new TitledBorder(null, "Simulation Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		return panel;
+	}
+
 	private JPanel createExportResultsPanel() {
 
 		MigLayout migLayout = new MigLayout("", "[grow][]", "[grow]");
@@ -146,6 +163,43 @@ public class ConfigChooserPanel extends JPanel {
 
 	}
 
+	class ProgressWorker extends SwingWorker {
+		protected String doInBackground() {
+			progressBar.setVisible(true);
+			progressBar.setIndeterminate(true);
+
+			SimulationTab.getInstance().getResultsPanel().remove(SimulationTab.getInstance().homeTab);
+
+			ConfigParser configParser = new ConfigParser();
+
+			String[][] params = new String[ConfigChooserPanel.getInstance().configList.getSelectedValuesList().size()][1];
+
+			int i = 0;
+			for (File file : ConfigChooserPanel.getInstance().configList.getSelectedValuesList()) {
+				params[i][0] = configParser.cleanupConfigurationForSimulator(file);
+
+				ConfigChooserPanel.getInstance().callSimulation = gMixBinding.getInstance();
+				ConfigChooserPanel.getInstance().callSimulation.setParams(params[i]);
+				ConfigChooserPanel.getInstance().callSimulation.run();
+				final int j = i;
+
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						progressBar.setValue(j);
+					}
+				});
+				i++;
+
+			}
+			return null;
+		}
+
+		protected void done() {
+			progressBar.setVisible(false);
+		}
+	}
+
 	private JPanel createSimulationControlPanel() {
 
 		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
@@ -155,24 +209,7 @@ public class ConfigChooserPanel extends JPanel {
 		this.startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				SimulationTab.getInstance().getResultsPanel().remove(SimulationTab.getInstance().homeTab);
-
-				ConfigParser configParser = new ConfigParser();
-
-				String[][] params = new String[ConfigChooserPanel.getInstance().configList.getSelectedValuesList()
-						.size()][1];
-
-				int i = 0;
-				for (File file : ConfigChooserPanel.getInstance().configList.getSelectedValuesList()) {
-					params[i][0] = configParser.cleanupConfigurationForSimulator(file);
-
-					ConfigChooserPanel.getInstance().callSimulation = gMixBinding.getInstance();
-					ConfigChooserPanel.getInstance().callSimulation.setParams(params[i]);
-					ConfigChooserPanel.getInstance().callSimulation.run();
-					i++;
-
-				}
+				new ProgressWorker().execute();
 			}
 		});
 

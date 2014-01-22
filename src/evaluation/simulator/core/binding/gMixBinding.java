@@ -13,8 +13,6 @@ import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.ResultPanelFactory;
 import framework.core.launcher.CommandLineParameters;
 
-
-
 public class gMixBinding extends Thread {
 
 	private final Logger logger = Logger.getLogger(gMixBinding.class);
@@ -40,21 +38,21 @@ public class gMixBinding extends Thread {
 			Simulator.reset();
 			Simulator gMixSim = new Simulator(this.params);
 			ResultSet results = gMixSim.results;
-			if (results != null){
+			if (results != null) {
 				this.logger.log(Level.INFO, "Finished simulator with results");
 			}
 
-			//			for (PlotType plotType:results.getDesiredPlotTypes()) {
-			//				plotType.plot(results);
-			//			}
+			// for (PlotType plotType:results.getDesiredPlotTypes()) {
+			// plotType.plot(results);
+			// }
 
 			final JPanel resultPlot = ResultPanelFactory.getGnuplotResultPanel(this.getGnuplotConsoleOutputFileName());
-
 
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					SimulationTab.getInstance().getResultsPanel().addTab("Experiment "+gMixBinding.this.experimentsPerformed, resultPlot);
+					SimulationTab.getInstance().getResultsPanel()
+							.addTab("Experiment " + gMixBinding.this.experimentsPerformed, resultPlot);
 					resultPlot.updateUI();
 					resultPlot.repaint();
 					gMixBinding.this.experimentsPerformed++;
@@ -75,18 +73,16 @@ public class gMixBinding extends Thread {
 		return instance;
 	}
 
-	public void setGnuplotConsoleOutputFileName(
-			String gnuplotConsoleOutputFileName) {
+	public void setGnuplotConsoleOutputFileName(String gnuplotConsoleOutputFileName) {
 		this.resultsFileName = gnuplotConsoleOutputFileName;
 	}
 
-	public void resetExperiments(){
+	public void resetExperiments() {
 		this.experimentsPerformed = 0;
 	}
 
 	public String getGnuplotConsoleOutputFileName() {
 		return this.resultsFileName;
 	}
-
 
 }
