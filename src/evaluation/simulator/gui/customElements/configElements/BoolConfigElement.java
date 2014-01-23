@@ -25,34 +25,34 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 	BoolProp property;
 	JCheckBox checkbox;
 	List<Component> messages;
-	
+
 	SimPropRegistry simPropRegistry;
-	
+
 	public BoolConfigElement(BoolProp s) {
-		
+
 		simPropRegistry = SimPropRegistry.getInstance();
-		
+
 		this.property = s;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
-		
+
 		checkbox = new JCheckBox("enable");
 		checkbox.addItemListener(this);
 		checkbox.setToolTipText(property.getTooltip());
-		
+
 		this.messages = new LinkedList<Component>();
-		
-		MigLayout migLayout = new MigLayout("","[grow]","");
+
+		MigLayout migLayout = new MigLayout("", "[grow]", "");
 		this.setLayout(migLayout);
-		
+
 		this.setBorder(BorderFactory.createTitledBorder(property.getName()));
-		this.add( checkbox, "growx, push, wrap" );
-		
-		if (!property.getInfo().equals("")){
+		this.add(checkbox, "growx, push, wrap");
+
+		if (!property.getInfo().equals("")) {
 			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
-			this.add( textarea, "growx, growy, push" );
+			this.add(textarea, "growx, growy, push");
 		}
 	}
 
@@ -60,39 +60,39 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 	public void itemStateChanged(ItemEvent e) {
 		simPropRegistry.setValue(this.property.getPropertyID(), this.checkbox.isSelected());
 	}
-	
+
 	// Called when simporp has changed
 	@Override
 	public void update(Observable observable, Object o) {
-		
-		for (Component message : this.messages){
+
+		for (Component message : this.messages) {
 			this.remove(message);
 		}
 		this.messages.clear();
-		
-		this.checkbox.setSelected((boolean)simPropRegistry.getValue( property.getPropertyID()).getValue());
 
-		if (property.getWarnings() != null && property.getWarnings().size() > 0){
+		this.checkbox.setSelected((boolean) simPropRegistry.getValue(property.getPropertyID()).getValue());
+
+		if (property.getWarnings() != null && property.getWarnings().size() > 0) {
 			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
-			
-			this.messages.add( warning );
-			for (String each : property.getWarnings()){
-				this.messages.add( new JLabel(each) );
+
+			this.messages.add(warning);
+			for (String each : property.getWarnings()) {
+				this.messages.add(new JLabel(each));
 			}
 		}
-		
-		if (property.getErrors() != null && property.getErrors().size() > 0){
+
+		if (property.getErrors() != null && property.getErrors().size() > 0) {
 			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
-			this.messages.add( error );
-			for (String each : property.getErrors()){
-				this.messages.add( new JLabel(each) );
+			this.messages.add(error);
+			for (String each : property.getErrors()) {
+				this.messages.add(new JLabel(each));
 			}
 		}
-		
-		for (Component message : this.messages){
+
+		for (Component message : this.messages) {
 			this.add(message, "wrap, push");
 		}
-		
+
 		updateUI();
 	}
 

@@ -7,25 +7,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.annotations.property.IntProp;
-import evaluation.simulator.annotations.property.SimProp;
-import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
@@ -44,15 +36,14 @@ public class AccordionEntry extends JPanel {
 		this.localName = name;
 		this.model = map;
 
-		if ( jComboBox == null ){
+		if (jComboBox == null) {
 			logger.log(Level.ERROR, "jComboBox == null");
 		}
 		this.comboBox = jComboBox;
 		this.fresh = true;
 
 		this.setLayout(new BorderLayout(0, 0));
-		this.entryButton = new JButton(this.localName, new ImageIcon(
-				"etc/img/icons/green/arrow-144-24.png"));
+		this.entryButton = new JButton(this.localName, new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 		this.entryButton.setForeground(Color.BLACK);
 		this.entryButton.setHorizontalAlignment(SwingConstants.LEFT);
 		this.entryButton.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -61,7 +52,7 @@ public class AccordionEntry extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this.toggleVisibility(e.getSource(),AccordionEntry.this.comboBox);
+				AccordionEntry.this.toggleVisibility(e.getSource(), AccordionEntry.this.comboBox);
 			}
 		};
 
@@ -81,12 +72,12 @@ public class AccordionEntry extends JPanel {
 
 			}
 		});
-		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
 
-		if ( this.comboBox.getModel().getSize() > 1 ){
+		if (this.comboBox.getModel().getSize() > 1) {
 			this.add(this.comboBox, BorderLayout.CENTER);
 		}
-		
+
 		propertyPanel = new PropertyPanel(this.localName);
 		propertyPanel.setVisible(false);
 		this.add(propertyPanel, BorderLayout.SOUTH);
@@ -94,35 +85,36 @@ public class AccordionEntry extends JPanel {
 	}
 
 	private void comboBoxChanged(JComboBox<String> jComboBox) {
-		
 
-			logger.log(Level.DEBUG, "Reload table");
-			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+		logger.log(Level.DEBUG, "Reload table");
+		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 
-			String pluginLevel = this.localName;
-			String pluginName = (String) jComboBox.getSelectedItem();
-			
-			logger.log( Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + this.model.get(pluginName));
-			simPropRegistry.setActivePlugins(pluginLevel, this.model.get(pluginName)); // GGF Mapped
-			
-			if(this.fresh==true){			
-				fresh=false;
-				jComboBox.removeItemAt(0);
-			}
+		String pluginLevel = this.localName;
+		String pluginName = (String) jComboBox.getSelectedItem();
 
-			propertyPanel.realoadContent(this.model.get(pluginName));
-			propertyPanel.setVisible(true);			
-			
-			this.updateUI();	
-			
+		logger.log(Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + this.model.get(pluginName));
+		simPropRegistry.setActivePlugins(pluginLevel, this.model.get(pluginName)); // GGF
+																					// Mapped
+
+		if (this.fresh == true) {
+			fresh = false;
+			jComboBox.removeItemAt(0);
+		}
+
+		propertyPanel.realoadContent(this.model.get(pluginName));
+		propertyPanel.setVisible(true);
+
+		this.updateUI();
+
 	}
 
-//	public void setVibility(boolean b) {
-//
-//		this.propertyPanel.setVisible(b);
-//		this.comboBox.setVisible(b);
-//		this.entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-//	}
+	// public void setVibility(boolean b) {
+	//
+	// this.propertyPanel.setVisible(b);
+	// this.comboBox.setVisible(b);
+	// this.entryButton.setIcon(new
+	// ImageIcon("etc/img/icons/red/arrow-144-24.png"));
+	// }
 
 	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
 

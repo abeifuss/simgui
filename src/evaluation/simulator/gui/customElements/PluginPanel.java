@@ -16,14 +16,12 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
-
 
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
 
@@ -46,20 +44,20 @@ public class PluginPanel extends JScrollPane {
 		this.getVerticalScrollBar().setUnitIncrement(16);
 
 		this.pluginSelectionPanel = new JPanel();
-		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.pluginSelectionPanel.setBorder(new TitledBorder(null, "Plugin Configuration", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 
 		this.propertiesToVaryPanel = new JPanel();
-		this.propertiesToVaryPanel.setBorder(new TitledBorder(null, "Properties To Vary",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.propertiesToVaryPanel.setBorder(new TitledBorder(null, "Properties To Vary", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 
 		this.generalPreferencesPanel = new JPanel();
-		this.generalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.generalPreferencesPanel.setBorder(new TitledBorder(null, "General Configuration", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 
 		this.panel = new JPanel();
 
-		//GridBagLayout for plugin configuration
+		// GridBagLayout for plugin configuration
 		GridBagLayout gridBagLayoutPlugins = new GridBagLayout();
 		GridBagConstraints gridBagConstraintsPlugins = new GridBagConstraints();
 		gridBagConstraintsPlugins.fill = GridBagConstraints.HORIZONTAL;
@@ -71,19 +69,19 @@ public class PluginPanel extends JScrollPane {
 		gridBagLayoutPlugins.setConstraints(this.pluginSelectionPanel, gridBagConstraintsPlugins);
 		this.pluginSelectionPanel.setLayout(gridBagLayoutPlugins);
 
-		//GridBagLayout for properties to vary configuration
-		GridBagLayout gridBagLayoutPropertiesToVary= new GridBagLayout();
+		// GridBagLayout for properties to vary configuration
+		GridBagLayout gridBagLayoutPropertiesToVary = new GridBagLayout();
 		GridBagConstraints gridBagContraintsPropertiesToVary = new GridBagConstraints();
 		gridBagContraintsPropertiesToVary.fill = GridBagConstraints.HORIZONTAL;
 		gridBagContraintsPropertiesToVary.anchor = GridBagConstraints.NORTH;
 		gridBagContraintsPropertiesToVary.weightx = 1;
 		gridBagContraintsPropertiesToVary.weighty = 1;
-		gridBagContraintsPropertiesToVary.gridx = GridBagConstraints.RELATIVE;
+		gridBagContraintsPropertiesToVary.gridx = gridBagConstraintsPlugins.gridx;
 		gridBagContraintsPropertiesToVary.gridwidth = GridBagConstraints.REMAINDER;
 		gridBagLayoutPropertiesToVary.setConstraints(this.propertiesToVaryPanel, gridBagConstraintsPlugins);
 		this.propertiesToVaryPanel.setLayout(gridBagLayoutPropertiesToVary);
 
-		//GridBagLayout for general configuration
+		// GridBagLayout for general configuration
 		GridBagLayout gridBagLayoutGeneral = new GridBagLayout();
 		GridBagConstraints gridBagConstraintsGeneral = new GridBagConstraints();
 		gridBagConstraintsGeneral.fill = GridBagConstraints.HORIZONTAL;
@@ -95,7 +93,7 @@ public class PluginPanel extends JScrollPane {
 		gridBagLayoutGeneral.setConstraints(this.generalPreferencesPanel, gridBagConstraintsGeneral);
 		this.generalPreferencesPanel.setLayout(gridBagLayoutGeneral);
 
-		//GridBagLayout for overall configuration-panel
+		// GridBagLayout for overall configuration-panel
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -114,60 +112,64 @@ public class PluginPanel extends JScrollPane {
 
 		Map<String, Integer> layerMap = this.simPropRegistry.getLayerMapDisplayNameToOrder();
 		// Sort the map by value (first) and key (second)
-		ValueComparator comperatorLayer =  new ValueComparator(layerMap);
-		TreeMap<String,Integer> sortedLayerMap = new TreeMap<String,Integer>(comperatorLayer);
+		ValueComparator comperatorLayer = new ValueComparator(layerMap);
+		TreeMap<String, Integer> sortedLayerMap = new TreeMap<String, Integer>(comperatorLayer);
 		sortedLayerMap.putAll(layerMap);
 
 		// Sort the static configurations by value
 		Map<String, Integer> staticMap = this.simPropRegistry.getStaticConfigurationDisplay();
-		ValueComparator comperatorStatic =  new ValueComparator(staticMap);
-		TreeMap<String,Integer> sortedStaticMap = new TreeMap<String,Integer>(comperatorStatic);
+		ValueComparator comperatorStatic = new ValueComparator(staticMap);
+		TreeMap<String, Integer> sortedStaticMap = new TreeMap<String, Integer>(comperatorStatic);
 		Map<String, Boolean> isStaticLayerMap = SimPropRegistry.getInstance().getIsStaticLayerMap();
-		sortedStaticMap.putAll(staticMap);		
+		sortedStaticMap.putAll(staticMap);
 
-		System.out.println("results: "+sortedLayerMap);
+		System.out.println("results: " + sortedLayerMap);
 
 		String[] levelStrings[] = new String[sortedLayerMap.size()][];
 		AccordionEntry accordionElement;
 
 		int i = 0;
-		for ( String layer : sortedLayerMap.keySet() ){
-			if((isStaticLayerMap.get(layer) == null) || !isStaticLayerMap.get(layer)){
-				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer ).keySet().toArray(new String[0]);
+		for (String layer : sortedLayerMap.keySet()) {
+			if ((isStaticLayerMap.get(layer) == null) || !isStaticLayerMap.get(layer)) {
+				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer(layer).keySet()
+						.toArray(new String[0]);
 				String key = layer;
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance().getPluginsInLayer( layer ));
+				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance()
+						.getPluginsInLayer(layer));
 				this.pluginSelectionPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;
-			}else{
-				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer( layer ).keySet().toArray(new String[0]);
+			} else {
+				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer(layer).keySet()
+						.toArray(new String[0]);
 				String key = layer;
 				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
-				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance().getPluginsInLayer( layer ));
+				accordionElement = new AccordionEntry(key, this.pluginListsMap.get(key), SimPropRegistry.getInstance()
+						.getPluginsInLayer(layer));
 				this.generalPreferencesPanel.add(accordionElement, gridBagConstraintsPlugins);
 
 				i++;
 			}
 		}
-		
-		this.propertiesToVaryPanel.add(new PropVaryElement());
+
+		this.propertiesToVaryPanel.add(new PropVaryElement(), gridBagContraintsPropertiesToVary);
 
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
-		this.panel.add(this.pluginSelectionPanel,gridBagConstraints);
+		this.panel.add(this.pluginSelectionPanel, gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 1;
-		this.panel.add(this.propertiesToVaryPanel,gridBagConstraints);
+		this.panel.add(this.propertiesToVaryPanel, gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
-		this.panel.add(this.generalPreferencesPanel,gridBagConstraints);
+		this.panel.add(this.generalPreferencesPanel, gridBagConstraints);
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 3;
 		// Spring element to push all other elements to the top
@@ -181,11 +183,11 @@ public class PluginPanel extends JScrollPane {
 	}
 
 	void setPlugin(String configName, String selectedPlugin) {
-		
+
 		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
-		
+
 		logger.log(Level.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
-		
+
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
@@ -196,15 +198,15 @@ public class PluginPanel extends JScrollPane {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
 				accordianEntry.setVibility(true);
 			}
-		}	
-		
+		}
+
 		for (Component component : this.propertiesToVaryPanel.getComponents()) {
 			if (component.getClass().equals(PropVaryElement.class)) {
 				PropVaryElement propVaryElement = (PropVaryElement) (component);
 				propVaryElement.repaint();
 			}
 		}
-		
+
 		for (Component component : this.generalPreferencesPanel.getComponents()) {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
@@ -215,13 +217,14 @@ public class PluginPanel extends JScrollPane {
 		final Map<String, String> activePlugins = this.simPropRegistry.getActivePlugins(true);
 
 		for (final String pluginLevel : activePlugins.keySet()) {
-			
+
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					String pluginDisplayName = SimPropRegistry.getInstance().getPluginDisplayName(activePlugins.get(pluginLevel));
+					String pluginDisplayName = SimPropRegistry.getInstance().getPluginDisplayName(
+							activePlugins.get(pluginLevel));
 					System.err.println(pluginLevel + " -> " + pluginDisplayName);
-					PluginPanel.this.setPlugin(pluginLevel,pluginDisplayName);
+					PluginPanel.this.setPlugin(pluginLevel, pluginDisplayName);
 				}
 			});
 		}
