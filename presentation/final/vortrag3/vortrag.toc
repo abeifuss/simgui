@@ -1,0 +1,12 @@
+\beamer@endinputifotherversion {3.24pt}
+\select@language {ngerman}
+\beamer@sectionintoc {1}{Einleitung}{3}{0}{1}
+\beamer@sectionintoc {2}{GUI}{7}{0}{2}
+\beamer@sectionintoc {3}{Architektur}{10}{0}{3}
+\beamer@sectionintoc {4}{Annotations}{11}{0}{4}
+\beamer@sectionintoc {5}{Dependency Checker}{12}{0}{5}
+\beamer@sectionintoc {6}{Live Demo}{13}{0}{6}
+\beamer@sectionintoc {7}{Letzter Entwicklungsstand}{17}{0}{7}
+\beamer@sectionintoc {8}{Aktueller Entwicklungsstand (Live Demo)}{23}{0}{8}
+\beamer@sectionintoc {9}{Ausblick auf geplante Features}{25}{0}{9}
+\beamer@sectionintoc {10}{Diskussion}{27}{0}{10}
