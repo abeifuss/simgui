@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2014.1.10)  24 JAN 2014 14:36
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2014.1.10)  24 JAN 2014 14:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1315,17 +1315,17 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 [10
 
  <./dot/arch-crop.pdf>]
-LaTeX Font Info:    Try loading font information for U+msa on input line 130.
+LaTeX Font Info:    Try loading font information for U+msa on input line 132.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 130.
+LaTeX Font Info:    Try loading font information for U+msb on input line 132.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
-line 130.
+line 132.
 
 (/usr/share/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2012/04/26
@@ -1371,10 +1371,10 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 
 [16
 
-] <wellcome.png, id=374, 804.00375pt x 605.26125pt>
+] <wellcome.png, id=373, 804.00375pt x 605.26125pt>
 File: wellcome.png Graphic file (type png)
  <use wellcome.png>
-Package pdftex.def Info: wellcome.png used on input line 178.
+Package pdftex.def Info: wellcome.png used on input line 180.
 (pdftex.def)             Requested size: 257.28645pt x 193.68755pt.
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1384,10 +1384,10 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 [17
 
  <./wellcome.png (PNG copy)>]
-<tutorial.png, id=391, 804.00375pt x 604.2575pt>
+<tutorial.png, id=390, 804.00375pt x 604.2575pt>
 File: tutorial.png Graphic file (type png)
  <use tutorial.png>
-Package pdftex.def Info: tutorial.png used on input line 185.
+Package pdftex.def Info: tutorial.png used on input line 187.
 (pdftex.def)             Requested size: 257.28645pt x 193.36635pt.
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1397,10 +1397,10 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 [18
 
  <./tutorial.png (PNG copy)>]
-<simwindow.png, id=408, 804.00375pt x 601.24625pt>
+<simwindow.png, id=407, 804.00375pt x 601.24625pt>
 File: simwindow.png Graphic file (type png)
  <use simwindow.png>
-Package pdftex.def Info: simwindow.png used on input line 192.
+Package pdftex.def Info: simwindow.png used on input line 194.
 (pdftex.def)             Requested size: 257.28645pt x 192.40273pt.
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1412,7 +1412,7 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
  <./simwindow.png (PNG copy)>]
 File: results.png Graphic file (type png)
  <use results.png>
-Package pdftex.def Info: results.png used on input line 199.
+Package pdftex.def Info: results.png used on input line 201.
 (pdftex.def)             Requested size: 256.96526pt x 192.72392pt.
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1421,10 +1421,10 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 
 [20
 
-] <menu.png, id=442, 799.98875pt x 601.24625pt>
+] <menu.png, id=441, 799.98875pt x 601.24625pt>
 File: menu.png Graphic file (type png)
  <use menu.png>
-Package pdftex.def Info: menu.png used on input line 206.
+Package pdftex.def Info: menu.png used on input line 208.
 (pdftex.def)             Requested size: 256.00163pt x 192.40273pt.
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1450,7 +1450,7 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 ]
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <32> not available
-(Font)              size <29.86> substituted on input line 240.
+(Font)              size <29.86> substituted on input line 242.
 
 
 Overfull \hbox (185.7764pt too wide) has occurred while \output is active
@@ -1490,11 +1490,11 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `vortrag.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 303.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 303.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 305.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 305.
  (./vortrag.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 303.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 303.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 305.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 305.
 Package rerunfilecheck Info: File `vortrag.out' has not changed.
 (rerunfilecheck)             Checksum: 49C0A5A32B554AA9C99C744E2766F115;520.
 
@@ -1502,13 +1502,13 @@ Package rerunfilecheck Info: File `vortrag.out' has not changed.
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 2.14pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 303.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 305.
  ) 
 Here is how much of TeX's memory you used:
- 19485 strings out of 494969
- 353071 string characters out of 3179661
- 463921 words of memory out of 3000000
- 22145 multiletter control sequences out of 15000+200000
+ 19494 strings out of 494969
+ 353311 string characters out of 3179661
+ 462921 words of memory out of 3000000
+ 22154 multiletter control sequences out of 15000+200000
  10915 words of font info for 40 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
  49i,15n,53p,396b,713s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1516,11 +1516,11 @@ Here is how much of TeX's memory you used:
 texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmtt10.pfb>
-Output written on vortrag.pdf (27 pages, 943782 bytes).
+m/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on vortrag.pdf (27 pages, 951150 bytes).
 PDF statistics:
- 591 PDF objects out of 1000 (max. 8388607)
- 516 compressed objects within 6 object streams
+ 595 PDF objects out of 1000 (max. 8388607)
+ 519 compressed objects within 6 object streams
  65 named destinations out of 1000 (max. 500000)
  187 words of extra memory for PDF output out of 10000 (max. 10000000)
 
