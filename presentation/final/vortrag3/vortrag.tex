@@ -30,7 +30,7 @@
     upquote=true,
     columns=fixed,
     showstringspaces=false,
-    extendedchars=true,B
+    extendedchars=true,
     breaklines=true,
     frame=single,
     showtabs=true,
@@ -96,13 +96,39 @@
 \section[Architektur]{Architektur}
 
 \frame[t,squeeze]{\frametitle{Architektur}
-   
+   \begin{figure}
+        \centering
+        \includegraphics[scale=0.8]{dot/arch-crop.pdf}
+   \end{figure}
 }
 
 \section[Annotations]{Annotations}
 
-\frame[t,squeeze]{\frametitle{Annotations}
-   
+\frame[t,squeeze]{\frametitle{Motivation für Annotations}
+
+\small{
+   \begin{tabular}{|l|c|c|c|c|}
+   \hline
+    & Annotations & XML zentr. & XML dezentr. & Statisch \\
+   \hline\hline
+   Plugin Struktur & ++ & - & ++ & - -\\
+   Initialer Aufwand & - & + & + & ++ \\
+   Aufwand neues Plugin & ++ & + & + & - - \\
+   Erweiterbarkeit Fkt. & + & + & + & ? \\
+   % Übersichtlichkeit & - & ++ & + & ++ \\
+   Unterstützung d. IDE & ++ & + & + & ++ \\
+   \hline
+   \end{tabular}
+
+}
+
+    \begin{block}{}
+    Für GUI-Benutzer ist die verwendete Technik transparent.\\
+    Plugin-Entwickler profitieren jedoch sehr von den Annotations.\\
+    $\Rightarrow$ Gedanken zur GUI nur in Sonderfällen nötig!\\
+    $\Rightarrow$ Rapid Prototyping\\
+    Der Mehraufwand bei der Programmierung des Frameworks ist gerechtfertigt.
+    \end{block}
 }
 
 \section[Dependency Checker]{Dependency Checker}
