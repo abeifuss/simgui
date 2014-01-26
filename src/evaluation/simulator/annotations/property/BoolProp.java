@@ -33,19 +33,19 @@ public class BoolProp extends SimProp {
 
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER BOOL OBSERVER");
+//		System.err.println("REGISTER BOOL OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER BOOL OBSERVER");
+//		System.err.println("UNREGISTER BOOL OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED BOOL");
+//		System.err.println("CHANGED BOOL");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 

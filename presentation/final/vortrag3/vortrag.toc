@@ -1,4 +1,4 @@
-\beamer@endinputifotherversion {3.27pt}
+\beamer@endinputifotherversion {3.26pt}
 \select@language {ngerman}
 \beamer@sectionintoc {1}{Einleitung}{3}{0}{1}
 \beamer@sectionintoc {2}{GUI}{7}{0}{2}

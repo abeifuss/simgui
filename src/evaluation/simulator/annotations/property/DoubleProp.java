@@ -136,19 +136,19 @@ public class DoubleProp extends SimProp {
 
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER DOUBLE OBSERVER");
+//		System.err.println("REGISTER DOUBLE OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER DOUBLE OBSERVER");
+//		System.err.println("UNREGISTER DOUBLE OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED DOUBLE");
+//		System.err.println("CHANGED DOUBLE");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 

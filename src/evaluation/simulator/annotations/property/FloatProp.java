@@ -135,19 +135,19 @@ public class FloatProp extends SimProp {
 
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER FLOAT OBSERVER");
+//		System.err.println("REGISTER FLOAT OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER FLOAT OBSERVER");
+//		System.err.println("UNREGISTER FLOAT OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED FLOAT");
+//		System.err.println("CHANGED FLOAT");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 
