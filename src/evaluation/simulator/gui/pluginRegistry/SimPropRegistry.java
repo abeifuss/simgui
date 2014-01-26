@@ -1310,7 +1310,7 @@ public class SimPropRegistry {
 	}
 
 	public void setActivePluginsMapped(String plugLayer, String selectedPlugin) {
-		logger.log(Level.DEBUG, "Set mapped " + this.pluginNameToConfigName(plugLayer) + " plugin to " + selectedPlugin);
+		logger.log(Level.DEBUG, "Set " + plugLayer + " plugin to " + selectedPlugin);
 		this.activePlugins.put(this.configNameToPluginName(plugLayer), selectedPlugin);
 		this.activePluginsMapped.put(plugLayer, selectedPlugin);
 	}
