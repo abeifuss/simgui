@@ -146,13 +146,13 @@ public class PropVaryElement extends JPanel {
 		this.repaint();
 	}
 
-	private void addBoxListener(final JComboBox<String> property) {
+	private void addBoxListener(final JComboBox<String> box) {
 		ItemListener il = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 
-				if (e.getStateChange() == ItemEvent.SELECTED && property.isVisible()) {
-					PropVaryElement.this.comboboxChanged(property);
+				if (e.getStateChange() == ItemEvent.ITEM_STATE_CHANGED) {
+					PropVaryElement.this.comboboxChanged(box);
 					
 					if (e.getSource() == cBox[0]){
 						SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", String.valueOf(cBox[0].getSelectedItem()));
@@ -168,7 +168,7 @@ public class PropVaryElement extends JPanel {
 				}
 			}
 		};
-		property.addItemListener(il);
+		box.addItemListener(il);
 	}
 
 	private void addTextListener(final JTextField field) {
