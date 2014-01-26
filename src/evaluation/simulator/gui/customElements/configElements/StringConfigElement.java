@@ -88,8 +88,10 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 				});
 				
 				this.jList.setToolTipText(property.getTooltip());
+//				jList.setPreferredSize(new Dimension(10, 25));
+				jScrollPane.setPreferredSize( new Dimension(150, 220));
 				jScrollPane.setViewportView(jList);
-				this.add( jScrollPane, "growx, push" );
+				this.add( jScrollPane, "growx, growy, wmin 10" );
 				this.component = this.jScrollPane;
 			}else{
 				this.jComboBox = new JComboBox<String>();
@@ -98,22 +100,15 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 				}
 				this.jComboBox.addActionListener(this);
 				this.jComboBox.setToolTipText(property.getTooltip());
-				this.add( jComboBox, "growx, push" );
+				this.add( jComboBox, "growx, push, wmin 10" );
 				this.component = this.jComboBox;
 			}
 		}else {
 			this.textfield = new JTextField();
 			this.textfield.addActionListener(this);
 			this.textfield.setToolTipText(property.getTooltip());
-			this.add( textfield, "growx, push" );
+			this.add( textfield, "growx, push, wmin 10" );
 			this.component = this.textfield;
-		}
-		
-		if (!property.getInfo().equals("")){
-			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
-			textarea.setEditable(false);
-			textarea.setLineWrap(true);
-			this.add( textarea, "growx, growy, push" );
 		}
 		
 		if (!property.getInfo().equals("")){
@@ -152,9 +147,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		
 		// Load properties on update
 		if ( !this.property.getPossibleValues().equals("") ) {
-			System.err.println("SELECT A");
 			if ( this.property.getMultiSelection() ){
-				System.err.println("SELECT B");
 				List<Integer> indices = new LinkedList<Integer>();
 				
 				int index = 0;
@@ -180,11 +173,9 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 				
 				this.jList.setSelectedIndices( intIndices );
 			}else{
-				System.err.println("SELECT C");
 				this.jComboBox.setSelectedItem((String) simPropRegistry.getValue(property.getPropertyID()).getValue());
 			}
 		}else{
-			System.err.println("SELECT D");
 			this.textfield.setText((String) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		}
 		
