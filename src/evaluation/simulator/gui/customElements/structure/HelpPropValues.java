@@ -25,7 +25,7 @@ public class HelpPropValues {
 		values = new LinkedList<String>();
 		this.type = type;
 		
-		tokenizer = new StringTokenizer( value, " " );
+		tokenizer = new StringTokenizer( value, "," );
 		while (tokenizer.hasMoreTokens()){
 			values.add((String) tokenizer.nextElement());
 		}
@@ -97,14 +97,6 @@ public class HelpPropValues {
 	public Class getType(){
 		return type;
 	}
-	
-//	public String getFirst(){
-//		return values.iterator().;
-//	}
-//	
-//	public String getlast(){
-//		return last;
-//	}
 	
 	public List<String> getValues(){
 		return values;

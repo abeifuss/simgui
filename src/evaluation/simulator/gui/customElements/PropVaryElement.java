@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -52,23 +53,21 @@ public class PropVaryElement extends JPanel {
 		// old version
 //		String propertyStrings[] = propMap.keySet().toArray(new String[1]);
 		
-		// added by alex
-		List<String> tmp = new LinkedList<String>();
+		// added by alex		
+		Vector<String> tmp = new Vector<String>();
 		for (String key: propMap.keySet()){
 			if (propMap.get(key).isPropertyToVary()){
 				tmp.add(propMap.get(key).getName());
 			}
 		}
+		tmp.add(0, "---");
 		
-		String propertyStrings[] = tmp.toArray(new String[1]);
-		
-		// TODO: @Matle - fix this! this will always overwrite the first property 
-		propertyStrings[0] = "---";
+		//String propertyStrings[] = tmp.toArray(new String[1]);		
 		
 		cBox = new JComboBox[numOfPropsToVary];
-		cBox[0] = new JComboBox<String>(propertyStrings);
+		cBox[0] = new JComboBox<String>(tmp);
 		cBox[0].setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
-		cBox[1] = new JComboBox<String>(propertyStrings);
+		cBox[1] = new JComboBox<String>(tmp);
 		cBox[1].setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
 		addBoxListener(cBox[0]);
 		addBoxListener(cBox[1]);
@@ -143,7 +142,7 @@ public class PropVaryElement extends JPanel {
 			this.cBox[1].setEnabled(true);
 		}
 
-		logger.log(Level.DEBUG, currentElement.toString());
+		logger.log(Level.DEBUG, currentElement.getSelectedText());
 		this.repaint();
 	}
 
@@ -198,6 +197,15 @@ public class PropVaryElement extends JPanel {
 	// TODO: Malte
 	public void update() {
 		// read SimPropRegistry.getInstance().getPropertiesToVary() and set the values of the gui elements
+		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY"));
+		String ID = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");
+		cBox[0].setSelectedItem(SimPropRegistry.getInstance().getPropertieNameByID(ID));
+		
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY"));		
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("USE_SECOND_PROPERTY_TO_VARY"));
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY"));
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY"));
 	}
 
 }

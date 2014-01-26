@@ -1426,6 +1426,19 @@ public class SimPropRegistry {
 		logger.log(Level.DEBUG, "No such property " + currentItem);
 		return null;
 	}
+	
+	public String getPropertieNameByID(String currentItem) {
+		
+		for (SimProp simProp : this.properties.values() ){
+			if ( simProp.getPropertyID().equals(currentItem)){				
+				return simProp.getName();
+			}
+			return "---";
+		}
+		
+		logger.log(Level.DEBUG, "No such property " + currentItem);
+		return null;
+	}
 
 	public void setAuto(String key, boolean auto, Class<?> c) {
 		
