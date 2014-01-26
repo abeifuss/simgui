@@ -44,19 +44,19 @@ public class StringProp extends SimProp {
 
 	@Override
 	public void register(Observer observer){
-		System.err.println("REGISTER STRING OBSERVER");
+//		System.err.println("REGISTER STRING OBSERVER");
 		Observers.add(observer);
 	}
 	
 	@Override
 	public void unregister(Observer observer){
-		System.err.println("UNREGISTER STRING OBSERVER");
+//		System.err.println("UNREGISTER STRING OBSERVER");
 		Observers.remove(observer);
 	}
 
 	@Override
 	public void changed() {
-		System.err.println("CHANGED STRING");
+//		System.err.println("CHANGED STRING");
 		for ( Observer observer : Observers ) {
 			observer.update((Observable) this, (Object) this.enabled);
 		} 

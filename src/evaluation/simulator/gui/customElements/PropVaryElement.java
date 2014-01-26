@@ -151,7 +151,7 @@ public class PropVaryElement extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 
-				if (e.getStateChange() == ItemEvent.SELECTED && property.isVisible()) {
+				if (e.getStateChange() == ItemEvent.ITEM_STATE_CHANGED) {
 					PropVaryElement.this.comboboxChanged(property);
 					
 					if (e.getSource() == cBox[0]){
@@ -203,6 +203,9 @@ public class PropVaryElement extends JPanel {
 		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
 		logger.log(Level.DEBUG, name);
 		cBox[0].setSelectedItem(name);
+//		cBox[0].updateUI();
+//		cBox[0].repaint();
+//		cBox[0].validate();
 		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY"));		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("USE_SECOND_PROPERTY_TO_VARY"));

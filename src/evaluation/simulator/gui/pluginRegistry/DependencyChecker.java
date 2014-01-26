@@ -11,7 +11,6 @@ public class DependencyChecker {
 	public static Boolean errorsInConfig;
 
 	public static void checkAll(SimPropRegistry gcr) {
-		System.err.println("Call of Check All");
 		errorsInConfig = false;
 
 		Set<Entry<String, SimProp>> allSimProps = gcr.getAllSimProps();
