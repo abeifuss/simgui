@@ -203,6 +203,7 @@ public class PluginPanel extends JScrollPane {
 		for (Component component : this.propertiesToVaryPanel.getComponents()) {
 			if (component.getClass().equals(PropVaryElement.class)) {
 				PropVaryElement propVaryElement = (PropVaryElement) (component);
+				propVaryElement.update();
 				propVaryElement.repaint();
 			}
 		}

@@ -35,12 +35,7 @@ public @interface IntSimulationProperty {
 
 	public boolean global() default false;
 
-	// int
-	// public int value() default 0;
-
 	public Class<? extends Requirement>[] value_requirements() default {};
-
-	// public Class<?> valueType() default Integer.class;
 
 	public boolean isStatic() default false;
 	
@@ -51,5 +46,7 @@ public @interface IntSimulationProperty {
 	public int stepSize() default 1;
 
 	public String guiElement() default "spinner";
+	
+	public boolean property_to_vary() default false;
 
 }

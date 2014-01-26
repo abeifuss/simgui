@@ -29,12 +29,10 @@ public @interface BoolSimulationProperty {
 	public String inject() default "";
 
 	public boolean global() default false;
-	// bool
-	// public boolean value() default true;
-
-	// public Class<?> valueType() default Boolean.class;
 
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
+	
+	public boolean property_to_vary() default false;
 }

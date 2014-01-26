@@ -4,7 +4,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -20,6 +19,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.LogLevel;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -66,36 +66,49 @@ public class SimPropRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	private final Map<String, String>[] pluginLayerMap = new HashMap[100];
+	
 	/**
 	 * Maps all registered properties.
 	 * key:	config name of the property
 	 * value: property
 	 */
 	private final Map<String, SimProp> properties = new HashMap<String, SimProp>();
+	
+	/**
+	 * Stores the properties which should be varied.
+	 * key:	config name of the property
+	 * value: values
+	 */
+	private final Map<String, String> propertiesToVary = new HashMap<String, String>();
+	
 	/**
 	 * Maps the active plugins. Active plungins are those, which are enabled in the GUI.
 	 * key: name of plugin level
 	 * value: name of the plugin
 	 */
 	private final Map<String, String> activePlugins = new HashMap<String, String>();
+	
 	/**
 	 * Maps the active plugins. Active plungins are those, which are enabled in the GUI.
 	 * key: name of the plugin
 	 * value: name of plugin level
 	 */
 	private final Map<String, String> activePluginsMapped = new HashMap<String, String>();
+	
 	/**
 	 *  Maps between the display name of a plugin layer and the config name.
 	 *  key: display name of the plugin layer
 	 *  value: config name of the plugin layer
 	 */
 	private final Map<String, String> layerMapDisplayNameToConfigName = new LinkedHashMap<String, String>();
+	
 	/**
 	 *  Maps between the display name of a plugin layer and the config name.
 	 *  key: config name of the plugin layer
 	 *  value: display name of the plugin layer
 	 */
 	private final Map<String, String> layerMapConfigNameToDisplayName = new LinkedHashMap<String, String>();
+	
 	/**
 	 * Maps the registered plugins to the corresponding plugin layer.
 	 * key: config name of the plugin
@@ -134,6 +147,12 @@ public class SimPropRegistry {
 	private final Map<String, Boolean> isStaticLayerMap = new HashMap<String, Boolean>();
 
 	private SimPropRegistry() {
+		
+		this.propertiesToVary.put("PROPERTY_TO_VARY", "");
+		this.propertiesToVary.put("VALUES_FOR_THE_PROPERTY_TO_VARY", "");
+		this.propertiesToVary.put("USE_SECOND_PROPERTY_TO_VARY", "");
+		this.propertiesToVary.put("SECOND_PROPERTY_TO_VARY", "");
+		this.propertiesToVary.put("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY", "");
 		
 		this.scanForHelpers();
 		
@@ -290,19 +309,17 @@ public class SimPropRegistry {
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
 						property.setValue_requirements(annotation.value_requirements());
-						// property.setValue(annotation.value());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
 						property.setIsStatic(annotation.isStatic());
+						property.isPropertyToVary(annotation.property_to_vary());
 
 						if(property.isStatic()){
 							property.setPluginID("");
 						}
-
-						// ((BoolProp) property).setValue(annotation.value());
 
 						this.getProperties().put(property.getPropertyID(), property);
 
@@ -348,13 +365,13 @@ public class SimPropRegistry {
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
 						property.setIsStatic(annotation.isStatic());
+						property.isPropertyToVary(annotation.property_to_vary());
 
 						if(property.isStatic()){
 							property.setPluginID("");
 						}
 
 						// IntProp specific annotation processing
-						// ((IntProp) property).setValue(annotation.value());
 						((IntProp) property).setMinValue(annotation.min());
 						((IntProp) property).setMaxValue(annotation.max());
 						((IntProp) property).setEnableAuto(annotation.enableAuto());
@@ -407,6 +424,7 @@ public class SimPropRegistry {
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
 						property.setIsStatic(annotation.isStatic());
+						property.isPropertyToVary(annotation.property_to_vary());
 
 						if(property.isStatic()){
 							property.setPluginID("");
@@ -414,7 +432,6 @@ public class SimPropRegistry {
 
 						((FloatProp) property).setMinValue(annotation.min());
 						((FloatProp) property).setMaxValue(annotation.max());
-						// ((FloatProp) property).setValue(annotation.value());
 						((FloatProp) property).setEnableAuto(annotation.enableAuto());
 						((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
 						((FloatProp) property).setStepSize(annotation.stepSize());
@@ -465,6 +482,7 @@ public class SimPropRegistry {
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
 						property.setIsStatic(annotation.isStatic());
+						property.isPropertyToVary(annotation.property_to_vary());
 
 						if(property.isStatic()){
 							property.setPluginID("");
@@ -472,7 +490,6 @@ public class SimPropRegistry {
 
 						((DoubleProp) property).setMinValue(annotation.min());
 						((DoubleProp) property).setMaxValue(annotation.max());
-						// ((DoubleProp) property).setValue(annotation.value());
 						((DoubleProp) property).setEnableAuto(annotation.enableAuto());
 						((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
 						((DoubleProp) property).setStepSize(annotation.stepSize());
@@ -523,6 +540,7 @@ public class SimPropRegistry {
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
 						property.setIsStatic(annotation.isStatic());
+						property.isPropertyToVary(annotation.property_to_vary());
 
 						if(property.isStatic()){
 							property.setPluginID("");
@@ -874,6 +892,7 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
+							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -935,6 +954,7 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
+							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -960,7 +980,6 @@ public class SimPropRegistry {
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
 
-							// ((IntProp) property).setValue(annotation.value());
 							((IntProp) property).setMinValue(annotation.min());
 							((IntProp) property).setMaxValue(annotation.max());
 							((IntProp) property).setEnableAuto(annotation.enableAuto());
@@ -1002,6 +1021,7 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
+							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -1029,7 +1049,6 @@ public class SimPropRegistry {
 
 							((FloatProp) property).setMinValue(annotation.min());
 							((FloatProp) property).setMaxValue(annotation.max());
-//							((FloatProp) property).setValue(annotation.value());
 							((FloatProp) property).setEnableAuto(annotation.enableAuto());
 							((FloatProp) property).setEnableUnlimited(annotation.enableUnlimited());
 							((FloatProp) property).setStepSize(annotation.stepSize());
@@ -1069,6 +1088,7 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
+							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -1096,7 +1116,6 @@ public class SimPropRegistry {
 
 							((DoubleProp) property).setMinValue(annotation.min());
 							((DoubleProp) property).setMaxValue(annotation.max());
-							// ((DoubleProp) property).setValue(annotation.value());
 							((DoubleProp) property).setEnableAuto(annotation.enableAuto());
 							((DoubleProp) property).setEnableUnlimited(annotation.enableUnlimited());
 							((DoubleProp) property).setStepSize(annotation.stepSize());
@@ -1136,6 +1155,7 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip(annotation.key());
 							property.setInfo(annotation.info());
+							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
 							// Explanation: We call getPluginLayer() but the internal list which is used by this
@@ -1161,7 +1181,6 @@ public class SimPropRegistry {
 							property.setValue_requirements(annotation.value_requirements());
 							property.setEnable(true);
 
-							// ((StringProp) property).setValue(annotation.value());
 							((StringProp) property).setPossibleValues(annotation.possibleValues());
 							((StringProp) property).setMultiSelection(annotation.multiSelection());
 						}
@@ -1238,7 +1257,6 @@ public class SimPropRegistry {
 		} else if (arg0.getClass() == String.class) {
 			//System.out.println("String");
 			this.getProperties().get(key).setValue(arg0);
-
 		} else {
 
 		}
@@ -1362,29 +1380,9 @@ public class SimPropRegistry {
 
 		return tree;
 	}
-
-	// Obsolete / Deprecated
-//	public String[] getPluginsInLayer( String pluginLayer ) {
-//		List<String> tmp = new LinkedList<>();
-//
-//		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
-//			if ( layer.equals( pluginLayer )){
-//				for ( String plugin : this.getRegisteredPlugins().keySet() ){
-//					if ( this.getRegisteredPlugins().get(plugin).equals(this.getLayerMapDisplayNameToConfigName().get(layer))){
-//						tmp.add(plugin);
-//					}
-//				}
-//			}
-//		}
-//		Collections.sort(tmp);
-//		String[] ret = new String[tmp.size()];
-//		ret = tmp.toArray(ret);
-//		return ret;
-//	}
 	
 	public Map<String, String> getPluginsInLayer( String pluginLayer ) {
 		Map<String, String> tmp1 = new HashMap<>();
-//		List<String> tmp = new LinkedList<>();
 
 		for ( String layer : this.getLayerMapDisplayNameToConfigName().keySet() ){
 			if ( layer.equals( pluginLayer )){
@@ -1396,9 +1394,6 @@ public class SimPropRegistry {
 				}
 			}
 		}
-//		Collections.sort(tmp1);
-//		String[] ret = new String[tmp.size()];
-//		ret = tmp.toArray(ret);
 		return tmp1;
 	}
 	
@@ -1417,6 +1412,19 @@ public class SimPropRegistry {
 
 	public Map<String, SimProp> getProperties() {
 		return this.properties;
+	}
+	
+	public SimProp getPropertiesByName(String currentItem) {
+		
+		for (SimProp simProp : this.properties.values() ){
+			if ( simProp.getName().equals(currentItem)){
+				logger.log(Level.DEBUG, "found property " + currentItem + " -> " + simProp.getPropertyID());
+				return simProp;
+			}
+		}
+		
+		logger.log(Level.DEBUG, "No such property " + currentItem);
+		return null;
 	}
 
 	public void setAuto(String key, boolean auto, Class<?> c) {
@@ -1462,12 +1470,11 @@ public class SimPropRegistry {
 		return pluginLevel;	
 	}
 
-// Obsolete
-//
-//	public void setProperty(SimProp simProp) {
-//		if (this.properties.containsKey(simProp.getPropertyID())){
-//			System.err.println("OVERWRITE PROPERTY");
-//		}
-//		this.properties.put(simProp.getPropertyID(), simProp);
-//	}
+	public void setPropertyToVaryValue(String key, String value) {
+		propertiesToVary.put(key, value);		
+	}
+
+	public Map<String, String> getPropertiesToVary() {
+		return propertiesToVary;
+	}
 }

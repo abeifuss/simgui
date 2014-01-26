@@ -22,10 +22,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 
+import evaluation.simulator.annotations.plugin.Plugin;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.StringProp;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.pluginRegistry.PlotType;
 import evaluation.simulator.pluginRegistry.StatisticsType;
 import framework.core.config.Settings;
-
 
 public class ExperimentConfig {
 

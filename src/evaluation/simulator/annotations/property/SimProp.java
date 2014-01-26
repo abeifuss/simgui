@@ -8,8 +8,10 @@ import java.util.Set;
 // pojo
 public abstract class SimProp extends Observable {
 
-	private Class<? extends Requirement>[] enable_requirements;
 	// dependencies
+	private Class<? extends Requirement>[] enable_requirements;
+	private Class<? extends Requirement>[] value_requirements;
+	
 	boolean enabled;
 	private String id;
 	private String name;
@@ -19,14 +21,20 @@ public abstract class SimProp extends Observable {
 	private String propertykey;
 	private String tooltip;
 	private String info;
-	private Class<? extends Requirement>[] value_requirements;
 	private boolean isSuperclassProperty;
 	private boolean isGlobal;
 	private boolean isStatic;
 	private Set<String> warnings;
 	private Set<String> errors;
-
+	private boolean isPropertyToVary;
 	
+	public boolean isPropertyToVary(){
+		return isPropertyToVary;
+	}
+	
+	public void isPropertyToVary(boolean b){
+		isPropertyToVary = b;
+	}
 
 	public boolean getEnable() {
 		return this.enabled;

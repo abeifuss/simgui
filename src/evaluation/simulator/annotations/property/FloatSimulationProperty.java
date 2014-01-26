@@ -35,11 +35,6 @@ public @interface FloatSimulationProperty {
 
 	public boolean global() default false;
 
-	// float
-	// public float value() default 0.0f;
-
-	// public Class<?> valueType() default Float.class;
-
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
@@ -51,5 +46,7 @@ public @interface FloatSimulationProperty {
 	public float stepSize() default 0.1f;
 	
 	public String guiElement() default "spinner";
+	
+	public boolean property_to_vary() default false;
 
 }

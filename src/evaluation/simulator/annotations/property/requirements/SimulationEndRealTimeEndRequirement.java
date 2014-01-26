@@ -17,10 +17,10 @@ public class SimulationEndRealTimeEndRequirement extends Requirement {
 		String msg = "Requires \"Simulation end condition\" to be set to \"REAL_TIME_END\"";
 
 		// create warnings if not existent
-				if( simProp.getWarnings() == null ){
-					System.err.println("NEW WARNINGS");
-					simProp.setWarnings( new HashSet<String>() );
-				}
+		if( simProp.getWarnings() == null ){
+			System.err.println("NEW WARNINGS");
+			simProp.setWarnings( new HashSet<String>() );
+		}
 		
 		if (equals("SIMULATION_END", "REAL_TIME_END")){
 			Set<String> warnings = simProp.getWarnings();

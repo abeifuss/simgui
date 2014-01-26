@@ -6,8 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,6 +25,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import net.miginfocom.swing.MigLayout;
 import evaluation.simulator.annotations.property.DoubleProp;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -35,7 +39,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 	JCheckBox unlimited;
 	JSpinner spinner;
 	Component component;
-	List<Component> messages;
+	List<JTextArea> messages;
+	Map<Component, Component> icons;
 	
 	SimPropRegistry simPropRegistry;
 	
@@ -46,7 +51,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		this.property = property;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
-		this.messages = new LinkedList<Component>();
+		this.messages = new LinkedList<JTextArea>();
+		this.icons = new HashMap<Component, Component>();
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
 		this.setLayout(migLayout);
@@ -89,7 +95,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
-			this.add( textarea, "growx, growy" );
+			textarea.setPreferredSize( new Dimension(10, 25) );
+			this.add( textarea, "growx, growy, wmin 10" );
 		}
 		
 	}
@@ -132,7 +139,12 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		for (Component message : this.messages){
 			this.remove(message);
 		}
+		for (Component icon : this.icons.values()){
+			this.remove(icon);
+		}
+		
 		this.messages.clear();
+		this.icons.clear();
 		
 		this.auto.setSelected(property.getAuto());
 		this.unlimited.setSelected(property.getUnlimited());
@@ -150,24 +162,34 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		this.spinner.setValue((Double) simPropRegistry.getValue( property.getPropertyID()).getValue());
 		
 		if (property.getWarnings() != null && property.getWarnings().size() > 0){
-			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
-			
-			this.messages.add( warning );
 			for (String each : property.getWarnings()){
-				this.messages.add( new JLabel(each) );
+				JTextArea text = new JTextArea(each);
+				text.setEditable(false);
+				text.setLineWrap(true);
+				text.setWrapStyleWord(true);
+				text.setPreferredSize( new Dimension(10,25));
+				this.messages.add( text );
+				JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
+				this.icons.put( text, warning);
 			}
 		}
 		
 		if (property.getErrors() != null && property.getErrors().size() > 0){
-			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
-			this.messages.add( error );
 			for (String each : property.getErrors()){
-				this.messages.add( new JLabel(each) );
+				JTextArea text = new JTextArea(each);
+				text.setEditable(false);
+				text.setLineWrap(true);
+				text.setWrapStyleWord(true);
+				text.setPreferredSize( new Dimension(10,25));
+				this.messages.add( text );
+				JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
+				this.icons.put(text, error);
 			}
 		}
 		
-		for (Component message : this.messages){
-			this.add(message, "wrap, push");
+		for (JTextArea message : this.messages){
+			this.add(this.icons.get(message) , "push, wmin 16, wrap");
+			this.add(message, "growx, growy, push, wmin 10" );
 		}
 		
 		updateUI();

@@ -1,12 +1,15 @@
 package evaluation.simulator.gui.customElements.configElements;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
@@ -41,7 +44,9 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	
 	SimPropRegistry simPropRegistry;
 	private Component component;
-	List<Component> messages;
+	List<JTextArea> messages;
+	Map<Component, Component> icons;
+	
 	int listSize;
 	
 	public StringConfigElement(StringProp s) {
@@ -51,7 +56,8 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		this.property = s;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 		
-		this.messages = new LinkedList<Component>();
+		this.messages = new LinkedList<JTextArea>();
+		this.icons = new HashMap<Component, Component>();
 		this.listSize = 0;
 		
 		MigLayout migLayout = new MigLayout("","[grow]","");
@@ -115,7 +121,8 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
-			this.add( textarea, "growx, growy" );
+			textarea.setPreferredSize( new Dimension(10, 25) );
+			this.add( textarea, "growx, growy, wmin 10" );
 		}
 	}
 
@@ -136,7 +143,12 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		for (Component message : this.messages){
 			this.remove(message);
 		}
+		for (Component icon : this.icons.values()){
+			this.remove(icon);
+		}
+		
 		this.messages.clear();
+		this.icons.clear();
 		
 		// Load properties on update
 		if ( !this.property.getPossibleValues().equals("") ) {
@@ -177,24 +189,34 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		}
 		
 		if (property.getWarnings() != null && property.getWarnings().size() > 0){
-			JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
-			
-			this.messages.add( warning );
 			for (String each : property.getWarnings()){
-				this.messages.add( new JLabel(each) );
+				JTextArea text = new JTextArea(each);
+				text.setEditable(false);
+				text.setLineWrap(true);
+				text.setWrapStyleWord(true);
+				text.setPreferredSize( new Dimension(10,25));
+				this.messages.add( text );
+				JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
+				this.icons.put( text, warning);
 			}
 		}
 		
 		if (property.getErrors() != null && property.getErrors().size() > 0){
-			JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
-			this.messages.add( error );
 			for (String each : property.getErrors()){
-				this.messages.add( new JLabel(each) );
+				JTextArea text = new JTextArea(each);
+				text.setEditable(false);
+				text.setLineWrap(true);
+				text.setWrapStyleWord(true);
+				text.setPreferredSize( new Dimension(10,25));
+				this.messages.add( text );
+				JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
+				this.icons.put(text, error);
 			}
 		}
 		
-		for (Component message : this.messages){
-			this.add(message, "wrap, push");
+		for (JTextArea message : this.messages){
+			this.add(this.icons.get(message) , "push, wmin 16, wrap");
+			this.add(message, "growx, growy, push, wmin 10" );
 		}
 		
 		updateUI();

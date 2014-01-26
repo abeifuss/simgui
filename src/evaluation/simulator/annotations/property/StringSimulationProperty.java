@@ -15,7 +15,6 @@ public @interface StringSimulationProperty {
 	public Class<? extends Requirement>[] enable_requirements() default {};
 
 	// general
-//	public String id() default "";
 
 	public String name() default "";
 
@@ -35,15 +34,12 @@ public @interface StringSimulationProperty {
 
 	public boolean global() default false;
 
-	// string
-	// public String value() default "";
-
-	// public Class<?> valueType() default String.class;
-
 	public Class<? extends Requirement>[] value_requirements() default {};
 
 	public boolean isStatic() default false;
 	
 	public String regex() default "";
+	
+	public boolean property_to_vary() default false;
 
 }

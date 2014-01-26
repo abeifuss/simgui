@@ -7,14 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.LogLevel;
 
 import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.structure.HelpPropValues;
@@ -35,7 +40,7 @@ public class PropVaryElement extends JPanel {
 	Map<JTextField, Integer> propToIndexMap;
 
 	public PropVaryElement() {
-		this.setLayout(new GridLayout(4, 1));
+		this.setLayout(new MigLayout("", "[grow]", ""));
 
 		loadContent();
 	}
@@ -43,9 +48,23 @@ public class PropVaryElement extends JPanel {
 	private void loadContent() {
 
 		this.propMap = SimPropRegistry.getInstance().getProperties();
-
-		String propertyStrings[] = propMap.keySet().toArray(new String[1]);
+		
+		// old version
+//		String propertyStrings[] = propMap.keySet().toArray(new String[1]);
+		
+		// added by alex
+		List<String> tmp = new LinkedList<String>();
+		for (String key: propMap.keySet()){
+			if (propMap.get(key).isPropertyToVary()){
+				tmp.add(propMap.get(key).getName());
+			}
+		}
+		
+		String propertyStrings[] = tmp.toArray(new String[1]);
+		
+		// TODO: @Matle - fix this! this will always overwrite the first property 
 		propertyStrings[0] = "---";
+		
 		cBox = new JComboBox[numOfPropsToVary];
 		cBox[0] = new JComboBox<String>(propertyStrings);
 		cBox[0].setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
@@ -73,10 +92,10 @@ public class PropVaryElement extends JPanel {
 		this.propToIndexMap = new HashMap<>();
 		this.propToIndexMap.put(propElement[0], 0);
 		this.propToIndexMap.put(propElement[1], 1);
-		this.add(cBox[0], BorderLayout.CENTER);
-		this.add(propElement[0], BorderLayout.CENTER);
-		this.add(cBox[1], BorderLayout.CENTER);
-		this.add(propElement[1], BorderLayout.CENTER);
+		this.add(cBox[0], "growx, wrap");
+		this.add(propElement[0], "growx, wrap");
+		this.add(cBox[1], "growx, wrap");
+		this.add(propElement[1], "growx");
 		// this.add(wrapper1);
 
 		// JPanel wrapper2 = new JPanel(new BorderLayout());
@@ -114,7 +133,9 @@ public class PropVaryElement extends JPanel {
 			}
 		} else {
 			propElement[index].setEnabled(true);
-			propType[index] = propMap.get(currentItem).getValueType();
+			
+			SimProp tmp = SimPropRegistry.getInstance().getPropertiesByName(currentItem);
+			propType[index] = tmp.getValueType();
 			logger.log(Level.DEBUG, "Proptype is set to" + propType[index].toString());
 		}
 
@@ -133,6 +154,18 @@ public class PropVaryElement extends JPanel {
 
 				if (e.getStateChange() == ItemEvent.SELECTED && property.isVisible()) {
 					PropVaryElement.this.comboboxChanged(property);
+					
+					if (e.getSource() == cBox[0]){
+						SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", String.valueOf(cBox[0].getSelectedItem()));
+					}else if (e.getSource() == cBox[1]){
+						SimPropRegistry.getInstance().setPropertyToVaryValue("SECOND_PROPERTY_TO_VARY", String.valueOf(cBox[1].getSelectedItem()));
+					}
+					
+					if (String.valueOf(cBox[1].getSelectedItem()).equals("---")){
+						SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "FALSE");
+					}else{
+						SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "TRUE");
+					}
 				}
 			}
 		};
@@ -149,11 +182,22 @@ public class PropVaryElement extends JPanel {
 					value[i] = new HelpPropValues(a.getActionCommand().toString(), propType[i]);
 					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i].getType().toString());
 					logger.log(Level.DEBUG, "Validity is: " + value[i].isValid());
+					
+					if (value[i].isValid() && a.getSource() == propElement[0]){
+						SimPropRegistry.getInstance().setPropertyToVaryValue("VALUES_FOR_THE_PROPERTY_TO_VARY", propElement[0].getText());
+					}else if (value[i].isValid() && a.getSource() == propElement[1]){
+						SimPropRegistry.getInstance().setPropertyToVaryValue("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY", propElement[1].getText());
+					}
 				}
 			}
 
 		};
 		field.addActionListener(al);
+	}
+
+	// TODO: Malte
+	public void update() {
+		// read SimPropRegistry.getInstance().getPropertiesToVary() and set the values of the gui elements
 	}
 
 }

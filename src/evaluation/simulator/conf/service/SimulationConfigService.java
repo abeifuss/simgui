@@ -52,6 +52,17 @@ public class SimulationConfigService {
 		}
 		// This value is not in range
 		
+		// Properties to vary
+		for (String s : this.simPropRegistry.getPropertiesToVary().keySet()) {
+			logger.log(Level.DEBUG, "Load value for property to vary " + s);
+			try {
+				this.simPropRegistry.setPropertyToVaryValue(s, props.getProperty(s));
+				logger.log(Level.DEBUG, s + " = " + props.getProperty(s));
+			} catch (Exception e) {
+				logger.log(Level.ERROR,"Can not read value for " + s);
+			}
+		}
+		
 		// Load simProps
 		for (Entry<String, SimProp> s : this.simPropRegistry.getAllSimProps()) {
 			logger.log(Level.DEBUG, "Load value for " + s.getKey());
@@ -132,6 +143,11 @@ public class SimulationConfigService {
 			for (String key : plugins.keySet()) {
 				logger.log(Level.DEBUG, key + " with " + plugins.get(key));
 				props.setProperty(key, plugins.get(key));
+			}
+			
+			// Properties to vary
+			for (Entry<String, String> s : this.simPropRegistry.getPropertiesToVary().entrySet()) {
+				props.setProperty(s.getKey(), s.getValue());
 			}
 
 			// dynamic part
