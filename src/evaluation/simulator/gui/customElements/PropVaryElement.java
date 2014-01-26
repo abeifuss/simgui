@@ -197,9 +197,9 @@ public class PropVaryElement extends JPanel {
 	// TODO: Malte
 	public void update() {
 		// read SimPropRegistry.getInstance().getPropertiesToVary() and set the values of the gui elements
-		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
-		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY"));
+		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");		
 		String ID = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, ID);
 		cBox[0].setSelectedItem(SimPropRegistry.getInstance().getPropertieNameByID(ID));
 		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY"));		
