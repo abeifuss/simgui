@@ -1432,12 +1432,9 @@ public class SimPropRegistry {
 		for (SimProp simProp : this.properties.values() ){
 			if ( simProp.getPropertyID().equals(currentItem)){				
 				return simProp.getName();
-			}
-			return "---";
+			}			
 		}
-		
-		logger.log(Level.DEBUG, "No such property " + currentItem);
-		return null;
+		return "---";		
 	}
 
 	public void setAuto(String key, boolean auto, Class<?> c) {
