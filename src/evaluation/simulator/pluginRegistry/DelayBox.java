@@ -27,7 +27,7 @@ import evaluation.simulator.plugins.delayBox.NoDelayDelayBox;
 @Plugin(pluginKey = "BASIC_DELAY_BOX", pluginName = "Basic delay", pluginLayerKey="TYPE_OF_DELAY_BOX")
 public enum DelayBox {
 
-	NO_DELAY,
+	NO_DELAY_BOX,
 	BASIC_DELAY_BOX
 	;
 		
@@ -57,7 +57,7 @@ public enum DelayBox {
 		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
 		if (desiredImpl.equals("BASIC_DELAY_BOX"))
 			return new BasicDelayBox(bandwidthSend, bandwidthReceive, latency);
-		else if (desiredImpl.equals("NO_DELAY"))
+		else if (desiredImpl.equals("NO_DELAY_BOX"))
 			return new NoDelayDelayBox();
 		else
 			throw new RuntimeException("ERROR: no DelayBox with the name \"" +desiredImpl  
@@ -68,7 +68,7 @@ public enum DelayBox {
 		
 	public static DelayBoxImpl getInstance(TypeOfNode typeOfNode) {
 		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
-		if (desiredImpl.equals("NO_DELAY")) {
+		if (desiredImpl.equals("NO_DELAY_BOX")) {
 			return new NoDelayDelayBox();
 		} else if (desiredImpl.equals("BASIC_DELAY_BOX")) {
 //			int bandwidthSend;
