@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
@@ -25,18 +23,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.core.binding.gMixBinding;
+import evaluation.simulator.gui.actionListeners.ClearButtonAction;
 import evaluation.simulator.gui.actionListeners.ExportButtonAction;
-import evaluation.simulator.gui.helper.IOActions;
-import evaluation.simulator.gui.layout.SimulationTab;
+import evaluation.simulator.gui.actionListeners.StartButtonAction;
+import evaluation.simulator.gui.actionListeners.StopButtonAction;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-import evaluation.simulator.gui.results.GnuplotPanel;
-import evaluation.simulator.gui.service.ConfigParser;
 
 public class ConfigChooserPanel extends JPanel {
 
@@ -48,7 +44,7 @@ public class ConfigChooserPanel extends JPanel {
 	public DefaultListModel<File> listModel;
 	JButton startButton;
 	JButton stopButton;
-	private static JProgressBar progressBar;
+	static JProgressBar progressBar;
 
 	JRadioButton defaultPlot;
 	JRadioButton expertPlot;
@@ -58,8 +54,8 @@ public class ConfigChooserPanel extends JPanel {
 	// JButton rightButton = new JButton(">>");
 	// JButton leftButton = new JButton("<<");
 
-	public JButton exportPictureButton;
-	private gMixBinding callSimulation;
+	public static JButton exportPictureButton;
+	public static gMixBinding callSimulation;
 	private JButton clearButton;
 
 	private static ConfigChooserPanel instance = null;
@@ -83,7 +79,6 @@ public class ConfigChooserPanel extends JPanel {
 	private void initialize() {
 
 		JPanel configurationSelectionPanel = this.createConfigSelectionPanel();
-		JPanel additionalPlotOptionsPanel = this.createAdditionalPlotOptionsPanel();
 		JPanel simulationControlPanel = this.createSimulationControlPanel();
 		JPanel exportResultsPanel = this.createExportResultsPanel();
 		JPanel statusPanel = this.createStatusPanel();
@@ -159,6 +154,7 @@ public class ConfigChooserPanel extends JPanel {
 		JPanel panel = new JPanel(migLayout);
 
 		this.exportPictureButton = new JButton("Export Graph");
+		this.exportPictureButton.setMnemonic('E');
 		exportPictureButton.addActionListener(new ExportButtonAction());
 		exportPictureButton.setEnabled(false);
 
@@ -169,84 +165,24 @@ public class ConfigChooserPanel extends JPanel {
 
 	}
 
-	class ProgressWorker extends SwingWorker {
-		protected String doInBackground() {
-			progressBar.setVisible(true);
-			progressBar.setIndeterminate(true);
-
-			SimulationTab.getInstance().getResultsPanel().remove(SimulationTab.getInstance().homeTab);
-
-			ConfigParser configParser = new ConfigParser();
-
-			String[][] params = new String[ConfigChooserPanel.getInstance().configList.getSelectedValuesList().size()][1];
-
-			int i = 0;
-			for (File file : ConfigChooserPanel.getInstance().configList.getSelectedValuesList()) {
-				params[i][0] = configParser.cleanupConfigurationForSimulator(file);
-
-				ConfigChooserPanel.getInstance().callSimulation = gMixBinding.getInstance();
-				ConfigChooserPanel.getInstance().callSimulation.setParams(params[i]);
-				ConfigChooserPanel.getInstance().callSimulation.run();
-				final int j = i;
-
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						progressBar.setValue(j);
-					}
-				});
-				i++;
-			}
-			return null;
-		}
-
-		protected void done() {
-			progressBar.setVisible(false);
-		}
-	}
-
 	private JPanel createSimulationControlPanel() {
 
 		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
 		JPanel panel = new JPanel(migLayout);
 
 		this.startButton = new JButton("Start Simulation");
-		this.startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (configList.getSelectedIndices().length == 0) {
-					JOptionPane.showMessageDialog(null, "Please select at least one config!");
-				} else {
-					new ProgressWorker().execute();
-				}
-			}
-		});
+		this.startButton.setMnemonic('S');
+
+		this.startButton.addActionListener(new StartButtonAction(configList));
 
 		this.stopButton = new JButton("Stop Simulation");
-		this.stopButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ConfigChooserPanel.getInstance().callSimulation.interrupt();
-			}
-		});
+		this.stopButton.setMnemonic('T');
+
+		this.stopButton.addActionListener(new StopButtonAction());
 
 		this.clearButton = new JButton("Clear Results");
-		this.clearButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SimulationTab.getInstance().getResultsPanel().removeAll();
-				gMixBinding.getInstance().resetExperiments();
-				SimulationTab.getInstance().getResultsPanel().add("Welcome", SimulationTab.getInstance().homeTab);
-				try {
-					IOActions.cleanOutputFolder();
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Could not clean up Output directory "
-							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
-				}
-				exportPictureButton.setEnabled(false);
-				ConfigChooserPanel.getInstance().updateConfigDirectory();
-			}
-		});
+		this.clearButton.setMnemonic('C');
+		this.clearButton.addActionListener(new ClearButtonAction());
 
 		panel.add(this.startButton, "cell 0 0,growx");
 		panel.add(this.stopButton, "cell 0 1,growx");

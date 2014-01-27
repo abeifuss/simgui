@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -21,6 +20,12 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import evaluation.simulator.conf.service.UserConfigService;
+import evaluation.simulator.gui.actionListeners.ClearButtonAction;
+import evaluation.simulator.gui.actionListeners.LoadButtonAction;
+import evaluation.simulator.gui.actionListeners.SaveButtonAction;
+import evaluation.simulator.gui.actionListeners.StartButtonAction;
+import evaluation.simulator.gui.actionListeners.StopButtonAction;
+import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.helper.IOActions;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
@@ -78,51 +83,41 @@ public class MainGui extends JFrame {
 		this.frame = new JFrame();
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.addWindowListener(new WindowListener() {
-			
-		
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				System.out.println("Closing...");
-				try {
-					IOActions.cleanOutputFolder();
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Could not clean up Output directory "
-							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
-				}
-				MainGui.this.safeProperties();
+				MainGui.this.onClose();
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				
+
 			}
 
 			@Override
 			public void windowOpened(WindowEvent e) {
 			}
 
-			
 		});
 
 		this.splitPane = new JSplitPane();
@@ -139,28 +134,67 @@ public class MainGui extends JFrame {
 		this.frame.setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
+		mnFile.setMnemonic('F');
 		menuBar.add(mnFile);
 
+		JMenuItem menuItemOpen = new JMenuItem("Open");
+		menuItemOpen.addActionListener(new LoadButtonAction());
+		menuItemOpen.setMnemonic('O');
+		mnFile.add(menuItemOpen);
+		JMenuItem menuItemSave = new JMenuItem("Save");
+		menuItemSave.addActionListener(new SaveButtonAction());
+		menuItemSave.setMnemonic('S');
+		mnFile.add(menuItemSave);
+		JMenuItem menuItemExit = new JMenuItem("Exit");
+		menuItemExit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainGui.this.onClose();
+			}
+		});
+		menuItemExit.setMnemonic('X');
+
+		mnFile.add(menuItemExit);
+
 		JMenu mnEdit = new JMenu("Edit");
+		mnEdit.setMnemonic('E');
+
 		menuBar.add(mnEdit);
 
+		JMenuItem menuItemStart = new JMenuItem("Start Simulation");
+		menuItemStart.addActionListener(new StartButtonAction(ConfigChooserPanel.getInstance().configList));
+		menuItemStart.setMnemonic('S');
+
+		mnEdit.add(menuItemStart);
+		JMenuItem menuItemStop = new JMenuItem("Stop Simulation");
+		menuItemStop.addActionListener(new StopButtonAction());
+		menuItemStop.setMnemonic('T');
+
+		mnEdit.add(menuItemStop);
+		JMenuItem menuItemClear = new JMenuItem("Clear Results");
+		menuItemClear.addActionListener(new ClearButtonAction());
+		menuItemClear.setMnemonic('C');
+
+		mnEdit.add(menuItemClear);
+
 		JMenu mnWindow = new JMenu("Window");
+		mnWindow.setMnemonic('W');
 		menuBar.add(mnWindow);
 
 		JMenu mnHelp = new JMenu("Help");
+		mnHelp.setMnemonic('H');
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmShowhideHome = new JMenuItem("Show/Hide Home");
-		mnWindow.add(mntmShowhideHome);
-
-		JMenuItem mntmShowhideHelp = new JMenuItem("Show/Hide Help");
+		JMenuItem mntmShowhideHelp = new JMenuItem("De-/Seperate Help");
 		mntmShowhideHelp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GuiService.getInstance().toogleHelpTools();
 			}
 		});
-		mnWindow.add(mntmShowhideHelp);
+		mnHelp.setMnemonic('D');
+		mnHelp.add(mntmShowhideHelp);
 
 		JMenuItem mntmSeperateConfiguration = new JMenuItem("De-/Seperate Configuration");
 		mntmSeperateConfiguration.addActionListener(new ActionListener() {
@@ -169,6 +203,7 @@ public class MainGui extends JFrame {
 				GuiService.getInstance().toogleConfTools();
 			}
 		});
+		mntmSeperateConfiguration.setMnemonic('D');
 		mnWindow.add(mntmSeperateConfiguration);
 
 		this.frame.setTitle("gMixSim");
@@ -184,6 +219,18 @@ public class MainGui extends JFrame {
 		this.frame.setBounds(this.mainGuiXPos, this.mainGuiYPos, this.mainGuiWidth, this.mainGuiHeight);
 
 		this.frame.setVisible(true);
+	}
+
+	public void onClose() {
+		System.out.println("Closing...");
+		try {
+			IOActions.cleanOutputFolder();
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, "Could not clean up Output directory " + GnuplotPanel.outputFolder,
+					"Cleanup Error", JOptionPane.ERROR_MESSAGE);
+		}
+		MainGui.this.safeProperties();
+		System.exit(0);
 	}
 
 	private void safeProperties() {
