@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2014.1.10)  27 JAN 2014 10:52
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2014.1.10)  27 JAN 2014 18:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**vortrag.tex
+**vortrag.tex -recorder
 (./vortrag.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, uk
@@ -1203,10 +1203,6 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count174
  (./vortrag.nav)
-Overfull \hbox (185.7764pt too wide) detected at line 48
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
 
 LaTeX Font Warning: Font shape `OT1/cmss/bx/n' in size <4> not available
 (Font)              size <5> substituted on input line 50.
@@ -1215,108 +1211,55 @@ LaTeX Font Warning: Font shape `OT1/cmss/bx/n' in size <4> not available
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
 (Font)              size <5> substituted on input line 50.
 
-
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
-] (./vortrag.toc
-Overfull \hbox (0.55008pt too wide) detected at line 12
- []\OT1/cmss/bx/n/8 10 
- []
-
-)
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
-[2
+] (./vortrag.toc) [2
 
 ]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
 [3
 
-]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
+] [4
 
-[4
+] [5
 
-]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
+] [6
 
-[5
-
-]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
-[6
-
-] <simgui_mockup.png, id=184, 1539.7525pt x 959.585pt>
+] <simgui_mockup.png, id=131, 1539.7525pt x 959.585pt>
 File: simgui_mockup.png Graphic file (type png)
 
 <use simgui_mockup.png>
 Package pdftex.def Info: simgui_mockup.png used on input line 80.
 (pdftex.def)             Requested size: 307.94504pt x 191.91359pt.
+ [7
 
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
-[7
-
- <./simgui_mockup.png>] <results.png, id=201, 803.0pt x 602.25pt>
+ <./simgui_mockup.png>]
+<results.png, id=144, 803.0pt x 602.25pt>
 File: results.png Graphic file (type png)
-
-<use results.png>
+ <use results.png>
 Package pdftex.def Info: results.png used on input line 87.
 (pdftex.def)             Requested size: 240.90186pt x 180.67639pt.
+ [8
 
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
-[8
-
- <./results.png (PNG copy)>] <simgui.png, id=218, 1321.93875pt x 746.79pt>
+ <./results.png (PNG copy)>] <simgui.png, id=158, 1321.93875pt x 746.79pt>
 File: simgui.png Graphic file (type png)
-
-<use simgui.png>
+ <use simgui.png>
 Package pdftex.def Info: simgui.png used on input line 94.
 (pdftex.def)             Requested size: 304.03952pt x 171.75807pt.
 
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
 [9
 
- <./simgui.png>] <dot/arch-crop.pdf, id=237, 411.5375pt x 203.76125pt>
+ <./simgui.png>] <dot/arch-crop.pdf, id=173, 411.5375pt x 203.76125pt>
 File: dot/arch-crop.pdf Graphic file (type pdf)
 
 <use dot/arch-crop.pdf>
 Package pdftex.def Info: dot/arch-crop.pdf used on input line 103.
 (pdftex.def)             Requested size: 329.23045pt x 163.0092pt.
-
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
-
-[10
+ [10
 
  <./dot/arch-crop.pdf>]
 LaTeX Font Info:    Try loading font information for U+msa on input line 132.
- (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 132.
@@ -1330,25 +1273,29 @@ line 132.
 (/usr/share/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2012/04/26
 )
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
+Overfull \hbox (5.59409pt too wide) in paragraph at lines 132--132
+[][]  
  []
 
 [11
 
 ]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
+\openout4 = `vortrag.vrb'.
 
-[12
+ (./vortrag.vrb
+LaTeX Font Info:    Try loading font information for OMS+cmss on input line 7.
+LaTeX Font Info:    No file OMScmss.fd. on input line 7.
 
-]
-Overfull \hbox (185.7764pt too wide) has occurred while \output is active
-  [] [] [] [] [] [] [] [] [] [] []  
- []
 
-[13
+LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 7.
+
+) [12
+
+] [13
+
+] [14
 
 ]
 \tf@nav=\write6
@@ -1360,66 +1307,40 @@ Overfull \hbox (185.7764pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `vortrag.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 321.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 321.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 355.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 355.
  (./vortrag.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 321.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 321.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 355.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 355.
+Package rerunfilecheck Info: File `vortrag.out' has not changed.
+(rerunfilecheck)             Checksum: 1A556D392CADCE98D3E714220B1C1B8F;272.
 
-
-Package rerunfilecheck Warning: File `vortrag.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `vortrag.out':
-(rerunfilecheck)             Before: 49C0A5A32B554AA9C99C744E2766F115;520
-(rerunfilecheck)             After:  1A556D392CADCE98D3E714220B1C1B8F;272.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 321.
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 355.
  ) 
 Here is how much of TeX's memory you used:
- 19432 strings out of 494969
- 352332 string characters out of 3179661
- 462921 words of memory out of 3000000
- 22122 multiletter control sequences out of 15000+200000
- 10135 words of font info for 37 fonts, out of 3000000 for 9000
+ 19751 strings out of 494969
+ 355075 string characters out of 3179661
+ 612921 words of memory out of 3000000
+ 22435 multiletter control sequences out of 15000+200000
+ 13739 words of font info for 50 fonts, out of 3000000 for 9000
  36 hyphenation exceptions out of 8191
- 49i,15n,53p,396b,571s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{Navigation27} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{Navigation25} has been referenced but does not exis
-t, replaced by a fixed one
-
-pdfTeX warning (dest): name{Navigation23} has been referenced but does not exis
-t, replaced by a fixed one
-
-pdfTeX warning (dest): name{Navigation17} has been referenced but does not exis
-t, replaced by a fixed one
-
-pdfTeX warning (dest): name{Outline0.10} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{Outline0.9} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{Outline0.8} has been referenced but does not exist,
- replaced by a fixed one
-
-pdfTeX warning (dest): name{Outline0.7} has been referenced but does not exist,
- replaced by a fixed one
-
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb>
-Output written on vortrag.pdf (13 pages, 678449 bytes).
+ 49i,15n,53p,406b,1378s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on vortrag.pdf (14 pages, 696587 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 300 compressed objects within 3 object streams
- 41 named destinations out of 1000 (max. 500000)
- 161 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 289 PDF objects out of 1000 (max. 8388607)
+ 238 compressed objects within 3 object streams
+ 35 named destinations out of 1000 (max. 500000)
+ 129 words of extra memory for PDF output out of 10000 (max. 10000000)
 

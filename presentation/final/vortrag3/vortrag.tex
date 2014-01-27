@@ -104,17 +104,17 @@
 
 \section[Annotations]{Annotations}
 
-\frame[t,squeeze]{\frametitle{Motivation für Annotations}
+\frame[t,squeeze]{\frametitle{Motivation für die Verwendung von Annotationen}
 
 \small{
    \begin{tabular}{|l|c|c|c|c|}
    \hline
-    & Annotations & XML zentr. & XML dezentr. & Statisch \\
+    & Annotationen & XML zentr. & XML dezentr. & Statisch \\
    \hline\hline
-   Plugin Struktur & ++ & - & ++ & - -\\
-   Initialer Aufwand & - & + & + & ++ \\
+   Plugin Struktur & ++ & - & + & - -\\
+   Initialer Aufwand & - & ++ & + & ++ \\
    Aufwand neues Plugin & ++ & + & + & - - \\
-   Erweiterbarkeit Fkt. & + & + & + & ? \\
+   Erweiterbarkeit Fkt. & + & +(+) & +(+) & ? \\
    % Übersichtlichkeit & - & ++ & + & ++ \\
    Unterstützung d. IDE & ++ & + & + & ++ \\
    \hline
@@ -125,11 +125,45 @@
     \begin{block}{}
     Für GUI-Benutzer ist die verwendete Technik transparent.\\
     Plugin-Entwickler profitieren jedoch sehr von den Annotations.\\
-    $\Rightarrow$ Gedanken zur GUI nur in Sonderfällen nötig!\\
+    $\Rightarrow$ Es sind wenig Gedanken zur GUI nötig.\\
     $\Rightarrow$ Rapid Prototyping\\
     Der Mehraufwand bei der Programmierung des Frameworks ist gerechtfertigt.
     \end{block}
 }
+
+\begin{frame}[fragile]{Anwendungsbeispiel für Annotationen}
+    \begin{lstlisting}
+@PluginSuperclass(
+    layerName = "Underlay-net",
+    layerKey = "TYPE_OF_DELAY_BOX",
+    position = 7)
+public abstract class DelayBoxImpl {
+    \end{lstlisting}
+    \begin{lstlisting}
+@Plugin(
+    pluginName = "Basic delay",
+    pluginKey = "BASIC_DELAY_BOX")
+public class BasicDelayBox extends DelayBoxImpl {
+
+    @IntSimulationProperty(
+        name = "Packet Size (byte)",
+        key = "NETWORK_PACKET_PAYLOAD_SIZE")
+    private int packetSize = new ...
+    \end{lstlisting}
+\end{frame}
+
+% \frame[t,squeeze]{\frametitle{Aenderungen an der EDF\_VERSION notwendig}
+
+%     \begin{block}{EDF\_VERSION (Experiment Definition File)}
+%     \begin{itemize}
+%         \item Property- und Pluginkeys müssen eindeutig sein\\
+%         BATCH\_SIZE ( BASIC\_BATCH / BATCH\_WITH\_TIMEOUT )\\
+%         NO\_DELAY ( OUTPUT\_STRATEGY / TYPE\_OF\_DELAY\_BOX )\\
+%         \item Einführung von EDF\_VERSION\_1 für die GUI
+%         \item Nicht kompatibel zu EDF\_VERSION\_0
+%     \end{itemize}
+%     \end{block}
+% }
 
 \section[Dependency Checker]{Dependency Checker}
 
