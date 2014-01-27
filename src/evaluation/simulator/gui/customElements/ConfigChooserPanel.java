@@ -97,6 +97,12 @@ public class ConfigChooserPanel extends JPanel {
 		this.add(statusPanel, "cell 0 3,growx");
 
 		// Read names of existing experiment configurations
+
+		updateConfigDirectory();
+
+	}
+
+	public void updateConfigDirectory() {
 		final File folder = new File("etc/experiments/");
 		final File[] listOfFiles = folder.listFiles(new FileFilter() {
 
@@ -132,7 +138,7 @@ public class ConfigChooserPanel extends JPanel {
 				}
 			}
 		});
-
+		this.configList.repaint();
 	}
 
 	private JPanel createStatusPanel() {
@@ -238,6 +244,7 @@ public class ConfigChooserPanel extends JPanel {
 							+ GnuplotPanel.outputFolder, "Cleanup Error", JOptionPane.ERROR_MESSAGE);
 				}
 				exportPictureButton.setEnabled(false);
+				ConfigChooserPanel.getInstance().updateConfigDirectory();
 			}
 		});
 

@@ -7,18 +7,20 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import evaluation.simulator.conf.service.SimulationConfigService;
-import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.conf.service.SimulationConfigService;
+import evaluation.simulator.gui.customElements.ConfigChooserPanel;
+import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+
 public class LoadButtonAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(LoadButtonAction.class);
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		logger.log( Level.DEBUG , "Load config");
-		
+		logger.log(Level.DEBUG, "Load config");
+
 		// Open FileChooser and load config file. Check whether config file is
 		// of expected type.
 		JFileChooser fc = new JFileChooser();
@@ -39,9 +41,9 @@ public class LoadButtonAction implements ActionListener {
 		if (state == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-			SimulationConfigService simulationConfigService = new SimulationConfigService(
-					simPropRegistry);
+			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 			simulationConfigService.loadConfig(file);
 		}
+		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}
 }
