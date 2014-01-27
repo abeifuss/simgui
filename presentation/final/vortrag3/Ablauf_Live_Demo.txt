@@ -22,4 +22,5 @@ Multiselection beide Experimente auswählen (E1.cfg / E2.cfg in Configuration Se
 Simulation Starten
 Rechtsklick Results auskoppeln um besser zu vergleichen können (E1 / E2).
 Fenster Schliessen
+Beide Graphen exportieren (einen als png einmal als eps)
 Simulations Ergebnisse clearen
