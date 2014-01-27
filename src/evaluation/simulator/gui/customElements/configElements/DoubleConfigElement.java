@@ -1,7 +1,9 @@
 package evaluation.simulator.gui.customElements.configElements;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -24,6 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultCaret;
 
 import org.apache.commons.collections.map.HashedMap;
 
@@ -92,6 +95,8 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		
 		if (!property.getInfo().equals("")){
 			JTextArea textarea = new JTextArea("Info: " + property.getInfo());
+			textarea.setCaret(new DefaultCaret());
+			textarea.setAutoscrolls(false);
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
@@ -164,6 +169,9 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		if (property.getWarnings() != null && property.getWarnings().size() > 0){
 			for (String each : property.getWarnings()){
 				JTextArea text = new JTextArea(each);
+				text.setCaret(new DefaultCaret());
+				text.setBackground( new Color(250,210,115) );
+				text.setAutoscrolls(false);
 				text.setEditable(false);
 				text.setLineWrap(true);
 				text.setWrapStyleWord(true);
@@ -177,6 +185,9 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 		if (property.getErrors() != null && property.getErrors().size() > 0){
 			for (String each : property.getErrors()){
 				JTextArea text = new JTextArea(each);
+				text.setCaret(new DefaultCaret());
+				text.setBackground( new Color(250,150,135) );
+				text.setAutoscrolls(false);
 				text.setEditable(false);
 				text.setLineWrap(true);
 				text.setWrapStyleWord(true);
@@ -184,12 +195,17 @@ public class DoubleConfigElement extends JPanel implements ChangeListener, Actio
 				this.messages.add( text );
 				JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
 				this.icons.put(text, error);
+
 			}
 		}
 		
 		for (JTextArea message : this.messages){
+			DefaultCaret caret = (DefaultCaret) message.getCaret();
+			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+			message.setCaret(caret);
+			message.setAutoscrolls(false);
 			this.add(this.icons.get(message) , "push, wmin 16, wrap");
-			this.add(message, "growx, growy, push, wmin 10" );
+			this.add(message, "growx, push, wmin 10" );
 		}
 		
 		updateUI();

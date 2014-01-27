@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.text.DefaultCaret;
 
 import evaluation.simulator.gui.actionListeners.LoadButtonAction;
 import evaluation.simulator.gui.actionListeners.ResetButtonAction;

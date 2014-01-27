@@ -3,6 +3,7 @@ package evaluation.simulator.gui.customElements;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,6 +40,8 @@ public class PluginPanel extends JScrollPane {
 
 	private void initPanel() {
 		// Start Layout
+		
+		this.setAutoscrolls(false);
 		this.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.getVerticalScrollBar().setUnitIncrement(16);
@@ -192,6 +195,7 @@ public class PluginPanel extends JScrollPane {
 	}
 
 	public void update() {
+		
 
 		for (Component component : this.pluginSelectionPanel.getComponents()) {
 			if (component.getClass().equals(AccordionEntry.class)) {
