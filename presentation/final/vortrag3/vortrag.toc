@@ -1,18 +1,9 @@
-\beamer@endinputifotherversion {3.24pt}
+\beamer@endinputifotherversion {3.27pt}
 \select@language {ngerman}
 \beamer@sectionintoc {1}{Einleitung}{3}{0}{1}
-<<<<<<< HEAD
 \beamer@sectionintoc {2}{GUI}{9}{0}{2}
 \beamer@sectionintoc {3}{Architektur}{12}{0}{3}
 \beamer@sectionintoc {4}{Annotations}{13}{0}{4}
 \beamer@sectionintoc {5}{Dependency Checker}{15}{0}{5}
 \beamer@sectionintoc {6}{Live Demo}{16}{0}{6}
 \beamer@sectionintoc {7}{Ausblick}{17}{0}{7}
-=======
-\beamer@sectionintoc {2}{GUI}{10}{0}{2}
-\beamer@sectionintoc {3}{Architektur}{13}{0}{3}
-\beamer@sectionintoc {4}{Annotations}{14}{0}{4}
-\beamer@sectionintoc {5}{Dependency Checker}{16}{0}{5}
-\beamer@sectionintoc {6}{Live Demo}{17}{0}{6}
-\beamer@sectionintoc {7}{Ausblick}{18}{0}{7}
->>>>>>> aa539ad9acbb0fd9ca2f098867611dc27b988d3d
