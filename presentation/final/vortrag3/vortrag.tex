@@ -54,8 +54,24 @@
 }
 
 \section[Einleitung]{Einleitung}
-\frame[t,squeeze]{\frametitle{Ausgangssituation}
-   
+\frame[t,squeeze]{\frametitle{Ausgangssituation gMix}
+   \begin{itemize}
+		\item Last Generierung
+			\begin{itemize}
+				\item Bestimmung von Lastcharakteristika
+				\item Modellierung der Clients
+			\end{itemize}
+		\item Simulation \& Messung
+			\begin{itemize}
+				\item Modellierung  der Mixe
+				\item Konfiguration der Plug-Ins
+			\end{itemize}
+		\item Evaluation
+			\begin{itemize}
+				\item Auswertungs Plug-Ins
+			\end{itemize}
+	\end{itemize}
+	
 }
 
 \frame[t,squeeze]{\frametitle{Motivation}
@@ -63,11 +79,39 @@
 }
 
 \frame[t,squeeze]{\frametitle{Benutzergruppen}
-   
+   \begin{block}{}
+    \begin{enumerate}
+        \item<+-> Nutzer in der Lehre
+            \begin{itemize}
+                \item Das System muss einfach zu bedienen sein
+                \item Vermeidung einer überladenen GUI mit zu viel Details
+                \item Unterstützung durch die GUI bei der Fehlervermeidung
+                \item Übersichtliche Präsentation der Ergebnisse
+            \end{itemize}
+        \item<+-> Nutzer in der Forschung
+            \begin{itemize}
+                \item Kontrolle über viele / alle Parameter
+                \item Flexible Darstellung der Ergebnisse
+                \item Stapelverarbeitung von Experimenten
+            \end{itemize}
+        \item<+-> Plug-In Entwickler
+            \begin{itemize}
+                \item Möglichst wenig Aufwand bei der GUI
+                \item Plug-in soll entkoppelt betrachtet werden
+                \item Es sollen keine Namenskollisionen mit anderen Plug-ins entstehen
+            \end{itemize}
+    \end{enumerate}
+    \end{block}
 }
 
 \frame[t,squeeze]{\frametitle{Ziele}
-   
+   \begin{block}{Projektziel:}
+    \begin{enumerate}
+        \item Grafisches Werkzeug zur Erstellung von gMix-Konfigurationen
+        \item Augenmerk auf Anwenderfreundlichkeit
+        \item Augenmerk auf Entwicklerfreundlichkeit
+    \end{enumerate}
+  \end{block}  
 }
 
 \section[GUI]{GUI}
