@@ -119,16 +119,19 @@ public class PropVaryElement extends JPanel {
 		int index = this.boxToIndexMap.get(ComboBox);
 		JTextField currentElement = propElement[index];
 
-		value[index] = null;
 		currentElement.setText("");
+		value[index] = null;
+		
 
 		String currentItem = (String) ComboBox.getSelectedItem();
-		if (currentItem == "---") {
+		if (currentItem.equals("---")) {
 			propElement[index].setEnabled(false);
 			propType[index] = null;
 			if (index == 0) {
+				cBox[1].setSelectedItem("---");
 				this.cBox[1].setEnabled(false);
 				this.propElement[1].setEnabled(false);
+				
 			}
 		} else {
 			propElement[index].setEnabled(true);
@@ -138,8 +141,23 @@ public class PropVaryElement extends JPanel {
 			logger.log(Level.DEBUG, "Proptype is set to" + propType[index].toString());
 		}
 
-		if ((ComboBox == cBox[0]) && (currentItem != "---")) {
-			this.cBox[1].setEnabled(true);
+		if ((ComboBox == cBox[0]) && (!currentItem.equals("---"))) {
+			this.cBox[1].setEnabled(true);			
+			String prop = SimPropRegistry.getInstance().getPropertiesByName(currentItem).getPropertyID();
+			logger.log(Level.DEBUG,"writing into PROPERTY_TO_VARY: " + prop);
+			SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", prop);
+		}
+		
+		if ((ComboBox == cBox[1]) && (!currentItem.equals("---"))){
+			String prop = SimPropRegistry.getInstance().getPropertiesByName(String.valueOf(cBox[1].getSelectedItem())).getPropertyID();
+			logger.log(Level.DEBUG,"writing into PROPERTY_TO_VARY: " + prop);
+			SimPropRegistry.getInstance().setPropertyToVaryValue("SECOND_PROPERTY_TO_VARY", prop);
+		}
+		
+		if (String.valueOf(cBox[1].getSelectedItem()).equals("---")){
+			SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "FALSE");
+		}else{
+			SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "TRUE");
 		}
 
 		logger.log(Level.DEBUG, currentElement.getSelectedText());
@@ -151,21 +169,10 @@ public class PropVaryElement extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 
-				if (e.getStateChange() == ItemEvent.ITEM_STATE_CHANGED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 
-					PropVaryElement.this.comboboxChanged(box);
+					PropVaryElement.this.comboboxChanged(box);					
 					
-					if (e.getSource() == cBox[0]){
-						SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", String.valueOf(cBox[0].getSelectedItem()));
-					}else if (e.getSource() == cBox[1]){
-						SimPropRegistry.getInstance().setPropertyToVaryValue("SECOND_PROPERTY_TO_VARY", String.valueOf(cBox[1].getSelectedItem()));
-					}
-					
-					if (String.valueOf(cBox[1].getSelectedItem()).equals("---")){
-						SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "FALSE");
-					}else{
-						SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "TRUE");
-					}
 				}
 			}
 		};
@@ -180,12 +187,14 @@ public class PropVaryElement extends JPanel {
 				if (a.getActionCommand() != null) {
 					int i = PropVaryElement.this.propToIndexMap.get(field);
 					value[i] = new HelpPropValues(a.getActionCommand().toString(), propType[i]);
-					logger.log(Level.DEBUG, "PropertyToVary set to: " + value[i].getType().toString());
-					logger.log(Level.DEBUG, "Validity is: " + value[i].isValid());
+					logger.log(Level.DEBUG, "PropertyType is: " + value[i].getType().toString());
+					logger.log(Level.DEBUG, "PropertyValue is: " + a.getActionCommand().toString());
+					boolean validity = value[i].isValid();
+					logger.log(Level.DEBUG, "Validity is: " + validity);
 					
-					if (value[i].isValid() && a.getSource() == propElement[0]){
+					if (validity && a.getSource() == propElement[0]){
 						SimPropRegistry.getInstance().setPropertyToVaryValue("VALUES_FOR_THE_PROPERTY_TO_VARY", propElement[0].getText());
-					}else if (value[i].isValid() && a.getSource() == propElement[1]){
+					}else if (validity && a.getSource() == propElement[1]){
 						SimPropRegistry.getInstance().setPropertyToVaryValue("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY", propElement[1].getText());
 					}
 				}
@@ -195,23 +204,35 @@ public class PropVaryElement extends JPanel {
 		field.addActionListener(al);
 	}
 
-	// TODO: Malte
 	public void update() {
-		// read SimPropRegistry.getInstance().getPropertiesToVary() and set the values of the gui elements
-		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");		
+		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
 		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, id);
 		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
 		logger.log(Level.DEBUG, name);
 		cBox[0].setSelectedItem(name);
-//		cBox[0].updateUI();
-//		cBox[0].repaint();
-//		cBox[0].validate();
 		
-		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY"));		
+		logger.log(Level.DEBUG, "VALUES_FOR_THE_PROPERTY_TO_VARY");
+		String values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, values);
+		propElement[0].setText(values);
+		
+		logger.log(Level.DEBUG, "USE_SECOND_PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("USE_SECOND_PROPERTY_TO_VARY"));
+		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY"));
+		id = SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, id);
+		name = SimPropRegistry.getInstance().getPropertieNameByID(id);
+		logger.log(Level.DEBUG, name);
+		cBox[1].setSelectedItem(name);
+		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY"));
+		
+		logger.log(Level.DEBUG, "VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
+		values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, values);
+		propElement[1].setText(values);
 	}
 
 }

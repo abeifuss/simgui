@@ -33,65 +33,73 @@ public class HelpPropValues {
 	}
 	
 	public boolean isValid(){
-		boolean valid = true;
+		
+		boolean[] testresults = new boolean[values.size()];
+		int i = 0;
 		
 		for(String s : values){
 			
 			logger.log(Level.DEBUG, s);
-			logger.log(Level.DEBUG, type.toString());
-			logger.log(Level.DEBUG, Integer.class.toString());
+//			logger.log(Level.DEBUG, type.toString());
+//			logger.log(Level.DEBUG, Integer.class.toString());
 			
 			if (this.type == Integer.class){
-				logger.log(Level.DEBUG, "checking for int");
+				logger.log(Level.DEBUG, "checking for Integer");
+				testresults[i] = true;
 				try{
-					logger.log(Level.DEBUG, "int");
-					int i = Integer.parseInt(s);
+					Integer.parseInt(s);
 				}
 				catch(Exception e){
-					valid = false;
-					logger.log(Level.DEBUG, "was false");
+					testresults[i] = false;
+					logger.log(Level.DEBUG, s + " is not an Integer");
 				}
 			}
 			
 			if (this.type == Boolean.class){
-				logger.log(Level.DEBUG, "checking for int");
-				try{
-					logger.log(Level.DEBUG, "bool");
-					boolean b = Boolean.parseBoolean(s);
+				logger.log(Level.DEBUG, "checking for Boolean");
+				testresults[i] = true;
+				try{					
+					Boolean.parseBoolean(s);
 				}
 				catch(Exception e){
-					valid = false;
-					logger.log(Level.DEBUG, "was false");
+					testresults[i] = false;
+					logger.log(Level.DEBUG, s + " is not a Boolean");
 				}
 			}
 			
 			if (this.type == Float.class){
-				logger.log(Level.DEBUG, "checking for int");
+				logger.log(Level.DEBUG, "checking for Float");
+				testresults[i] = true;
 				try{
-					logger.log(Level.DEBUG, "float");
-					float f = Float.parseFloat(s);
+					Float.parseFloat(s);
 				}
 				catch(Exception e){
-					valid = false;
-					logger.log(Level.DEBUG, "was false");
+					testresults[i] = false;
+					logger.log(Level.DEBUG, s + " is not a Float");
 				}
 			}
 			
 			if (this.type == Double.class){
-				logger.log(Level.DEBUG, "checking for int");
+				logger.log(Level.DEBUG, "checking for Double");
+				testresults[i] = true;
 				try{
-					logger.log(Level.DEBUG, "double");
-					double d = Double.parseDouble(s);
+					Double.parseDouble(s);
 				}
 				catch(Exception e){
-					valid = false;
-					logger.log(Level.DEBUG, "was false");
+					testresults[i] = false;
+					logger.log(Level.DEBUG, s + " is not a Double");
 				}
 			}
+			i++;
 			
 		}		
 		
-		return valid;
+		for(boolean b : testresults){
+			if (b != true){
+				return false;
+			}
+		}		
+		return true;
 	}
 	
 	public Class getType(){
