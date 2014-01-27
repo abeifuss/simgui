@@ -70,12 +70,31 @@
 			\begin{itemize}
 				\item Auswertungs Plug-Ins
 			\end{itemize}
-	\end{itemize}
-	
+	\end{itemize}	
 }
 
+\begin{frame}[fragile]{Config Files}
+    \begin{lstlisting}
+EDF_VERSION = 1
+DESIRED_EVALUATIONS = AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE
+START_RECORDING_STATISTICS_AT = 0
+PROPERTY_TO_VARY = BATCH_SIZE
+VALUES_FOR_THE_PROPERTY_TO_VARY = 2,3,5,10,20,50,100,200,500
+USE_SECOND_PROPERTY_TO_VARY = FALSE
+SECOND_PROPERTY_TO_VARY =
+VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY =
+    \end{lstlisting}
+\end{frame}
+
 \frame[t,squeeze]{\frametitle{Motivation}
-   
+   "Werkzeuge machen das Leben einfacher"
+		\begin{itemize}
+				\item Übersichtlichkeit
+				\item Niedrigere Einstiegsschwierigkeit
+				\item Zeitersparnis
+				\item Fehlervermeidung
+		\end{itemize}
+	
 }
 
 \frame[t,squeeze]{\frametitle{Benutzergruppen}
