@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1390848764 "vortrag.tex" "vortrag.pdf" "vortrag" 1390851043
+["pdflatex"] 1390854972 "vortrag.tex" "vortrag.pdf" "vortrag" 1390854973
   "/etc/texmf/tex/latex/listings.d/listings.cfg" 1213130811 1745 ae6fbed3255376b850f8b4ef89faef50 ""
   "/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texmf-dist/tex/generic/babel/babel.def" 1312409092 29228 2fe939254f4b17ac18a8c0fb8aa39dff ""
@@ -161,16 +161,16 @@
   "/usr/share/texmf-site/tex/latex/pgf/utilities/pgfrcs.sty" 1386272926 325 2bcd023400636339210573e2b3ee298b ""
   "/usr/share/texmf-site/tex/latex/pgf/utilities/xxcolor.sty" 1386272926 2267 e82edfd18fbf4047c6f20ed9467f27db ""
   "/usr/share/texmf-site/tex/latex/xcolor/xcolor.sty" 1386271778 55224 a43bab84e0ac5e6efcaf9a98bde73a94 ""
-  "dot/arch-crop.pdf" 1390848134 14252 514e7d971c318e54d465fbcd8013fb4a ""
+  "arch.png" 1390854900 25580 0e8bba54d07a05dc02bf88c8e9ac3359 ""
   "results.png" 1390555583 82897 a69281ff3f4cbe9e64108b2ff2e6108c ""
   "simgui.png" 1390555583 163878 3d296109f2c551d7ad636eba22071c90 ""
   "simgui_mockup.png" 1390555583 365499 ada4015528cab3511efa0955f5cfcec2 ""
-  "vortrag.aux" 1390848765 4928 574659145d694a9430a8e0ea090dabee ""
-  "vortrag.nav" 1390848765 2702 b6cca7969789e6665f2924596c960b21 ""
-  "vortrag.out" 1390848765 272 1a556d392cadce98d3e714220b1c1b8f ""
-  "vortrag.tex" 1390848736 12758 e837a6e9f7c713427c28fac1c1343c09 ""
-  "vortrag.toc" 1390848765 349 14ee2d08b7b92eaa136d4fa74128f417 ""
-  "vortrag.vrb" 1390848765 550 d362eadfe659ff63ff1f8ea4118f8f27 ""
+  "vortrag.aux" 1390854973 4928 574659145d694a9430a8e0ea090dabee ""
+  "vortrag.nav" 1390854973 2702 b6cca7969789e6665f2924596c960b21 ""
+  "vortrag.out" 1390854973 272 1a556d392cadce98d3e714220b1c1b8f ""
+  "vortrag.tex" 1390854971 12749 dfc1544a4ce1a6a9c3efdaf9c00b7a4c ""
+  "vortrag.toc" 1390854973 349 14ee2d08b7b92eaa136d4fa74128f417 ""
+  "vortrag.vrb" 1390854973 550 d362eadfe659ff63ff1f8ea4118f8f27 ""
   (generated)
   "vortrag.vrb"
   "vortrag.aux"
