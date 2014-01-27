@@ -6,17 +6,19 @@ Simulation Starten
 "Mix Server" -> "STOP_AND_GO"
 "Maximum client mix delay" auf 5
 "Minimum client mix delay" auf 6
-M"ix Server" -> "Batch size" auf 0 (wird nicht gehen)
-Hilfe zu "Basic Batch - Batch size" aufmachen
+"Mix Server" -> "Basic Batch"
+"Mix Server" -> "Batch size" auf 0 (wird nicht gehen)
+Hilfe Tab zu "Basic Batch - Batch size" aufmachen
 Hilfe auskoppeln
 Config Tool auskoppeln
 "Mix Server" -> "Batch size" auf 10
 Hilfe schießen
-"Realtime Limit" die Warning zeigen
+"Realtime Limit" die Warning zeigen (Unter General Configuration - Simulation)
 Experiment Speichern (E1.cfg)
 "Simualtion end condition" -> "REAL_TIME_END"
+"Real time limit" auf 0.1
 Experiment Speichern (E2.cfg)
-Multiselection beide Experimente auswählen (E1.cfg / E2.cfg)
+Multiselection beide Experimente auswählen (E1.cfg / E2.cfg in Configuration Selection)
 Simulation Starten
 Rechtsklick Results auskoppeln um besser zu vergleichen können (E1 / E2).
 Fenster Schliessen
