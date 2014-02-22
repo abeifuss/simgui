@@ -31,7 +31,7 @@ public class ClearButtonAction implements ActionListener {
 					"Cleanup Error", JOptionPane.ERROR_MESSAGE);
 		}
 		ConfigChooserPanel.getInstance();
-		ConfigChooserPanel.exportPictureButton.setEnabled(false);
+		ConfigChooserPanel.getExportPictureButton().setEnabled(false);
 		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}
 

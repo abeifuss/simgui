@@ -47,7 +47,7 @@ public class ConfigChooserPanel extends JPanel {
 	private DefaultListModel<File> listModel;
 	JButton startButton;
 	JButton stopButton;
-	static JProgressBar progressBar;
+	private static JProgressBar progressBar;
 
 	JRadioButton defaultPlot;
 	JRadioButton expertPlot;
@@ -57,18 +57,26 @@ public class ConfigChooserPanel extends JPanel {
 	// JButton rightButton = new JButton(">>");
 	// JButton leftButton = new JButton("<<");
 
-	public static JButton exportPictureButton;
-	public static gMixBinding callSimulation;
+	private static JButton exportPictureButton;
+	private static gMixBinding callSimulation;
 	private JButton clearButton;
 
 	private static ConfigChooserPanel instance = null;
 
+	/**
+	 * Constructor
+	 */
 	public ConfigChooserPanel() {
 
 		this.initialize();
 
 	}
 
+	/**
+	 * Singleton
+	 * 
+	 * @return the instance of {@link ConfigChooserPanel}
+	 */
 	public static ConfigChooserPanel getInstance() {
 		if (instance == null) {
 			instance = new ConfigChooserPanel();
@@ -100,6 +108,9 @@ public class ConfigChooserPanel extends JPanel {
 
 	}
 
+	/**
+	 * updates the available experiment configs in the config selection
+	 */
 	public void updateConfigDirectory() {
 		final File folder = new File("etc/experiments/");
 		final File[] listOfFiles = folder.listFiles(new FileFilter() {
@@ -143,10 +154,10 @@ public class ConfigChooserPanel extends JPanel {
 		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
 		JPanel panel = new JPanel(migLayout);
 
-		progressBar = new JProgressBar(0, 100);
-		progressBar.setIndeterminate(true);
-		progressBar.setVisible(false);
-		panel.add(progressBar, "growx,push");
+		setProgressBar(new JProgressBar(0, 100));
+		getProgressBar().setIndeterminate(true);
+		getProgressBar().setVisible(false);
+		panel.add(getProgressBar(), "growx,push");
 		panel.setBorder(new TitledBorder(null, "Simulation Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
 	}
@@ -156,12 +167,12 @@ public class ConfigChooserPanel extends JPanel {
 		MigLayout migLayout = new MigLayout("", "[grow][]", "[grow]");
 		JPanel panel = new JPanel(migLayout);
 
-		this.exportPictureButton = new JButton("Export Graph");
-		this.exportPictureButton.setMnemonic('E');
-		exportPictureButton.addActionListener(new ExportButtonAction());
-		exportPictureButton.setEnabled(false);
+		ConfigChooserPanel.setExportPictureButton(new JButton("Export Graph"));
+		ConfigChooserPanel.getExportPictureButton().setMnemonic('E');
+		getExportPictureButton().addActionListener(new ExportButtonAction());
+		getExportPictureButton().setEnabled(false);
 
-		panel.add(this.exportPictureButton, "cell 0 1,growx");
+		panel.add(ConfigChooserPanel.getExportPictureButton(), "cell 0 1,growx");
 
 		panel.setBorder(new TitledBorder(null, "Export Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
@@ -192,43 +203,6 @@ public class ConfigChooserPanel extends JPanel {
 		panel.add(this.clearButton, "cell 0 2,growx");
 
 		panel.setBorder(new TitledBorder(null, "Simulation Control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		return panel;
-
-	}
-
-	private JPanel createAdditionalPlotOptionsPanel() {
-
-		MigLayout migLayout = new MigLayout("", "[grow][]", "[grow][]");
-		JPanel panel = new JPanel(migLayout);
-		this.radioButtonGroup = new ButtonGroup();
-		this.expertOptions = new JTextField();
-		this.expertOptions.setEnabled(false);
-		panel.add(this.expertOptions, "cell 0 1 2 1,growx");
-
-		this.defaultPlot = new JRadioButton("Default");
-		this.defaultPlot.setSelected(true);
-		this.defaultPlot.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ConfigChooserPanel.getInstance().expertOptions.setEnabled(false);
-			}
-		});
-		this.radioButtonGroup.add(this.defaultPlot);
-
-		panel.add(this.defaultPlot, "flowx,cell 0 0");
-		this.expertPlot = new JRadioButton("Additional Options");
-		this.expertPlot.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ConfigChooserPanel.getInstance().expertOptions.setEnabled(true);
-			}
-		});
-		this.radioButtonGroup.add(this.expertPlot);
-		panel.add(this.expertPlot, "cell 0 0,growx");
-
-		panel.setBorder(new TitledBorder(null, "Additional Plot Options", TitledBorder.LEADING, TitledBorder.TOP, null,
-				null));
-
 		return panel;
 
 	}
@@ -322,20 +296,68 @@ public class ConfigChooserPanel extends JPanel {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public JList<File> getConfigList() {
 		return configList;
 	}
 
+	/**
+	 * @param configList
+	 */
 	public void setConfigList(JList<File> configList) {
 		this.configList = configList;
 	}
 
+	/**
+	 * @return
+	 */
 	public DefaultListModel<File> getListModel() {
 		return listModel;
 	}
 
+	/**
+	 * @param listModel
+	 */
 	public void setListModel(DefaultListModel<File> listModel) {
 		this.listModel = listModel;
+	}
+
+	/**
+	 * @return
+	 */
+	public static JButton getExportPictureButton() {
+		return exportPictureButton;
+	}
+
+	/**
+	 * @param exportPictureButton
+	 */
+	public static void setExportPictureButton(JButton exportPictureButton) {
+		ConfigChooserPanel.exportPictureButton = exportPictureButton;
+	}
+
+	/**
+	 * @return
+	 */
+	public static gMixBinding getCallSimulation() {
+		return callSimulation;
+	}
+
+	/**
+	 * @param callSimulation
+	 */
+	public static void setCallSimulation(gMixBinding callSimulation) {
+		ConfigChooserPanel.callSimulation = callSimulation;
+	}
+
+	public static JProgressBar getProgressBar() {
+		return progressBar;
+	}
+
+	public static void setProgressBar(JProgressBar progressBar) {
+		ConfigChooserPanel.progressBar = progressBar;
 	}
 
 }

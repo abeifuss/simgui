@@ -15,7 +15,7 @@ public class StopButtonAction implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ConfigChooserPanel.getInstance();
-		ConfigChooserPanel.callSimulation.interrupt();
+		ConfigChooserPanel.getCallSimulation().interrupt();
 	}
 
 }

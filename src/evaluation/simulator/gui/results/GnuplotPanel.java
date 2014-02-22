@@ -66,7 +66,7 @@ public class GnuplotPanel extends JPanel {
 			});
 			this.add(svgCanvas, gridBagConstraints);
 			svgCanvas.setURI(f.toURL().toString());
-			ConfigChooserPanel.getInstance().exportPictureButton.setEnabled(true);
+			ConfigChooserPanel.getInstance().getExportPictureButton().setEnabled(true);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

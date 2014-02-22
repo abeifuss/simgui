@@ -20,6 +20,13 @@ import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * {@link JPanel} containing the whole plugin configuration and property
+ * configuration. Has the ability to seperate from main window.
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class PluginPanel extends JScrollPane {
 
@@ -33,6 +40,9 @@ public class PluginPanel extends JScrollPane {
 
 	SimPropRegistry simPropRegistry;
 
+	/**
+	 * Constructor
+	 */
 	public PluginPanel() {
 		this.initPanel();
 	}
@@ -193,6 +203,10 @@ public class PluginPanel extends JScrollPane {
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
+	/**
+	 * updates all components in the plugin selection and takes effect on the
+	 * {@link AccordionEntry}
+	 */
 	public void update() {
 
 		for (Component component : this.pluginSelectionPanel.getComponents()) {
