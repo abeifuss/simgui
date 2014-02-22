@@ -16,11 +16,10 @@ import org.apache.log4j.spi.LoggingEvent;
 import evaluation.simulator.gui.customElements.ConsolePanel;
 
 /**
+ * implements a new Appender for parsing log4j information into the
+ * {@link JTextArea} of the {@link ConsolePanel}.
+ * 
  * @author nachkonvention
- * 
- *         implements a new Appender for parsing log4j information into the
- *         {@link JTextArea} of the {@link ConsolePanel}.
- * 
  */
 public class TextAreaConsoleAppender extends WriterAppender {
 

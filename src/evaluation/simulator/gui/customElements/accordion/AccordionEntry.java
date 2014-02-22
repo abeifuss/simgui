@@ -22,11 +22,10 @@ import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
+ * implements the Accordion like elements in the {@link PluginPanel} for plugin
+ * selection and property configuration
+ * 
  * @author nachkonvention
- * 
- *         implements the Accordion like elements in the {@link PluginPanel} for
- *         plugin selection and property configuration
- * 
  */
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {

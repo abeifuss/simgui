@@ -11,11 +11,10 @@ import evaluation.simulator.gui.customElements.ProgressWorker;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 
 /**
+ * implements the ActionListener for starting the Simulator with the previosuly
+ * chosen config from {@link SimConfigPanel}.
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for starting the Simulator with the
- *         previosuly chosen config from {@link SimConfigPanel}.
- * 
  */
 public class StartButtonAction implements ActionListener {
 

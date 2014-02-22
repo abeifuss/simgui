@@ -16,11 +16,10 @@ import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
+ * implements the ActionListener for loading a configuration file into the
+ * {@link PluginPanel}
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for loading a configuration file into
- *         the {@link PluginPanel}
- * 
  */
 public class LoadButtonAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(LoadButtonAction.class);

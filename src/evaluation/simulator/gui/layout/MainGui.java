@@ -163,7 +163,7 @@ public class MainGui extends JFrame {
 		menuBar.add(mnEdit);
 
 		JMenuItem menuItemStart = new JMenuItem("Start Simulation");
-		menuItemStart.addActionListener(new StartButtonAction(ConfigChooserPanel.getInstance().configList));
+		menuItemStart.addActionListener(new StartButtonAction(ConfigChooserPanel.getInstance().getConfigList()));
 		menuItemStart.setMnemonic('S');
 
 		mnEdit.add(menuItemStart);

@@ -34,6 +34,12 @@ import evaluation.simulator.gui.actionListeners.StartButtonAction;
 import evaluation.simulator.gui.actionListeners.StopButtonAction;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * {@link JPanel} containing Simulator configuration including config selection,
+ * start/stop buttons, export functionality and a {@link JProgressBar}.
+ * 
+ * @author nachkonvention
+ */
 public class ConfigChooserPanel extends JPanel {
 
 	private static final long serialVersionUID = 8399323524494928469L;

@@ -26,8 +26,9 @@ import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
- * @author nachkonvention implements the custom {@link Boolean} configurator for
- *         {@link PluginPanel}.
+ * implements the custom {@link Boolean} configurator for {@link PluginPanel}.
+ * 
+ * @author nachkonvention
  */
 @SuppressWarnings("serial")
 public class BoolConfigElement extends JPanel implements ItemListener, Observer {

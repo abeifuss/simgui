@@ -17,11 +17,10 @@ import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
+ * implements the ActionListener for saving the configuration into a .cfg file
+ * from the {@link PluginPanel}.
+ * 
  * @author nachkonvention
- * 
- *         impleents the ActionListener for saving the configuration into a .cfg
- *         file from the {@link PluginPanel}.
- * 
  */
 public class SaveButtonAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(SaveButtonAction.class);

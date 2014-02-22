@@ -6,11 +6,9 @@ import java.awt.event.ActionListener;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 
 /**
+ * implements the ActionListener for stopping the currently running Simulator.
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for stopping the currently running
- *         Simulator.
- * 
  */
 public class StopButtonAction implements ActionListener {
 

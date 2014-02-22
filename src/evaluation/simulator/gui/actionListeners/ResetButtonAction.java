@@ -10,11 +10,10 @@ import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.customElements.PluginPanel;
 
 /**
+ * implements the ActionListener for resetting the {@link PluginPanel}. By now
+ * it is just updating the config file directory.
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for resetting the {@link PluginPanel}.
- *         By now it is just updating the config file directory.
- * 
  */
 public class ResetButtonAction implements ActionListener {
 

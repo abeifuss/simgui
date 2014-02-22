@@ -23,8 +23,10 @@ import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
- * @author nachkonvention {@link JPanel} constructing the custom type related
- *         configuration elements underneath an unfolded {@link AccordionEntry}.
+ * {@link JPanel} constructing the custom type related configuration elements
+ * underneath an unfolded {@link AccordionEntry}.
+ * 
+ * @author nachkonvention
  */
 @SuppressWarnings("serial")
 public class PropertyPanel extends JPanel {

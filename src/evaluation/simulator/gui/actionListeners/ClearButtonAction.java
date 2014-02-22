@@ -13,10 +13,9 @@ import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.GnuplotPanel;
 
 /**
+ * implements the ActionListener for clearing the Simulator output
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for clearing the Simulator output
- * 
  */
 public class ClearButtonAction implements ActionListener {
 

@@ -18,11 +18,10 @@ import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.GnuplotPanel;
 
 /**
+ * implements the ActionListener for exporting Simulator results into a given
+ * picture format
+ * 
  * @author nachkonvention
- * 
- *         implements the ActionListener for exporting Simulator results into a
- *         given picture format
- * 
  */
 public class ExportButtonAction implements ActionListener {
 	Transcoder t;
