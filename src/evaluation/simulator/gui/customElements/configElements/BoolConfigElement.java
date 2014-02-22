@@ -22,8 +22,13 @@ import javax.swing.text.DefaultCaret;
 
 import net.miginfocom.swing.MigLayout;
 import evaluation.simulator.annotations.property.BoolProp;
+import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention implements the custom {@link Boolean} configurator for
+ *         {@link PluginPanel}.
+ */
 @SuppressWarnings("serial")
 public class BoolConfigElement extends JPanel implements ItemListener, Observer {
 
@@ -34,11 +39,15 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 
 	SimPropRegistry simPropRegistry;
 
-	public BoolConfigElement(BoolProp s) {
+	/**
+	 * @param boolProp
+	 *            the property to configure
+	 */
+	public BoolConfigElement(BoolProp boolProp) {
 
 		simPropRegistry = SimPropRegistry.getInstance();
 
-		this.property = s;
+		this.property = boolProp;
 		simPropRegistry.registerGuiElement(this, property.getPropertyID());
 
 		checkbox = new JCheckBox("enable");
@@ -60,7 +69,7 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 			textarea.setEditable(false);
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
-			textarea.setPreferredSize( new Dimension(10, 25) );
+			textarea.setPreferredSize(new Dimension(10, 25));
 			this.add(textarea, "growx, wmin 10, push, wrap");
 		}
 	}
@@ -70,62 +79,62 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 		simPropRegistry.setValue(this.property.getPropertyID(), this.checkbox.isSelected());
 	}
 
-	// Called when simporp has changed
+	// Called when simprop has changed
 	@Override
 	public void update(Observable observable, Object o) {
 
-		for (Component message : this.messages){
+		for (Component message : this.messages) {
 			this.remove(message);
 		}
-		for (Component icon : this.icons.values()){
+		for (Component icon : this.icons.values()) {
 			this.remove(icon);
 		}
-		
+
 		this.messages.clear();
 		this.icons.clear();
 
 		this.checkbox.setSelected((boolean) simPropRegistry.getValue(property.getPropertyID()).getValue());
 
-		if (property.getWarnings() != null && property.getWarnings().size() > 0){
-			for (String each : property.getWarnings()){
+		if (property.getWarnings() != null && property.getWarnings().size() > 0) {
+			for (String each : property.getWarnings()) {
 				JTextArea text = new JTextArea(each);
 				text.setCaret(new DefaultCaret());
-				text.setBackground( new Color(250,210,115) );
+				text.setBackground(new Color(250, 210, 115));
 				text.setAutoscrolls(false);
 				text.setEditable(false);
 				text.setLineWrap(true);
 				text.setWrapStyleWord(true);
-				text.setPreferredSize( new Dimension(10,25));
-				this.messages.add( text );
+				text.setPreferredSize(new Dimension(10, 25));
+				this.messages.add(text);
 				JLabel warning = new JLabel(new ImageIcon("etc/img/icons/warning/warning_16.png"));
-				this.icons.put( text, warning);
+				this.icons.put(text, warning);
 			}
 		}
-		
-		if (property.getErrors() != null && property.getErrors().size() > 0){
-			for (String each : property.getErrors()){
+
+		if (property.getErrors() != null && property.getErrors().size() > 0) {
+			for (String each : property.getErrors()) {
 				JTextArea text = new JTextArea(each);
 				text.setCaret(new DefaultCaret());
-				text.setBackground( new Color(250,150,135) );
+				text.setBackground(new Color(250, 150, 135));
 				text.setAutoscrolls(false);
 				text.setEditable(false);
 				text.setLineWrap(true);
 				text.setWrapStyleWord(true);
-				text.setPreferredSize( new Dimension(10,25));
-				this.messages.add( text );
+				text.setPreferredSize(new Dimension(10, 25));
+				this.messages.add(text);
 				JLabel error = new JLabel(new ImageIcon("etc/img/icons/error/error_16.png"));
 				this.icons.put(text, error);
 
 			}
 		}
-		
-		for (JTextArea message : this.messages){
+
+		for (JTextArea message : this.messages) {
 			DefaultCaret caret = (DefaultCaret) message.getCaret();
 			caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 			message.setCaret(caret);
 			message.setAutoscrolls(false);
-			this.add(this.icons.get(message) , "push, wmin 16, wrap");
-			this.add(message, "growx, push, wmin 10" );
+			this.add(this.icons.get(message), "push, wmin 16, wrap");
+			this.add(message, "growx, push, wmin 10");
 		}
 
 		updateUI();
