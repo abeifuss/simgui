@@ -36,12 +36,9 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 public class ConfigChooserPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8399323524494928469L;
-	public JList<File> configList;
-	public DefaultListModel<File> listModel;
+	private JList<File> configList;
+	private DefaultListModel<File> listModel;
 	JButton startButton;
 	JButton stopButton;
 	static JProgressBar progressBar;
@@ -113,27 +110,27 @@ public class ConfigChooserPanel extends JPanel {
 
 				for (File f : listOfFiles) {
 					boolean insertFlag = true;
-					for (int i = 0; i < ConfigChooserPanel.getInstance().configList.getModel().getSize(); i++) {
-						if (ConfigChooserPanel.getInstance().configList.getModel().getElementAt(i).equals(f)) {
+					for (int i = 0; i < ConfigChooserPanel.getInstance().getConfigList().getModel().getSize(); i++) {
+						if (ConfigChooserPanel.getInstance().getConfigList().getModel().getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
-					for (int i = 0; i < ConfigChooserPanel.getInstance().configList.getModel().getSize(); i++) {
-						if (ConfigChooserPanel.getInstance().configList.getModel().getElementAt(i).equals(f)) {
+					for (int i = 0; i < ConfigChooserPanel.getInstance().getConfigList().getModel().getSize(); i++) {
+						if (ConfigChooserPanel.getInstance().getConfigList().getModel().getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
 					if (insertFlag) {
-						ConfigChooserPanel.getInstance().listModel.addElement(f);
+						ConfigChooserPanel.getInstance().getListModel().addElement(f);
 					}
 				}
 			}
 		});
-		this.configList.repaint();
+		this.getConfigList().repaint();
 	}
 
 	private JPanel createStatusPanel() {
@@ -173,7 +170,7 @@ public class ConfigChooserPanel extends JPanel {
 		this.startButton = new JButton("Start Simulation");
 		this.startButton.setMnemonic('S');
 
-		this.startButton.addActionListener(new StartButtonAction(configList));
+		this.startButton.addActionListener(new StartButtonAction(getConfigList()));
 
 		this.stopButton = new JButton("Stop Simulation");
 		this.stopButton.setMnemonic('T');
@@ -234,22 +231,22 @@ public class ConfigChooserPanel extends JPanel {
 
 		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
 		JPanel panel = new JPanel(migLayout);
-		this.listModel = new DefaultListModel<File>();
-		this.configList = new JList<File>(this.listModel);
-		this.configList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		this.setListModel(new DefaultListModel<File>());
+		this.setConfigList(new JList<File>(this.getListModel()));
+		this.getConfigList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		this.configList.addMouseListener(new MouseAdapter() {
+		this.getConfigList().addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent e) {
-				final int[] selection = configList.getSelectedIndices();
-				final int hoverIndex = configList.locationToIndex(e.getPoint());
-				System.out.println(configList.getModel().getElementAt(hoverIndex) + " selected");
+				final int[] selection = getConfigList().getSelectedIndices();
+				final int hoverIndex = getConfigList().locationToIndex(e.getPoint());
+				System.out.println(getConfigList().getModel().getElementAt(hoverIndex) + " selected");
 				if (SwingUtilities.isRightMouseButton(e)) {
 					JPopupMenu menu = new JPopupMenu();
 					JMenuItem item = new JMenuItem("Load into config tool");
 					item.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							File file = configList.getModel().getElementAt(hoverIndex);
+							File file = getConfigList().getModel().getElementAt(hoverIndex);
 							SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 							SimulationConfigService simulationConfigService = new SimulationConfigService(
 									simPropRegistry);
@@ -270,7 +267,7 @@ public class ConfigChooserPanel extends JPanel {
 								newIndexSelection[i] = each;
 								i++;
 							}
-							configList.setSelectedIndices(newIndexSelection);
+							getConfigList().setSelectedIndices(newIndexSelection);
 						}
 					});
 					JMenuItem delItem = new JMenuItem("Delete from Selection");
@@ -287,7 +284,7 @@ public class ConfigChooserPanel extends JPanel {
 								newIndexSelection[i] = each;
 								i++;
 							}
-							configList.setSelectedIndices(newIndexSelection);
+							getConfigList().setSelectedIndices(newIndexSelection);
 						}
 					});
 					menu.add(item);
@@ -303,12 +300,12 @@ public class ConfigChooserPanel extends JPanel {
 					} else {
 						menu.add(delItem);
 					}
-					menu.show(configList, e.getX(), e.getY());
+					menu.show(getConfigList(), e.getX(), e.getY());
 				}
 			}
 		});
 
-		JScrollPane scrollPane = new JScrollPane(this.configList);
+		JScrollPane scrollPane = new JScrollPane(this.getConfigList());
 
 		panel.add(scrollPane, "cell 0 0,growx,growy");
 		panel.add(new JLabel("* Multiple selection is possible"), "cell 0 1,growx,growy");
@@ -317,6 +314,22 @@ public class ConfigChooserPanel extends JPanel {
 				null));
 		return panel;
 
+	}
+
+	public JList<File> getConfigList() {
+		return configList;
+	}
+
+	public void setConfigList(JList<File> configList) {
+		this.configList = configList;
+	}
+
+	public DefaultListModel<File> getListModel() {
+		return listModel;
+	}
+
+	public void setListModel(DefaultListModel<File> listModel) {
+		this.listModel = listModel;
 	}
 
 }

@@ -18,10 +18,10 @@ public class ProgressWorker extends SwingWorker {
 
 		ConfigParser configParser = new ConfigParser();
 
-		String[][] params = new String[ConfigChooserPanel.getInstance().configList.getSelectedValuesList().size()][1];
+		String[][] params = new String[ConfigChooserPanel.getInstance().getConfigList().getSelectedValuesList().size()][1];
 
 		int i = 0;
-		for (File file : ConfigChooserPanel.getInstance().configList.getSelectedValuesList()) {
+		for (File file : ConfigChooserPanel.getInstance().getConfigList().getSelectedValuesList()) {
 			params[i][0] = configParser.cleanupConfigurationForSimulator(file);
 
 			ConfigChooserPanel.getInstance().callSimulation = gMixBinding.getInstance();
