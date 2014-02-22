@@ -11,15 +11,20 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.batik.transcoder.Transcoder;
-import org.apache.log4j.Logger;
 
 import com.google.common.io.Files;
 
 import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.GnuplotPanel;
 
+/**
+ * @author nachkonvention
+ * 
+ *         implements the ActionListener for exporting Simulator results into a
+ *         given picture format
+ * 
+ */
 public class ExportButtonAction implements ActionListener {
-	private static Logger logger = Logger.getLogger(ExportButtonAction.class);
 	Transcoder t;
 
 	@Override
@@ -32,7 +37,7 @@ public class ExportButtonAction implements ActionListener {
 
 		int state = fileChooser.showSaveDialog(null);
 
-		if (state == fileChooser.APPROVE_OPTION) {
+		if (state == JFileChooser.APPROVE_OPTION) {
 
 			String ext = "";
 

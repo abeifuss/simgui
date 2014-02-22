@@ -12,6 +12,12 @@ import evaluation.simulator.gui.helper.IOActions;
 import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.GnuplotPanel;
 
+/**
+ * @author nachkonvention
+ * 
+ *         implements the ActionListener for clearing the Simulator output
+ * 
+ */
 public class ClearButtonAction implements ActionListener {
 
 	@Override
@@ -25,7 +31,8 @@ public class ClearButtonAction implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Could not clean up Output directory " + GnuplotPanel.outputFolder,
 					"Cleanup Error", JOptionPane.ERROR_MESSAGE);
 		}
-		ConfigChooserPanel.getInstance().exportPictureButton.setEnabled(false);
+		ConfigChooserPanel.getInstance();
+		ConfigChooserPanel.exportPictureButton.setEnabled(false);
 		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}
 

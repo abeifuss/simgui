@@ -12,8 +12,16 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
+import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention
+ * 
+ *         implements the ActionListener for loading a configuration file into
+ *         the {@link PluginPanel}
+ * 
+ */
 public class LoadButtonAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(LoadButtonAction.class);
 
@@ -21,8 +29,6 @@ public class LoadButtonAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		logger.log(Level.DEBUG, "Load config");
 
-		// Open FileChooser and load config file. Check whether config file is
-		// of expected type.
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("etc/experiments/"));
 		fc.setFileFilter(new FileFilter() {

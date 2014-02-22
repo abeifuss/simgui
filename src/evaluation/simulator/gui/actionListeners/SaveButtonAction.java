@@ -12,9 +12,17 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
+import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention
+ * 
+ *         impleents the ActionListener for saving the configuration into a .cfg
+ *         file from the {@link PluginPanel}.
+ * 
+ */
 public class SaveButtonAction implements ActionListener {
 	private static Logger logger = Logger.getLogger(SaveButtonAction.class);
 

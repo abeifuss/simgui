@@ -8,11 +8,23 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import evaluation.simulator.gui.customElements.ProgressWorker;
+import evaluation.simulator.gui.customElements.SimConfigPanel;
 
+/**
+ * @author nachkonvention
+ * 
+ *         implements the ActionListener for starting the Simulator with the
+ *         previosuly chosen config from {@link SimConfigPanel}.
+ * 
+ */
 public class StartButtonAction implements ActionListener {
 
 	JList<File> configList;
 
+	/**
+	 * @param configList
+	 *            the list of config files selected in {@link SimConfigPanel}
+	 */
 	public StartButtonAction(JList<File> configList) {
 		this.configList = configList;
 	}
