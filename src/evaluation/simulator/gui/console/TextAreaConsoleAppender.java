@@ -2,6 +2,7 @@ package evaluation.simulator.gui.console;
 
 import java.awt.Color;
 
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -12,17 +13,27 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 
+import evaluation.simulator.gui.customElements.ConsolePanel;
+
+/**
+ * @author nachkonvention
+ * 
+ *         implements a new Appender for parsing log4j information into the
+ *         {@link JTextArea} of the {@link ConsolePanel}.
+ * 
+ */
 public class TextAreaConsoleAppender extends WriterAppender {
 
 	static Logger logger = Logger.getLogger(TextAreaConsoleAppender.class);
 	private static javax.swing.JTextPane logTextPane = null;
 
-
-	/** Set the target JTextPane for the logging information to appear. */
+	/**
+	 * @param logTextPane
+	 *            the TextArea for arsing log4j information to
+	 */
 	public void setTextArea(javax.swing.JTextPane logTextPane) {
 		TextAreaConsoleAppender.logTextPane = logTextPane;
 	}
-
 
 	@Override
 	public void append(LoggingEvent loggingEvent) {
@@ -49,15 +60,14 @@ public class TextAreaConsoleAppender extends WriterAppender {
 					}
 
 					try {
-						styledDocMainLowerText.insertString(styledDocMainLowerText.getLength(),
-								message, style);
+						styledDocMainLowerText.insertString(styledDocMainLowerText.getLength(), message, style);
 					} catch (BadLocationException e) {
 						logger.fatal(e);
 					}
 				} catch (Exception e) {
-					
+
 				}
-				
+
 			}
 		});
 	}
