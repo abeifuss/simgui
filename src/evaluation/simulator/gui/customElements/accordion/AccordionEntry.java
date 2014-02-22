@@ -18,8 +18,16 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention
+ * 
+ *         implements the Accordion like elements in the {@link PluginPanel} for
+ *         plugin selection and property configuration
+ * 
+ */
 @SuppressWarnings("serial")
 public class AccordionEntry extends JPanel {
 
@@ -32,6 +40,14 @@ public class AccordionEntry extends JPanel {
 	private final PropertyPanel propertyPanel;
 	private final Map<String, String> model;
 
+	/**
+	 * @param name
+	 *            the name of the entry
+	 * @param jComboBox
+	 *            the JComboBox offering the plugin selection
+	 * @param map
+	 *            Map holding layer as key and plugin as value
+	 */
 	public AccordionEntry(String name, JComboBox<String> jComboBox, Map<String, String> map) {
 		this.localName = name;
 		this.model = map;
@@ -131,7 +147,10 @@ public class AccordionEntry extends JPanel {
 		this.repaint();
 	}
 
-	public void setVibility(boolean b) {
+	/**
+	 * folds/unfolds the {@link AccordionEntry}.
+	 */
+	public void setVibility() {
 		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 		propertyPanel.setVisible(true);
 		comboBox.setVisible(true);

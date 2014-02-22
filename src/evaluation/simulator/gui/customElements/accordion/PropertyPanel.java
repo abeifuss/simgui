@@ -1,14 +1,12 @@
 package evaluation.simulator.gui.customElements.accordion;
 
 import java.awt.Component;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JPanel;
 
-
 import net.miginfocom.swing.MigLayout;
-
 import evaluation.simulator.annotations.property.BoolProp;
 import evaluation.simulator.annotations.property.DoubleProp;
 import evaluation.simulator.annotations.property.FloatProp;
@@ -21,83 +19,95 @@ import evaluation.simulator.gui.customElements.configElements.FloatConfigElement
 import evaluation.simulator.gui.customElements.configElements.IntConfigElement;
 import evaluation.simulator.gui.customElements.configElements.StringConfigElement;
 import evaluation.simulator.gui.helper.SimpropComparator;
-import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author nachkonvention {@link JPanel} constructing the custom type related
+ *         configuration elements underneath an unfolded {@link AccordionEntry}.
+ */
 @SuppressWarnings("serial")
 public class PropertyPanel extends JPanel {
 
 	String localName;
-	
-	public PropertyPanel( String name ) {
+
+	/**
+	 * @param name
+	 *            the name
+	 */
+	public PropertyPanel(String name) {
 		super();
 		this.localName = name;
-		
-		MigLayout migLayout = new MigLayout("","[grow]","[grow]");
+
+		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
 		this.setLayout(migLayout);
-		
+
 		loadContent();
 	}
-	
-	private void loadContent(){
-		
+
+	private void loadContent() {
+
 		// Select all global SimProps for the given plugin layer
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 		String pluginLayer = this.localName;
-		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getGlobalSimPropertiesByPluginLayer(pluginLayer);
-		Collections.sort(tmpListOfAllVisibleSimProperties,new SimpropComparator());
-		
-		
+		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry
+				.getGlobalSimPropertiesByPluginLayer(pluginLayer);
+		Collections.sort(tmpListOfAllVisibleSimProperties, new SimpropComparator());
+
 		// add content
-		for (SimProp simProp : tmpListOfAllVisibleSimProperties ){
-			if ( simProp.getValueType() == Integer.class ){
-				this.add( new IntConfigElement((IntProp) simProp), "growx, wrap");
+		for (SimProp simProp : tmpListOfAllVisibleSimProperties) {
+			if (simProp.getValueType() == Integer.class) {
+				this.add(new IntConfigElement((IntProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Float.class ){
-				this.add( new FloatConfigElement((FloatProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Float.class) {
+				this.add(new FloatConfigElement((FloatProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Double.class ){
-				this.add( new DoubleConfigElement((DoubleProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Double.class) {
+				this.add(new DoubleConfigElement((DoubleProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Boolean.class ){
-				this.add( new BoolConfigElement((BoolProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Boolean.class) {
+				this.add(new BoolConfigElement((BoolProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == String.class ){
-				this.add( new StringConfigElement((StringProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == String.class) {
+				this.add(new StringConfigElement((StringProp) simProp), "growx, wrap");
 			}
 		}
 		DependencyChecker.checkAll(simPropRegistry);
 	}
-	
-	public void realoadContent(String pluginName){
-		for ( Component c : this.getComponents()){
+
+	/**
+	 * @param pluginName
+	 *            the plugin name
+	 */
+	public void realoadContent(String pluginName) {
+		for (Component c : this.getComponents()) {
 			this.remove(c);
 		}
-		
+
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(pluginName, this.localName);
-		Collections.sort(tmpListOfAllVisibleSimProperties,new SimpropComparator());
-		
-		for (SimProp simProp : tmpListOfAllVisibleSimProperties ){
-			if ( simProp.getValueType() == Integer.class ){
-				this.add( new IntConfigElement((IntProp) simProp), "growx, wrap");
+		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry.getSimPropertiesByPluginOrPluginLayer(
+				pluginName, this.localName);
+		Collections.sort(tmpListOfAllVisibleSimProperties, new SimpropComparator());
+
+		for (SimProp simProp : tmpListOfAllVisibleSimProperties) {
+			if (simProp.getValueType() == Integer.class) {
+				this.add(new IntConfigElement((IntProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Float.class ){
-				this.add( new FloatConfigElement((FloatProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Float.class) {
+				this.add(new FloatConfigElement((FloatProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Double.class ){
-				this.add( new DoubleConfigElement((DoubleProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Double.class) {
+				this.add(new DoubleConfigElement((DoubleProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == Boolean.class ){
-				this.add( new BoolConfigElement((BoolProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == Boolean.class) {
+				this.add(new BoolConfigElement((BoolProp) simProp), "growx, wrap");
 			}
-			if ( simProp.getValueType() == String.class ){
-				this.add( new StringConfigElement((StringProp) simProp), "growx, wrap");
+			if (simProp.getValueType() == String.class) {
+				this.add(new StringConfigElement((StringProp) simProp), "growx, wrap");
 			}
 		}
-		
-//		loadContent();
+
+		// loadContent();
 	}
 
 }
