@@ -26,17 +26,30 @@ import evaluation.simulator.gui.actionListeners.SaveButtonAction;
 import evaluation.simulator.gui.actionListeners.StartButtonAction;
 import evaluation.simulator.gui.actionListeners.StopButtonAction;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
+import evaluation.simulator.gui.customElements.SimConfigPanel;
+import evaluation.simulator.gui.customElements.SimHelpPanel;
 import evaluation.simulator.gui.helper.IOActions;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
 import evaluation.simulator.gui.results.GnuplotPanel;
 import evaluation.simulator.gui.service.GuiService;
 
+/**
+ * Putting together all GUI elementes like configuration, menu and tabs
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class MainGui extends JFrame {
 
 	private static MainGui instance = null;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link MainGui}
+	 */
 	public static MainGui getInstance() {
 		if (instance == null) {
 			instance = new MainGui();
@@ -66,6 +79,9 @@ public class MainGui extends JFrame {
 	private int mainGuiXPos;
 	private int mainGuiYPos;
 
+	/**
+	 * Constructor
+	 */
 	public MainGui() {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.initialize();
@@ -221,6 +237,9 @@ public class MainGui extends JFrame {
 		this.frame.setVisible(true);
 	}
 
+	/**
+	 * Close the GUI
+	 */
 	public void onClose() {
 		System.out.println("Closing...");
 		try {
@@ -242,7 +261,12 @@ public class MainGui extends JFrame {
 		UserConfigService.setMAINGUI_YPOS(this.frame.getY());
 	}
 
-	// (De)seperate the configuration tool
+	/**
+	 * De/Separate the {@link SimConfigPanel} into the {@link ToolFrame}
+	 * 
+	 * @param b
+	 *            separate or not
+	 */
 	public void toogleConfTool(boolean b) {
 		if (b) {
 			this.splitPane.setLeftComponent(ToolFrame.getInstance().getPanel());
@@ -251,17 +275,18 @@ public class MainGui extends JFrame {
 		}
 	}
 
-	// (De)seperate the help tool
+	/**
+	 * De/Seperate the {@link SimHelpPanel} into the {@link HelpFrame}
+	 * 
+	 * @param b
+	 *            separate or not
+	 */
 	public void toogleHelpTool(boolean b) {
 		if (b) {
 			this.tabbedPane.addTab("Help", this.helpFrame.getPanel());
 		} else {
 			this.tabbedPane.remove(this.helpFrame.getPanel());
 		}
-	}
-
-	public void update() {
-		// this.simulationTab.update();
 	}
 
 }

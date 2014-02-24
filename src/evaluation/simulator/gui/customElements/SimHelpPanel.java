@@ -5,22 +5,32 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import org.apache.log4j.Logger;
-
+/**
+ * {@link JPanel} putting together {@link SimHelpContentPanel} and
+ * {@link SimHelpMenuPanel}
+ * 
+ * @author nachkonvention
+ * 
+ */
 public class SimHelpPanel extends JPanel {
 
-	private static Logger logger = Logger.getLogger(SimHelpContentPanel.class);
+	private static final long serialVersionUID = 1L;
 
 	private static SimHelpPanel instance;
 
-	public static SimHelpPanel getInstance(){
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimHelpPanel}
+	 */
+	public static SimHelpPanel getInstance() {
 		if (instance == null) {
 			instance = new SimHelpPanel();
 		}
 		return instance;
 	}
 
-	private SimHelpPanel(){
+	private SimHelpPanel() {
 		this.initialize();
 	}
 
@@ -34,7 +44,7 @@ public class SimHelpPanel extends JPanel {
 
 		splitPlane.setLeftComponent(navigation);
 		splitPlane.setRightComponent(content);
-		this.add(splitPlane,BorderLayout.CENTER);
+		this.add(splitPlane, BorderLayout.CENTER);
 	}
 
 }
