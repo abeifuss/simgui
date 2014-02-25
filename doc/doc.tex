@@ -142,14 +142,14 @@ BASIC_BATCH_BATCH_SIZE = 100
 Eine Hauptaufgabe unserer Arbeit bestand nun darin eine geeignete Abbildung zu finden, die es erlaubt die Inhalte der Konfigurationsdatei grafisch darzustellen. Es zeigte sich, dass hierfür eine hierarchische Struktur mit drei Ebenen geeignet ist (vergleiche Abb. \ref{fig:guielements}).
 
 \begin{itemize}
-	\item Layer: Die Auswahl des Layers legt fest, welches Plugin als Implementation für einen bestimmten Software-Layer während der Simulation verwendet werden soll. Die einzelnen Layer des gMix Simulators können in Abschnitt \ref{sub:gmix} nachgelesen werden. 
+	\item (Plugin)Layer: Die Auswahl des Layers legt fest, welches Plugin als Implementation für einen bestimmten Software-Layer während der Simulation verwendet werden soll. Die einzelnen Layer des gMix Simulators können in Abschnitt \ref{sub:gmix} nachgelesen werden. 
 	\item Plugin: Als Plugin wird eine in sich geschlossene Implementation einer bestimmten Funktionalität verstanden. Jeder Layer setzt eine gewisse Schnittstelle (für die auf dem Layer agierenden Plugin) voraus, legt dabei jedoch nicht fest, wie die Implementation selbst auszusehen hat.
 	\item Property: Je nach Implementation benötigt ein Plugin Parameter, um gewisse interne Variablen zu konfigurieren. Anzahl, Typ und zulässige Werte dieser Parameter hängen jedoch mit der Implementation des Plugins zusammen und müssen von dem Experimentator festgelegt werden. Zu diesem Zweck muss ein Plugin je Parameter eine Property definieren, die der Experimentator schließlich setzen darf.
 \end{itemize} 
 
 Die Terminologie welche wir für die EDF verwenden ist die gleiche wie zuvor, nur dass es dort keine \emph{Namen (names)} sondern \emph{Schlüssel (keys)} gibt. Der Unterschied ist, dass sich Namen immer auf die Darstellung innerhalb von GUI-Elementen beziehen, währen sich \emph{Schlüssel} auf die eindeutigen Strings in den EDFs beziehen.
 
-Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene (Layer) des Mix-Servers (bzw. der Ausgabestrategie - Output Strategy) argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin. Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht nicht aus der EDF hervor, sondern ist im Code des Simulators verankert).\\
+Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey (kurz: LayerKey) für das Plugin, welches auf der Ebene \emph{Output Strategy} (EDF) bzw.  \emph{Mix-Servers} (GUI) argiert. In der Experiment-Konfiguration bildet der LayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin. Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht jedoch nicht aus der EDF hervor, sondern ist im Code des Simulators bzw. der Plugins definiert).\\
 
 Nachdem nun die grundlegenden Terminologien eingeführt wurden, wollen wir die Annotationen genauer betrachten, welche den Aufbau der GUI bestimmen. Wir gehen dabei \emph{bottom-up} vor, da weniger Informationen vorweggenommen werden müssen und die Argumentation somit für den Leser ein wenig verständlicher sein sollte.
 
@@ -284,11 +284,16 @@ In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt 
 \label{fig:callgraph}
 \end{figure}
 
+Die GUI-Erweiterung für den gMix-Simulator besteht im Grunde aus zwei verschiedenen Arten von Komponenten. Zum einen gibt es die Dienste (grün hinterlegt) und andererseits gibt es die grafischen Elemente (orange hinterlegt). Die Dienste werden dabei von den grafischen Elementen verwendet um auf den Daten (z.B. SimProps) zu operieren. Somit sind Daten und Darstellung gemäß \emph{Model-View-Control Konzept} voneinander getrennt.\\
+
+Der \emph{GuiLauncher} beinhaltet die \emph{main} Methode und stellt damit den Einstiegspunkt bei starten der GUI dar. Der \emph{GuiLauncher} instanziiert als erstes die \emph{SimPropRegistry}, welche die Annotationen in dem Code des \emph{gMix} (blau hinterlegt) ausließt. Anschließend wird ein initialer Check durch den \emph{DependencyChecker} durchgeführt. Im Anschluss wird der \emph{GuiService} instantiiert. Dieser erstellt als erstes Instanzen von \emph{MainGui}, \emph{ConfigFrame} und \emph{HelpFrame}. Danach wird mittels des \emph{UserConfigService} die 
+
+Nachdem dieses geschehen ist, greift der \emph{SimPropRegistry} über den \emph{SimulationConfigService} auf eine vordefiniertes EDF zu (etc/conf/experiment\_template.cfg) und ließt die Werte in die Properties ein. Bei jeder Änderung eines SimProp-Wertes checkt der \emph{DependencyChecker}, ob die Konfiguration noch valide ist.
 % subsubsection uebersicht (end)
 
 \subsection{Wichtige Komponenten} % (fold)
 \label{ssub:einzelne_komponenten}
-In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt, welche teilweise in Abbildung \ref{fig:callgraph} schon dargestellt wurden.
+In diesem Unterabschnitt werden nun die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} noch einmal ausführlich behandelt.
 
 \subsubsection{SimPropRegistry}
 \label{sssub:simpropregistry}
@@ -308,7 +313,7 @@ Die \emph{SimPropRegistry} selbst ist als Singleton implementiert. Der Zugriff a
 
 \subsubsection{SimProp} % (fold)
 \label{ssub:simprop}
-Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann. Die Felder der SimProp Unterklassen wurden bereits in  \\
+Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann. Die Felder der SimProp Unterklassen wurden bereits in Abschnitt \ref{sub:annotations} beschrieben. \\
 
 \begin{figure}[!htp]
 \begin{tikzpicture}
@@ -328,7 +333,7 @@ Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse f�
 \label{fig:field_annotation}
 \end{figure}
 
- Obwohl alle Typen sehr viele Gemeinsamkeiten aufweisen, ist eine Typunterscheidung notwendig, da je nach Typ sich die Annotations ein klein wenig unterscheiden (siehe \ref{ssub:feld_annotation}). So ergibt es beispielsweise keinen Sinn, einem \emph{boolean} oder \emph{String} einen Minimal- oder Maximalwert zuweisen zu wollen, während dieses bei \emph{int}, \emph{float} und \emph{double} durchaus sinnvoll erscheint. Ein weiterer Vorteil ist, dass die Typkonversion und die Prüfung auf gültige Eingaben (sowie die Fehlerbehandlung) auch in die Unterklassen ausgelagert werden können, was der Lesbarkeit des Codes sehr dienlich ist. 
+ Obwohl alle Typen sehr viele Gemeinsamkeiten aufweisen, ist eine Typunterscheidung notwendig, da je nach Typ sich die Annotations ein klein wenig unterscheiden (siehe \ref{ssub:feld_annotation}). So ergibt es beispielsweise keinen Sinn, einem \emph{Boolean} oder \emph{String} einen Minimal- oder Maximalwert zuweisen zu wollen, während dieses bei \emph{Integer}, \emph{Float} und \emph{Double} durchaus sinnvoll erscheint. Ein weiterer Vorteil ist, dass die Typkonversion und die Prüfung auf gültige Eingaben (sowie die Fehlerbehandlung) auch in die Unterklassen ausgelagert werden können, was der Lesbarkeit des Codes sehr dienlich ist. 
 
 \subsubsection{UserConfigService} % (fold)
 \label{ssub:userconfigservice}
@@ -400,7 +405,19 @@ Das \emph{MigLayout} ist eine OpenSource Entwicklung, die gerade für große GUI
 \end{itemize}
 
 Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welhe am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppen von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
-Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
+Abbildungen \ref{fig:gui1} und \ref{fig:gui2} zeigen die fertige GUI des gMix Simulators. Abbildung \ref{fig:gui1} zeigt \emph{Configuration View, Simulation View, Konsole} und \emph{Results View}. In Abbildung \ref{fig:gui2} ist zusätzlich noch der \emph{Help View} zu sehen. Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
+
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth]{img/gmixGuiSimulator}
+\caption{gMix GUI I}
+\label{fig:gui1}
+\end{figure}
+
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth]{img/gMixGuiHelp}
+\caption{gMix GUI II}
+\label{fig:gui2}
+\end{figure}
 
 \subsubsection{Configuration View} % (fold)
 \label{ssub:configview}
@@ -420,30 +437,42 @@ Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \
  \item \emph{Integer} wird über einen Spinner konfiguriert. 
  \item \emph{Boolean} wird mit einer Checkbox konfiguriert.
  \end{itemize}
- Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. \\
+ Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. Falsche WErteingaben werden mit Hilfe des Dependency Checkers (vgl. \ref{sssub:dependencychecker}) verhindert. \\
  Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
-
  Den letzten Abschnitt im \emph{Configuration View} bilden die allgemeinen Einstellungen zur Simulation und dem Plottype. Diese wurden ebenfalls als \emph{AccordionEntry} dargestellt um die Übersichtlichkeit zu bewahren. Der Eintrag Simulation bietet beispielsweise die Option den Endzeitpunkt einer Simulation zu konfigurieren. Unter dem \emph{AccordionEntry} Plottype lässt sich unter anderem das Plotskript für Gnuplot definieren.\\
-
+ Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{Accordion Entries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
  Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{AccordionEntries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
-
  Zur Unterstützung der Übersichtlichkeit bietet die GUI die Möglichkeit den \emph{Configuration View} vom Hauptfenster auszukoppeln. ies ist besonders hilfreich wenn man z.B. mit mehreren Monitoren abeitet oder das Hauptfenster ohne die Konfiguration betrachten möchte. Dabei wird ein neues Fenster erzeugt, welches nur den \emph{Configuration View} enthält.
 
 \subsubsection{Simulation View} % (fold)
 \label{ssub:simulationview}
 Der \emph{Simulation View} lässt den Nutzer seine vorher gespeicherte Konfiguration ausführen und generiert direkt einen Graphen mittels Gnuplot. Dadurch sind die Ergbnisse der Simulation sofort einzusehen. Der \emph{Simulation View} besteht aus drei Komponenten. AUf der linken Seite sind die vorhandenen Konfigurationsdateien zu sehen. Diese können per Multiselect (d.h. mehrere auf einmal) in der \emph{Configuration Selection} ausgewählt werden. Mit Hilfe der \emph{Simulation Control} kann die Simulation gestartet (\emph{Start Simulation}) oder angehalten (\emph{Stop Simulation}) werden. Die generierten Ergebnisse können mittels \emph{Clear Results} gelöscht werden. Zur Laufzeit des Programms werden die generierten Dateien jedoch nicht gelöscht, sondern nur aus der Anzeige entfernt. Über \emph{Export Results} lassen sich generierte Graphen in zwei verschiedene Formate expertieren. Zur Verfügung stehen .png und .eps. Beim Start einer Simulation erscheint im \emph{Simulation Status} ein Fortschrittsbalken, der signalisiert, dass die Simulation im Gange ist. \\
-
 Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hälfte die Konsole (siehe \ref{ssub:consoleview}). Darunter ist der \emph{Result View} (siehe \ref{ssub:resultview}) angesiedelt.
-
 
 \subsubsection{Result View} % (fold)
 \label{ssub:resultview}
-
-\subsubsection{Help View} % (fold)
-\label{ssub:helpview}
+Der \emph{Result View} präsentiert die Ergebnisse der zuvor ausgewählten Simulation. In der vorliegenden Version der gMix Simulator GUI wird Gnuplot zum rendern der Ergebnisse verwendet. Nach erfolgreicher Simulation wird im \emph{Result View} ein Tab erzeugt, der den dazugehörigen Graphen anzeigt. Ergebnisse werden in der Reihenfolge generiert, wie sie von oben nach unten in der Liste der \emph{Configuration Selection} ausgewählt wurden. Zusätzlich gibt die Legende der Graphen Auskunft um welche Simulation es sich handelt. Die Ergebnisse werden mittels des zuvor definierten Plotskripts erstellt. Gnuplot liefert das Ergebnis als Vektorgrafik, damit diese in der GUI ordentlich skaliert. Über die in \ref{ssub:simulationview} beschriebene Funktion lässt sich der Graph auch in andere Formate exportieren und speichern. Löschen lassen sich erstellte Ergebnisse mit Hilfe des Buttons \emph{Clear Results}. Um die Ergebnisse vergrößert zu betrachten genügt ein Rechtsklick auf das Ergebnis um über das Menü den Graphen von der GUI zu entkoppeln. So können mehrere Ergebnisse gleichzeitig vergrößert, entkoppelt und gegeneinander gestellt werden. 
 
 \subsubsection{Konsole} % (fold)
 \label{ssub:consoleview}
+Die \emph{Konsole} der gMix Simulator GUI gibt Auskunft über den aktuellen Status der GUI und den Fortschritt der Simulation. Speziell für diese Zwecke wurde der Logger \emph{log4j} von Apache um einen Appender erweitert, welcher bei einem bestimmten Loglevel in die \emph{Konsole} schreibt. Somit lassen sich die Nachrichten auf der \emph{Konsole} von Nachrichten, die in logs gespeichert werden unterscheiden.
+
+\subsubsection{Help View} % (fold)
+\label{ssub:helpview}
+Der \emph{Help View} bietet dem Anwender Unterstützung bei der Benutzung der GUI. Ausgehend von den registrierten Plugins wird die Hilfe angelehnt an die Anordnung der \emph{Accordion Entries} aufgebaut. Dabei entsteht eine Baumstruktur, die mittels \emph{JTree} umgesetzt wurde. Als Blätter des \emph{JTree} werden die verfügbaren Plugins aufgezeigt. Wählt man ein Element aus öffnet die GUI eine HTML-Datei, welche zuvor vom Pluginentwickler angelegt wurde. Dabei ist zu beachten, dass die HTML-Datei den gleichen Namen wie der Plugin-Key hat. Somit werden Kollisionen vermieden und eine eindeutige Zuordnung von Plugin zu Hilfe erstellt. Der \emph{Help View} lässt sich wie der \emph{Configuration View} auskoppeln um das gleichzeitige Arbeiten an der Simulation und Nachschlagen in der Hilfe zu erleichtern.
+
+\subsubsection{Bedienungsablauf in der GUI}
+\label{ssub:bedienung}
+In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine Simulation durchführen. Für den schnellen Einstieg folgt ein HowTo:
+
+\begin{enumerate}
+\item \textbf{Auswahl der Plugins:} \newline Der Benutzer wählt im \emph{Configuration View} die gewünschten Plugins mit Hilfe der \emph{Accordion Entries} aus und konfiguriert diese.
+\item \textbf{Auswahl der Properties To Vary:} \newline Anschließend werden die zu variierenden Werte angegeben.
+\item \textbf{Simulationskonfiguration:} \newline In der \emph{General Configuration} werden Angaben zu Ende der Simulation und Plotskript gemacht.
+\item \textbf{Speichern der Konfiguration:} \newline Über den Button \emph{Save} wird die vorgenommene Konfiguration gespeichert.
+\item \textbf{Auswahl der zu simulierenden Konfiguration:} \newline Die soeben gespeicherte Konfiguration wird in der \emph{Configuration Selection} ausgewählt. Dank Multiselection können auch mehrere Konfigurationen gleichzeitig gewählt werden.
+\item \textbf{Start der Simulation:} \newline Durch Druck auf den Button \emph{Start Simulation} wird die Simulation gestartet und anschließend werden die Ergebnisse im \emph{Results View} ausgegeben. 
+\end{enumerate}
 
 \section{Entwickler Anleitungen} % (fold)
 \label{sec:entwicklung}
@@ -456,9 +485,9 @@ Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hä
 
 % subsection erweiterung_von_simulation_property_annotationen (end)
 
-\section{Features} % (fold)
-\label{sec:features}
-Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
+%\section{Features} % (fold)
+%\label{sec:features}
+%Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
 
 % TEST \cite{dummy:svs}.
 % section features (end)
