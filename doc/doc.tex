@@ -520,55 +520,61 @@ Dabei wird immer zuerst die Enable Anforderung überprüft da wenn eine Property
 \label{ssub:Requirements}
 Neue Anforderungen werden durch Erben von der abstrakten Requirement Klasse erzeugt. Ein neues Requirement muss somit immer die Methode check() implementieren welche einen Boolean zurücklieferen muss. Da auf maximale Freiheit bei der Defintion der check() Methode gesetzt wurde, ist es auch möglich Werte beliebiger anderer SimProperty, ausser der eigenen Simproperty, zu ändern. Da dieses nur sehr schwer nachvollziehbar ist ist es strikt verboten Werte anderer SimProperties zu ändern.
 Es existieren weiterhin in der abstrakten Requirements Klasse Hilfsfunktionen die bei der Erstellung von Requirements benutzt werden können.
+
+\definecolor{sh_comment}{rgb}{0.12, 0.38, 0.18 } %adjusted, in Eclipse: {0.25, 0.42, 0.30 } = #3F6A4D
+\definecolor{sh_keyword}{rgb}{0.37, 0.08, 0.25}  % #5F1441
+\definecolor{sh_string}{rgb}{0.06, 0.10, 0.98} % #101AF9
+
 \lstset{
 	language=Java,
 	basicstyle=\ttfamily\small,
-	keywordstyle=\color{blue}\ttfamily\small,
-    stringstyle=\color{red}\ttfamily\small,
-    commentstyle=\color{green}\ttfamily\small,
+	keywordstyle=\color{sh_keyword}\bfseries\small,
+    stringstyle=\color{sh_string}\bfseries\small,
+    commentstyle=\color{sh_comment}\itshape\small,
     frame=ltrb,
     breakindent=0pt,
     tabsize=2,
+    lineskip=-0.3em,
 	}
 \begin{lstlisting}[caption={Beispiel: check() Methode einer Enable Anforderung}]
 public boolean check() {
 // getting the current SimPropRegistry
-SimPropRegistry gcr = SimPropRegistry.getInstance();
+	SimPropRegistry gcr = SimPropRegistry.getInstance();
 // getting the Simproperty at which this requirement 
 // should be referenced
-SimProp simProp = gcr.getProperties().get(
-	"REAL_TIME_LIMIT_IN_SEC");
+	SimProp simProp = gcr.getProperties().get(
+		"REAL_TIME_LIMIT_IN_SEC");
 //creating a warning message
-String msg = "Requires \"Simulation end condition\""+
- 	" to be set to \"REAL_TIME_END\"";
+	String msg = "Requires \"Simulation end condition\""+
+	 	" to be set to \"REAL_TIME_END\"";
 // create warnings if not existent
-if( simProp.getWarnings() == null ){
-	simProp.setWarnings( new HashSet<String>() );
-}
+	if( simProp.getWarnings() == null ){
+		simProp.setWarnings( new HashSet<String>() );
+	}
 // check property value on which the enable status 
 // depends on, in this case the property "SIMULATION_END"
-if (equals("SIMULATION_END", "REAL_TIME_END")){
-	//if it equals REAL_TIME_END we have to remove the 
-	// warning which was eventually created before
-	Set<String> warnings = simProp.getWarnings();
-	warnings.remove(msg);
-	simProp.setWarnings(warnings);
-	// re-enable it
-	simProp.setEnable(true);
-	//return true because requirement is met
-	return true;
-	} else {
-		// if there is another value we have to add 
-		// the warning message to the warnings of 
-		// the property
+	if (equals("SIMULATION_END", "REAL_TIME_END")){
+		//if it equals REAL_TIME_END we have to remove the 
+		// warning which was eventually created before
 		Set<String> warnings = simProp.getWarnings();
-		warnings.add(msg);
+		warnings.remove(msg);
 		simProp.setWarnings(warnings);
-		// the requirement is not met so we have to 
-		// disable the simprop and return false
-		simProp.setEnable(false);
-		return false;
-	}
+		// re-enable it
+		simProp.setEnable(true);
+		//return true because requirement is met
+		return true;
+		} else {
+			// if there is another value we have to add 
+			// the warning message to the warnings of 
+			// the property
+			Set<String> warnings = simProp.getWarnings();
+			warnings.add(msg);
+			simProp.setWarnings(warnings);
+			// the requirement is not met so we have to 
+			// disable the simprop and return false
+			simProp.setEnable(false);
+			return false;
+		}
 }
 \end{lstlisting}
 \subsubsection{Fehlermechanismus}
