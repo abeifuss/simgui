@@ -14,6 +14,12 @@ import net.miginfocom.swing.MigLayout;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.layout.frames.ConsoleFrame;
 
+/**
+ * Tab for Simulation Control
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class SimulationTab extends JPanel implements ActionListener {
 
@@ -23,6 +29,11 @@ public class SimulationTab extends JPanel implements ActionListener {
 	private final JSplitPane rightSplitPane;
 	private static SimulationTab instance = null;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimulationTab}
+	 */
 	public static SimulationTab getInstance() {
 		if (instance == null) {
 			instance = new SimulationTab();
@@ -30,6 +41,9 @@ public class SimulationTab extends JPanel implements ActionListener {
 		return instance;
 	}
 
+	/**
+	 * Constructor
+	 */
 	public SimulationTab() {
 
 		MigLayout migLayout = new MigLayout();

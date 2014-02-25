@@ -315,24 +315,83 @@ Der Zweck der Klasse \emph{SimGuiPlugin} besteht darin, statische Informationen 
 
 Weiterhin ist eine Funktionalität in \emph{SimGuiPlugin} ausgelagert, welche es erlaubt als \emph{PluginSuperClass} annotierte Oberklassen ausfindig zu machen. 
 
-\subsubsection{GUI-Elemente}
-\label{sssub:guiservice}
-TODO: Jan
+\subsection{GUI-Elemente}
+Die GUI für den gMix-Simulator wurde wie alle zuvor beschriebenen Elemente mit Java realisiert. Dies garantiert Plattformunabhängigkeit und gleiches Look and Feel auf verschiedenen Systemen. Java bietet drei unterschiedliche Layout Manager an, mit denen sich GUIs realisieren lassen.
+\begin{enumerate}
+\item JavaFX
+\item SWT
+\item Swing
+\end{enumerate}
+Unsere Wahl ist auf Swing gefallen, da dies ein sehr dynamisches Framework zur Erstellung einer GUI ist. JavaFX wurde hauptsächlich für den Einsatz in Webanwendungen entworfen. SWT bietet die Möglichkeiten statische GUIs zu bauen, was man beispielsweise von Produkten wie  Eclipse kennt.\\
+Swing ist in der Anordnung von GUI lemente wie Buttons oder Textfeldern sehr frei und nimmt dem ntwickler große Teile des Layoutings ab. In Swing selbst werden sog. \emph{JPanel} erzeugt, in denen die GUI Elemente angeordnet werden. Die \emph{JPanel} an sich wiederrum können Bestandteil eines \emph{JFrame} sein, welches ein einfaches Fenster ist. Im Folgenden werden zwei \emph{LayoutManager} von Swing erläutert um einen Einblick in die Designmöglichkeiten des Frameworks zu geben.
 
-\textbf{Configuration View} % (fold)
-\label{ssub:accordion}
+\subsubsection{BorderLayout}
+Das \emph{BorderLayout} ist einer der simpelsten \emph{LayoutManager} von Java Swing. Er unterteilt ein \emph{JPanel} in Fig. \ref{fig:borderlayout} gezeigten Bereiche
+\begin{itemize}
+    \item {PAGE\_START}
+    \item {PAGE\_END}
+    \item {LINE\_START}
+    \item {LINE\_END}
+    \item {CENTER}
+\end{itemize}
+welche anschließend mit Swing Komponenten befüllt werden können. Dabei ist zu bemerken, dass es sich bei den Swing Elementen wiederrum um \emph{JPanel} handeln kann, die wiederrum ihren eigenen \emph{LayoutManager} besitzen. Diese Methode ist jedoh relativ statisch und nur für das Design eines Hauptfensters zu benutzen.
 
-\textbf{Simulation View} % (fold)
-\label{ssub:accordion}
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth]{img/BorderLayoutDemo}
+\caption{BorderLayout}
+\label{fig:borderlayout}
+\end{figure}
 
-\textbf{Result View} % (fold)
-\label{ssub:accordion}
+\subsubsection{MigLayout}
+Das \emph{MigLayout} ist eine OpenSource Entwicklung, die gerade für große GUI Projekte eine besondere Agilität mit sich bringt. Bei der Verwendung des \emph{MigLayout} werden ähnlich des \emph{GridLayout} Koordinaten für einzelne GUI Elemente angegeben. Verbildlicht bedeutet dies, dass die GUI in ein Raster unterteilt wird. In dieses Raster werden die Elemente angeordnet und mit sog. \emph{Contstraints} versehen. Die \emph{Constraints} garantieren, dass die Elemente den zur Verfügung stehenden Platz nutzen, sich ordentlich orientieren oder sich in einer bestimmten Reihenfolge anordnen. Eine Auswahl von Constraints und deren Bedeutung ist unten aufgelistet:
 
-\textbf{Help View} % (fold)
-\label{ssub:accordion}
+\begin{itemize}
+\item \textbf{grow} gibt an, dass ein Element den zur Verfügung stehenden Platz ausnutzen soll. Wird das Fenster vergrößert entsteht mehr Platz, der von dem Element eingenommen wird. Buttons oder Textfelder vergrößern sich somit automatisch.
+\item \textbf{span} gibt an, dass ein Element sich über eine bestimmte Anzahl an Zellen ausbreiten darf. Somit lassen sich Elemente z.B. doppelt so groß wie andere Elemente zeichnen.
+\item \textbf{align} gibt an, wie sich das zu zeichnende Element ausrichten soll. Klassischerweise stehen die \emph{Constraints center, left, right, top} und \emph{bottom} zur Verfügung. 
+\end{itemize}
 
-\textbf{Konsole} % (fold)
-\label{ssub:accordion}
+Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welhe am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppen von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
+Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
+
+\subsubsection{Configuration View} % (fold)
+\label{ssub:configview}
+Der \emph{Configuration View} bildet das zusammen mit der \emph{SimPropRegistry} (vgl. \ref{sssub:simpropregistry}) das Herzstück der GUI. Mit ihr hat der Nutzer die Möglichkeit die Simulation auf einfach Art und Weise zu konfigurieren. \\
+Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \emph{PropertiesToVary} Konfiguration, einer allgemeinen Simulationskonfiguration und den Buttons \emph{Load, Save} und \emph{Reset}. Angelehnt an moderne Smartphone Betriebssysteme wurden die \emph{AccordionEntries} entwickelt, welche sich durch einen Button und darunter verborgene Konfigurationsmöglichkeiten auszeichnen. Jeder Layer der Simulatorkonfiguration lässt sich somit auf einen Button abbilden unter dem ein Plugin für diesen gewählt werden kann. In der vorliegenden Version der gMix-Simulator GUI werden folgende Layer verwendet:
+\begin{enumerate}
+\item \textbf{Underlay-net}, dass zugrundeliegende Netzwerk
+\item \textbf{Topology}, dessen Aufbau
+\item \textbf{Mix Server}, das Verhalten des Mix Servers
+\item \textbf{Mix Proxy}, die Proxykonfiguration
+\item \textbf{Recoding Scheme}, die Art der Umkodierung
+\item \textbf{Mix Client}, der Client
+\item \textbf{Load Generator}, die Verkehrsdatenerzeugung
+\end{enumerate}
+ Klickt man auf den Button erhält man zunächst eine Auswahl in Form einer Combobox um ein Plugin zu wählen. Hat man in Plugin gewählt erhält man die Konfigurationsmöglichkeiten für dieses Plugin. Dabei wird die Anzeige dynamisch, ausgehend vom Variablentyp der \emph{SimulationProperty} erstellt. Der Typ wurde zuvor vom Entwikler per \emph{Annotation} festgelegt. Zwei Beispiele für dynamisch erzeugte Konfigurationsmöglichkeiten sind
+ \begin{itemize}
+ \item \textbf{Integer} wird über einen Spinner konfiguriert. 
+ \item \textbf{Boolean} wird mit einer Checkbox konfiguriert.
+ \end{itemize}
+ Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. \\
+ Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
+ Den letzten Abschnitt im \emph{Configuration View} bilden die allgemeinen Einstellungen zur Simulation und dem Plottype. Diese wurden ebenfalls als \emph{AccordionEntry} dargestellt um die Übersichtlichkeit zu bewahren. Der Eintrag Simulation bietet beispielsweise die Option den Endzeitpunkt einer Simulation zu konfigurieren. Unter dem \emph{AccordionEntry} Plottype lässt sich unter anderem das Plotskript für Gnuplot definieren.\\
+ Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{AccordionEntries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
+ Zur Unterstützung der Übersichtlichkeit bietet die GUI die Möglichkeit den \emph{Configuration View} vom Hauptfenster auszukoppeln. ies ist besonders hilfreich wenn man z.B. mit mehreren Monitoren abeitet oder das Hauptfenster ohne die Konfiguration betrachten möchte. Dabei wird ein neues Fenster erzeugt, welches nur den \emph{Configuration View} enthält.
+
+\subsubsection{Simulation View} % (fold)
+\label{ssub:simulationview}
+Der \emph{Simulation View} lässt den Nutzer seine vorher gespeicherte Konfiguration ausführen und generiert direkt einen Graphen mittels Gnuplot. Dadurch sind die Ergbnisse der Simulation sofort einzusehen. Der \emph{Simulation View} besteht aus drei Komponenten. AUf der linken Seite sind die vorhandenen Konfigurationsdateien zu sehen. Diese können per Multiselect (d.h. mehrere auf einmal) in der \emph{Configuration Selection} ausgewählt werden. Mit Hilfe der \emph{Simulation Control} kann die Simulation gestartet (\emph{Start Simulation}) oder angehalten (\emph{Stop Simulation}) werden. Die generierten Ergebnisse können mittels \emph{Clear Results} gelöscht werden. Zur Laufzeit des Programms werden die generierten Dateien jedoch nicht gelöscht, sondern nur aus der Anzeige entfernt. Über \emph{Export Results} lassen sich generierte Graphen in zwei verschiedene Formate expertieren. Zur Verfügung stehen .png und .eps. Beim Start einer Simulation erscheint im \emph{Simulation Status} ein Fortschrittsbalken, der signalisiert, dass die Simulation im Gange ist. \\
+Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hälfte die Konsole (siehe \ref{ssub:consoleview}). Darunter ist der \emph{Result View} (siehe \ref{ssub:resultview}) angesiedelt.
+
+
+\subsubsection{Result View} % (fold)
+\label{ssub:resultview}
+
+\subsubsection{Help View} % (fold)
+\label{ssub:helpview}
+
+\subsubsection{Konsole} % (fold)
+\label{ssub:consoleview}
 
 \subsubsection{UserConfigService} % (fold)
 \label{ssub:userconfigservice}

@@ -7,10 +7,21 @@ import javax.swing.JFrame;
 
 import org.apache.batik.swing.JSVGCanvas;
 
+/**
+ * Window for dispatching generated graphs (plotted Simulator output)
+ * 
+ * @author nachkonvention
+ * 
+ */
 public class GraphFrame extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private static GraphFrame _instance = null;
 
+	/**
+	 * @param uri
+	 * @param filename
+	 */
 	public GraphFrame(String uri, String filename) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -32,6 +43,13 @@ public class GraphFrame extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * No Singleton. Kind of factory.
+	 * 
+	 * @param uri
+	 * @param filename
+	 * @return
+	 */
 	public static GraphFrame getInstance(String uri, String filename) {
 		_instance = new GraphFrame(uri, filename);
 		return _instance;

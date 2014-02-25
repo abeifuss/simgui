@@ -20,12 +20,24 @@ import org.apache.batik.swing.JSVGCanvas;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.layout.frames.GraphFrame;
 
+/**
+ * {@link JPanel} for graph representation after GnuPlot plotting
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class GnuplotPanel extends JPanel {
 
 	public JSVGCanvas svgCanvas;
 	public static String outputFolder = "inputOutput/simulator/output/";
 
+	/**
+	 * Constructor
+	 * 
+	 * @param gnuplotResultFileName
+	 *            path to generated output file
+	 */
 	public GnuplotPanel(final String gnuplotResultFileName) {
 		// BufferedImage resultsDiagram = null;
 		try {

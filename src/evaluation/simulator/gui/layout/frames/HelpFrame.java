@@ -15,12 +15,23 @@ import evaluation.simulator.gui.service.GuiService;
 // import log.Level;
 // import log.Logger;
 
+/**
+ * Window showing the {@link SimHelpPanel} when being seperated
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
 	private static HelpFrame instance = null;
 	private JPanel panel;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link HelpFrame}
+	 */
 	public static HelpFrame getInstance() {
 		if (instance == null) {
 			instance = new HelpFrame();
@@ -73,10 +84,16 @@ public class HelpFrame extends JFrame {
 		});
 	}
 
+	/**
+	 * @return the panel
+	 */
 	public JPanel getPanel() {
 		return this.panel;
 	}
 
+	/**
+	 * initializes the frame
+	 */
 	public void initialize() {
 
 		this.loadProperties();
@@ -86,8 +103,7 @@ public class HelpFrame extends JFrame {
 		this.add(this.getPanel());
 
 		this.setTitle("Help Tool");
-		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
-				"etc/img/icons/icon128.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().createImage("etc/img/icons/icon128.png"));
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setPreferredSize(new Dimension(this.helpFrameWidth, this.helpFrameHeight));
@@ -103,7 +119,7 @@ public class HelpFrame extends JFrame {
 		UserConfigService.setHELPFRAME_YPOS(this.getY());
 	}
 
-	private void loadProperties(){
+	private void loadProperties() {
 		this.helpFrameXPos = UserConfigService.getHELPFRAME_XPOS();
 		this.helpFrameYPos = UserConfigService.getHELPFRAME_XPOS();
 		this.helpFrameWidth = UserConfigService.getHELPFRAME_WIDTH();
@@ -116,6 +132,12 @@ public class HelpFrame extends JFrame {
 
 	}
 
+	/**
+	 * set the {@link SimHelpPanel}
+	 * 
+	 * @param panel
+	 *            the panel
+	 */
 	public void setPanel(JPanel panel) {
 		this.panel = panel;
 	}

@@ -20,6 +20,12 @@ import evaluation.simulator.gui.customElements.structure.HelpTreeNode;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * Builds the menu for the {@link SimHelpContentPanel}
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 
@@ -34,6 +40,11 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 
 	private static JTree tree;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimHelpMenuPanel}
+	 */
 	public static SimHelpMenuPanel getInstance() {
 		if (instance == null) {
 			instance = new SimHelpMenuPanel();

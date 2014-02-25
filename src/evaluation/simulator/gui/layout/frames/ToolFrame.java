@@ -11,12 +11,23 @@ import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.service.GuiService;
 
+/**
+ * Window containing the SimProp Configuration when being seperated
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class ToolFrame extends JFrame {
 
 	private static ToolFrame instance = null;
 	private SimConfigPanel panel;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link ToolFrame}
+	 */
 	public static ToolFrame getInstance() {
 		if (instance == null) {
 			instance = new ToolFrame();
@@ -69,14 +80,16 @@ public class ToolFrame extends JFrame {
 		});
 	}
 
+	/**
+	 * initialize the window
+	 */
 	public void initialize() {
 		this.loadProperties();
 		this.setPanel(SimConfigPanel.getInstance());
 		this.add(this.getPanel());
 
 		this.setTitle("Configuration Tool");
-		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
-				"etc/img/icons/icon128.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().createImage("etc/img/icons/icon128.png"));
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setPreferredSize(new Dimension(this.confToolFrameWidth, this.confToolFrameHeight));
@@ -93,17 +106,24 @@ public class ToolFrame extends JFrame {
 		UserConfigService.setCONFTOOLFRAME_YPOS(this.getY());
 	}
 
-	private void loadProperties(){
-		this.confToolFrameXPos  = UserConfigService.getCONFTOOLFRAME_XPOS();
-		this.confToolFrameYPos  = UserConfigService.getCONFTOOLFRAME_YPOS();
+	private void loadProperties() {
+		this.confToolFrameXPos = UserConfigService.getCONFTOOLFRAME_XPOS();
+		this.confToolFrameYPos = UserConfigService.getCONFTOOLFRAME_YPOS();
 		this.confToolFrameWidth = UserConfigService.getCONFTOOLFRAME_WIDTH();
 		this.confToolFrameHeight = UserConfigService.getCONFTOOLFRAME_HEIGHT();
 	}
 
+	/**
+	 * @return the panel
+	 */
 	public SimConfigPanel getPanel() {
 		return this.panel;
 	}
 
+	/**
+	 * @param panel
+	 *            the panel
+	 */
 	public void setPanel(SimConfigPanel panel) {
 		this.panel = panel;
 	}

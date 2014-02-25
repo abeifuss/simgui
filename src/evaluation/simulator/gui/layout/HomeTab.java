@@ -10,9 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+/**
+ * The Welcome Tab of gMix GUI
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class HomeTab extends JPanel {
 
+	/**
+	 * Construcor
+	 */
 	public HomeTab() {
 
 		Color bg = this.getBackground();

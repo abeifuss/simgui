@@ -11,6 +11,12 @@ import org.apache.log4j.Logger;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
 
+/**
+ * Creates the {@link JPanel} which offers the representation of a website
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
 
@@ -18,6 +24,11 @@ public class SimHelpContentPanel extends JPanel {
 
 	private static SimHelpContentPanel instance = null;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimHelpContentPanel}
+	 */
 	public static SimHelpContentPanel getInstance() {
 		if (instance == null) {
 			instance = new SimHelpContentPanel();
@@ -46,6 +57,11 @@ public class SimHelpContentPanel extends JPanel {
 		}
 
 	}
+
+	/**
+	 * @param url
+	 *            the URL to load represented as {@link String}
+	 */
 
 	public void loadURL(String url) {
 		logger.log(Level.DEBUG, "Loading help-page: " + url);
