@@ -74,12 +74,33 @@ Benutzer- / Entwicklerhandbuch} % Subtitle
 
 \subsection{gMix (Todo Malte)} % (fold)
 \label{sub:gmix}
-Dieser Abschnitt behandelt das Thema Mixe und motiviert die Entwicklung des gMix-Simulators. \cite{Cha81}
+Mixe ermöglichen die anonyme Kommunikation im Internet. Obwohl ihre Funktionsweise schon 1981 von David Chaum \cite{Cha81} beschrieben wurde, sind bisher erst wenige Dienste etabliert, die diese Technik Nutzen. Die Bekanntesten sind Tor \cite{DMS04} JAP (JonDonym) \cite{BFK01} und I2P sowie für E-mail-Kommunikation Mixminion und Mixmaster. Mixe können mit einer Vielzahl von Diensten zusammen verwendet werden um Ananoymität zu gewährleisten, von Email über WWW bis hin zur Echtzeitkommunikation. Es gibt eine weitaus größere Anzahl an Konzepten für Mixe als tatsächliche Implementierungen, was bedeutet das viele theoretische Möglichkeiten bisher nicht umgesetzt wurden. All diese Techniken folgen dem selben Grundprinzip, dass die Nachrichten der einzelnen Kommunikationspartner mit den Nachrichten anderer Dienstnutzer vermischt werden um so die Zuordnung von Nachrichten zu Kommunikationsbeziehungen zu erschweren bzw. unmöglich zu machen.
+\\
+Dass bisher nur wenige der theoretischen Konzepte für Mixe auch in einer Implementierung umgesetzt wurden führt zu einigen Schwierigkeiten bei der Weiterentwicklung von Mixen. Zum einen ist es schwieriger sich mit den rein theoretischen Konzepten eingehend zu befassen, verglichen mit jenen, die bereits umgesetzt wurden und daher ausführlicher untersuchbar sind. Zum anderen müssen viele Grundkonzepte häufig neu mplementiert werden oder sind noch nicht hinreichend gut verstanden, so das Neuimplementierungen aufwendig sind. Und schließlich sind die verschiedenen, bisher realisierten Mix-Techniken nur schwer vergleichbar, da sie nicht einheitlich genug umgesetzt wurden um sie unter gleichen Bedingungen testen zu können.
+\\
+gMix ist als pluginbasiertes Framework konzipiert, bei dem die Funktion verschiedener Mixe untersucht werden kann. Es werden dabei folgende Ziele angestrebt:
+Bereitstellung eines umfassenden  Code-Repository mit kompatiblen, leicht erweiterbaren Mix-Implementierungen
+Vereinfachen der Entwicklung neuer, praktisch nutzbarer Mixe
+Evaluation existierender und neuer Mix-Techniken unter einheitlichen Bedingungen
+Unterstützung der Lehre durch leicht zugängliche und verständliche Mix-Lösungen
+Motivation von Wissenschaftlern, Implementierungen auf Basis von gMix zu entwickeln und somit zu seiner Weiterentwicklung bei zu tragen.
+\\
+Durch den offenen Aufbau ist es möglich, verschiedene Mixe aus den einzelnen Plugins zusammen zu stellen oder neue Plugins hinzu zu fügen. Da all diese Mixe auf die gleiche Weise erstellt werden, können sie anschließend unter den selben Bedingungen betrieben oder simuliert werden und bleiben vergleichbar.
+\\
+\\
+(TODO: Malte)Aufbau gMix
 % subsection gmix (end)
 
 \subsection{Ziele der GUI (Todo Malte)} % (fold)ssu
 \label{sub:ziele_der_gui}
-In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, für die GUI gedacht ist. Es wird analysiert, welche Anforderungen und Bedürfnisse die jeweiligen Anwendergruppen haben. Entlang der gewonnenen Erkenntnissen soll dann die GUI entwickelt werden, so dass nach Möglichkeit die Anforderungen aller Gruppen zufriedengestellt werden können.
+Die im Rahmen dieser Arbeit erstellte Graphische Benutzeroberfläche (GUI) dient als Erweiterung zu gMix und soll Benutzer bei verschiedenen Aufgaben unterstützen. Da gMix selbst als ein Werkzeug für Forschung und Lehre entwickelt wurde, sind Benutzer aus diesen Bereichen ebenfalls Zielgruppe. Die GUI richtet sich in erster Linie an drei Fokusgruppen:\\
+\begin{itemize}
+	\item Schüler und Studenten die an das Konzept von Mixen und ihre Funktionsweise herangeführt werden sollen. Für diese Gruppe soll die GUI vor allem einfach zu bedienen sein und bei der Vermeidung von Fehlern in den Einstellungen helfen.
+	\item Forscher, welche gMix verwenden um Simulationen durch zu führen oder neue neue Implementationen erstellen wollen. Dieser Gruppe soll die Arbeit erleichtert werden, indem die GUI Zur Übersichtlichkeit beiträgt und die Möglichkeit bietet, mehrere Simulationen zu verwalten und nacheinander automatisiert ablaufen zu lassen.
+	\item Pluginentwickler, die gMix erweitern wollen und eine einheitliche Schnittstelle zum Anbinden ihrer Plugins benötigen. Diese Gruppe profitiert von der Verwendung von Annotations, welche weiter unten beschrieben wird und der Möglichkeit Abhängigkeiten zwischen Plugins automatisch erkennen zu lassen.
+\end{itemize}
+
+Die GUI bietet zur Unterstützung im Umgang mit gMix mehrere Funktionen. Zu den offensichtlichsten gehören dabei die erhöhte Übersichtlichkeit, da es nicht mehr notwendig ist, alle Parameter für eine Simulation per in eine Konfigurationsdatei zu schreiben. Dabei werden außerdem nur die Parameter zum einstellen angeboten, die auch möglich und sinnvoll sind, was einige Fehlerquellen bereits im Vorfeld ausschließt. In der GUI  ist außerdem ersichtlich welche Plugins auf welcher Ebene ausgewählt werden können und somit auch welche in Konkurrenz um die selbe Funktion stehen, wodurch Konflikte vermieden werden. Zur einfacheren Verwaltung der Simulationen, ist es möglich diese zu speichern und zu laden, so wie sie in einer Liste vor zu halten, die dann bei der Simulation abgearbeitet werden kann. Zudem können die Ergebnisse der Simulationen in der GUI betrachtet oder als Dateien exportiert werden. Zur Visualisierung wird dabei Gnuplot (www.gnuplot.info) verwendet. Die Verwaltung der Plugins geschieht mit Hilfe Annotations, welche direkt in den Quelltext des jeweiligen Plugins geschrieben werden. Dadurch brauchen Pluginentwickler nur ihre Java-Klassen erstellen und müssen an keiner anderen Stelle etwas ändern. Eine genauere Behandlung der Annotations widmet sich das folgende Kapitel.
 % subsection ziele_der_gui (end)
 
 \subsection{XML vs. Annotations} % (fold)
@@ -482,8 +503,8 @@ In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine
 % TEST \cite{dummy:svs}.
 % section features (end)
 
-% \bibliographystyle{plain}
-% \bibliography{references}
+\bibliographystyle{plain}
+\bibliography{references}
 
 %----------------------------------------------------------------------------------------
 
