@@ -10,6 +10,10 @@ public class DependencyChecker {
 
 	public static Boolean errorsInConfig;
 
+	/**
+	 * Checks all Requirements of all Simproperties
+	 * @param gcr - the whole reqistry
+	 */
 	public static void checkAll(SimPropRegistry gcr) {
 		errorsInConfig = false;
 
