@@ -23,8 +23,8 @@
 
 \usepackage{listings}
 
-\setlength\parindent{0pt}%Festlegen des Absatzeinzuges
-\setlength\mathindent{0pt}%Festlegen des Einzuges für abgesetzte Formeln
+%\setlength\parindent{0pt}%Festlegen des Absatzeinzuges
+%\setlength\mathindent{0pt}%Festlegen des Einzuges für abgesetzte Formeln
 
 \makeatletter
 \renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
@@ -85,7 +85,7 @@ In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, f�
 In diesem Abschnitt werden wir kurz motivieren, warum wir uns entschieden haben in der GUI auf Annotations zu setzen und XML vermeiden. 
 
 Flexibilität / Erweiterbarkeit
-Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} pluginbasiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise neue Eigenschaften erhalten. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotations enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emphSimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.
+Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} pluginbasiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise neue Eigenschaften erhalten. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotations enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emph{SimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.
 
 Dezentralisierung:
 Im Gegensatz zu XML werden Annotations direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden, was bei Plugin-System sehr wichtig ist. Dieses wäre auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins. 
@@ -150,8 +150,8 @@ Alle \emph{Properties} haben eine Grundmenge an Feldern, die in der folgenden Au
 	\item valueType: TODO: Entfernen! Dieser Wert sollte unter keinen Umständen von Hand gesetzt werden! 
 	\item isStatic: Ein Boolean das angibt, ob eine Property im Plugin-Abschnitt (\emph{Plugin Configuration}) auftauchen soll oder aber im Abschnitt für statische Properties (\emph{General Configuration}). Dieses Feld wird nur in Kombination mit dem Feld \emph{inject} verwendet. Sinnvoll ist der Einsatz meist dort, wo es sich um Properties handelt, die nicht zu einem Plugin gehören und aus logischer Sicht auch nicht auf einer Pluginschicht liegen.\\
 	Default: false (Property wird in der \emph{Plugin Configuration} angezeigt)
-	\item value\_requirements: TODO: Jörg
-	\item enable\_requirements: TODO: Jörg
+	\item value\_requirements: Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Value Anforderungen umgesetzt werden.
+	\item enable\_requirements: Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Enable Anforderungen umgesetzt werden.
 \end{itemize}
 
 Die Annotations für die numerischen \emph{Properties} (\emph{IntSimulationProperty}, \emph{FloatSimulationProperty} und \emph{DoubleSimulationProperty}) haben neben den Standardfeldern  
@@ -336,16 +336,28 @@ TODO: Jan
 
 \subsubsection{UserConfigService} % (fold)
 \label{ssub:userconfigservice}
-TODO: Jörg
+Der UserConfigService verwaltet die user.properties. In dieser Datei werden benutzerspezifische Einstellungen abgespeichert. Der Zugriff auf diese Datei ist nur aus dieser Klasse möglich. Beispiele für benutzerspezische Einstellungen sind z.B. die größe der einzelnen Fenster und ob sie separiert dargestellt werden.
 
 \subsubsection{Requirement} % (fold)
 \label{ssub:requirement}
-TODO: Jörg
+Um die Abhängigkeiten zwischen verschiedenen Propertys darzustellen werden Requirements (Anforderungen) verwendet. Eine Anforderung wird dabei immer speziell für eine Property geschrieben. Um dem Entwickler maximale Freiheit zu gewähren kann die Abhängigkeit beliebig komplex gewählt werden.
+Generell wird zwischen zwei Anforderungen unterschieden:
+\begin{enumerate}
+	\item Enable Requirements: Anforderungen die dazu führen das bestimmte Propertys in Abhängigkeit zu anderen Property und deren Werten aktiviert oder deaktiviert werden.
+	\\Ein Beispiel hierfür ist das "`Simulation Time End"' Requirement. Die Simulation kann entweder durch "`Real Time"' beendet werden oder durch "`Simulation Time"'. Die beiden Optionen schließen sich somit gegenseitig aus. Daher ist es hier sinnvoll sie entsprechend zu deaktivieren/ aktivieren um den Benutzer zu unterstützen.
+	\item Value Requirements: Anforderungen die dazu führen das bestimmte Propertys in ihrem Wertebereich eingeschränkt werden. Dabei wurde die Implementation so gewählt, dass der vom Plugin Entwickler gewählte Wertebereich nicht erweitert werden kann weil dieses zu nicht sinnvollen Ergebnissen im Simulator führen würde.
+	\\ Ein Beispiel für ein Value Requirement ist die Einschränkung aufgrund von Minimal und Maximalwerten. Wenn eine Abhängigkeit zwischen diesen festgelegt wurden gilt u.a. das aktuelle Maximalwert nicht kleiner sein darf als der aktuelle Minimalwert.
+\end{enumerate}
+
 
 \subsubsection{DependencyChecker}
 \label{sssub:dependencychecker}
-Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen SimProperties. Beispiele sind minimale und maximale Werte aber auch Abhängigkeiten zwischen einem oder mehreren SimProperties.
-TODO: Jörg + Entwicklerhandbuch
+Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen in den SimProperties definierten Anforderungen (Requirements).
+Der check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn eine Anforderungen nicht eingehalten wird, gibt es zwei Fehlermechanismen:
+\begin{enumerate}
+	\item Enable Requirements: Die momentan nicht mögliche Simproperty wird deaktiviert. Somit ist ein Auswählen / ändern nicht mehr möglich.
+	\item Value Requirements: Falls neu gesetzte Werte aufgrund von Abhängigkeiten nicht mehr möglich sind werden individuelle, in den Value Requirements definierte, Fehlermeldungen direkt in der Simpropery angezeigt.
+\end{enumerate}
 
 % subsubsection accordion (end)
 
