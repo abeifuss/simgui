@@ -346,7 +346,20 @@ Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten
 Der Check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn eine Anforderungen nicht eingehalten wird, gibt es zwei Fehlermechanismen:
 \begin{enumerate}
 	\item Enable Requirements: Die momentan nicht mögliche Simproperty wird deaktiviert. Somit ist ein Auswählen / ändern nicht mehr möglich.
+
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth,scale=0.5]{img/DependencyChecker_RealTimeDisabled}
+\caption{Deaktivierte Real Time End Property}
+\label{fig:deactivatedRealTimeEnd}
+\end{figure}
+
 	\item Value Requirements: Falls neu gesetzte Werte aufgrund von Abhängigkeiten nicht mehr möglich sind werden individuelle, in den Value Requirements definierte, Fehlermeldungen direkt in der Simpropery angezeigt.
+	
+	\begin{figure}[!htp]
+\includegraphics[width=\textwidth,scale=0.5]{img/DependencyChecker_MiniumClientMixDelayError}
+\caption{Fehlermeldung bei Verstoß gegen Value Anforderungen}
+\label{fig:errorMessageValueRequirement}
+\end{figure}
 \end{enumerate}
 
 % subsubsection accordion (end)
