@@ -13,6 +13,12 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 
+/**
+ * This class represents a float simprop
+ * 
+ * @author alex
+ *
+ */
 public class FloatProp extends SimProp {
 	private static Logger logger = Logger.getLogger(FloatProp.class);
 
@@ -32,64 +38,121 @@ public class FloatProp extends SimProp {
 	private List<Observer> Observers = new LinkedList<Observer>();
 	
 	
+	/**
+	 * @return
+	 * 		status of auto checkbox
+	 */
 	public boolean getAuto(){
 		return this.auto;
 	}
 	
+	/**
+	 * @param auto
+	 * 		status of auto checkbox
+	 */
 	public void setAuto( boolean auto ){
 		this.auto = auto;
 	}
 	
+	/**
+	 * @return
+	 * 		visibility of auto checkbox
+	 */
 	public boolean getEnableAuto(){
 		return this.enableAuto;
 	}
 	
+	/**
+	 * @param auto
+	 * 		visibility of the auto checkbox
+	 */
 	public void setEnableAuto( boolean auto ){
 		this.enableAuto = auto;
 	}
 	
+	/**
+	 * @return
+	 * 		status of the unlimited checkbox
+	 */
 	public boolean getUnlimited(){
 		return this.unlimited;
 	}
 	
+	/**
+	 * @param unlimited
+	 * 		status of the unlimited checkbox
+	 */
 	public void setUnlimited( boolean unlimited ){
 		this.unlimited = unlimited;
 	}
 	
+	/**
+	 * @return
+	 * 		visibility of the unlimited checkbox
+	 */
 	public boolean getEnableUnlimited(){
 		return this.enableUnlimited;
 	}
 	
+	/**
+	 * @param unlimited
+	 * 		visibility of the unlimited checkbox
+	 */
 	public void setEnableUnlimited( boolean unlimited ){
 		this.enableUnlimited = unlimited;
 	}
 
+	/**
+	 * @return
+	 * 		maximum value
+	 */
 	public float getMaxValue() {
 		return this.maxValue;
 	}
 
+	/**
+	 * @return
+	 * 		maximum value
+	 */
 	public float getMinValue() {
 		return this.minValue;
 	}
 
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#getValue()
+	 */
 	@Override
 	public Object getValue() {
 		return this.value;
 	}
 
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#getValueType()
+	 */
 	@Override
 	public Class<?> getValueType() {
 		return Float.class;
 	}
 
+	/**
+	 * @param maxValue
+	 * 		maximum value
+	 */
 	public void setMaxValue(float maxValue) {
 		this.maxValue = maxValue;
 	}
 
+	/**
+	 * @param minValue
+	 * 		minimum value
+	 */
 	public void setMinValue(float minValue) {
 		this.minValue = minValue;
 	}
 
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#setValue(java.lang.Object)
+	 */
 	@Override
 	public void setValue(Object o) {
 		float tmp;
@@ -112,39 +175,67 @@ public class FloatProp extends SimProp {
 				"Boundary error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#toString()
+	 */
 	@Override
 	public String toString() {
 		return super.getName() + "" + this.value;
 	}
 
+	/**
+	 * @return
+	 * 		the stepsize for the spinner gui element
+	 */
 	public float getStepSize() {
 		return stepSize;
 	}
 
+	/**
+	 * @param stepSize
+	 * 		the stepsize for the spinner gui element
+	 */
 	public void setStepSize(float stepSize) {
 		this.stepSize = stepSize;
 	}
 
+	/**
+	 * @return
+	 * 		gui element identifying string ("spinner" or "slider")
+	 */
 	public String getGuiElement() {
 		return guiElement;
 	}
 
+	/**
+	 * @param guiElement
+	 * 		gui element identifying string ("spinner" or "slider")
+	 */
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
 	}
 
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#register(java.util.Observer)
+	 */
 	@Override
 	public void register(Observer observer){
 //		System.err.println("REGISTER FLOAT OBSERVER");
 		Observers.add(observer);
 	}
 	
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#unregister(java.util.Observer)
+	 */
 	@Override
 	public void unregister(Observer observer){
 //		System.err.println("UNREGISTER FLOAT OBSERVER");
 		Observers.remove(observer);
 	}
 
+	/* (non-Javadoc)
+	 * @see evaluation.simulator.annotations.property.SimProp#changed()
+	 */
 	@Override
 	public void changed() {
 //		System.err.println("CHANGED FLOAT");

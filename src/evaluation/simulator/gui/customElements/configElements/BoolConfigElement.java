@@ -81,6 +81,9 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 	}
 
 	// Called when simprop has changed
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable observable, Object o) {
 

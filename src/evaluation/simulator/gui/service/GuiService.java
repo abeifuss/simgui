@@ -10,11 +10,22 @@ import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
 
+/**
+ * Implemented as a singleton
+ * 
+ * @author alex
+ *
+ */
 public class GuiService {
 	private static Logger logger = Logger.getLogger(GuiService.class);
 
 	private static GuiService instance = null;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link GuiService}
+	 */
 	public static GuiService getInstance() {
 		if (instance == null) {
 			instance = new GuiService();
@@ -41,6 +52,10 @@ public class GuiService {
 
 	}
 
+	/**
+	 * Loads the user window configuration
+	 * 
+	 */
 	public void loadOldWinConf() {
 		boolean showConfToolInSeparateWindow = UserConfigService.getGUISERVICE_SEPERATE_CONF_TOOL();
 		boolean showConfHelpInSeparateWindow = UserConfigService.getGUISERVICE_SEPERATE_HELP_TOOL();
@@ -70,6 +85,9 @@ public class GuiService {
 
 	}
 
+	/**
+	 * Toggle the display mode of the config tool
+	 */
 	public void toogleConfTools() {
 		if (this.configToolFrame.isVisible()) {
 			this.configToolFrame.setVisible(false);
@@ -84,6 +102,9 @@ public class GuiService {
 		}
 	}
 
+	/**
+	 * Toggle the display mode of the help tool
+	 */
 	public void toogleHelpTools() {
 		if (this.helpToolFrame.isVisible()) {
 			this.helpToolFrame.setVisible(false);

@@ -7,6 +7,10 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Sleep;
 
+/**
+ * @author alex
+ *
+ */
 public class SimGuiPlugin {
 	private static Logger logger = Logger.getLogger(SimGuiPlugin.class);
 

@@ -13,7 +13,10 @@ import evaluation.simulator.gui.results.GnuplotPanel;
  * 
  */
 public class IOActions {
+	
 	/**
+	 * Cleans up the output folder
+	 * 
 	 * @throws IOException
 	 */
 	public static void cleanOutputFolder() throws IOException {

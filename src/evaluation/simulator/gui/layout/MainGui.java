@@ -82,7 +82,7 @@ public class MainGui extends JFrame {
 	/**
 	 * Constructor
 	 */
-	public MainGui() {
+	private MainGui() {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.initialize();
 	}

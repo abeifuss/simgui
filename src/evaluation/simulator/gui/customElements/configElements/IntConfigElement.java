@@ -126,6 +126,9 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		if (event.getSource() == this.spinner) {
@@ -138,11 +141,17 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+	 */
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (this.auto.isSelected()) {

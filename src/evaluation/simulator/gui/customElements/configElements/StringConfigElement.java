@@ -131,6 +131,9 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == this.textfield) {
@@ -142,6 +145,9 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	}
 
 	// Called when simprop has changed
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable observable, Object o) {
 
@@ -243,6 +249,8 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 	}
 
 	/**
+	 * Sets the component
+	 * 
 	 * @param component
 	 *            the component
 	 */

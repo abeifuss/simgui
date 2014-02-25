@@ -6,6 +6,12 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.SimulationConfigService;
 
+/**
+ * Parser for simprop injections
+ * 
+ * @author alex
+ *
+ */
 class InjectionParser {
 	
 	private static Logger logger = Logger.getLogger(InjectionParser.class);
@@ -13,22 +19,42 @@ class InjectionParser {
 		return layer;
 	}
 
+	/**
+	 * @return
+	 * 		the plugin
+	 */
 	public String getPlugin() {
 		return plugin;
 	}
 
+	/**
+	 * @return
+	 * 		the layer config name
+	 */
 	public String getLayerConfigName() {
 		return layerConfigName;
 	}
 
+	/**
+	 * @return
+	 * 		the layer display name
+	 */
 	public String getLayerDisplayName() {
 		return layerDisplayName;
 	}
 
+	/**
+	 * @return
+	 * 		the plugin config name
+	 */
 	public String getPluginConfigName() {
 		return pluginConfigName;
 	}
 
+	/**
+	 * @return
+	 * 		the plugin display name
+	 */
 	public String getPluginDisplayName() {
 		return pluginDisplayName;
 	}
@@ -37,10 +63,18 @@ class InjectionParser {
 		return layerPosition;
 	}
 
+	/**
+	 * @return
+	 * 		the plugin position (gui ordering)
+	 */
 	public int getPluginPosition() {
 		return pluginPosition;
 	}
 
+	/**
+	 * @return
+	 * 		a boolean that indicates whether the simprop is globally visible or not
+	 */
 	public boolean isGlobalProperty() {
 		return globalProperty;
 	}
@@ -55,6 +89,14 @@ class InjectionParser {
 	private int pluginPosition = 0;
 	private boolean globalProperty = true;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param arguments
+	 * 		the injection string
+	 * @param propertyKey
+	 * 		the property key / id
+	 */
 	public InjectionParser( String arguments, String propertyKey ){
 		String[] injectionArguments = arguments.split("@");
 		

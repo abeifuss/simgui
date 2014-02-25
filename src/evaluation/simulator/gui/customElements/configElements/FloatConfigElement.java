@@ -111,6 +111,9 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		if (event.getSource() == this.spinner) {
@@ -118,11 +121,17 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+	 */
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (this.auto.isSelected()) {
@@ -143,6 +152,9 @@ public class FloatConfigElement extends JPanel implements ChangeListener, Action
 	}
 
 	// Called when simporp has changed
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable observable, Object o) {
 

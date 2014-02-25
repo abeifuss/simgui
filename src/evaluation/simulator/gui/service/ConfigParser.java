@@ -31,8 +31,11 @@ public class ConfigParser {
 
 	
 	/**
+	 * Read config file content into a string 
+	 * 
 	 * @param file
 	 * @return
+	 * 		a string with config file's content
 	 */
 	public String cleanupConfigurationForSimulator(File file) {
 		StringBuffer content = new StringBuffer();
@@ -69,46 +72,6 @@ public class ConfigParser {
 			
 			@SuppressWarnings("unused")
 			String[] subStrings = { "" };
-			
-//			// Some glue that we need at the moment
-//			// TODO: Find a nice way to wrap them into the gui 
-//			
-//			DONE content.append("DEBUG_OUTPUT=ON").append(System.getProperty("line.separator"));
-//			
-//			// DESIRED_EVALUATIONS
-//			HALF DONE content.append("DESIRED_EVALUATIONS=AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE,MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE").append(System.getProperty("line.separator")); // See StatisticsType.java
-//			DONE content.append("START_RECORDING_STATISTICS_AT=0").append(System.getProperty("line.separator"));
-//			
-//			// PROPERTYS TO VARY
-//			content.append("PROPERTY_TO_VARY=BATCH_SIZE").append(System.getProperty("line.separator"));
-//			content.append("VALUES_FOR_THE_PROPERTY_TO_VARY=2,3,5,10,20,50,100,200,500").append(System.getProperty("line.separator"));
-//			content.append("USE_SECOND_PROPERTY_TO_VARY=FALSE").append(System.getProperty("line.separator"));
-//			content.append("SECOND_PROPERTY_TO_VARY=").append(System.getProperty("line.separator"));
-//			content.append("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY=").append(System.getProperty("line.separator"));
-//			
-//			// VALIDATION RUNS
-//			content.append("VALIDATION_RUNS=2").append(System.getProperty("line.separator")); // plotType?!
-//			DONE content.append("NAME_OF_PLOT_SCRIPT=defaultPlotScript.txt").append(System.getProperty("line.separator"));
-//			content.append("OVERWRITABLE_PARAMETERS=").append(System.getProperty("line.separator"));
-//			content.append("NONE_OVERWRITABLE_PARAMETERS=set logscale x").append(System.getProperty("line.separator"));
-//			
-//			DONE content.append("SIMULATION_END=SIMULATION_TIME_END").append(System.getProperty("line.separator"));
-//			DONE content.append("REAL_TIME_LIMIT_IN_SEC=1.0").append(System.getProperty("line.separator"));
-//			DONE content.append("SIMULATION_TIME_LIMIT_IN_MS=1000000").append(System.getProperty("line.separator"));
-//			HALF DONE content.append("MESSAGE_FORMAT=BASIC_MIX_MESSAGE").append(System.getProperty("line.separator"));
-//
-//			DONE content.append("MIX_REQUEST_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
-//			DONE content.append("MIX_REQUEST_HEADER_SIZE=0").append(System.getProperty("line.separator"));
-//			DONE content.append("MIX_REPLY_PAYLOAD_SIZE=512").append(System.getProperty("line.separator"));
-//			DONE content.append("MIX_REPLY_HEADER_SIZE=0").append(System.getProperty("line.separator"));
-//			content.append("MIX_REQUEST_CREATION_TIME=0").append(System.getProperty("line.separator"));
-//			content.append("MIX_REPLY_DECRYPTION_TIME=0").append(System.getProperty("line.separator"));
-//			content.append("PROCESSING_TIME_FOR_1000_REQUESTS=0").append(System.getProperty("line.separator"));
-//			content.append("PROCESSING_TIME_FOR_1000_REPLIES=0").append(System.getProperty("line.separator"));
-//
-//			content.append("COMMUNICATION_MODE=SIMPLEX").append(System.getProperty("line.separator"));
-//					
-//			content.append("RECEIVER_SUPPORTS_DUMMY_TRAFFIC=FALSE").append(System.getProperty("line.separator"));
 			
 			// Filter relevant lines in configuration file
 			while ((string = reader.readLine()) != null) {

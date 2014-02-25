@@ -11,21 +11,14 @@ import javax.swing.KeyStroke;
 import evaluation.simulator.gui.service.GuiService;
 
 /**
- * {@link JMenuBar} for the gMix Simulator GUI
- * 
- * @author nachkonvention
- * 
+ * @author alex
+ *
  */
 @SuppressWarnings("serial")
 public class MainMenu extends JMenuBar {
 
 	private static MainMenu _instance = null;
 
-	/**
-	 * Singleton
-	 * 
-	 * @return an instance of {@link MainMenu}
-	 */
 	public static MainMenu getInstance() {
 		if (_instance == null) {
 			_instance = new MainMenu();
@@ -46,10 +39,7 @@ public class MainMenu extends JMenuBar {
 
 	private final JMenu _windowMenu;
 
-	/**
-	 * Construtor
-	 */
-	public MainMenu() {
+	private MainMenu() {
 
 		this._fileMenu = new JMenu("File");
 		this._windowMenu = new JMenu("Window");
@@ -61,13 +51,13 @@ public class MainMenu extends JMenuBar {
 		this._preferences = new JMenuItem("Preferences");
 		this._seperateConfigTool = new JMenuItem("Separate Configuration Tool");
 		this._seperateConfigTool.setMnemonic('C');
-		this._seperateConfigTool.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C,
-				java.awt.Event.CTRL_MASK));
+		this._seperateConfigTool.setAccelerator(KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_C, java.awt.Event.CTRL_MASK));
 
 		this._seperateHelpTool = new JMenuItem("Separate Help Tool");
 		this._seperateHelpTool.setMnemonic('H');
-		this._seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H,
-				java.awt.Event.CTRL_MASK));
+		this._seperateHelpTool.setAccelerator(KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_H, java.awt.Event.CTRL_MASK));
 
 		this._faq = new JMenuItem("F.A.Q.");
 		this._about = new JMenuItem("About");

@@ -80,6 +80,10 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * @return
+	 * 		results pane
+	 */
 	public JTabbedPane getResultsPanel() {
 		return this.getResultsTabs();
 	}
@@ -90,14 +94,26 @@ public class SimulationTab extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * @return
+	 * 		splitpane
+	 */
 	public JSplitPane getSplitPane() {
 		return this.splitPane;
 	}
 
+	/**
+	 * @return
+	 * 		right splitpane
+	 */
 	public JSplitPane getRightSplitPane() {
 		return this.rightSplitPane;
 	}
 
+	/**
+	 * @return
+	 * 		results tab
+	 */
 	public JTabbedPane getResultsTabs() {
 		return this.resultsTabs;
 	}

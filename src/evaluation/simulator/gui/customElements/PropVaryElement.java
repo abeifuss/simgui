@@ -26,6 +26,10 @@ import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.structure.HelpPropValues;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
+/**
+ * @author alex
+ *
+ */
 public class PropVaryElement extends JPanel {
 
 	private static Logger logger = Logger.getLogger(PluginPanel.class);
@@ -46,6 +50,9 @@ public class PropVaryElement extends JPanel {
 		loadContent();
 	}
 
+	/**
+	 * Loads content
+	 */
 	private void loadContent() {
 
 		this.propMap = SimPropRegistry.getInstance().getProperties();
@@ -204,6 +211,9 @@ public class PropVaryElement extends JPanel {
 		field.addActionListener(al);
 	}
 
+	/**
+	 * Update
+	 */
 	public void update() {
 		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
 		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");

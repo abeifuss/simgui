@@ -22,6 +22,9 @@ public class ValueComparator implements Comparator<String> {
 
 	// Note: this comparator imposes orderings that are inconsistent with
 	// equals.
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	public int compare(String a, String b) {
 		if (this.base.get(a) <= this.base.get(b)) {

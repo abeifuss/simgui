@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 public class HomeTab extends JPanel {
 
 	/**
-	 * Construcor
+	 * Default Constructor
 	 */
 	public HomeTab() {
 

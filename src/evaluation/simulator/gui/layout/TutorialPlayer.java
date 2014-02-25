@@ -20,6 +20,12 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.conf.service.UserConfigService;
 
+/**
+ * Video player
+ * 
+ * @author alex
+ *
+ */
 @SuppressWarnings("serial")
 public class TutorialPlayer extends JFrame {
 	
@@ -27,6 +33,10 @@ public class TutorialPlayer extends JFrame {
 
 	private Player _player;
 
+	/**
+	 * @param title
+	 * 		(not used)
+	 */
 	public TutorialPlayer(String title) {
 		super();
 

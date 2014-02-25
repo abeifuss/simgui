@@ -8,9 +8,16 @@ import javax.swing.JTextArea;
 
 import evaluation.simulator.gui.service.DescriptionService;
 
+/**
+ * @author alex
+ *
+ */
 @SuppressWarnings("serial")
 public class DescriptionTab extends JTextArea implements Observer {
 
+	/**
+	 *  Default constructor
+	 */
 	public DescriptionTab() {
 		super();
 		DescriptionService ds = DescriptionService.getInstance();
@@ -22,6 +29,9 @@ public class DescriptionTab extends JTextArea implements Observer {
 		this.setBackground(new Color(220, 218, 213));
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		this.setText((String) arg);

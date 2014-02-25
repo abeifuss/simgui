@@ -1,5 +1,9 @@
 package evaluation.simulator.annotations.plugin;
 
+/**
+ * @author alex
+ *
+ */
 public class SimGuiPluginSuperclass {
 
 	private String documentationURL;

@@ -40,8 +40,15 @@ import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
+import evaluation.simulator.gui.layout.MainGui;
 
 /**
+ * The simprop registry
+ * 
+ * Reads annotations.
+ * Build simprop and plugin data models.
+ * Manages simprop and plugin changes.
+ * 
  * @author alex
  *
  */
@@ -51,6 +58,11 @@ public class SimPropRegistry {
 
 	private static SimPropRegistry _instance = null;
 
+	/**
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimPropRegistry}
+	 */
 	public static SimPropRegistry getInstance() {
 		if (_instance == null) {
 			_instance = new SimPropRegistry();
@@ -65,9 +77,6 @@ public class SimPropRegistry {
 
 	private int numberOfPluginLayers;
 
-	/**
-	 * 
-	 */
 	@SuppressWarnings("unchecked")
 	private final Map<String, String>[] pluginLayerMap = new HashMap[100];
 	

@@ -13,6 +13,10 @@ import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.results.ResultPanelFactory;
 import framework.core.launcher.CommandLineParameters;
 
+/**
+ * @author alex
+ *
+ */
 public class gMixBinding extends Thread {
 
 	private final Logger logger = Logger.getLogger(gMixBinding.class);
@@ -23,14 +27,24 @@ public class gMixBinding extends Thread {
 	Statistics stats;
 	private int experimentsPerformed = 0;
 
-	public gMixBinding() {
+	/**
+	 * Default constructor
+	 */
+	private gMixBinding() {
 
 	}
 
+	/**
+	 * @param configFile
+	 * 		String with config file content
+	 */
 	public void setParams(String[] configFile) {
 		this.params = new CommandLineParameters(configFile);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 
@@ -66,6 +80,12 @@ public class gMixBinding extends Thread {
 		}
 	}
 
+	/**
+	 * Singleton
+	 * 
+	 * @return
+	 * 		reference of {@link gMixBinding}
+	 */
 	public static gMixBinding getInstance() {
 		if (instance == null) {
 			instance = new gMixBinding();
@@ -73,14 +93,24 @@ public class gMixBinding extends Thread {
 		return instance;
 	}
 
+	/**
+	 * @param gnuplotConsoleOutputFileName
+	 */
 	public void setGnuplotConsoleOutputFileName(String gnuplotConsoleOutputFileName) {
 		this.resultsFileName = gnuplotConsoleOutputFileName;
 	}
 
+	/**
+	 * Resets the number of performed experiments
+	 */
 	public void resetExperiments() {
 		this.experimentsPerformed = 0;
 	}
 
+	/**
+	 * @return
+	 * 		file name of the resulting picture / plot
+	 */
 	public String getGnuplotConsoleOutputFileName() {
 		return this.resultsFileName;
 	}
