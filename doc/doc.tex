@@ -397,7 +397,19 @@ Das \emph{MigLayout} ist eine OpenSource Entwicklung, die gerade für große GUI
 \end{itemize}
 
 Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welhe am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppen von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
-Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
+Abbildungen \ref{fig:gui1} und \ref{fig:gui2} zeigen die fertige GUI des gMix Simulators. Abbildung \ref{fig:gui1} zeigt \emph{Configuration View, Simulation View, Konsole} und \emph{Results View}. In Abbildung \ref{fig:gui2} ist zusätzlich noch der \emph{Help View} zu sehen. Im WEiteren werden die einzelnen Bestandteile der GUI erläutert.
+
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth]{img/gmixGuiSimulator}
+\caption{gMix GUI I}
+\label{fig:gui1}
+\end{figure}
+
+\begin{figure}[!htp]
+\includegraphics[width=\textwidth]{img/gMixGuiHelp}
+\caption{gMix GUI II}
+\label{fig:gui2}
+\end{figure}
 
 \subsubsection{Configuration View} % (fold)
 \label{ssub:configview}
@@ -417,10 +429,10 @@ Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \
  \item \textbf{Integer} wird über einen Spinner konfiguriert. 
  \item \textbf{Boolean} wird mit einer Checkbox konfiguriert.
  \end{itemize}
- Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. \\
+ Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. Falsche WErteingaben werden mit Hilfe des Dependency Checkers (vgl. \ref{sssub:dependencychecker}) verhindert. \\
  Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
  Den letzten Abschnitt im \emph{Configuration View} bilden die allgemeinen Einstellungen zur Simulation und dem Plottype. Diese wurden ebenfalls als \emph{AccordionEntry} dargestellt um die Übersichtlichkeit zu bewahren. Der Eintrag Simulation bietet beispielsweise die Option den Endzeitpunkt einer Simulation zu konfigurieren. Unter dem \emph{AccordionEntry} Plottype lässt sich unter anderem das Plotskript für Gnuplot definieren.\\
- Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{AccordionEntries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
+ Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{Accordion Entries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
  Zur Unterstützung der Übersichtlichkeit bietet die GUI die Möglichkeit den \emph{Configuration View} vom Hauptfenster auszukoppeln. ies ist besonders hilfreich wenn man z.B. mit mehreren Monitoren abeitet oder das Hauptfenster ohne die Konfiguration betrachten möchte. Dabei wird ein neues Fenster erzeugt, welches nur den \emph{Configuration View} enthält.
 
 \subsubsection{Simulation View} % (fold)
@@ -428,19 +440,30 @@ Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \
 Der \emph{Simulation View} lässt den Nutzer seine vorher gespeicherte Konfiguration ausführen und generiert direkt einen Graphen mittels Gnuplot. Dadurch sind die Ergbnisse der Simulation sofort einzusehen. Der \emph{Simulation View} besteht aus drei Komponenten. AUf der linken Seite sind die vorhandenen Konfigurationsdateien zu sehen. Diese können per Multiselect (d.h. mehrere auf einmal) in der \emph{Configuration Selection} ausgewählt werden. Mit Hilfe der \emph{Simulation Control} kann die Simulation gestartet (\emph{Start Simulation}) oder angehalten (\emph{Stop Simulation}) werden. Die generierten Ergebnisse können mittels \emph{Clear Results} gelöscht werden. Zur Laufzeit des Programms werden die generierten Dateien jedoch nicht gelöscht, sondern nur aus der Anzeige entfernt. Über \emph{Export Results} lassen sich generierte Graphen in zwei verschiedene Formate expertieren. Zur Verfügung stehen .png und .eps. Beim Start einer Simulation erscheint im \emph{Simulation Status} ein Fortschrittsbalken, der signalisiert, dass die Simulation im Gange ist. \\
 Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hälfte die Konsole (siehe \ref{ssub:consoleview}). Darunter ist der \emph{Result View} (siehe \ref{ssub:resultview}) angesiedelt.
 
-
 \subsubsection{Result View} % (fold)
 \label{ssub:resultview}
-
-\subsubsection{Help View} % (fold)
-\label{ssub:helpview}
+Der \emph{Result View} präsentiert die Ergebnisse der zuvor ausgewählten Simulation. In der vorliegenden Version der gMix Simulator GUI wird Gnuplot zum rendern der Ergebnisse verwendet. Nach erfolgreicher Simulation wird im \emph{Result View} ein Tab erzeugt, der den dazugehörigen Graphen anzeigt. Ergebnisse werden in der Reihenfolge generiert, wie sie von oben nach unten in der Liste der \emph{Configuration Selection} ausgewählt wurden. Zusätzlich gibt die Legende der Graphen Auskunft um welche Simulation es sich handelt. Die Ergebnisse werden mittels des zuvor definierten Plotskripts erstellt. Gnuplot liefert das Ergebnis als Vektorgrafik, damit diese in der GUI ordentlich skaliert. Über die in \ref{ssub:simulationview} beschriebene Funktion lässt sich der Graph auch in andere Formate exportieren und speichern. Löschen lassen sich erstellte Ergebnisse mit Hilfe des Buttons \emph{Clear Results}. Um die Ergebnisse vergrößert zu betrachten genügt ein Rechtsklick auf das Ergebnis um über das Menü den Graphen von der GUI zu entkoppeln. So können mehrere Ergebnisse gleichzeitig vergrößert, entkoppelt und gegeneinander gestellt werden. 
 
 \subsubsection{Konsole} % (fold)
 \label{ssub:consoleview}
+Die \emph{Konsole} der gMix Simulator GUI gibt Auskunft über den aktuellen Status der GUI und den Fortschritt der Simulation. Speziell für diese Zwecke wurde der Logger \emph{log4j} von Apache um einen Appender erweitert, welcher bei einem bestimmten Loglevel in die \emph{Konsole} schreibt. Somit lassen sich die Nachrichten auf der \emph{Konsole} von Nachrichten, die in logs gespeichert werden unterscheiden.
 
-\section{Features} % (fold)
-\label{sec:features}
-Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
+\subsubsection{Help View} % (fold)
+\label{ssub:helpview}
+Der \emph{Help View} bietet dem Anwender Unterstützung bei der Benutzung der GUI. Ausgehend von den registrierten Plugins wird die Hilfe angelehnt an die Anordnung der \emph{Accordion Entries} aufgebaut. Dabei entsteht eine Baumstruktur, die mittels \emph{JTree} umgesetzt wurde. Als Blätter des \emph{JTree} werden die verfügbaren Plugins aufgezeigt. Wählt man ein Element aus öffnet die GUI eine HTML-Datei, welche zuvor vom Pluginentwickler angelegt wurde. Dabei ist zu beachten, dass die HTML-Datei den gleichen Namen wie der Plugin-Key hat. Somit werden Kollisionen vermieden und eine eindeutige Zuordnung von Plugin zu Hilfe erstellt. 
+
+\subsubsection{Bedienungsablauf in der GUI}
+\label{ssub:bedienung}
+In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine Simulation durchführen. Für den schnellen Einstieg folgt nun ein HowTo:
+
+\begin{enumerate}
+\item \textbf{Auswahl der Plugins:} \newline Der Benutzer wählt im \emph{Configuration View} die gewünschten Plugins mit Hilfe der \emph{Accordion Entries} aus und konfiguriert diese.
+\item \textbf{Auswahl der Properties To Vary:} \newline Anschließend werden die zu variierenden Werte angegeben.
+\item \textbf{Simulationskonfiguration:} \newline In der \emph{General Configuration} werden Angaben zu Ende der Simulation und Plotskript gemacht.
+\item \textbf{Speichern der Konfiguration:} \newline Über den Button \emph{Save} wird die vorgenommene Konfiguration gespeichert.
+\item \textbf{Auswahl der zu simulierenden Konfiguration:} \newline Die soeben gespeicherte Konfiguration wird in der \emph{Configuration Selection} ausgewählt. Dank Multiselection können auch mehrere Konfigurationen gleichzeitig gewählt werden.
+\item \textbf{Start der Simulation:} \newline Durch Druck auf den Button \emph{Start Simulation} wird die Simulation gestartet und anschließend werden die Ergebnisse im \emph{Results View} ausgegeben. 
+\end{enumerate}
 
 TEST \cite{dummy:svs}.
 % section features (end)
