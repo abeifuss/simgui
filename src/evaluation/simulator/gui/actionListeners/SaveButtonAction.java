@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import evaluation.simulator.conf.service.SimulationConfigService;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.customElements.PluginPanel;
-import evaluation.simulator.gui.layout.MainGui;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
@@ -52,7 +51,6 @@ public class SaveButtonAction implements ActionListener {
 			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 			simulationConfigService.writeConfig(file);
 
-			MainGui.getInstance().update();
 		}
 		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}

@@ -21,8 +21,10 @@ import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
 /**
- * @author alex
- *
+ * Builds the menu for the {@link SimHelpContentPanel}
+ * 
+ * @author nachkonvention
+ * 
  */
 @SuppressWarnings("serial")
 public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
@@ -39,8 +41,9 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 	private static JTree tree;
 
 	/**
-	 * This class is implemented as a singleton. getInstance is the way we get the instance to the singleton object
-	 * @return A reference to the instance of SimHelpMenuPanel
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimHelpMenuPanel}
 	 */
 	public static SimHelpMenuPanel getInstance() {
 		if (instance == null) {

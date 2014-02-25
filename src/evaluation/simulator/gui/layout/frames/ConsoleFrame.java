@@ -12,8 +12,11 @@ import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.ConsolePanel;
 
 /**
- * @author alex
+ * Window for Console
  * This is implemented as a singleton
+ * 
+ * @author nachkonvention
+ * 
  */
 public class ConsoleFrame extends JFrame {
 
@@ -27,8 +30,10 @@ public class ConsoleFrame extends JFrame {
 	private JPanel panel;
 
 	/**
-	 * @return a reference to the instance of ConsoleFrame
+	 * 
+	 * @return an instance of {@link ConsoleFrame}
 	 */
+
 	public static ConsoleFrame getInstance() {
 		if (instance == null) {
 			instance = new ConsoleFrame();
@@ -48,16 +53,15 @@ public class ConsoleFrame extends JFrame {
 
 		this.panel.setLayout(new BorderLayout());
 		this.simConsolePanel = ConsolePanel.getInstance();
-		this.panel.add(this.simConsolePanel,BorderLayout.CENTER);
+		this.panel.add(this.simConsolePanel, BorderLayout.CENTER);
 		this.add(this.panel);
 
 		this.consoleFrameXPos = UserConfigService.getCONSOLEFRAME_XPOS();
 		this.consoleFrameYPos = UserConfigService.getCONSOLEFRAME_YPOS();
 		this.consoleFrameWidth = UserConfigService.getCONSOLEFRAME_WIDTH();
-		this.consoleFrameHeight =  UserConfigService.getCONSOLEFRAME_HEIGHT();
+		this.consoleFrameHeight = UserConfigService.getCONSOLEFRAME_HEIGHT();
 
-		this.setBounds(this.consoleFrameXPos, this.consoleFrameYPos,
-				this.consoleFrameWidth, this.consoleFrameHeight);
+		this.setBounds(this.consoleFrameXPos, this.consoleFrameYPos, this.consoleFrameWidth, this.consoleFrameHeight);
 	}
 
 	private void safeProperties() {
@@ -72,8 +76,7 @@ public class ConsoleFrame extends JFrame {
 		this.initialize();
 
 		this.setTitle("Console");
-		this.setIconImage(Toolkit.getDefaultToolkit().createImage(
-				"etc/img/icons/icon128.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().createImage("etc/img/icons/icon128.png"));
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setVisible(false);
@@ -92,7 +95,7 @@ public class ConsoleFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				ConsoleFrame.this.safeProperties();
-				//				GuiService.getInstance().toggleConsole();
+				// GuiService.getInstance().toggleConsole();
 			}
 
 			@Override

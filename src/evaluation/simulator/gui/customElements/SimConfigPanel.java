@@ -4,12 +4,19 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.text.DefaultCaret;
 
 import evaluation.simulator.gui.actionListeners.LoadButtonAction;
 import evaluation.simulator.gui.actionListeners.ResetButtonAction;
 import evaluation.simulator.gui.actionListeners.SaveButtonAction;
+import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 
+/**
+ * Encapsules the whole configuration of the Simulator. Offers the possibility
+ * to load, save and reset the config. Holds the {@link AccordionEntry}
+ * 
+ * @author nachkonvention
+ * 
+ */
 @SuppressWarnings("serial")
 public class SimConfigPanel extends JPanel {
 
@@ -22,6 +29,10 @@ public class SimConfigPanel extends JPanel {
 		return instance;
 	}
 
+	/**
+	 * @param enabled
+	 *            enables the button
+	 */
 	public static void setStatusofSaveButton(Boolean enabled) {
 		getInstance().saveButton.setEnabled(enabled);
 	}
@@ -69,6 +80,9 @@ public class SimConfigPanel extends JPanel {
 
 	}
 
+	/**
+	 * updates the GUI
+	 */
 	public void update() {
 		this.pluginPanel.update();
 		this.updateUI();

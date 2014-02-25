@@ -5,10 +5,12 @@ import java.util.Comparator;
 import evaluation.simulator.annotations.property.SimProp;
 
 /**
- * @author alex
- *
+ * Comparing two {@link SimProp}
+ * 
+ * @author nachkonvention
+ * 
  */
-public class SimpropComparator implements Comparator<SimProp>{
+public class SimpropComparator implements Comparator<SimProp> {
 
 	@Override
 	public int compare(SimProp o1, SimProp o2) {

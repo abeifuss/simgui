@@ -12,8 +12,10 @@ import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
 
 /**
- * @author alex
- *
+ * Creates the {@link JPanel} which offers the representation of a website
+ * 
+ * @author nachkonvention
+ * 
  */
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
@@ -23,8 +25,9 @@ public class SimHelpContentPanel extends JPanel {
 	private static SimHelpContentPanel instance = null;
 
 	/**
-	 * This class is implemented as a singleton. getInstance is the way we get the instance to the singleton object
-	 * @return A reference to the instance of SimHelpContentPanel
+	 * Singleton
+	 * 
+	 * @return an instance of {@link SimHelpContentPanel}
 	 */
 	public static SimHelpContentPanel getInstance() {
 		if (instance == null) {
@@ -57,7 +60,8 @@ public class SimHelpContentPanel extends JPanel {
 
 	/**
 	 * Load a html file
-	 * @param url is the locator of html file which should be loaded
+	 * @param url
+	 *            the URL to load represented as {@link String}
 	 */
 	public void loadURL(String url) {
 		logger.log(Level.DEBUG, "Loading help-page: " + url);
