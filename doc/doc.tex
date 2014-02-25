@@ -29,7 +29,7 @@
 \setlength{\parindent}{0pt} 
 
 \makeatletter
-\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand\@biblabel[1]{\emph{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
 \renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
 
 \renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
@@ -45,7 +45,7 @@
 \end{flushright}
 }
 
-\title{\textbf{Dokumentation gMix-Simulator GUI}\\ % Title
+\title{\emph{Dokumentation gMix-Simulator GUI}\\ % Title
 Benutzer- / Entwicklerhandbuch} % Subtitle
 
 \author{\textsc{Beifuß A. ; Langnickel J. ; Lohmueller J. C. ; Weinschenk M.} % Author
@@ -82,16 +82,19 @@ Dieser Abschnitt behandelt das Thema Mixe und motiviert die Entwicklung des gMix
 In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, für die GUI gedacht ist. Es wird analysiert, welche Anforderungen und Bedürfnisse die jeweiligen Anwendergruppen haben. Entlang der gewonnenen Erkenntnissen soll dann die GUI entwickelt werden, so dass nach Möglichkeit die Anforderungen aller Gruppen zufriedengestellt werden können.
 % subsection ziele_der_gui (end)
 
+\newpage
+\section{Designentscheidungen} % (fold)
+\label{sec:designentscheidungen}
+
 \subsection{XML vs. Annotations} % (fold)
 \label{sub:xml}
 In diesem Abschnitt werden wir kurz motivieren, warum wir uns bei der Entwicklung der gMix GUI für die Verwendung Annotations und nicht für die Verwendung XML entschieden haben.\\
 
-\textbf{Flexibilität / Erweiterbarkeit:}\\
-Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} Plugin-basiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise um neue Eigenschaften erweitert werden sollen. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotationen enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emph{SimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.\\
+Flexibilität / Erweiterbarkeit: Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} Plugin-basiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise um neue Eigenschaften erweitert werden sollen. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotationen enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emph{SimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.\\
 
-\textbf{Dezentralisierung:}\\
-Im Gegensatz zu XML werden Annotationen direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden. Dieses ist bei Plugin-System sehr wichtig. Allerdings wäre eine lose Kopplung auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden, sofern jedes Plugin eine eigene XML Datei erhält. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins selbst. Dieses ist gerade bei der Entwicklung neuer Plugins von Vorteil, da nicht permanent zwischen mehreren Dateien (Java Code und XML Datei) hin und her gesprungen werden muss. Bei der Erweiterung von existierendem Code kann dieses jedoch auch nachteilig sein, da der Entwickler ggf. erst nach der relevanten Stelle im Code suchen muss und nicht wie bei XML alle Informationen in einer bekannten Datei vorliegen hat.\\
+Dezentralisierung: Im Gegensatz zu XML werden Annotationen direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden. Dieses ist bei Plugin-System sehr wichtig. Allerdings wäre eine lose Kopplung auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden, sofern jedes Plugin eine eigene XML Datei erhält. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins selbst. Dieses ist gerade bei der Entwicklung neuer Plugins von Vorteil, da nicht permanent zwischen mehreren Dateien (Java Code und XML Datei) hin und her gesprungen werden muss. Bei der Erweiterung von existierendem Code kann dieses jedoch auch nachteilig sein, da der Entwickler ggf. erst nach der relevanten Stelle im Code suchen muss und nicht wie bei XML alle Informationen in einer bekannten Datei vorliegen hat.
 
+\newpage
 Ein dritter Aspekt ist, dass Annotationen ein Teil der Sprache Java sind. Dieses bedeutet für einen Entwickler, dass er bei den Programmieraufgaben mehr Unterstützung durch die IDE bekommt, als es bei XML möglich ist. So wird er bei der Erweiterung von Annotationen beispielsweise frühzeitig auf syntaktische und semantische Fehleraufmerksam gemacht. Bei der Verwendung von XML ist dieses nicht gegeben, da zwischen der XML-Datei und Java-Code kein syntaktischer Zusammenhang besteht. Die Erkennung von semantischen Fehlern ist bei XML dadurch eingeschränkt, da XML code keine Typen wie kennt und somit nicht erkennen kann, ob eine Eingabe valide ist.\\
 
 Für den Anwender der GUI ist die Wahl zwischen Annotationen und XML irrelevant, da dieses aus seiner Sicht transparent ist. Der Pluginentwickler profitiert jedoch im Normalfall ein klein wenig mehr von dem Einsatz von Annotationen. Aus diesem Grund haben wir uns entschieden ein neues Framework (basierend auf Annotationen) zu entwickeln und nicht auf ein (aus einem früheren Projekt verfügbaren) XML basierendes Framework zurückzugreifen.
@@ -101,7 +104,7 @@ Für den Anwender der GUI ist die Wahl zwischen Annotationen und XML irrelevant,
 % section einleitung (end)
 
 \newpage
-\subsection{Annotations} % (fold)
+\subsection{Annotations (Entwickler Informationen)} % (fold)
 \label{sub:annotations}
 Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Es werden nun die Annotations-Typen motiviert, ihre Unterschiede erläutert. Weiterhin wird ausführlich auf die einzelnen Felder der Annotationen eingegangen.\\
 
@@ -116,7 +119,7 @@ Um den Leser mit der von uns verwendeten Bezeichnungen in Bezug auf die GUI-Elem
 \label{fig:guielements}
 \end{figure}
 
-Bevor es die gMix GUI gab wurde die Konfiguration des Simulators in einer Textdatei (EDF - Experiment Definition File) vorgenommen. Ein Auszug aus einer solchen Konfigurationsdatei ist in Listing \ref{lst:edf} dargestellt.
+Bevor es die gMix GUI gab wurde die Konfiguration des Simulators in einer Textdatei (EDF - Experiment Definition File) vorgenommen. Ein Auszug aus einer solchen Konfigurationsdatei ist in Listing \ref{lst:edf} dargestellt. 
 
 \newpage
 
@@ -144,9 +147,11 @@ Eine Hauptaufgabe unserer Arbeit bestand nun darin eine geeignete Abbildung zu f
 	\item Property: Je nach Implementation benötigt ein Plugin Parameter, um gewisse interne Variablen zu konfigurieren. Anzahl, Typ und zulässige Werte dieser Parameter hängen jedoch mit der Implementation des Plugins zusammen und müssen von dem Experimentator festgelegt werden. Zu diesem Zweck muss ein Plugin je Parameter eine Property definieren, die der Experimentator schließlich setzen darf.
 \end{itemize} 
 
-Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene (Layer) des Mix-Servers (bzw. der Ausgabestrategie - Output Strategy) argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin (hier 'BASIC\_BATCH'). Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht nicht aus der EDF hervor, sondern ist im Code des Simulators verankert).\\
+Die Terminologie welche wir für die EDF verwenden ist die gleiche wie zuvor, nur dass es dort keine \emph{Namen (names)} sondern \emph{Schlüssel (keys)} gibt. Der Unterschied ist, dass sich Namen immer auf die Darstellung innerhalb von GUI-Elementen beziehen, währen sich \emph{Schlüssel} auf die eindeutigen Strings in den EDFs beziehen.
 
-Nachdem nun die grundlegenden Terminologien eingeführt wurden, wollen wir die Annotations betrachten, welche den Aufbau der GUI regeln. Wir gehen dabei bottom-up vor, da weniger Informationen vorweggenommen werden müssen und die Argumentation somit für den Leser ein wenig verständlicher sein sollte.
+Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene (Layer) des Mix-Servers (bzw. der Ausgabestrategie - Output Strategy) argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin. Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht nicht aus der EDF hervor, sondern ist im Code des Simulators verankert).\\
+
+Nachdem nun die grundlegenden Terminologien eingeführt wurden, wollen wir die Annotationen genauer betrachten, welche den Aufbau der GUI bestimmen. Wir gehen dabei \emph{bottom-up} vor, da weniger Informationen vorweggenommen werden müssen und die Argumentation somit für den Leser ein wenig verständlicher sein sollte.
 
 \subsubsection{Property Annotation} % (fold)
 \label{ssub:feld_annotation}
@@ -154,55 +159,55 @@ Die Property-Anotations sind wohl die wichtigsten und auch komplexesten Annotati
 
 Alle \emph{Properties} haben eine gewisse Grundmenge an Feldern, die in der folgenden Auflistung erläutert werden. Besonders sei hier die \emph{BoolSimulationProperty} hervorgehoben. Dieses ist die einzige Property-Annotation, die außer dieser Grundmenge keine weiteren Felder besitzt.
 \begin{itemize}
-	\item \textbf{name:} Es handelt sich um einen String, der den Namen der Property festlegt, wie er in der GUI angezeigt werden soll. Analog zur obigen Grafik entspricht dieses dem \emph{PropertyName}.\\
-	\textbf{Default:} keinen (Der Entwickler muss diesen Wert händisch setzen)
-	\item \textbf{key:} Ein String der die Property innerhalb der Experiment-Konfiguration eindeutig identifiziert. Analog zum obigen Listing entspricht dieses dem \emph{PropertyKey}).
-	\item \textbf{position:} Dieses ist ein Integer (>= 0), der die Position des zugehörigen GUI-Elementes steuert. Je größer der Wert desto weiter unten taucht das GUI-Element der jeweiligen Proerty auf. Sollten zwei Properties eines Plugins hier den selben Wert haben, so wird lexikalisch geordnet.\\
-	\textbf{Defalut: 0}\\
-	\textbf{Anmerkung: noch nicht vollständig implementiert}
-	\item \textbf{tooltip:} Dieses ist ein String, der angezeigt wird, wenn sich die Maus über dem entsprechenden GUI-Element befindet.\\
-	\textbf{Default:} leerer String 
-	\item \textbf{info:} Ein String der (sofern festgelegt) als Infotext an dem entsprechenden GUI-Element der Property auftaucht.  
-	\textbf{Default: leerer String}
-	\item \textbf{global:} Ein Boolean über das festgelegt werden kann, dass die Property global (im gesamten PluginLayer angezeigt werden soll).\\
-	\textbf{Default:} false
-	\item \textbf{inject:} Ein String der es erlaubt Properties an eine beliebige Stelle in der GUI zu injizieren. Dieses ist notwendig, wenn Properties beispielsweise zu einem pseudo Plugin gehören (\emph{'Recoding Scheme'} ist z.B. ein solches pseudo Plugin, das in Wirklichkeit nicht als Plugin existiert sondern viel Mehr direkt im Simulator integriert ist, dem Benutzer jedoch als Plugin dargestellt werden soll). \\
-	\textbf{Syntax:} \"{}<LayerPosition>:<LayerKey>,<LayerName> [@<PluginPosition>:<PluginKey>,<PluginName>]\"{}\\
+	\item \emph{name:} Es handelt sich um einen String, der den Namen der Property festlegt, wie er in der GUI angezeigt werden soll. Analog zur obigen Grafik entspricht dieses dem \emph{PropertyName}.\\
+	\emph{Default:} keinen (Der Entwickler muss diesen Wert händisch setzen)
+	\item \emph{key:} Ein String der die Property innerhalb der Experiment-Konfiguration eindeutig identifiziert. Analog zum obigen Listing entspricht dieses dem \emph{PropertyKey}).
+	\item \emph{position:} Dieses ist ein Integer (>= 0), der die Position des zugehörigen GUI-Elementes steuert. Je größer der Wert desto weiter unten taucht das GUI-Element der jeweiligen Proerty auf. Sollten zwei Properties eines Plugins hier den selben Wert haben, so wird lexikalisch geordnet.\\
+	\emph{Defalut: 0}\\
+	\emph{Anmerkung: noch nicht vollständig implementiert}
+	\item \emph{tooltip:} Dieses ist ein String, der angezeigt wird, wenn sich die Maus über dem entsprechenden GUI-Element befindet.\\
+	\emph{Default:} leerer String 
+	\item \emph{info:} Ein String der (sofern festgelegt) als Infotext an dem entsprechenden GUI-Element der Property auftaucht.  
+	\emph{Default: leerer String}
+	\item \emph{global:} Ein Boolean über das festgelegt werden kann, dass die Property global (im gesamten PluginLayer angezeigt werden soll).\\
+	\emph{Default:} false
+	\item \emph{inject:} Ein String der es erlaubt Properties an eine beliebige Stelle in der GUI zu injizieren. Dieses ist notwendig, wenn Properties beispielsweise zu einem pseudo Plugin gehören (\emph{'Recoding Scheme'} ist z.B. ein solches pseudo Plugin, das in Wirklichkeit nicht als Plugin existiert sondern viel Mehr direkt im Simulator integriert ist, dem Benutzer jedoch als Plugin dargestellt werden soll). \\
+	\emph{Syntax:} \"{}<LayerPosition>:<LayerKey>,<LayerName> [@<PluginPosition>:<PluginKey>,<PluginName>]\"{}\\
 	Wird hier der optionale Plugin-Teil weggelassen, so gibt die Property als Layerweit (global) sichtbar.\\
-	\textbf{Default:} leerer String (keine Injection)
-	\item \textbf{isStatic:} Ein Boolean das angibt, ob eine Property im Plugin-Abschnitt (\emph{Plugin Configuration}) auftauchen soll oder aber im Abschnitt für statische Properties (\emph{General Configuration}). Dieses Feld wird nur in Kombination mit dem Feld \emph{inject} verwendet. Sinnvoll ist der Einsatz meist dort, wo es sich um Properties handelt, die nicht zu einem Plugin gehören und aus logischer Sicht auch nicht auf einer Pluginschicht liegen.\\
-	\textbf{Default:} false (Property wird in der \emph{Plugin Configuration} angezeigt)
-	\item \textbf{value\_requirements:} Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Werte Anforderungen umgesetzt werden.
-	\item \textbf{enable\_requirements:} Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Freischalte Anforderungen umgesetzt werden.
+	\emph{Default:} leerer String (keine Injection)
+	\item \emph{isStatic:} Ein Boolean das angibt, ob eine Property im Plugin-Abschnitt (\emph{Plugin Configuration}) auftauchen soll oder aber im Abschnitt für statische Properties (\emph{General Configuration}). Dieses Feld wird nur in Kombination mit dem Feld \emph{inject} verwendet. Sinnvoll ist der Einsatz meist dort, wo es sich um Properties handelt, die nicht zu einem Plugin gehören und aus logischer Sicht auch nicht auf einer Pluginschicht liegen.\\
+	\emph{Default:} false (Property wird in der \emph{Plugin Configuration} angezeigt)
+	\item \emph{value\_requirements:} Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Werte Anforderungen umgesetzt werden.
+	\item \emph{enable\_requirements:} Eine Klasse, welche von der abstrakten Klasse Requirement erbt und in derer für diese Simproperty relevante Freischalte Anforderungen umgesetzt werden.
 \end{itemize}
 
 Die Annotationen für die numerischen \emph{Properties} (\emph{IntSimulationProperty}, \emph{FloatSimulationProperty} und \emph{DoubleSimulationProperty}) haben neben den Standardfeldern noch Felder, welche hauptsächlich die gültigen Wertebereiche betreffen.
 \begin{itemize}
-	\item \textbf{min:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Minimalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
-	\textbf{Default:} Integer.MIN\_VALUE bzw. Float|Double.NEGATIVE\_INFINITY
-	\item \textbf{max:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Maximalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
-	\textbf{Default:} Integer|Float|Double.MAX\_VALUE
-	\item \textbf{guiElement:} Ein String über den festgelegt werden kann, über was für ein GUI-Element der Wert Property in der GUI konfiguriert werden kann. Aktuell sind für Ganzzahl und Gleitkomma zahlen die beiden Elemente JSpinner (\emph{\"{}spinner\"{}} für Integer, Float und Double) und JSlider (\emph{\"{}slider\"{}} für Integer) implementiert. Beide Elemente verwenden die durch die Felder \emph{min} und \emph{max} festgelegten Grenzen und schützen den Benutzer vor Fehleingaben.\\
-	\textbf{Default:} \emph{\"{}spinner\"{}} (JSpinner)
-	\item \textbf{stepSize:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der die Schrittweite eines JSpinners angibt. Dieses Feld ist in Kombination mit \emph{guiElement=\"{}spinner\"{}} sinnvoll, um die Schrittweite manuell festzulegen. So ist es bei einigen Properties vlt. besser eine Schrittweite von 0.1 zu haben, während bei anderen Properties vielleicht kleinere Schrittweiten wie 0.001 besser passen.\\
-	\textbf{Default:} Integer 1, Gleitkomma 0.001f
-	\item \textbf{enableAuto:} Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}AUTO\"{} annehmen kann. Der Simulator sieht dieses für einige Properties vor. Im Falle, dass eine numerische Property den Wert \"{}AUTO\"{} hat, wird der tatsächliche Wert automatisch anhand von anderen Properties bestimmt. Wird dieses Feld auf true gesetzt, so gibt es im entsprechenden GUI-Element eine Checkbox, über die der Benutzer festlegen kann, dass die Property automatisch bestimmt werden soll. Für denn Fall, dass  die Checkbox aktiviert ist, wird das eigentliche Eingabeelement (siehe \emph{guiElement}) ausgegraut.\\
-	\textbf{Beispiele:} Request und Reply Size in ParetoClient, PoissonClient, RequestReplyClient und SendConstantClient\\
-	\textbf{Default:} false (keine Checkbox für \"{}AUTO\"{}) 
-	\item \textbf{enableUnlimited:} Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}UNLIMMITED\"{} annehmen kann. Dieses funktioniert analog zu \emph{enableAuto}.\\
-	\textbf{Beispiel:} DelayBox alle sechs Bandwidth-Properties
-	\textbf{Default:} false (keine Checkbox für \"{}UNLIMITED\"{})
+	\item \emph{min:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Minimalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
+	\emph{Default:} Integer.MIN\_VALUE bzw. Float|Double.NEGATIVE\_INFINITY
+	\item \emph{max:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der den Maximalwert angibt, den die Property annehmen kann. Der angegebene Wert wird von der GUI dazu verwendet um Benutzereingaben auf Gültigkeit zu prüfen.\\
+	\emph{Default:} Integer|Float|Double.MAX\_VALUE
+	\item \emph{guiElement:} Ein String über den festgelegt werden kann, über was für ein GUI-Element der Wert Property in der GUI konfiguriert werden kann. Aktuell sind für Ganzzahl und Gleitkomma zahlen die beiden Elemente JSpinner (\emph{\"{}spinner\"{}} für Integer, Float und Double) und JSlider (\emph{\"{}slider\"{}} für Integer) implementiert. Beide Elemente verwenden die durch die Felder \emph{min} und \emph{max} festgelegten Grenzen und schützen den Benutzer vor Fehleingaben.\\
+	\emph{Default:} \emph{\"{}spinner\"{}} (JSpinner)
+	\item \emph{stepSize:} Ein numerischer Wert (abhängig vom konkreten Typ der Annotation), der die Schrittweite eines JSpinners angibt. Dieses Feld ist in Kombination mit \emph{guiElement=\"{}spinner\"{}} sinnvoll, um die Schrittweite manuell festzulegen. So ist es bei einigen Properties vlt. besser eine Schrittweite von 0.1 zu haben, während bei anderen Properties vielleicht kleinere Schrittweiten wie 0.001 besser passen.\\
+	\emph{Default:} Integer 1, Gleitkomma 0.001f
+	\item \emph{enableAuto:} Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}AUTO\"{} annehmen kann. Der Simulator sieht dieses für einige Properties vor. Im Falle, dass eine numerische Property den Wert \"{}AUTO\"{} hat, wird der tatsächliche Wert automatisch anhand von anderen Properties bestimmt. Wird dieses Feld auf true gesetzt, so gibt es im entsprechenden GUI-Element eine Checkbox, über die der Benutzer festlegen kann, dass die Property automatisch bestimmt werden soll. Für denn Fall, dass  die Checkbox aktiviert ist, wird das eigentliche Eingabeelement (siehe \emph{guiElement}) ausgegraut.\\
+	\emph{Beispiele:} Request und Reply Size in ParetoClient, PoissonClient, RequestReplyClient und SendConstantClient\\
+	\emph{Default:} false (keine Checkbox für \"{}AUTO\"{}) 
+	\item \emph{enableUnlimited:} Ein Boolean über das festgelegt werden kann, dass die eigentlich numerische Property den String \"{}UNLIMMITED\"{} annehmen kann. Dieses funktioniert analog zu \emph{enableAuto}.\\
+	\emph{Beispiel:} DelayBox alle sechs Bandwidth-Properties
+	\emph{Default:} false (keine Checkbox für \"{}UNLIMITED\"{})
 \end{itemize}
 
 Die Annotation \emph{StringSimulationProperty} hat ebenfalls zusätzliche Felder.
 \begin{itemize}
-	\item \textbf{possibleValues:} Ein String über den vordefinierte Werte festgelegt werden können. Die einzelnen Werte werden innerhalb des Strings durch Kommata separiert. Ist dieser String ungleich dem leeren String, so wird die GUI dem Benutzer eine JCombobox zur Manipulation des Property-Wertes anbieten (es sei denn, dass \emph{multiSelection=true} ist, siehe nächstes Feld).\\
-	\textbf{Default:} leerer String
-	\item \textbf{multiSelection:} Ein Boolean über den festgelegt werden kann, dass eine Mehrfachauswahl der vordefinierten Werte möglich ist. Ist dieses Feld auf true gesetzt und sind mittels \emph{possibleValues} mehrere vordefinierte Werte angegeben, so wird ein, auf einer JList basierendes, GUI-Element erstellt, die eine Mehrfachauswahl erlaubt.\\
-	\textbf{Default:} false (Mehrfachauswahl ist deaktiviert) 
-	\item \textbf{regex:} Ein String der eine Regex darstellt, die dazu verwendet wird, um Benutzereingaben auf Gültigkeit zu prüfen (kann dann ggf. auch in den ValueRequirements verwendet werden!)
-	\textbf{Anmerkung:} noch nicht vollständig implementiert\\
-	\textbf{Default:} leerer String
+	\item \emph{possibleValues:} Ein String über den vordefinierte Werte festgelegt werden können. Die einzelnen Werte werden innerhalb des Strings durch Kommata separiert. Ist dieser String ungleich dem leeren String, so wird die GUI dem Benutzer eine JCombobox zur Manipulation des Property-Wertes anbieten (es sei denn, dass \emph{multiSelection=true} ist, siehe nächstes Feld).\\
+	\emph{Default:} leerer String
+	\item \emph{multiSelection:} Ein Boolean über den festgelegt werden kann, dass eine Mehrfachauswahl der vordefinierten Werte möglich ist. Ist dieses Feld auf true gesetzt und sind mittels \emph{possibleValues} mehrere vordefinierte Werte angegeben, so wird ein, auf einer JList basierendes, GUI-Element erstellt, die eine Mehrfachauswahl erlaubt.\\
+	\emph{Default:} false (Mehrfachauswahl ist deaktiviert) 
+	\item \emph{regex:} Ein String der eine Regex darstellt, die dazu verwendet wird, um Benutzereingaben auf Gültigkeit zu prüfen (kann dann ggf. auch in den ValueRequirements verwendet werden!)
+	\emph{Anmerkung:} noch nicht vollständig implementiert\\
+	\emph{Default:} leerer String
 \end{itemize}
 
 % subsubsection feld_annotation (end)
@@ -212,21 +217,21 @@ Die Annotation \emph{StringSimulationProperty} hat ebenfalls zusätzliche Felder
 Neben den \emph{Property Annotations} gibt es zwei weitere Typen von Annotations. Hierzu gehören unter anderem die \emph{Plugin Annotations}. Die Einführung dieser Annotations erschien uns aus dem Grund sinnvoll, da es für einen Pluginentwickler vorteilhaft ist, wenn dieser Eigenschaften, die logisch gesehen zu einem Plugin gehören, auch direkt am Plugin setzten kann. Beispiele hierfür sind der Pluginname, der in der GUI auftaucht (z.B. ''Basic delay box'') oder aber der Schlüssel, unter dem das Plugin in der Experiment-Konfiguration auftaucht (z.B. ''BASIC\_DELAY\_BOX''). Des weiteren erlaubt eine Annotation auf Pluginebene das pluginweite setzen von Eigenschaften. So kann beispielsweise über eine \emph{Property Annotation} festgelegt werden, dass alle Properties, welche in einem Plugin liegen global sind, wodurch sich der Pluginentwickler ggf. ein wenig Schreibarbeit sparen kann. \emph{Property Annotations} haben folgende Felder:
 
 \begin{itemize}
-	\item \textbf{pluginName:} Ein String, der den Namen festlegt, unter dem das Plugin in der GUI auftritt. Entspricht der bereitgestellt String dem leeren String, so wird stattdessen \emph{pluginKey} als angezeigter Name in der GUI verwendet.\\
-	\textbf{Default:} Der leere String
-	\item \textbf{pluginKey:} Ein String, der dem Namen festlegt, unter dem das Plugin in der Experiment-Konfiguration auftritt. Dieser String muss dabei genau dem String entsprechen, der das Plugin gegenüber dem den \emph{gMix-Simulator} identifiziert (siehe Enums in \emph{evaluation.simulator.pluginRegistry}).
-	\item \textbf{pluginLayerKey:} Ein String, der den Layer (also die Kategorie) festlegt, unter dessen Pluginauswahl das Plugin auftauchen soll. Dieses Feld ist dafür gedacht, dass der Entwickler von Hand festlegen kann, in welchem Layer das Plugin aufgelistet wird. Dieses ist notwendig, wenn ein Plugin aus mehreren Klassen besteht die keine gemeinsame Oberklasse haben. Ein Beispiel für die Anwendung dieses Feldes ist in der Klasse \emph{StopAndGoMessage} zu finden. Dort wird mittels dieses Feld mitgeteilt, dass dieses Plugin in den Layer \"{}OUTPUT\_STRATEGY" gehört. Der Layer selbst wird aber durch die \emph{Plugin Superclass Annotation} in \emph{OutputStrategyImpl} erstellt, welches eine Oberklasse von \emph{StopAndGo} ist. \\
-	\textbf{ACHTUNG:} Hier dürfen tatsächlich nur Keys eingetragen werden, die auch in einer \emph{Plugin Superclass Annotation} festgelegt wurden. Anderenfalls kommt es zu Fehlern!\\
-	\textbf{Default:} leerer Sting (autodetection via \emph{Plugin Superclass})
-	% \item \textbf{documentationURL:}
+	\item \emph{pluginName:} Ein String, der den Namen festlegt, unter dem das Plugin in der GUI auftritt. Entspricht der bereitgestellt String dem leeren String, so wird stattdessen \emph{pluginKey} als angezeigter Name in der GUI verwendet.\\
+	\emph{Default:} Der leere String
+	\item \emph{pluginKey:} Ein String, der dem Namen festlegt, unter dem das Plugin in der Experiment-Konfiguration auftritt. Dieser String muss dabei genau dem String entsprechen, der das Plugin gegenüber dem den \emph{gMix-Simulator} identifiziert (siehe Enums in \emph{evaluation.simulator.pluginRegistry}).
+	\item \emph{pluginLayerKey:} Ein String, der den Layer (also die Kategorie) festlegt, unter dessen Pluginauswahl das Plugin auftauchen soll. Dieses Feld ist dafür gedacht, dass der Entwickler von Hand festlegen kann, in welchem Layer das Plugin aufgelistet wird. Dieses ist notwendig, wenn ein Plugin aus mehreren Klassen besteht die keine gemeinsame Oberklasse haben. Ein Beispiel für die Anwendung dieses Feldes ist in der Klasse \emph{StopAndGoMessage} zu finden. Dort wird mittels dieses Feld mitgeteilt, dass dieses Plugin in den Layer \"{}OUTPUT\_STRATEGY" gehört. Der Layer selbst wird aber durch die \emph{Plugin Superclass Annotation} in \emph{OutputStrategyImpl} erstellt, welches eine Oberklasse von \emph{StopAndGo} ist. \\
+	\emph{ACHTUNG:} Hier dürfen tatsächlich nur Keys eingetragen werden, die auch in einer \emph{Plugin Superclass Annotation} festgelegt wurden. Anderenfalls kommt es zu Fehlern!\\
+	\emph{Default:} leerer Sting (autodetection via \emph{Plugin Superclass})
+	% \item \emph{documentationURL:}
 	% Ein String der den Pfad/Dateiname zu der Dokumentation des Plugins. Sofern hier ein Wert angegeben wird (und die referenzierte Datei existiert), wird die Dokumentation in den \emph{Help View} mit aufgenommen.\\
-	% \textbf{Default:} leerer Sting (keine Dokumentation verfügbar)
-	\item \textbf{visible:}	Ein boolean über das festgelegt werden kann, ob das Plugin in der Pluginauswahl auftaucht oder nicht\\
-	\textbf{Default:} true (sichtbar)
-	\item \textbf{global:} Ein boolean über das alle Properties, die zu dem Plugin gehören, gobal gesetzt werden können. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
-	\textbf{Default: false} (nicht global)
-	\item \textbf{allowGlobalFields:} Ein boolean über das festgelegt wird, ob Properties aus dem Plugins global sein dürfen. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
-	\textbf{Default:} true (globale Properties sind erlaubt)
+	% \emph{Default:} leerer Sting (keine Dokumentation verfügbar)
+	\item \emph{visible:}	Ein boolean über das festgelegt werden kann, ob das Plugin in der Pluginauswahl auftaucht oder nicht\\
+	\emph{Default:} true (sichtbar)
+	\item \emph{global:} Ein boolean über das alle Properties, die zu dem Plugin gehören, gobal gesetzt werden können. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
+	\emph{Default: false} (nicht global)
+	\item \emph{allowGlobalFields:} Ein boolean über das festgelegt wird, ob Properties aus dem Plugins global sein dürfen. Global bedeutet eine Property taucht für jede Pluginwahl in der GUI auf.\\
+	\emph{Default:} true (globale Properties sind erlaubt)
 \end{itemize}
 % subsection plugin_annotation (end)
 
@@ -237,7 +242,7 @@ Mit dieseen Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBo
 % subsection plugin_annotation (end)
 
 \begin{itemize}
-	\item \textbf{layerKey:}
+	\item \emph{layerKey:}
 	Ein String der den Schlüssel festlegt, unter dem der \emph{pluginKey} des aktiven Plugins in der Experiment-Konfiguration geschrieben wird. Die aktuell verwendeten \emph{LayerKeys} der Plugins sind: 
 	\begin{itemize}
 		\item CLIENT\_SEND\_STYLE
@@ -247,12 +252,12 @@ Mit dieseen Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBo
 		\item TOPOLOGY\_SCRIPT 
 		\item TYPE\_OF\_TRAFFIC\_GENERATOR
 	\end{itemize}
-	\textbf{Anmerkung:} Diese Liste hängt von der Implementation des gMix Simulators ab und kann sich daher in der Zukunft ändern.\\
-	\textbf{Default:} kein (muss händisch vom Pluginentwickler gesetzt werden)
-	\item \textbf{layerName:}
+	\emph{Anmerkung:} Diese Liste hängt von der Implementation des gMix Simulators ab und kann sich daher in der Zukunft ändern.\\
+	\emph{Default:} kein (muss händisch vom Pluginentwickler gesetzt werden)
+	\item \emph{layerName:}
 	Ein String der den Namen des Layers festlegt, welcher in der GUI angezeigt werden soll.\\
-	\textbf{Default:} kein
-	\item \textbf{fakePlugins:}
+	\emph{Default:} kein
+	\item \emph{fakePlugins:}
 	Ein String der es erlaubt eine Pluginauswahl zu erstellen, für Pugins die real garnicht existieren. Diese Technik kommt beispielsweise bei \emph{TopologyScript} zum Eisatz. Die Plugins  
 	\begin{itemize} 
 		\item NO\_MIXES,ONE\_MIX
@@ -260,15 +265,15 @@ Mit dieseen Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBo
 		\item FIVE\_MIX\_CASCADE 
 	\end{itemize}
 	existieren in Wirklichkeit garnicht. Sie sind lediglich Enums, die auf die auf Instanzen der echten Plugins \emph{NoMixTopology} und \emph{NMixCascadeTopology} in verschiedenen Konfigurationen abbilden. Es ist jedoch nicht gewünscht, dass der Endanwender die tatsächlichen Plugins verwendet sondern auf die vordefinierten Konfigurationen zurückgreift. \emph{fakePlugins} kann daher ein String zugewiesen werden, der eine Menge von pseudo Plugins darstellt (die Namen der pseudo Plugins werden innerhalb des Strings durch Kommata separiert, siehe \emph{TopologyScript}). Diese pseudo Plugins werden dann in die Pluginauswahl injiziert und können dort durch den Benutzer anschließend ausgewählt werden.\\
-	\textbf{Default:} leerer String (keine gefakten Plugins in der Pluginauswahl verfügbar)
-	\item \textbf{position:}
+	\emph{Default:} leerer String (keine gefakten Plugins in der Pluginauswahl verfügbar)
+	\item \emph{position:}
 	Ein Integer (größer als 0) über den angegeben werden kann an welcher Position der Pluginlayer in der GUI auftaucht. Je kleiner der angegebene Wert ist, desto weiter oben wird der Pluginlayer in der GUI angezeigt. Haben zwei unterschiedliche Pluginlayer den selben Wert bei der Position, so wird lexikalisch sortiert.\\
-	\textbf{Default:} 100 
+	\emph{Default:} 100 
 \end{itemize}
 
 \section{Architektur} % (fold)
 \label{sec:architektur}
-In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt und das Zusammenspiel der einzelnen Komponenten ausführlich erläutert. 
+In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt und das Zusammenspiel einzelner Komponenten ausführlich erläutert. 
 
 \subsection{Übersicht der Architektur} % (fold)
 \label{ssub:uebersicht}
@@ -389,9 +394,9 @@ welche anschließend mit Swing Komponenten befüllt werden können. Dabei ist zu
 Das \emph{MigLayout} ist eine OpenSource Entwicklung, die gerade für große GUI Projekte eine besondere Agilität mit sich bringt. Bei der Verwendung des \emph{MigLayout} werden ähnlich des \emph{GridLayout} Koordinaten für einzelne GUI Elemente angegeben. Verbildlicht bedeutet dies, dass die GUI in ein Raster unterteilt wird. In dieses Raster werden die Elemente angeordnet und mit sog. \emph{Contstraints} versehen. Die \emph{Constraints} garantieren, dass die Elemente den zur Verfügung stehenden Platz nutzen, sich ordentlich orientieren oder sich in einer bestimmten Reihenfolge anordnen. Eine Auswahl von Constraints und deren Bedeutung ist unten aufgelistet:
 
 \begin{itemize}
-\item \textbf{grow} gibt an, dass ein Element den zur Verfügung stehenden Platz ausnutzen soll. Wird das Fenster vergrößert entsteht mehr Platz, der von dem Element eingenommen wird. Buttons oder Textfelder vergrößern sich somit automatisch.
-\item \textbf{span} gibt an, dass ein Element sich über eine bestimmte Anzahl an Zellen ausbreiten darf. Somit lassen sich Elemente z.B. doppelt so groß wie andere Elemente zeichnen.
-\item \textbf{align} gibt an, wie sich das zu zeichnende Element ausrichten soll. Klassischerweise stehen die \emph{Constraints center, left, right, top} und \emph{bottom} zur Verfügung. 
+\item \emph{grow} gibt an, dass ein Element den zur Verfügung stehenden Platz ausnutzen soll. Wird das Fenster vergrößert entsteht mehr Platz, der von dem Element eingenommen wird. Buttons oder Textfelder vergrößern sich somit automatisch.
+\item \emph{span} gibt an, dass ein Element sich über eine bestimmte Anzahl an Zellen ausbreiten darf. Somit lassen sich Elemente z.B. doppelt so groß wie andere Elemente zeichnen.
+\item \emph{align} gibt an, wie sich das zu zeichnende Element ausrichten soll. Klassischerweise stehen die \emph{Constraints center, left, right, top} und \emph{bottom} zur Verfügung. 
 \end{itemize}
 
 Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welhe am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppen von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
@@ -402,18 +407,18 @@ Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
 Der \emph{Configuration View} bildet das zusammen mit der \emph{SimPropRegistry} (vgl. \ref{sssub:simpropregistry}) das Herzstück der GUI. Mit ihr hat der Nutzer die Möglichkeit die Simulation auf einfach Art und Weise zu konfigurieren. \\
 Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \emph{PropertiesToVary} Konfiguration, einer allgemeinen Simulationskonfiguration und den Buttons \emph{Load, Save} und \emph{Reset}. Angelehnt an moderne Smartphone Betriebssysteme wurden die \emph{AccordionEntries} entwickelt, welche sich durch einen Button und darunter verborgene Konfigurationsmöglichkeiten auszeichnen. Jeder Layer der Simulatorkonfiguration lässt sich somit auf einen Button abbilden unter dem ein Plugin für diesen gewählt werden kann. In der vorliegenden Version der gMix-Simulator GUI werden folgende Layer verwendet:
 \begin{enumerate}
-\item \textbf{Underlay-net}, dass zugrundeliegende Netzwerk
-\item \textbf{Topology}, dessen Aufbau
-\item \textbf{Mix Server}, das Verhalten des Mix Servers
-\item \textbf{Mix Proxy}, die Proxykonfiguration
-\item \textbf{Recoding Scheme}, die Art der Umkodierung
-\item \textbf{Mix Client}, der Client
-\item \textbf{Load Generator}, die Verkehrsdatenerzeugung
+\item \emph{Underlay-net}, dass zugrundeliegende Netzwerk
+\item \emph{Topology}, dessen Aufbau
+\item \emph{Mix Server}, das Verhalten des Mix Servers
+\item \emph{Mix Proxy}, die Proxykonfiguration
+\item \emph{Recoding Scheme}, die Art der Umkodierung
+\item \emph{Mix Client}, der Client
+\item \emph{Load Generator}, die Verkehrsdatenerzeugung
 \end{enumerate}
  Klickt man auf den Button erhält man zunächst eine Auswahl in Form einer Combobox um ein Plugin zu wählen. Hat man in Plugin gewählt erhält man die Konfigurationsmöglichkeiten für dieses Plugin. Dabei wird die Anzeige dynamisch, ausgehend vom Variablentyp der \emph{SimulationProperty} erstellt. Der Typ wurde zuvor vom Entwikler per \emph{Annotation} festgelegt. Zwei Beispiele für dynamisch erzeugte Konfigurationsmöglichkeiten sind
  \begin{itemize}
- \item \textbf{Integer} wird über einen Spinner konfiguriert. 
- \item \textbf{Boolean} wird mit einer Checkbox konfiguriert.
+ \item \emph{Integer} wird über einen Spinner konfiguriert. 
+ \item \emph{Boolean} wird mit einer Checkbox konfiguriert.
  \end{itemize}
  Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. \\
  Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
@@ -440,8 +445,16 @@ Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hä
 \subsubsection{Konsole} % (fold)
 \label{ssub:consoleview}
 
-\section{Entwickler Informationen} % (fold)
+\section{Entwickler Anleitungen} % (fold)
 \label{sec:entwicklung}
+
+\subsection{Erstellen eines neuen Plugins} % (fold)
+\label{sub:neues_plugin}
+
+\subsection{Erweiterung von SimProp Annotationen} % (fold)
+\label{sub:erweiterung_von_simulation_property_annotationen}
+
+% subsection erweiterung_von_simulation_property_annotationen (end)
 
 \section{Features} % (fold)
 \label{sec:features}
