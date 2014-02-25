@@ -478,6 +478,18 @@ In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine
 \end{enumerate}
 \section{Entwickler Informationen} % (fold)
 \label{sec:entwicklung}
+\subsection{DependencyChecker}
+\label{ssub:dependencychecker}
+Der Dependency Checker überprüft die Einhaltung von allen Value und Enable Requirements. Dies wird die  durch die Methode checkAll() realisiert welcher die gesamte SimPropertyRegistry übergeben wird. Der Aufruf erfolgt dabei direkt nach dem Einlesen der Property beim Start des Programms, wenn eine neue Konfiguration eingelesen wird, wenn für Plugins gescannt wird und immer wenn sich Daten in der SimPropertyRegistry ändern.
+Die Funktion checkAll() arbeitet mit Reflections und versucht die übergebenen Enable und Value Anforderungen, die in der SimPropRegistry enthalten sind, zu instanziieren und auszuführen.
+Dabei wird immer zuerst die Enable Anforderung überprüft da wenn eine Property bereits deaktiviert ist keine weitere Überprüfung auf valide Werte nötig ist.
+\subsection{Requirement}
+\label{ssub:Requirements}
+Neue Anforderungen werden durch Erben von der abstrakten Requirement Klasse erzeugt. Ein neues Requirement muss somit immer die Methode check() implementieren welche einen Boolean zurücklieferen muss. Da auf maximale Freiheit bei der Defintion der check() Methode gesetzt wurde, ist es auch möglich Werte beliebiger anderer SimProperty, ausser der eigenen Simproperty, zu ändern. Da dieses nur sehr schwer nachvollziehbar ist ist es strikt verboten Werte anderer SimProperties zu ändern.
+Es existieren weiterhin in der abstrakten Requirements Klasse Hilfsfunktionen die bei der Erstellung von Requirements benutzt werden können.
+\subsubsection{Fehlermechanismus}
+Um Fehler in Requirements in der GUI anzeigen zu lassen empfiehlt sich die Nutzung der Errors oder Warning der SimpProperties. Die Funktionen setErrors() und setWarnings() einer Property erwarten dabei ein Set<String> welcher die entsprechenden Meldungen beinhaltet. Sobald die Meldungen gesetzt sind werden sie automatisch angezeigt. 
+
 
 % TEST \cite{dummy:svs}.
 % section features (end)
