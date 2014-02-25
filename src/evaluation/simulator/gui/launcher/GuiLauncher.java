@@ -17,7 +17,7 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
 
 /**
- * Launches the gMix GUI
+ * This class provides the laucher for the gmix simulation gui
  * 
  * @author nachkonvention
  * 
@@ -27,9 +27,9 @@ public class GuiLauncher {
 	private static Logger logger = Logger.getLogger(GuiLauncher.class);
 
 	/**
-	 * @param args
+	 * Main method - calling this method results in launching the gui
+	 * @param args (not used)
 	 */
-
 	public static void main(String[] args) {
 		logger.debug("simGUI start.");
 		@SuppressWarnings("unused")

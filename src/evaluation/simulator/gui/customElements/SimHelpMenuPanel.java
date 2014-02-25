@@ -109,6 +109,9 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+	 */
 	public void valueChanged(TreeSelectionEvent e) {
 		// Returns the last path element of the selection.
 		// This method is useful only when the selection model allows a single
@@ -126,6 +129,10 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		}
 	}
 
+	/**
+	 * Loads a given url into the SimHelpContentPanel
+	 * @param helpTreeNodeURL is the url which should be loaded
+	 */
 	private void displayURL(String helpTreeNodeURL) {
 		SimHelpContentPanel p = SimHelpContentPanel.getInstance();
 		String urlString = helpTreeNodeURL.toString();

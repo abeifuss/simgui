@@ -92,7 +92,7 @@ public class HelpFrame extends JFrame {
 	}
 
 	/**
-	 * initializes the frame
+	 * Initializes the HelpFrame instance
 	 */
 	public void initialize() {
 

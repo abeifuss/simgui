@@ -13,6 +13,7 @@ import evaluation.simulator.gui.customElements.ConsolePanel;
 
 /**
  * Window for Console
+ * This is implemented as a singleton
  * 
  * @author nachkonvention
  * 
@@ -29,7 +30,6 @@ public class ConsoleFrame extends JFrame {
 	private JPanel panel;
 
 	/**
-	 * Singleton
 	 * 
 	 * @return an instance of {@link ConsoleFrame}
 	 */

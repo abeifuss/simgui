@@ -109,10 +109,10 @@ public class SimulationConfigService {
 		}
 
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-		List<String> pluginLevels = simPropRegistry.getPluginLevels();
+		List<String> pluginLevels = simPropRegistry.getPluginLayers();
 
 		for (String pluginLevel : pluginLevels) {
-			String configName = SimPropRegistry.getInstance().pluginNameToConfigName(pluginLevel);
+			String configName = SimPropRegistry.getInstance().displayNameToConfigName(pluginLevel);
 			String selectedPlugin = (String) props.getProperty(configName);
 			SimPropRegistry.getInstance().setActivePluginsMapped(configName,selectedPlugin);
 

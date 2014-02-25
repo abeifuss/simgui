@@ -196,7 +196,7 @@ public class PluginPanel extends JScrollPane {
 
 	void setPlugin(String configName, String selectedPlugin) {
 
-		String pluginLevel = SimPropRegistry.getInstance().configNameToPluginName(configName);
+		String pluginLevel = SimPropRegistry.getInstance().configNameToDisplayName(configName);
 
 		logger.log(Level.DEBUG, "Loaded pluginLevel " + pluginLevel + " to " + selectedPlugin);
 

@@ -41,6 +41,10 @@ import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
 
+/**
+ * @author alex
+ *
+ */
 public class SimPropRegistry {
 
 	private static Logger logger = Logger.getLogger(SimPropRegistry.class);
@@ -114,68 +118,111 @@ public class SimPropRegistry {
 	 * key: config name of the plugin
 	 * value: display name of the plugin layer
 	 */
+	
 	private final Map<String, Integer> staticConfigurationDisplay = new HashMap<String, Integer>();
 
 	private final Map<String, String> registeredPlugins = new HashMap<String, String>();
 
-	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
-
+	/**
+	 * Maps plugin ids to the corresponding plugin objects
+	 * key: id of the plugin
+	 * value: plugin object
+	 */
 	private final Map<String, SimGuiPlugin>  plugins = new HashMap<String, SimGuiPlugin>();
 	
 	/**
-	 * Maps an unique String to possible Values
-	 * key: id of the Target
+	 * Maps an unique string to possible values (this is useful for predefined values for
+	 * the simprops)
+	 * key: id of the target
 	 * value: possibles Values (comma separated Strings)
 	 */
 	private final Map<String, String> possibleValueTargets = new HashMap<String, String>();
+	
+	/**
+	 * Maps a layer display name to the order of the layer
+	 * key: layer display name (this is like a group name for a bunch of plugins)
+	 * value: order (position in the gui)
+	 */
+	private final Map<String, Integer>  layerMapDisplayNameToOrder = new HashMap<String, Integer>();
+	
+	/**
+	 * Maps a layer config name to the order of the layer
+	 * key: layer config name (layers can be considered as an abstraction for a group of plugins)
+	 * value: order (position in the gui)
+	 */
+	private final Map<String, Integer>  layerMapConfigNameToOrder = new HashMap<String, Integer>();
+
+	/**
+	 * Maps a layer name to the 
+	 * key: layer name
+	 * value: a bool that indicates whether the layer is static or dynamic (this influences
+	 * the section in which corresponding gui elements are displayed)
+	 */
+	private final Map<String, Boolean> isStaticLayerMap = new HashMap<String, Boolean>();
 
 	// TODO: Merge both order functions
+	/**
+	 * @return the mapping between the order (position in the gui) 
+	 * and the display name of a layer
+	 */
 	public Map<String, Integer> getLayerMapDisplayNameToOrder() {
 		return this.layerMapDisplayNameToOrder;
 	}
 
+	/**
+	 * @return the mapping between the order (position in the gui) 
+	 * and the config name of a layer
+	 */
 	public Map<String, Integer> getLayerMapConfigNameToOrder() {
 		return this.layerMapConfigNameToOrder;
 	}
-
+	/**
+	 * @return a map that indicates if a layer is static or not.
+	 * static layers are those which are not directly connected 
+	 * to a plugin.
+	 */
 	public Map<String, Boolean> getIsStaticLayerMap() {
 		return this.isStaticLayerMap;
 	}
 
-	private final Map<String, Integer>  layerMapConfigNameToOrder = new HashMap<String, Integer>();
-
-	private final Map<String, Boolean> isStaticLayerMap = new HashMap<String, Boolean>();
-
+	/**
+	 * constructor of the simpropregistry class.
+	 */
 	private SimPropRegistry() {
 		
+		// there are some properties that cant be caught by annotations
 		this.propertiesToVary.put("PROPERTY_TO_VARY", "");
 		this.propertiesToVary.put("VALUES_FOR_THE_PROPERTY_TO_VARY", "");
 		this.propertiesToVary.put("USE_SECOND_PROPERTY_TO_VARY", "");
 		this.propertiesToVary.put("SECOND_PROPERTY_TO_VARY", "");
 		this.propertiesToVary.put("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY", "");
 		
+		// scan predefined enum values
 		this.scanForHelpers();
 		
 		this.numberOfPluginLayers = 0;
 
+		// scan plugins (dynamic)
 		this.scanForPluginProperties();
 
-		// TODO: Obsolete or even deprecated?
-		// this.scanPlugins();
-
-		logger.log(Level.DEBUG, "Now it's time to process defered plugins");
+		// process defered simprops
 		this.processDefered();
+		
+		// scan static properties
+		// this has to be done at least because it might
+		// be possible that some properties go into
+		// dynamic plugin sections
 		this.scanForStaticProperties();
-		this.toString();
+		
+//		this.toString(); // just for debugging
 	}
 	
+	/**
+	 * Scans the enum values of annotated enums
+	 * e.g. desired experiments
+	 */
 	private void scanForHelpers() {
-
-		Reflections reflections = new Reflections(
-				ClasspathHelper.forPackage("evaluation.simulator"),
-				new FieldAnnotationsScanner());
 		
-		// TODO: Seems not to work properly, scans all packages
 		Reflections reflectionsPlugins = new Reflections(
 				ClasspathHelper.forPackage("evaluation.simulator"),
 				new TypeAnnotationsScanner());
@@ -185,6 +232,9 @@ public class SimPropRegistry {
 
 		for (Class<?> target : types) {
 			String tmp = "";
+			
+			// for all fields check if it is an enum
+			// if so concatenate the enum constant to a comaseperated list of enum values
 			for (Field f : target.getFields()){
 				if (f.isEnumConstant())
 					tmp = tmp + f.getName() + ",";
@@ -195,6 +245,9 @@ public class SimPropRegistry {
 	}
 
 	// TODO: remove this peace of code
+	/**
+	 * @return the entry set of all simprops
+	 */
 	public Set<Entry<String, SimProp>> getAllSimProps() {
 		return this.getProperties().entrySet();
 	}
@@ -204,27 +257,40 @@ public class SimPropRegistry {
 	}
 
 	// TODO: remove this peace of code
+	/**
+	 * searches a simprop with a specific id
+	 * @param key is the id of a simprop 
+	 * @return the correcponding simprop
+	 */
 	public SimProp getValue(String key) {
 
 		return this.getProperties().get(key);
 	}
 
 	
-	public void register(SimProp s, boolean isSuperClass, boolean isGlobal, String pluginLayer) {
+	/**
+	 * registers a plugin
+	 * @param s simprop
+	 * @param isSuperClass has to be true if s is a property that is defined in a class annotated as a pluginsuperclass
+	 * @param isGlobal has to be true if s has a global (not static) annotation
+	 * @param pluginLayer id of the corresponding layer (plugin group) 
+	 */
+	private void register(SimProp s, boolean isSuperClass, boolean isGlobal, String pluginLayer) {
 		if (this.getProperties().containsKey(s.getPropertyID()) &&
-				!this.getProperties().get( s.getPropertyID() ).getPluginLayerID().equals(this.pluginNameToConfigName(pluginLayer))) {
+				!this.getProperties().get( s.getPropertyID() ).getPluginLayerID().equals(this.displayNameToConfigName(pluginLayer))) {
 
+			// Error case
+			
 			GraphicsDevice graphicsDevice = GraphicsEnvironment
 					.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 			int x = graphicsDevice.getDisplayMode().getWidth();
 			int y = graphicsDevice.getDisplayMode().getHeight();
 
-			//
 			if ( !this.getProperties().get( s.getPropertyID() ).equals(pluginLayer) ) {
 				JOptionPane alert = new JOptionPane("Redefinition of property '" + s.getPropertyID()
 						+ "' at superclass level detected \n (" +
 						this.getProperties().get( s.getPropertyID() ).getPluginLayerID() + "" +
-						", " + this.pluginNameToConfigName(pluginLayer) + ") \n" +
+						", " + this.displayNameToConfigName(pluginLayer) + ") \n" +
 						"Please fix the problem!");
 
 				JDialog dialog = alert.createDialog(null, "");
@@ -243,16 +309,20 @@ public class SimPropRegistry {
 				dialog.setLocation((x / 2) - (w / 2), (y / 2) - (h / 2));
 				dialog.setVisible(true);
 			}
-
+			
+		
 		} else if ( !this.getProperties().containsKey(s.getPropertyID()) && isSuperClass) {
+			// superclass case
 			logger.log(Level.DEBUG,  "Associate superclass property " + s.getPropertyID() + " with " + s.getPluginLayerID());
 			s.setIsGlobal(true);
 			this.getProperties().put(s.getPropertyID(), s);
 		} else if ( !this.getProperties().containsKey(s.getPropertyID()) && isGlobal ) {
+			// global case
 			logger.log(Level.DEBUG,  s.getPropertyID() + " with " + s.getPluginLayerID() + " is forced to be global");
 			s.setIsGlobal(true);
 			this.getProperties().put(s.getPropertyID(), s);
 		} else {
+			// normal case
 			logger.log(Level.DEBUG, "Register property (" + s.getPropertyID() + ", " + s.getPluginID() + ", " + s.getPluginLayerID() + ")");
 			s.setIsGlobal(false);
 			this.getProperties().put(s.getPropertyID(), s);
@@ -582,7 +652,9 @@ public class SimPropRegistry {
 
 	}
 
-	// Scans plugin dependent simulation properties
+	/**
+	 * Scans plugin dependent simulation properties
+	 */
 	@SuppressWarnings("unused")
 	public void scanForPluginProperties() {
 
@@ -757,6 +829,13 @@ public class SimPropRegistry {
 	}
 
 
+	/**
+	 * Deferes the registration of simprops (fields of plugins).
+	 * @param plugin is the corresponding plugin
+	 * @param declaredFields are the fields of the class that is annotated as a plugin 
+	 * @param pluginLayerKey is the id of the layer the plugin belongs to
+	 * @param isSuperclass has to be true if the plugin registration was triggered by reading a pluginsuperclass annotation
+	 */
 	private void deferedReadFields(SimGuiPlugin plugin, Field[] declaredFields, String pluginLayerKey, boolean isSuperclass) {
 
 		logger.log(Level.DEBUG, "Defer " + plugin.getConfigName() );
@@ -770,6 +849,9 @@ public class SimPropRegistry {
 		this.deferList.add( deferInformation );
 	}
 
+	/**
+	 * Processes the list of defered plugin registrations
+	 */
 	private void processDefered(){
 
 		for ( Vector<Object> deferInformation : this.deferList ){
@@ -840,6 +922,13 @@ public class SimPropRegistry {
 		return this.registeredPlugins;
 	}
 
+	/**
+	 * Registers the simprops (fields) for a plugin (as plugin annotated class) 
+	 * @param plugin is the corresponding plugin
+	 * @param declaredFields are the fields of the class that is annotated as a plugin 
+	 * @param pluginLayerKey is the id of the layer the plugin belongs to
+	 * @param isSuperclass has to be true if the plugin registration was triggered by reading a pluginsuperclass annotation
+	 */
 	private void readFields(SimGuiPlugin plugin, Field[] fields, String plugInLayer, boolean isSuperClass ) {
 
 		// Skip invisible plugins
@@ -1197,6 +1286,11 @@ public class SimPropRegistry {
 
 	}
 
+	/**
+	 * Looks up the mappingbetween plugin names and layer names
+	 * @param pluginName id of a plugin
+	 * @return The name of the layer the plugin belongs to
+	 */
 	private String getPluginLayer(String pluginName) {
 
 		if ( this.getRegisteredPlugins().containsKey(pluginName) ){
@@ -1206,6 +1300,9 @@ public class SimPropRegistry {
 		return null;
 	}
 
+	/**
+	 * Scans the registered plugins and build up some mappings
+	 */
 	public void scanPlugins() {
 
 		// Get the display names of plugin layers
@@ -1237,10 +1334,14 @@ public class SimPropRegistry {
 		}
 	}
 
+	/**
+	 * Sets the value of a simprop
+	 * @param key identifier of a simprop
+	 * @param arg0 thevalue
+	 */
 	public void setValue(String key, Object arg0) {
 
-		logger.log(Level.DEBUG, "key " + key + " arg " + arg0);
-		
+		logger.log(Level.DEBUG, "Set " + key + " to " + arg0);
 
 		if (arg0.getClass() == Boolean.class) {
 			//System.out.println("Boolean");
@@ -1263,6 +1364,11 @@ public class SimPropRegistry {
 		DependencyChecker.checkAll(getInstance());
 	}
 
+	/**
+	 * Can be used to get a list of simprops that belog to a specific layer
+	 * @param pluginLayer is the id of a layer
+	 * @return a list of simprops that belog to the specified layer
+	 */
 	public List<SimProp> getGlobalSimPropertiesByPluginLayer(String pluginLayer) {
 
 		// TODO: order simproperties here
@@ -1283,6 +1389,12 @@ public class SimPropRegistry {
 		return simPropsInPluginLayer;
 	}
 
+	/**
+	 * Can be used to get a list of simprops that belog to a specific layer or plugin
+	 * @param pluginName is the id of a plugin
+	 * @param pluginLayer is the id of a layer
+	 * @return a list of simprops that belog to the specified layer or plugin
+	 */
 	public List<SimProp> getSimPropertiesByPluginOrPluginLayer(String pluginName, String pluginLayer) {
 
 		// TODO: order simproperties here
@@ -1303,18 +1415,33 @@ public class SimPropRegistry {
 		return simPropertiesInANamespace;
 	}
 
-	public void setActivePlugins(String pluginLevel, String selectedPlugin) {
-		logger.log(Level.DEBUG, "Set " + pluginLevel + " plugin to " + selectedPlugin);
-		this.activePlugins.put(pluginLevel, selectedPlugin);
-		this.activePluginsMapped.put( this.pluginNameToConfigName(pluginLevel), selectedPlugin);
+	/**
+	 * Sets a specific plugin to active (visible in the gui - will be written to configuration)
+	 * @param layerDisplayName is the layer the plugin belongs to
+	 * @param selectedPlugin is the plugin that should be activated
+	 */
+	public void setActivePlugins(String layerDisplayName, String selectedPlugin) {
+		logger.log(Level.DEBUG, "Set " + layerDisplayName + " plugin to " + selectedPlugin);
+		this.activePlugins.put(layerDisplayName, selectedPlugin);
+		this.activePluginsMapped.put( this.displayNameToConfigName(layerDisplayName), selectedPlugin);
 	}
 
-	public void setActivePluginsMapped(String plugLayer, String selectedPlugin) {
-		logger.log(Level.DEBUG, "Set " + plugLayer + " plugin to " + selectedPlugin);
-		this.activePlugins.put(this.configNameToPluginName(plugLayer), selectedPlugin);
-		this.activePluginsMapped.put(plugLayer, selectedPlugin);
+	/**
+	 * Sets a specific plugin to active (visible in the gui - will be written to configuration)
+	 * @param layerConfigName is the layer the plugin belongs to
+	 * @param selectedPlugin is the plugin that should be activated
+	 */
+	public void setActivePluginsMapped(String layerConfigName, String selectedPlugin) {
+		logger.log(Level.DEBUG, "Set " + layerConfigName + " plugin to " + selectedPlugin);
+		this.activePlugins.put(this.configNameToDisplayName(layerConfigName), selectedPlugin);
+		this.activePluginsMapped.put(layerConfigName, selectedPlugin);
 	}
 
+	/**
+	 * Used to obtain a mapping from layer to active plugin
+	 * @param mapped indicates if the the key (layer) should be the config name (true) or the display name (false)
+	 * @return mapping from layer to active plugin
+	 */
 	public Map<String, String> getActivePlugins(boolean mapped) {
 		if (mapped){
 			return this.activePluginsMapped;
@@ -1324,19 +1451,37 @@ public class SimPropRegistry {
 	}
 
 	// TODO: remove this peace of code
-	public List<String> getPluginLevels() {
+	/**
+	 * Used to obain a list of all layers
+	 * @return a list of all layers
+	 */
+	public List<String> getPluginLayers() {
 		return new LinkedList<String>(this.getLayerMapDisplayNameToConfigName().keySet());
 	}
 
 	// TODO: remove this peace of code
-	public String pluginNameToConfigName(String pluginLayer) {
-		return this.getLayerMapDisplayNameToConfigName().get(pluginLayer);
+	/**
+	 * Translates layer display names to layer config names 
+	 * @param is display name (gui) of a layer
+	 * @return the config name (configuration) of a layer
+	 */
+	public String displayNameToConfigName(String displayName) {
+		return this.getLayerMapDisplayNameToConfigName().get(displayName);
 	}
 
-	public String configNameToPluginName(String pluginName) {
-		return this.layerMapConfigNameToDisplayName.get(pluginName);
+	/**
+	 * Translates layer config names to layer display names 
+	 * @param is config name (configuration) of a layer
+	 * @return the display name (gui) of a layer
+	 */
+	public String configNameToDisplayName(String configName) {
+		return this.layerMapConfigNameToDisplayName.get(configName);
 	}
 
+	/**
+	 * Used to obtain a list of all known config name of layers
+	 * @return The list of all layers config names 
+	 */
 	public List<String> getConfigNamesForPluginLayers() {
 
 		List<String> configNamesForPluginLayers = new LinkedList<String>();
@@ -1381,6 +1526,11 @@ public class SimPropRegistry {
 		return tree;
 	}
 	
+	/**
+	 * Used to look up all plugins within a specific layer
+	 * @param pluginLayer is the id of the layer
+	 * @return A list of the plugins which belong to pluginLayer
+	 */
 	public Map<String, String> getPluginsInLayer( String pluginLayer ) {
 		Map<String, String> tmp1 = new HashMap<>();
 
@@ -1414,42 +1564,64 @@ public class SimPropRegistry {
 		return this.properties;
 	}
 	
-	public SimProp getPropertiesByName(String currentItem) {
+	/**
+	 * Used to look up simprops by their display names
+	 * @param name is a display name of a simprop
+	 * @return a first simporp that matches the name (this is dangerous since different simprops may have the same display name) 
+	 */
+	public SimProp getPropertiesByName(String name) {
 		
 		for (SimProp simProp : this.properties.values() ){
-			if ( simProp.getName().equals(currentItem)){
-				logger.log(Level.DEBUG, "found property " + currentItem + " -> " + simProp.getPropertyID());
+			if ( simProp.getName().equals(name)){
+				logger.log(Level.DEBUG, "found property " + name + " -> " + simProp.getPropertyID());
 				return simProp;
 			}
 		}
 		
-		logger.log(Level.DEBUG, "No such property " + currentItem);
+		logger.log(Level.DEBUG, "No such property " + name);
 		return null;
 	}
 	
-	public String getPropertieNameByID(String currentItem) {
+	/**
+	 * Used to look up simprops by their id
+	 * @param id is the id of a simprop
+	 * @return the simporp that matches the id (much better than getPropertiesByName) 
+	 */
+	public String getPropertieNameByID(String id) {
 		
 		for (SimProp simProp : this.properties.values() ){
-			if ( simProp.getPropertyID().equals(currentItem)){				
+			if ( simProp.getPropertyID().equals(id)){				
 				return simProp.getName();
 			}			
 		}
 		return "---";		
 	}
 
-	public void setAuto(String key, boolean auto, Class<?> c) {
+	/**
+	 * Enables auto checkbox for a simprop
+	 * @param id is the id of the simprop
+	 * @param auto specifies wheter the checkbox will be enabled (true) or disables (false)
+	 * @param c is the class of the simprop (Float, Double or Integer)
+	 */
+	public void setAuto(String id, boolean auto, Class<?> c) {
 		
 		if (c == Float.class) {
-			((FloatProp) this.getProperties().get(key)).setAuto(auto);
+			((FloatProp) this.getProperties().get(id)).setAuto(auto);
 		} else if (c == Double.class) {
-			((DoubleProp) this.getProperties().get(key)).setAuto(auto);
+			((DoubleProp) this.getProperties().get(id)).setAuto(auto);
 		}else if (c == Integer.class) {
-			((IntProp) this.getProperties().get(key)).setAuto(auto);
+			((IntProp) this.getProperties().get(id)).setAuto(auto);
 		} else {
 
 		}
 	}
 
+	/**
+	 * Enables unlimited checkbox for a simprop
+	 * @param id is the id of the simprop
+	 * @param unlimited specifies wheter the checkbox will be enabled (true) or disables (false)
+	 * @param c is the class of the simprop (Float, Double or Integer)
+	 */
 	public void setUnlimited(String key, boolean unlimited, Class<?> c) {
 
 		if (c == Float.class) {
@@ -1463,6 +1635,11 @@ public class SimPropRegistry {
 		}
 	}
 
+	/**
+	 * Registers a gui element on a simprops as an observer
+	 * @param guiElement the observer
+	 * @param propertyID the simprop id
+	 */
 	public void registerGuiElement(Observer guiElement, String propertyID) {
 		for ( Entry<String, SimProp> entry : this.properties.entrySet() ){
 			if (entry.getValue().getPropertyID().equals(propertyID)) {
@@ -1471,19 +1648,32 @@ public class SimPropRegistry {
 		}
 	}
 
-	public String getPluginDisplayName(String pluginLevel) {
+	/**
+	 * Looks up the plugin display name given the plugin config name
+	 * @param pluginConfigName is the config name
+	 * @return The plugin display name
+	 */
+	public String getPluginDisplayName(String pluginConfigName) {
 		for ( SimGuiPlugin simPlugin : this.plugins.values() ){
-			if ( simPlugin.getConfigName().equals(pluginLevel) )
+			if ( simPlugin.getConfigName().equals(pluginConfigName) )
 				return simPlugin.getDisplayName();
 		}
 		
-		return pluginLevel;	
+		return pluginConfigName;	
 	}
 
+	/**
+	 * Sets property to vary values
+	 * @param key is the key of the property
+	 * @param value is the new value of the property 
+	 */
 	public void setPropertyToVaryValue(String key, String value) {
 		propertiesToVary.put(key, value);		
 	}
 
+	/**
+	 * @return The map of properties which should be varied
+	 */
 	public Map<String, String> getPropertiesToVary() {
 		return propertiesToVary;
 	}

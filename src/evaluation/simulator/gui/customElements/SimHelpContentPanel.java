@@ -59,10 +59,10 @@ public class SimHelpContentPanel extends JPanel {
 	}
 
 	/**
+	 * Load a html file
 	 * @param url
 	 *            the URL to load represented as {@link String}
 	 */
-
 	public void loadURL(String url) {
 		logger.log(Level.DEBUG, "Loading help-page: " + url);
 		try {

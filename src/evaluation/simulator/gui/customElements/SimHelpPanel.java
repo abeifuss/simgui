@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import org.apache.log4j.Logger;
+
 /**
  * {@link JPanel} putting together {@link SimHelpContentPanel} and
  * {@link SimHelpMenuPanel}
