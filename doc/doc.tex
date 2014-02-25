@@ -283,7 +283,7 @@ In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt 
 
 \subsection{Wichtige Komponenten} % (fold)
 \label{ssub:einzelne_komponenten}
-In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt, welche in Abbildung \ref{fig:callgraph} schon dargestellt wurden.
+In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt, welche teilweise in Abbildung \ref{fig:callgraph} schon dargestellt wurden.
 
 \subsubsection{SimPropRegistry}
 \label{sssub:simpropregistry}
@@ -303,7 +303,7 @@ Die \emph{SimPropRegistry} selbst ist als Singleton implementiert. Der Zugriff a
 
 \subsubsection{SimProp} % (fold)
 \label{ssub:simprop}
-Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann.
+Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann. Die Felder der SimProp Unterklassen wurden bereits in  \\
 
 \begin{figure}[!htp]
 \begin{tikzpicture}
@@ -440,6 +440,9 @@ Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hä
 \subsubsection{Konsole} % (fold)
 \label{ssub:consoleview}
 
+\section{Entwickler Informationen} % (fold)
+\label{sec:entwicklung}
+
 \section{Features} % (fold)
 \label{sec:features}
 Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
@@ -447,9 +450,8 @@ Hier sollen später die Features unserer GUI aufgelistet und erklärt werden!
 % TEST \cite{dummy:svs}.
 % section features (end)
 
-\bibliographystyle{plain}
-
-\bibliography{references}
+% \bibliographystyle{plain}
+% \bibliography{references}
 
 %----------------------------------------------------------------------------------------
 
