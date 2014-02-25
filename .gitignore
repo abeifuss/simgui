@@ -13,6 +13,9 @@ local.properties
 .settings/
 .loadpath
 *.class
+*.aux
+*.toc
+*.nav
 
 # Package Files #
 *.jar

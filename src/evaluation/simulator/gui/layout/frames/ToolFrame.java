@@ -11,12 +11,19 @@ import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.service.GuiService;
 
+/**
+ * @author alex
+ * This is implemented as a singleton
+ */
 @SuppressWarnings("serial")
 public class ToolFrame extends JFrame {
 
 	private static ToolFrame instance = null;
 	private SimConfigPanel panel;
 
+	/**
+	 * @return a reference to the instance of ToolFrame
+	 */
 	public static ToolFrame getInstance() {
 		if (instance == null) {
 			instance = new ToolFrame();
@@ -69,6 +76,9 @@ public class ToolFrame extends JFrame {
 		});
 	}
 
+	/**
+	 * initializes the ToolFrame
+	 */
 	public void initialize() {
 		this.loadProperties();
 		this.setPanel(SimConfigPanel.getInstance());
@@ -100,10 +110,17 @@ public class ToolFrame extends JFrame {
 		this.confToolFrameHeight = UserConfigService.getCONFTOOLFRAME_HEIGHT();
 	}
 
+	/**
+	 * @return the panel
+	 */
 	public SimConfigPanel getPanel() {
 		return this.panel;
 	}
 
+	/**
+	 * Sets the panel
+	 * @param panel
+	 */
 	public void setPanel(SimConfigPanel panel) {
 		this.panel = panel;
 	}

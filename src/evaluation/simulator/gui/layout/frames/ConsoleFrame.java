@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.ConsolePanel;
 
+/**
+ * @author alex
+ * This is implemented as a singleton
+ */
 public class ConsoleFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -22,6 +26,9 @@ public class ConsoleFrame extends JFrame {
 	private ConsolePanel simConsolePanel;
 	private JPanel panel;
 
+	/**
+	 * @return a reference to the instance of ConsoleFrame
+	 */
 	public static ConsoleFrame getInstance() {
 		if (instance == null) {
 			instance = new ConsoleFrame();
@@ -29,6 +36,9 @@ public class ConsoleFrame extends JFrame {
 		return instance;
 	}
 
+	/**
+	 * @return the panel
+	 */
 	public JPanel getPanel() {
 		return this.panel;
 	}

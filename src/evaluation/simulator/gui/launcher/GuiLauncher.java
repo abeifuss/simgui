@@ -17,10 +17,19 @@ import evaluation.simulator.gui.pluginRegistry.DependencyChecker;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 import evaluation.simulator.gui.service.GuiService;
 
+/**
+ * @author alex
+ *
+ * This class provides the laucher for the gmix simulation gui
+ */
 public class GuiLauncher {
 
 	private static Logger logger = Logger.getLogger(GuiLauncher.class);
 
+	/**
+	 * Main method - calling this method results in launching the gui
+	 * @param args (not used)
+	 */
 	public static void main(String[] args) {
 		logger.debug("simGUI start.");
 		@SuppressWarnings("unused")
@@ -64,36 +73,6 @@ public class GuiLauncher {
 		}
 
 		service.shutdownNow();
-
-		// Change Look and Feel to GTK
-		/*
-		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
-				.getInstalledLookAndFeels()) {
-			if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info
-					.getClassName())) {
-				try {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (UnsupportedLookAndFeelException e) {
-					e.printStackTrace();
-				}
-				break;
-			}
-		}
-		*/
-		
-		
-		/*
-		 * Mogliche Look an feels:
-		 * Nimbus: "javax.swing.plaf.nimbus.NimbusLookAndFeel"
-		 * Cross Platform aka. Metal: "javax.swing.plaf.metal.MetalLookAndFeel" oder UIManager.getCrossPlatformLookAndFeelClassName()
-		 * 
-		 */
 		
 		try {
 			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

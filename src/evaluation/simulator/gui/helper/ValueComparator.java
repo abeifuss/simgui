@@ -3,6 +3,10 @@ package evaluation.simulator.gui.helper;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * @author alex
+ *
+ */
 public class ValueComparator implements Comparator<String> {
 
 	Map<String, Integer> base;

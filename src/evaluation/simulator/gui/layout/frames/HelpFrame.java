@@ -15,6 +15,10 @@ import evaluation.simulator.gui.service.GuiService;
 // import log.Level;
 // import log.Logger;
 
+/**
+ * @author alex
+ *
+ */
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 
@@ -77,6 +81,9 @@ public class HelpFrame extends JFrame {
 		return this.panel;
 	}
 
+	/**
+	 * Initializes the HelpFrame instance
+	 */
 	public void initialize() {
 
 		this.loadProperties();
@@ -116,6 +123,10 @@ public class HelpFrame extends JFrame {
 
 	}
 
+	/**
+	 * Sets the panel
+	 * @param panel
+	 */
 	public void setPanel(JPanel panel) {
 		this.panel = panel;
 	}

@@ -7,12 +7,20 @@ import javax.swing.JSplitPane;
 
 import org.apache.log4j.Logger;
 
+/**
+ * @author alex
+ *
+ */
 public class SimHelpPanel extends JPanel {
 
 	private static Logger logger = Logger.getLogger(SimHelpContentPanel.class);
 
 	private static SimHelpPanel instance;
 
+	/**
+	 * This class is implemented as a singleton. getInstance is the way we get the instance to the singleton object
+	 * @return A reference to the instance of SimHelpPanel
+	 */
 	public static SimHelpPanel getInstance(){
 		if (instance == null) {
 			instance = new SimHelpPanel();

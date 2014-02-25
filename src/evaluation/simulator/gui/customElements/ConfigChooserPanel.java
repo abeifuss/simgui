@@ -297,7 +297,7 @@ public class ConfigChooserPanel extends JPanel {
 	}
 
 	/**
-	 * @return
+	 * @return config list (list of files)
 	 */
 	public JList<File> getConfigList() {
 		return configList;
@@ -311,7 +311,7 @@ public class ConfigChooserPanel extends JPanel {
 	}
 
 	/**
-	 * @return
+	 * @return list model
 	 */
 	public DefaultListModel<File> getListModel() {
 		return listModel;
@@ -325,7 +325,7 @@ public class ConfigChooserPanel extends JPanel {
 	}
 
 	/**
-	 * @return
+	 * @return the export picture button
 	 */
 	public static JButton getExportPictureButton() {
 		return exportPictureButton;
@@ -339,7 +339,7 @@ public class ConfigChooserPanel extends JPanel {
 	}
 
 	/**
-	 * @return
+	 * @return simulation call
 	 */
 	public static gMixBinding getCallSimulation() {
 		return callSimulation;
@@ -352,10 +352,17 @@ public class ConfigChooserPanel extends JPanel {
 		ConfigChooserPanel.callSimulation = callSimulation;
 	}
 
+	/**
+	 * @return the progress bar
+	 */
 	public static JProgressBar getProgressBar() {
 		return progressBar;
 	}
 
+	/**
+	 * Sets the progress bar
+	 * @param progressBar
+	 */
 	public static void setProgressBar(JProgressBar progressBar) {
 		ConfigChooserPanel.progressBar = progressBar;
 	}

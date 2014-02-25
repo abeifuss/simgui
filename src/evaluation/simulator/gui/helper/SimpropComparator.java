@@ -4,6 +4,10 @@ import java.util.Comparator;
 
 import evaluation.simulator.annotations.property.SimProp;
 
+/**
+ * @author alex
+ *
+ */
 public class SimpropComparator implements Comparator<SimProp>{
 
 	@Override

@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 import org.xhtmlrenderer.simple.FSScrollPane;
 import org.xhtmlrenderer.simple.XHTMLPanel;
 
+/**
+ * @author alex
+ *
+ */
 @SuppressWarnings("serial")
 public class SimHelpContentPanel extends JPanel {
 
@@ -18,6 +22,10 @@ public class SimHelpContentPanel extends JPanel {
 
 	private static SimHelpContentPanel instance = null;
 
+	/**
+	 * This class is implemented as a singleton. getInstance is the way we get the instance to the singleton object
+	 * @return A reference to the instance of SimHelpContentPanel
+	 */
 	public static SimHelpContentPanel getInstance() {
 		if (instance == null) {
 			instance = new SimHelpContentPanel();
@@ -47,6 +55,10 @@ public class SimHelpContentPanel extends JPanel {
 
 	}
 
+	/**
+	 * Load a html file
+	 * @param url is the locator of html file which should be loaded
+	 */
 	public void loadURL(String url) {
 		logger.log(Level.DEBUG, "Loading help-page: " + url);
 		try {
