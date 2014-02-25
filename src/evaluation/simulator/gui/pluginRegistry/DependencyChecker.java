@@ -3,11 +3,16 @@ package evaluation.simulator.gui.pluginRegistry;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.annotations.property.Requirement;
 import evaluation.simulator.annotations.property.SimProp;
+import evaluation.simulator.conf.service.UserConfigService;
 
 public class DependencyChecker {
 
+	private static Logger logger = Logger.getLogger(DependencyChecker.class);
 	public static Boolean errorsInConfig;
 
 	/**
@@ -50,12 +55,10 @@ public class DependencyChecker {
 							// Try to instante the Requirement
 							enableRequirement = requirement.newInstance();
 						} catch (InstantiationException e) {
-							// TODO Logging
-							e.printStackTrace();
+							logger.log(Level.ERROR, e.getMessage());
 							errorEnabled = true;
 						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-							// TODO Logging
+							logger.log(Level.ERROR, e.getMessage());
 							errorEnabled = true;
 						}
 						if (!errorEnabled) {
@@ -77,12 +80,10 @@ public class DependencyChecker {
 							// Try to instante the Requirement
 							valueRequirement = requirement.newInstance();
 						} catch (InstantiationException e) {
-							// TODO Logging
-							e.printStackTrace();
+							logger.log(Level.ERROR, e.getMessage());
 							errorValue = true;
 						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-							// TODO Logging
+							logger.log(Level.ERROR, e.getMessage());
 							errorValue = true;
 						}
 						if (!errorValue) {
