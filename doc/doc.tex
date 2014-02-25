@@ -84,15 +84,15 @@ In diesem Abschnitt werden die unterschiedlichen Benutzergruppen vorgestellt, f�
 
 \subsection{XML vs. Annotations} % (fold)
 \label{sub:xml}
-In diesem Abschnitt werden wir kurz motivieren, warum wir uns bei der Entwicklung der gMix GUI für die Verwendung Annotations und nicht für die Verwendung XML entschieden haben. 
+In diesem Abschnitt werden wir kurz motivieren, warum wir uns bei der Entwicklung der gMix GUI für die Verwendung Annotations und nicht für die Verwendung XML entschieden haben.\\
 
-Flexibilität / Erweiterbarkeit:\\
-Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} Plugin-basiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise um neue Eigenschaften erweitert werden sollen. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotationen enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emph{SimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}. 
+\textbf{Flexibilität / Erweiterbarkeit:}\\
+Ein sehr wichtiger Aspekt ist, dass das von uns angestrebte Annotations-System sehr einfach erweiterbar sein soll. Da der \emph{gMix-Simulator} Plugin-basiert ist, kann es zu einem späteren Zeitpunkt (nach Projektende) notwendig sein, dass \emph{Properites} oder \emph{Plugins} beispielsweise um neue Eigenschaften erweitert werden sollen. Während im Falle von XML ggf. das Schema angepasst werden und muss komplexere Eingriffe in das Parsing notwendig sein können, ist der Aufwand bei der Verwendung von Annotations sehr gering. Hier genügt es die jeweiligen Annotations (beispielsweise \emph{IntSimulationProperty}), um die notwendigen Felder zu erweitern. Die zugehörigen POJOs (beispielsweise \emph{IntProp}), welche später die Informationen aus den Annotationen enthalten, müssen lediglich um \emph{Getter} und \emph{Setter} erweitert werden. Die notwendigen Änderungen am Annotations-Parser (in der Klasse \emph{SimPropRegistry}) sind ebenfalls sehr einfach und beschränken sich auf das Auslesen der Annotation und das Aufrufen von \emph{Settern}.\\
 
-Dezentralisierung:\\
-Im Gegensatz zu XML werden Annotationen direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden. Dieses ist bei Plugin-System sehr wichtig. Allerdings wäre eine lose Kopplung auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden, sofern jedes Plugin eine eigene XML Datei erhält. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins selbst. Dieses ist gerade bei der Entwicklung neuer Plugins von Vorteil, da nicht permanent zwischen mehreren Dateien (Java Code und XML Datei) hin und her gesprungen werden muss. Bei der Erweiterung von existierendem Code kann dieses jedoch auch nachteilig sein, da der Entwickler ggf. erst nach der relevanten Stelle im Code suchen muss und nicht wie bei XML alle Informationen in einer bekannten Datei vorliegen hat.
+\textbf{Dezentralisierung:}\\
+Im Gegensatz zu XML werden Annotationen direkt in den Plugin-Code eingebettet. Dieses bringt gleich zwei Vorteile mit sich. Zum einen werden dadurch zentrale Dateien vermieden, wodurch eine sehr lose Kopplung ermöglicht wird, wie es bei Plugin-Systemen wünschenswert ist --- Versionskonflikte von zentralen Dateien werden so vermieden. Dieses ist bei Plugin-System sehr wichtig. Allerdings wäre eine lose Kopplung auch noch mit XML möglich, würde jedoch unweigerlich in einer Unmenge an XML-Dateien enden, sofern jedes Plugin eine eigene XML Datei erhält. Der zweite Vorteil ist, dass ein Pluginentwickler die Festlegung der Eigenschaften von Properties und Plugins genau dort vornimmt, wo diese auch logisch gesehen hingehören, nämlich direkt an den Properties und den Plugins selbst. Dieses ist gerade bei der Entwicklung neuer Plugins von Vorteil, da nicht permanent zwischen mehreren Dateien (Java Code und XML Datei) hin und her gesprungen werden muss. Bei der Erweiterung von existierendem Code kann dieses jedoch auch nachteilig sein, da der Entwickler ggf. erst nach der relevanten Stelle im Code suchen muss und nicht wie bei XML alle Informationen in einer bekannten Datei vorliegen hat.\\
 
-Ein dritter Aspekt ist, dass Annotationen ein Teil der Sprache Java sind. Dieses bedeutet für einen Entwickler, dass er bei den Programmieraufgaben mehr Unterstützung durch die IDE bekommt, als es bei XML möglich ist. So wird er bei der Erweiterung von Annotationen beispielsweise frühzeitig auf syntaktische und semantische Fehleraufmerksam gemacht. Bei der Verwendung von XML ist dieses nicht gegeben, da zwischen der XML-Datei und Java-Code kein syntaktischer Zusammenhang besteht. Die Erkennung von semantischen Fehlern ist bei XML dadurch eingeschränkt, da XML code keine Typen wie kennt und somit nicht erkennen kann, ob eine Eingabe valide ist.
+Ein dritter Aspekt ist, dass Annotationen ein Teil der Sprache Java sind. Dieses bedeutet für einen Entwickler, dass er bei den Programmieraufgaben mehr Unterstützung durch die IDE bekommt, als es bei XML möglich ist. So wird er bei der Erweiterung von Annotationen beispielsweise frühzeitig auf syntaktische und semantische Fehleraufmerksam gemacht. Bei der Verwendung von XML ist dieses nicht gegeben, da zwischen der XML-Datei und Java-Code kein syntaktischer Zusammenhang besteht. Die Erkennung von semantischen Fehlern ist bei XML dadurch eingeschränkt, da XML code keine Typen wie kennt und somit nicht erkennen kann, ob eine Eingabe valide ist.\\
 
 Für den Anwender der GUI ist die Wahl zwischen Annotationen und XML irrelevant, da dieses aus seiner Sicht transparent ist. Der Pluginentwickler profitiert jedoch im Normalfall ein klein wenig mehr von dem Einsatz von Annotationen. Aus diesem Grund haben wir uns entschieden ein neues Framework (basierend auf Annotationen) zu entwickeln und nicht auf ein (aus einem früheren Projekt verfügbaren) XML basierendes Framework zurückzugreifen.
 
@@ -103,7 +103,7 @@ Für den Anwender der GUI ist die Wahl zwischen Annotationen und XML irrelevant,
 \newpage
 \subsection{Annotations} % (fold)
 \label{sub:annotations}
-Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Es werden nun die Annotations-Typen motiviert, ihre Unterschiede erläutert. Weiterhin wird ausführlich auf die einzelnen Felder der Annotationen eingegangen. 
+Dieser Abschnitt beschreibt die unterschiedlichen Annotation-Typen, welche unsere GUI verwendet. Insgesamt sind es drei unterschiedliche Typen von Annoations, die in der GUI zum Einsatz kommen. Es werden nun die Annotations-Typen motiviert, ihre Unterschiede erläutert. Weiterhin wird ausführlich auf die einzelnen Felder der Annotationen eingegangen.\\
 
 Um den Leser mit der von uns verwendeten Bezeichnungen in Bezug auf die GUI-Elemente bekannt zu machen, dient die nachfolgende Abbildung \ref{fig:guielements} . 
 
@@ -144,13 +144,13 @@ Eine Hauptaufgabe unserer Arbeit bestand nun darin eine geeignete Abbildung zu f
 	\item Property: Je nach Implementation benötigt ein Plugin Parameter, um gewisse interne Variablen zu konfigurieren. Anzahl, Typ und zulässige Werte dieser Parameter hängen jedoch mit der Implementation des Plugins zusammen und müssen von dem Experimentator festgelegt werden. Zu diesem Zweck muss ein Plugin je Parameter eine Property definieren, die der Experimentator schließlich setzen darf.
 \end{itemize} 
 
-Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene (Layer) des Mix-Servers (bzw. der Ausgabestrategie - Output Strategy) argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin (hier 'BASIC\_BATCH'). Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht nicht aus der EDF hervor, sondern ist im Code des Simulators verankert). 
+Im Listing \ref{lst:edf} ist 'OUTPUT\_STRATEGY' der PluginLayerKey für das Plugin, welches auf der Ebene (Layer) des Mix-Servers (bzw. der Ausgabestrategie - Output Strategy) argiert. In der Experiment-Konfiguration bildet der PluginLayerKey auf ein PluginKey ab (hier 'BASIC\_BATCH') und identifiziert damit das aktive Plugin (hier 'BASIC\_BATCH'). Das Plugin, welches den PluginKey 'BASIC\_BATCH' zugewiesen ist, hat wiederum eine Property, welche durch den PropertyKey 'BASIC\_BATCH\_BATCH\_SIZE' identifiziert wird (Dieses geht nicht aus der EDF hervor, sondern ist im Code des Simulators verankert).\\
 
 Nachdem nun die grundlegenden Terminologien eingeführt wurden, wollen wir die Annotations betrachten, welche den Aufbau der GUI regeln. Wir gehen dabei bottom-up vor, da weniger Informationen vorweggenommen werden müssen und die Argumentation somit für den Leser ein wenig verständlicher sein sollte.
 
 \subsubsection{Property Annotation} % (fold)
 \label{ssub:feld_annotation}
-Die Property-Anotations sind wohl die wichtigsten und auch komplexesten Annotations, die wir in der GUI verwenden. Diese Annotations werden dazu verwendet um Felder im Quellcode des Simulators und im Quellcode der Plugins zu annotieren. Dabei werden solche Felder annotiert, die tatsächlich Simulation-Properties halten. Diese sind daran zu erkennen, dass ihr Wert über \emph{Simulator.settings.getProperty()} abgefragt wird, um den Simulator oder ein Plugin zu parametrisieren.
+Die Property-Anotations sind wohl die wichtigsten und auch komplexesten Annotations, die wir in der GUI verwenden. Diese Annotations werden dazu verwendet um Felder im Quellcode des Simulators und im Quellcode der Plugins zu annotieren. Dabei werden solche Felder annotiert, die tatsächlich Simulation-Properties halten. Diese sind daran zu erkennen, dass ihr Wert über \emph{Simulator.settings.getProperty()} abgefragt wird, um den Simulator oder ein Plugin zu parametrisieren.\\
 
 Alle \emph{Properties} haben eine gewisse Grundmenge an Feldern, die in der folgenden Auflistung erläutert werden. Besonders sei hier die \emph{BoolSimulationProperty} hervorgehoben. Dieses ist die einzige Property-Annotation, die außer dieser Grundmenge keine weiteren Felder besitzt.
 \begin{itemize}
@@ -273,10 +273,8 @@ In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt 
 \subsection{Übersicht der Architektur} % (fold)
 \label{ssub:uebersicht}
 
-TODO: Muss auf einen neuen Stand gebracht werden!!!
-
 \begin{figure}[!htp]
-\includegraphics[width=\textwidth]{dot/arch}
+\includegraphics[width=\textwidth]{img/arch.png}
 \caption{Aufrufhierarchie}
 \label{fig:callgraph}
 \end{figure}
@@ -285,7 +283,7 @@ TODO: Muss auf einen neuen Stand gebracht werden!!!
 
 \subsection{Wichtige Komponenten} % (fold)
 \label{ssub:einzelne_komponenten}
-In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt.
+In diesem Unterabschnitt werden die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} behandelt, welche teilweise in Abbildung \ref{fig:callgraph} schon dargestellt wurden.
 
 \subsubsection{SimPropRegistry}
 \label{sssub:simpropregistry}
@@ -297,15 +295,15 @@ Die Klasse \emph{SimPropRegistry} ist die wohl wichtigste (und auch komplexeste)
 	\item PluginSuperclass Annotations (aka. SimGuiPluginSuperclass)
 \end{enumerate}
 
-Die einzelnen Annotation-Typen wurden bereits in Abschnitt \ref{sub:annotations} erläutert. Die \emph{SimPropRegistry} erzeugt anhand dieser Annotations dann Plugin- und Property-Objekte, welche zur Laufzeit in verschiedenen Maps verwaltet werden. Neben den beiden wichtigsten Maps (\emph{properties} und \emph{plugins}), werden noch weitere Maps gehalten, welche beispielsweise die Menge der aktuell in der GUI ausgewählten Plugins halten (\emph{activePlugins}) oder aber andere zur Laufzeit wichtige Informationen speichern.
+Die einzelnen Annotation-Typen wurden bereits in Abschnitt \ref{sub:annotations} erläutert. Die \emph{SimPropRegistry} erzeugt anhand dieser Annotations dann Plugin- und Property-Objekte, welche zur Laufzeit in verschiedenen Maps verwaltet werden. Neben den beiden wichtigsten Maps (\emph{properties} und \emph{plugins}), werden noch weitere Maps gehalten, welche beispielsweise die Menge der aktuell in der GUI ausgewählten Plugins halten (\emph{activePlugins}) oder aber andere zur Laufzeit wichtige Informationen speichern.\\
 
-Des weiteren bietet die \emph{SimPropRegistry} einige Methoden an, um auf die Inhalte eben dieser Maps zuzugreifen. So beispielsweise eine Methode (\emph{setValue}), um Werte einer vorhandenen Property zu ändern. Die Plugin-Objekte hingegen sind komplett unveränderlich, da sie keine Informationen halten, die vom Benutzer editierbar sind. Es gibt allerdings die Methode (\emph{setActivePlugins}. Mit ihr kann die Auswahl der aktiven Plugins festgelegt werden. Die Information darüber welche Plugins aktiv sind, muss der \emph{SimPropRegistry} bekannt sein, da dieses beim Schreiben der Konfiguration wichtig ist. Wir haben uns entschieden diese Informationen direkt in der \emph{SimPropRegistry} zu halten. Bei einer Zustandsänderung bezüglich der Konfiguration wird dann die \emph{SimPropRegistry} informiert und kann reagieren. Alternativ wäre es auch möglich gewesen, dass die \emph{SimPropRegistry} an kritischen Stellen das entsprechende GUI-Element nach seinem aktuellen Zustand fragt, dieses würde jedoch eine höhere Kopplung bedeuten, da die \emph{SimPropRegistry} dann die relevanten GUI-Elemente kennen müsste, weswegen wir diesen Weg vermieden haben.
+Des weiteren bietet die \emph{SimPropRegistry} einige Methoden an, um auf die Inhalte eben dieser Maps zuzugreifen. So beispielsweise eine Methode (\emph{setValue}), um Werte einer vorhandenen Property zu ändern. Die Plugin-Objekte hingegen sind komplett unveränderlich, da sie keine Informationen halten, die vom Benutzer editierbar sind. Es gibt allerdings die Methode (\emph{setActivePlugins}. Mit ihr kann die Auswahl der aktiven Plugins festgelegt werden. Die Information darüber welche Plugins aktiv sind, muss der \emph{SimPropRegistry} bekannt sein, da dieses beim Schreiben der Konfiguration wichtig ist. Wir haben uns entschieden diese Informationen direkt in der \emph{SimPropRegistry} zu halten. Bei einer Zustandsänderung bezüglich der Konfiguration wird dann die \emph{SimPropRegistry} informiert und kann reagieren. Alternativ wäre es auch möglich gewesen, dass die \emph{SimPropRegistry} an kritischen Stellen das entsprechende GUI-Element nach seinem aktuellen Zustand fragt, dieses würde jedoch eine höhere Kopplung bedeuten, da die \emph{SimPropRegistry} dann die relevanten GUI-Elemente kennen müsste, weswegen wir diesen Weg vermieden haben.\\
 
 Die \emph{SimPropRegistry} selbst ist als Singleton implementiert. Der Zugriff auf die \emph{SimPropRegistry} erfolgt über eine statische Methode (\emph{getInstance}) und kann an jeder Stelle im Code durchgeführt werden --- Diese Entscheidung wurde getroffen, da dieser Dienst in sehr vielen Komponenten der GUI verwendet wird und ein Durchreichen der Referenz in alle Komponenten sehr aufwändig und unübersichtlich wäre. 
 
 \subsubsection{SimProp} % (fold)
 \label{ssub:simprop}
-Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann.
+Die Klasse \emph{SimProp} ist eine abstrakte Klasse und bildet die Oberklasse für die fünf typabhängigen Unterklassen (siehe Abb. \ref{fig:field_annotation}), die es zur Laufzeit geben kann. Die Felder der SimProp Unterklassen wurden bereits in  \\
 
 \begin{figure}[!htp]
 \begin{tikzpicture}
@@ -342,11 +340,10 @@ Generell wird zwischen zwei Anforderungen unterschieden:
 	\\ Ein Beispiel für ein Value Requirement ist die Einschränkung aufgrund von Minimal und Maximalwerten. Wenn eine Abhängigkeit zwischen diesen festgelegt wurden gilt u.a. das aktuelle Maximalwert nicht kleiner sein darf als der aktuelle Minimalwert.
 \end{enumerate}
 
-
 \subsubsection{DependencyChecker}
 \label{sssub:dependencychecker}
 Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen in den SimProperties definierten Anforderungen (Requirements).
-Der check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn eine Anforderungen nicht eingehalten wird, gibt es zwei Fehlermechanismen:
+Der Check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn eine Anforderungen nicht eingehalten wird, gibt es zwei Fehlermechanismen:
 \begin{enumerate}
 	\item Enable Requirements: Die momentan nicht mögliche Simproperty wird deaktiviert. Somit ist ein Auswählen / ändern nicht mehr möglich.
 	\item Value Requirements: Falls neu gesetzte Werte aufgrund von Abhängigkeiten nicht mehr möglich sind werden individuelle, in den Value Requirements definierte, Fehlermeldungen direkt in der Simpropery angezeigt.
@@ -356,9 +353,9 @@ Der check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn 
 
 \subsubsection{gMixBinding} % (fold)
 \label{ssub:gmixbinding}
-Die Klasse \emph{gMixBinding} ist eine Helfer-Klasse, die von der GUI verwendet wird, um dem \emph{gMix-Simulator} mit der Konfiguration aus der GUI aufzurufen. Dazu war es notwendig, den Konstruktor des \emph{gMix-Simulators} so zu erweitern, dass er die Konfiguration als \emph{passthroughParameters} entgegennimmt. Der Aufruf des Simulators erfolgt als neuer Thread. Damit blockiert die GUI nicht, während die Simulation durchgeführt wird. Nachdem der Aufruf des \emph{gMix-Simulators} zurückkehrt, wird der Pfad zum Plot an eine Factory weitergereicht, welche ein GUI-Element (\emph{}) erstellt, das für die Darstellung der Ergebnisse verantwortlich ist.
+Die Klasse \emph{gMixBinding} ist eine Helfer-Klasse, die von der GUI verwendet wird, um dem \emph{gMix-Simulator} mit der Konfiguration aus der GUI aufzurufen. Dazu war es notwendig, den Konstruktor des \emph{gMix-Simulators} so zu erweitern, dass er die Konfiguration als \emph{passthroughParameters} entgegennimmt. Der Aufruf des Simulators erfolgt als neuer Thread. Damit blockiert die GUI nicht, während die Simulation durchgeführt wird. Nachdem der Aufruf des \emph{gMix-Simulators} zurückkehrt, wird der Pfad zum Plot an eine Factory weitergereicht, welche ein GUI-Element (\emph{}) erstellt, das für die Darstellung der Ergebnisse verantwortlich ist.\\
 
-Ein bislang ungenutztes Feature, welches aber berücksichtigt wurde ist, dass in dem \emph{gMixBinding} das \emph{ResultSet} bereitgestellt wird des Simulators. Dieses beinhaltet die während der Simulation aufgezeichneten Statistik und kann dazu verwendet werden Ergebnisse in einer anderen Weise zu plotten, als es in der Konfiguration steht --- dieses Feature ist allerdings noch Zukunftsmusik. 
+Ein bislang ungenutztes Feature, welches aber berücksichtigt wurde ist, dass in dem \emph{gMixBinding} das \emph{ResultSet} bereitgestellt wird des Simulators. Dieses beinhaltet die während der Simulation aufgezeichneten Statistik und kann dazu verwendet werden Ergebnisse in einer anderen Weise zu plotten, als es in der Konfiguration steht --- dieses Feature ist allerdings noch Zukunftsmusik.\\
 
 \subsection{GUI-Elemente}
 Die GUI für den gMix-Simulator wurde wie alle zuvor beschriebenen Elemente mit Java realisiert. Dies garantiert Plattformunabhängigkeit und gleiches Look and Feel auf verschiedenen Systemen. Java bietet drei unterschiedliche Layout Manager an, mit denen sich GUIs realisieren lassen.
@@ -368,6 +365,7 @@ Die GUI für den gMix-Simulator wurde wie alle zuvor beschriebenen Elemente mit 
 \item Swing
 \end{enumerate}
 Unsere Wahl ist auf Swing gefallen, da dies ein sehr dynamisches Framework zur Erstellung einer GUI ist. JavaFX wurde hauptsächlich für den Einsatz in Webanwendungen entworfen. SWT bietet die Möglichkeiten statische GUIs zu bauen, was man beispielsweise von Produkten wie  Eclipse kennt.\\
+
 Swing ist in der Anordnung von GUI lemente wie Buttons oder Textfeldern sehr frei und nimmt dem ntwickler große Teile des Layoutings ab. In Swing selbst werden sog. \emph{JPanel} erzeugt, in denen die GUI Elemente angeordnet werden. Die \emph{JPanel} an sich wiederrum können Bestandteil eines \emph{JFrame} sein, welches ein einfaches Fenster ist. Im Folgenden werden zwei \emph{LayoutManager} von Swing erläutert um einen Einblick in die Designmöglichkeiten des Frameworks zu geben.
 
 \subsubsection{BorderLayout}
@@ -431,13 +429,17 @@ Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \
  \end{itemize}
  Diese Konfiguration ermöglicht es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. Falsche WErteingaben werden mit Hilfe des Dependency Checkers (vgl. \ref{sssub:dependencychecker}) verhindert. \\
  Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
+
  Den letzten Abschnitt im \emph{Configuration View} bilden die allgemeinen Einstellungen zur Simulation und dem Plottype. Diese wurden ebenfalls als \emph{AccordionEntry} dargestellt um die Übersichtlichkeit zu bewahren. Der Eintrag Simulation bietet beispielsweise die Option den Endzeitpunkt einer Simulation zu konfigurieren. Unter dem \emph{AccordionEntry} Plottype lässt sich unter anderem das Plotskript für Gnuplot definieren.\\
  Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{Accordion Entries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
+ Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{AccordionEntries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu ermöglichen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
+
  Zur Unterstützung der Übersichtlichkeit bietet die GUI die Möglichkeit den \emph{Configuration View} vom Hauptfenster auszukoppeln. ies ist besonders hilfreich wenn man z.B. mit mehreren Monitoren abeitet oder das Hauptfenster ohne die Konfiguration betrachten möchte. Dabei wird ein neues Fenster erzeugt, welches nur den \emph{Configuration View} enthält.
 
 \subsubsection{Simulation View} % (fold)
 \label{ssub:simulationview}
 Der \emph{Simulation View} lässt den Nutzer seine vorher gespeicherte Konfiguration ausführen und generiert direkt einen Graphen mittels Gnuplot. Dadurch sind die Ergbnisse der Simulation sofort einzusehen. Der \emph{Simulation View} besteht aus drei Komponenten. AUf der linken Seite sind die vorhandenen Konfigurationsdateien zu sehen. Diese können per Multiselect (d.h. mehrere auf einmal) in der \emph{Configuration Selection} ausgewählt werden. Mit Hilfe der \emph{Simulation Control} kann die Simulation gestartet (\emph{Start Simulation}) oder angehalten (\emph{Stop Simulation}) werden. Die generierten Ergebnisse können mittels \emph{Clear Results} gelöscht werden. Zur Laufzeit des Programms werden die generierten Dateien jedoch nicht gelöscht, sondern nur aus der Anzeige entfernt. Über \emph{Export Results} lassen sich generierte Graphen in zwei verschiedene Formate expertieren. Zur Verfügung stehen .png und .eps. Beim Start einer Simulation erscheint im \emph{Simulation Status} ein Fortschrittsbalken, der signalisiert, dass die Simulation im Gange ist. \\
+
 Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hälfte die Konsole (siehe \ref{ssub:consoleview}). Darunter ist der \emph{Result View} (siehe \ref{ssub:resultview}) angesiedelt.
 
 \subsubsection{Result View} % (fold)
@@ -454,7 +456,7 @@ Der \emph{Help View} bietet dem Anwender Unterstützung bei der Benutzung der GU
 
 \subsubsection{Bedienungsablauf in der GUI}
 \label{ssub:bedienung}
-In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine Simulation durchführen. Für den schnellen Einstieg folgt nun ein HowTo:
+In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine Simulation durchführen. Für den schnellen Einstieg folgt  ein HowTo:
 
 \begin{enumerate}
 \item \textbf{Auswahl der Plugins:} \newline Der Benutzer wählt im \emph{Configuration View} die gewünschten Plugins mit Hilfe der \emph{Accordion Entries} aus und konfiguriert diese.
@@ -464,13 +466,14 @@ In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine
 \item \textbf{Auswahl der zu simulierenden Konfiguration:} \newline Die soeben gespeicherte Konfiguration wird in der \emph{Configuration Selection} ausgewählt. Dank Multiselection können auch mehrere Konfigurationen gleichzeitig gewählt werden.
 \item \textbf{Start der Simulation:} \newline Durch Druck auf den Button \emph{Start Simulation} wird die Simulation gestartet und anschließend werden die Ergebnisse im \emph{Results View} ausgegeben. 
 \end{enumerate}
+\section{Entwickler Informationen} % (fold)
+\label{sec:entwicklung}
 
-TEST \cite{dummy:svs}.
+% TEST \cite{dummy:svs}.
 % section features (end)
 
-\bibliographystyle{plain}
-
-\bibliography{references}
+% \bibliographystyle{plain}
+% \bibliography{references}
 
 %----------------------------------------------------------------------------------------
 
