@@ -63,12 +63,14 @@ Benutzer- / Entwicklerhandbuch} % Subtitle
 
 % \end{abstract}
 
+\newpage
 \tableofcontents
 
 % \hspace*{3,6mm}\textit{Keywords:} lorem , ipsum , dolor , sit amet , lectus % Keywords
 
 \vspace{30pt} % Some vertical space between the abstract and first section
 
+\newpage
 \section{Einleitung} % (fold)
 \label{sec:einleitung}
 
@@ -76,8 +78,10 @@ Benutzer- / Entwicklerhandbuch} % Subtitle
 \label{sub:gmix}
 Mixe ermöglichen die anonyme Kommunikation im Internet. Obwohl ihre Funktionsweise schon 1981 von David Chaum \cite{Cha81} beschrieben wurde, sind bisher erst wenige Dienste etabliert, die diese Technik Nutzen. Die Bekanntesten sind Tor \cite{DMS04} JAP (JonDonym) \cite{BFK01} und I2P sowie für E-mail-Kommunikation Mixminion und Mixmaster. Mixe können mit einer Vielzahl von Diensten zusammen verwendet werden um Ananoymität zu gewährleisten, von Email über WWW bis hin zur Echtzeitkommunikation. Es gibt eine weitaus größere Anzahl an Konzepten für Mixe als tatsächliche Implementierungen, was bedeutet das viele theoretische Möglichkeiten bisher nicht umgesetzt wurden. All diese Techniken folgen dem selben Grundprinzip, dass die Nachrichten der einzelnen Kommunikationspartner mit den Nachrichten anderer Dienstnutzer vermischt werden um so die Zuordnung von Nachrichten zu Kommunikationsbeziehungen zu erschweren bzw. unmöglich zu machen.
 \\
+
 Dass bisher nur wenige der theoretischen Konzepte für Mixe auch in einer Implementierung umgesetzt wurden führt zu einigen Schwierigkeiten bei der Weiterentwicklung von Mixen. Zum einen ist es schwieriger sich mit den rein theoretischen Konzepten eingehend zu befassen, verglichen mit jenen, die bereits umgesetzt wurden und daher ausführlicher untersuchbar sind. Zum anderen müssen viele Grundkonzepte häufig neu mplementiert werden oder sind noch nicht hinreichend gut verstanden, so das Neuimplementierungen aufwendig sind. Und schließlich sind die verschiedenen, bisher realisierten Mix-Techniken nur schwer vergleichbar, da sie nicht einheitlich genug umgesetzt wurden um sie unter gleichen Bedingungen testen zu können.
 \\
+
 gMix ist als pluginbasiertes Framework konzipiert, bei dem die Funktion verschiedener Mixe untersucht werden kann. Es werden dabei folgende Ziele angestrebt:
 Bereitstellung eines umfassenden  Code-Repository mit kompatiblen, leicht erweiterbaren Mix-Implementierungen
 Vereinfachen der Entwicklung neuer, praktisch nutzbarer Mixe
@@ -85,6 +89,7 @@ Evaluation existierender und neuer Mix-Techniken unter einheitlichen Bedingungen
 Unterstützung der Lehre durch leicht zugängliche und verständliche Mix-Lösungen
 Motivation von Wissenschaftlern, Implementierungen auf Basis von gMix zu entwickeln und somit zu seiner Weiterentwicklung bei zu tragen.
 \\
+
 Durch den offenen Aufbau ist es möglich, verschiedene Mixe aus den einzelnen Plugins zusammen zu stellen oder neue Plugins hinzu zu fügen. Da all diese Mixe auf die gleiche Weise erstellt werden, können sie anschließend unter den selben Bedingungen betrieben oder simuliert werden und bleiben vergleichbar.
 \\
 \\
@@ -93,7 +98,7 @@ Durch den offenen Aufbau ist es möglich, verschiedene Mixe aus den einzelnen Pl
 
 \subsection{Ziele der GUI (Todo Malte)} % (fold)ssu
 \label{sub:ziele_der_gui}
-Die im Rahmen dieser Arbeit erstellte Graphische Benutzeroberfläche (GUI) dient als Erweiterung zu gMix und soll Benutzer bei verschiedenen Aufgaben unterstützen. Da gMix selbst als ein Werkzeug für Forschung und Lehre entwickelt wurde, sind Benutzer aus diesen Bereichen ebenfalls Zielgruppe. Die GUI richtet sich in erster Linie an drei Fokusgruppen:\\
+Die im Rahmen dieser Arbeit erstellte Graphische Benutzeroberfläche (GUI) dient als Erweiterung zu gMix und soll Benutzer bei verschiedenen Aufgaben unterstützen. Da gMix selbst als ein Werkzeug für Forschung und Lehre entwickelt wurde, sind Benutzer aus diesen Bereichen ebenfalls Zielgruppe. Die GUI richtet sich in erster Linie an drei Fokusgruppen:
 \begin{itemize}
 	\item Schüler und Studenten die an das Konzept von Mixen und ihre Funktionsweise herangeführt werden sollen. Für diese Gruppe soll die GUI vor allem einfach zu bedienen sein und bei der Vermeidung von Fehlern in den Einstellungen helfen.
 	\item Forscher, welche gMix verwenden um Simulationen durch zu führen oder neue neue Implementationen erstellen wollen. Dieser Gruppe soll die Arbeit erleichtert werden, indem die GUI Zur Übersichtlichkeit beiträgt und die Möglichkeit bietet, mehrere Simulationen zu verwalten und nacheinander automatisiert ablaufen zu lassen.
@@ -296,7 +301,7 @@ Mit dieseen Annotation werden die Oberklassen von Plugins versehen (z.B. DelayBo
 \label{sec:architektur}
 In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt und das Zusammenspiel einzelner Komponenten ausführlich erläutert. 
 
-\subsection{Übersicht der Architektur} % (fold)
+\subsection{Übersicht der Architektur (Entwickler Informationen)} % (fold)
 \label{ssub:uebersicht}
 
 \begin{figure}[!htp]
@@ -307,11 +312,30 @@ In diesem Abschnitt wird die Architektur der \emph{gMix-Simulator-GUI} erklärt 
 
 Die GUI-Erweiterung für den gMix-Simulator besteht im Grunde aus zwei verschiedenen Arten von Komponenten. Zum einen gibt es die Dienste (grün hinterlegt) und andererseits gibt es die grafischen Elemente (orange hinterlegt). Die Dienste werden dabei von den grafischen Elementen verwendet um auf den Daten (z.B. SimProps) zu operieren. Somit sind Daten und Darstellung gemäß \emph{Model-View-Control Konzept} voneinander getrennt.\\
 
-Der \emph{GuiLauncher} beinhaltet die \emph{main} Methode und stellt damit den Einstiegspunkt bei Starten der GUI dar. Der \emph{GuiLauncher} instanziiert als erstes die \emph{SimPropRegistry}, welche die Annotationen in dem Code des \emph{gMix} (blau hinterlegt) ausließt. Anschließend wird ein initialer Check durch den \emph{DependencyChecker} durchgeführt. Im Anschluss wird die GUI aufgebaut, indem der \emph{GuiService} instantiiert wird. Dieser erstellt als erstes Instanzen von \emph{MainGui}, \emph{ConfigFrame} und \emph{HelpFrame}. Danach wird mittels des \emph{UserConfigService} die Benutzerkonfiguration geladen und die GUI wird so eingerichtet, wie der Benutzer sie verlassen hat. Nachdem dieses geschehen ist, greift die \emph{SimPropRegistry} über den \emph{SimulationConfigService} auf eine vordefiniertes EDF zu (etc/conf/experiment\_template.cfg) und ließt die Werte in die Properties ein. Bei jedem Einlesevorgang werden die relevanten GUI-Elemente neu gerendert. Im Anschluss führt der \emph{DependencyChecker} erneut eine Validierung auf allen Daten.
+Der \emph{GuiLauncher} beinhaltet die \emph{main} Methode und stellt damit den Einstiegspunkt bei Starten der GUI dar. Der \emph{GuiLauncher} instanziiert als erstes die \emph{SimPropRegistry}, welche die Annotationen in dem Code des \emph{gMix} (blau hinterlegt) zur Laufzeit über die JVM ausließt. Anschließend wird ein initialer Check durch den \emph{DependencyChecker} durchgeführt. Im Anschluss wird die GUI aufgebaut, indem der \emph{GuiService} instantiiert wird. Dieser erstellt als erstes Instanzen von \emph{MainGui}, \emph{ConfigFrame} und \emph{HelpFrame}. Danach wird mittels des \emph{UserConfigService} die Benutzerkonfiguration geladen und die GUI wird so eingerichtet, wie der Benutzer sie verlassen hat. Nachdem dieses geschehen ist, greift die \emph{SimPropRegistry} über den \emph{SimulationConfigService} auf eine vordefiniertes EDF zu (etc/conf/experiment\_template.cfg) und ließt die Werte in die Properties ein. Bei jedem Einlesevorgang werden die relevanten GUI-Elemente neu gerendert. Im Anschluss führt der \emph{DependencyChecker} erneut eine Validierung auf allen Daten.
+
+Nun ist die GUI komplett aufgebaut und eine gültige Konfiguration eingelesen. Der Benutzer kann nun mit der GUI (näheres in Abschnitt \ref{sub:guielemente}) interagieren. Die Arten der Interaktion können dabei grob in drei Kategorien unterteilt werden.
+
+\begin{enumerate}
+	\item Modifizieren der Konfiguration
+	\item Verwenden der Hilfe
+	\item Ausführung der Simulation und Evaluierung der Ergebnisse
+	\item Beenden der GUI
+\end{enumerate}
+
+Das Verändern einer Konfiguration läuft dabei wie folgt ab. Der Anwender sieht zu jedem Zeitpunkt die aktuelle Konfiguration im \emph{ConfigFrame} (auch \emph{Configuration View} genannt). Ändert der Benutzer dort einen Wert, so teilt das entsprechende GUI-Element dieses der \emph{SimPropRegistry} mit. Die Daten werden dann aktualisiert, der \emph{DependencyChecker} wird aufgerufen und anschließend werden die betroffenen GUI-Elemente aufgefordert ein Update durchzuführen.\\
+
+Bei Laden und Speichern von Konfigurationen wird der \emph{SimulationConfigService} verwendet. Dieser wird entweder von dem \emph{SimulationTab} (auch \emph{Simulation View} oder dem \emph{ConfigFrame} aufgerufen. Beim Laden wird wie bei der Initialisierung ein vorhandenes EDF eingelesen und die Werte der SimProps werden dadurch überschrieben. Die Änderung des Wertes einer SimProp veranlasst wiederum das Updaten des entsprechenden GUI-Elementes und aktualisieren damit den \emph{ConfigFrame}. Beim Speichern hingegen ließt der \emph{SimulationConfigService} den aktuellen Zustand aller SimProps über die \emph{SimPropRegistry} aus und schreibt deren Werte in eine vom Benutzer festgelegte Datei auf dem Dateisystem.\\
+
+Der \emph{HelpFrame} greift ebenfalls auf die \emph{SimPropRegistry} zu, um die vorhandenen Plugins auszulesen. Anhand dieser Information wird dann eine Menü aufgebaut, mit der der Anwender zwischen den HTML Seiten (je Plugin maximal eine HTML Seite) navigieren kann.\\
+
+Wird eine Simulation gestartet, so teilt der \emph{SimulationTab} dem \emph{SimulationConfigService} den Pfad zu einer EDF mit. Diese wird eingelesen und als String an den \emph{SimulationTab} zurückgegeben. Anschließend wird das \emph{gMixBinding} aufgerufen, wobei der String mit den Informationen aus dem EDF als Parameter übergeben wird. Das \emph{gMixBinding} startet nun den \emph{gMix Simulator} als Thread. Sobald die Simulation beendet ist, teilt der \emph{gMix Simulator} dem \emph{gMixBinding} das Resultat mit, der Thread terminiert und das \emph{gMixBinding} gibt das Resultat an den \emph{SimulationTab} weiter.\\
+
+Sobald der Anwender die GUI schließt, meldet sich die \emph{MainGui} bei dem \emph{UserConfigService}. Dieser fragt die GUI-Elemente nach Größe und Position (und einigen anderen Einstellungen) und speichert diese dann in einer benutzerdefinierten Konfigurationsdatei auf dem Dateisystem.
 
 % subsubsection uebersicht (end)
 
-\subsection{Wichtige Komponenten} % (fold)
+\subsection{Wichtige Komponenten (Entwickler Informationen)} % (fold)
 \label{ssub:einzelne_komponenten}
 In diesem Unterabschnitt werden nun die wichtigsten Komponenten der \emph{gMix-Simulator-GUI} noch einmal ausführlich behandelt.
 
@@ -361,18 +385,21 @@ Der UserConfigService verwaltet die user.properties. In dieser Datei werden benu
 
 \subsubsection{Requirement} % (fold)
 \label{ssub:requirement}
-Um die Abhängigkeiten zwischen verschiedenen Propertys darzustellen werden Requirements (Anforderungen) verwendet. Eine Anforderung wird dabei immer speziell für eine Property geschrieben. Um dem Entwickler maximale Freiheit zu gewähren kann die Abhängigkeit beliebig komplex gewählt werden.
+Um die Abhängigkeiten zwischen verschiedenen Propertys darzustellen werden Requirements (Anforderungen) verwendet. Eine Anforderung wird dabei immer speziell für eine Property geschrieben. Um dem Entwickler maximale Freiheit zu gewähren kann die Abhängigkeit beliebig komplex gewählt werden.\\
+
 Generell wird zwischen zwei Anforderungen unterschieden:
 \begin{enumerate}
 	\item Enable Requirements: Anforderungen die dazu führen das bestimmte Propertys in Abhängigkeit zu anderen Property und deren Werten aktiviert oder deaktiviert werden.
 	\\Ein Beispiel hierfür ist das "`Simulation Time End"' Requirement. Die Simulation kann entweder durch "`Real Time"' beendet werden oder durch "`Simulation Time"'. Die beiden Optionen schließen sich somit gegenseitig aus. Daher ist es hier sinnvoll sie entsprechend zu deaktivieren/ aktivieren um den Benutzer zu unterstützen.
-	\item Value Requirements: Anforderungen die dazu führen das bestimmte Propertys in ihrem Wertebereich eingeschränkt werden. Dabei wurde die Implementation so gewählt, dass der vom Plugin Entwickler gewählte Wertebereich nicht erweitert werden kann weil dieses zu nicht sinnvollen Ergebnissen im Simulator führen würde.
-	\\ Ein Beispiel für ein Value Requirement ist die Einschränkung aufgrund von Minimal und Maximalwerten. Wenn eine Abhängigkeit zwischen diesen festgelegt wurden gilt u.a. das aktuelle Maximalwert nicht kleiner sein darf als der aktuelle Minimalwert.
+	\item Value Requirements: Anforderungen die dazu führen das bestimmte Propertys in ihrem Wertebereich eingeschränkt werden. Dabei wurde die Implementation so gewählt, dass der vom Plugin Entwickler gewählte Wertebereich nicht erweitert werden kann weil dieses zu nicht sinnvollen Ergebnissen im Simulator führen würde.\\
+
+	Ein Beispiel für ein Value Requirement ist die Einschränkung aufgrund von Minimal und Maximalwerten. Wenn eine Abhängigkeit zwischen diesen festgelegt wurden gilt u.a. das aktuelle Maximalwert nicht kleiner sein darf als der aktuelle Minimalwert.
 \end{enumerate}
 
 \subsubsection{DependencyChecker}
 \label{sssub:dependencychecker}
-Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen in den SimProperties definierten Anforderungen (Requirements).
+Der Dependency Checker dient der Überprüfung von verschiedenen Abhängigkeiten von einzelnen in den SimProperties definierten Anforderungen (Requirements).\\
+
 Der Check findet bei jeder Änderung in der GUI statt. Im Fehlerfall, also wenn eine Anforderungen nicht eingehalten wird, gibt es zwei Fehlermechanismen:
 \begin{enumerate}
 	\item Enable Requirements: Die momentan nicht mögliche Simproperty wird deaktiviert. Somit ist ein Auswählen / ändern nicht mehr möglich.
@@ -401,6 +428,7 @@ Die Klasse \emph{gMixBinding} ist eine Helfer-Klasse, die von der GUI verwendet 
 Ein bislang ungenutztes Feature, welches aber berücksichtigt wurde ist, dass in dem \emph{gMixBinding} das \emph{ResultSet} bereitgestellt wird des Simulators. Dieses beinhaltet die während der Simulation aufgezeichneten Statistik und kann dazu verwendet werden Ergebnisse in einer anderen Weise zu plotten, als es in der Konfiguration steht --- dieses Feature ist allerdings noch Zukunftsmusik.\\
 
 \subsection{GUI-Elemente}
+\label{sub:guielemente}
 Die GUI für den gMix-Simulator wurde wie alle zuvor beschriebenen Elemente mit Java realisiert. Dies garantiert Plattformunabhängigkeit und gleiches Look and Feel auf verschiedenen Systemen. Java bietet drei unterschiedliche Layout Manager an, mit denen sich GUIs realisieren lassen.
 \begin{enumerate}
 \item JavaFX
@@ -408,6 +436,7 @@ Die GUI für den gMix-Simulator wurde wie alle zuvor beschriebenen Elemente mit 
 \item Swing
 \end{enumerate}
 Unsere Wahl ist auf Swing gefallen, da dies ein sehr dynamisches Framework zur Erstellung einer GUI ist. JavaFX wurde hauptsächlich für den Einsatz in Webanwendungen entworfen. SWT bietet die Möglichkeiten statische GUIs zu bauen, was man beispielsweise von Produkten wie  Eclipse kennt.\\
+
 Swing ist in der Anordnung von GUI Elementen wie Buttons oder Textfeldern sehr frei und nimmt dem Entwickler große Teile des Layoutings ab. In Swing selbst werden sog. \emph{JPanel} erzeugt, in denen die GUI Elemente angeordnet werden. Die \emph{JPanel} an sich wiederrum können Bestandteil eines \emph{JFrame} sein, welches ein einfaches Fenster ist. Im Folgenden werden zwei \emph{LayoutManager} von Swing erläutert um einen Einblick in die Designmöglichkeiten des Frameworks zu geben.
 
 \subsubsection{BorderLayout}
@@ -436,11 +465,8 @@ Das \emph{MigLayout} ist eine OpenSource Entwicklung, die gerade für große GUI
 \item \emph{align} gibt an, wie sich das zu zeichnende Element ausrichten soll. Klassischerweise stehen die \emph{Constraints center, left, right, top} und \emph{bottom} zur Verfügung. 
 \end{itemize}
 
-<<<<<<< HEAD
-Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welhe am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppen von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
-=======
 Einige nützliche Standard-Features von Swing wurden ebenso in diesem Projekt verwendet. Dazu gehören Menüs und Shortcuts. Über die Menüs, welche am oberen Rand der Anwendung zu finden sind, lassen sich generelle Einstellungen vornehmen. Dazu zählt beispielsweise das auskoppeln von einzelnen Elementen der GUI (siehe \ref{ssub:configview}, \ref{ssub:resultview} und \ref{ssub:helpview}). Die Shortcuts erlauben es dem Nutzer die komplette GUI mit der Tastatur zu bedienen. \\
->>>>>>> c2e16e4d08ee5717d988bd4a6bd2836c173aab7c
+
 Abbildungen \ref{fig:gui1} und \ref{fig:gui2} zeigen die fertige GUI des gMix Simulators. Abbildung \ref{fig:gui1} zeigt \emph{Configuration View, Simulation View, Konsole} und \emph{Results View}. In Abbildung \ref{fig:gui2} ist zusätzlich noch der \emph{Help View} zu sehen. Im Weiteren werden die einzelnen Bestandteile der GUI erläutert.
 
 \begin{figure}[!htp]
@@ -458,6 +484,7 @@ Abbildungen \ref{fig:gui1} und \ref{fig:gui2} zeigen die fertige GUI des gMix Si
 \subsubsection{Configuration View} % (fold)
 \label{ssub:configview}
 Der \emph{Configuration View} bildet zusammen mit der \emph{SimPropRegistry} (vgl. \ref{sssub:simpropregistry}) das Herzstück der GUI. Mit ihr hat der Nutzer die Möglichkeit die Simulation auf einfach Art und Weise zu konfigurieren. \\
+
 Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \emph{PropertiesToVary} Konfiguration, einer allgemeinen Simulationskonfiguration und den Buttons \emph{Load, Save} und \emph{Reset}. Angelehnt an moderne Smartphone Betriebssysteme wurden die \emph{AccordionEntries} entwickelt, welche sich durch einen Button und darunter verborgene Konfigurationsmöglichkeiten auszeichnen. Jeder Layer der Simulatorkonfiguration lässt sich somit auf einen Button abbilden unter dem ein Plugin für diesen gewählt werden kann. In der vorliegenden Version der gMix-Simulator GUI werden folgende Layer verwendet:
 \begin{enumerate}
 \item \textbf{Underlay-net}, dass zugrundeliegende Netzwerk
@@ -474,14 +501,19 @@ Der \emph{ConfigurationView} besteht aus den sog. \emph{AccordionEntries}, der \
  \item \emph{Boolean} wird mit einer Checkbox konfiguriert.
  \end{itemize}
  Diese Konfiguration garantiert es dem Nutzer sofort die Übersicht über seine Konfigurationsmöglichkeiten zu erhalten. Zusätzlih werden Fehlkonfigurationen ausgeschlossen, da die Konfiguration auf deren Variablentypen eingeschränkt ist. Falsche Werteingaben werden mit Hilfe des \emph{DependencyCheckers} (vgl. \ref{sssub:dependencychecker}) verhindert. \\
+
  Unter der Pluginkonfiguration befindet sich die Konfiguration für die \emph{PropertiesToVary}. Diese geben an, welche Properties bei der Simulation variiert werden sollen. Die Eingabe wird hier über eine simple Textbox realisiert um die Koniguration möglichst offen zu gestalten. \\
+
  Den letzten Abschnitt im \emph{Configuration View} bilden die allgemeinen Einstellungen zur Simulation und dem \emph{Plottype}. Diese wurden ebenfalls als \emph{AccordionEntry} dargestellt um die Übersichtlichkeit zu bewahren. Der Eintrag Simulation bietet beispielsweise die Option den Endzeitpunkt einer Simulation zu konfigurieren. Unter dem \emph{AccordionEntry} \emph{Plottype} lässt sich unter anderem das Plotskript für Gnuplot definieren.\\
+
  Nach der Konfiguration einer Simulation kann diese über den Button \emph{Save} abgespeichert werden. Dabei werden alle Einstellungen in ein einheitliches Konfigurationsdateiformat gespeichert. Die so generierten Konfigurationsdateien lassen sich einfach wiederverwenden und sind zusätzlich übersichtlich gestaltet. Über den Button \emph{Load} lässt sich eine so zuvor gespeicherte Konfigurationsdatei wieder öffnen und in den \emph{Configuration View} laden. Dabei werden alle \emph{AccordionEntries} aufgeklappt um eine direkte Übersicht über die Konfiguration zu zeigen. Der Button \emph{Reset} setzt die Einstellugen auf eine Standardkonfiguration zurück. Möchte man eine definierte Konfiguration ausführen muss diese zuvor gespeichert werden um im Simulation View (in Abschnitt \ref{ssub:simulationview} erläutert) auswählbar zu sein.\\
+
  Zur Unterstützung der Übersichtlichkeit bietet die GUI die Möglichkeit den \emph{Configuration View} vom Hauptfenster auszukoppeln. Dies ist besonders hilfreich wenn man z.B. mit mehreren Monitoren arbeitet oder das Hauptfenster ohne die Konfiguration betrachten möchte. Dabei wird ein neues Fenster erzeugt, welches nur den \emph{Configuration View} enthält.
 
 \subsubsection{Simulation View} % (fold)
 \label{ssub:simulationview}
 Der \emph{Simulation View} lässt den Nutzer seine vorher gespeicherte Konfiguration ausführen und generiert direkt einen Graphen mittels Gnuplot. Dadurch sind die Ergbnisse der Simulation sofort einzusehen. Der \emph{Simulation View} besteht aus drei Komponenten. Auf der linken Seite sind die vorhandenen Konfigurationsdateien zu sehen. Diese können per Multiselect (d.h. mehrere auf einmal) in der \emph{Configuration Selection} ausgewählt werden. Mit Hilfe der \emph{Simulation Control} kann die Simulation gestartet (\emph{Start Simulation}) oder angehalten (\emph{Stop Simulation}) werden. Die generierten Ergebnisse können mittels \emph{Clear Results} gelöscht werden. Zur Laufzeit des Programms werden die generierten Dateien jedoch nicht gelöscht, sondern nur aus der Anzeige entfernt. Über \emph{Export Results} lassen sich generierte Graphen in zwei verschiedene Formate exportieren. Zur Verfügung stehen .png und .eps. Beim Start einer Simulation erscheint im \emph{Simulation Status} ein Fortschrittsbalken, der signalisiert, dass die Simulation im Gange ist. \\
+
 Auf der rechten Seite des \emph{Simulation View} befindet sich in der oberen Hälfte die Konsole (siehe \ref{ssub:consoleview}). Darunter ist der \emph{Result View} (siehe \ref{ssub:resultview}) angesiedelt.
 
 \subsubsection{Result View} % (fold)
@@ -514,16 +546,18 @@ In der Reihenfolge der zuvor aufgezählten GUI Elemente lässt sich einfach eine
 \subsection{DependencyChecker}
 \label{ssub:dependencychecker}
 Der Dependency Checker überprüft die Einhaltung von allen Value und Enable Requirements. Dies wird die  durch die Methode checkAll() realisiert welcher die gesamte SimPropertyRegistry übergeben wird. Der Aufruf erfolgt dabei direkt nach dem Einlesen der Property beim Start des Programms, wenn eine neue Konfiguration eingelesen wird, wenn für Plugins gescannt wird und immer wenn sich Daten in der SimPropertyRegistry ändern.
-Die Funktion checkAll() arbeitet mit Reflections und versucht die übergebenen Enable und Value Anforderungen, die in der SimPropRegistry enthalten sind, zu instanziieren und auszuführen.
+Die Funktion checkAll() arbeitet mit Reflections und versucht die übergebenen Enable und Value Anforderungen, die in der SimPropRegistry enthalten sind, zu instanziieren und auszuführen.\\
+
 Dabei wird immer zuerst die Enable Anforderung überprüft da wenn eine Property bereits deaktiviert ist keine weitere Überprüfung auf valide Werte nötig ist.
 \subsection{Requirement}
 \label{ssub:Requirements}
-Neue Anforderungen werden durch Erben von der abstrakten Requirement Klasse erzeugt. Ein neues Requirement muss somit immer die Methode check() implementieren welche einen Boolean zurücklieferen muss. Da auf maximale Freiheit bei der Defintion der check() Methode gesetzt wurde, ist es auch möglich Werte beliebiger anderer SimProperty, ausser der eigenen Simproperty, zu ändern. Da dieses nur sehr schwer nachvollziehbar ist ist es strikt verboten Werte anderer SimProperties zu ändern.
+Neue Anforderungen werden durch Erben von der abstrakten Requirement Klasse erzeugt. Ein neues Requirement muss somit immer die Methode check() implementieren welche einen Boolean zurücklieferen muss. Da auf maximale Freiheit bei der Defintion der check() Methode gesetzt wurde, ist es auch möglich Werte beliebiger anderer SimProperty, ausser der eigenen Simproperty, zu ändern. Da dieses nur sehr schwer nachvollziehbar ist ist es strikt verboten Werte anderer SimProperties zu ändern.\\
+
 Es existieren weiterhin in der abstrakten Requirements Klasse Hilfsfunktionen die bei der Erstellung von Requirements benutzt werden können.
 
-\definecolor{sh_comment}{rgb}{0.12, 0.38, 0.18 } %adjusted, in Eclipse: {0.25, 0.42, 0.30 } = #3F6A4D
-\definecolor{sh_keyword}{rgb}{0.37, 0.08, 0.25}  % #5F1441
-\definecolor{sh_string}{rgb}{0.06, 0.10, 0.98} % #101AF9
+\definecolor{sh_comment}{rgb}{0.12, 0.38, 0.18 }
+\definecolor{sh_keyword}{rgb}{0.37, 0.08, 0.25}
+\definecolor{sh_string}{rgb}{0.06, 0.10, 0.98}
 
 \lstset{
 	language=Java,
@@ -584,8 +618,30 @@ Um Fehler in Requirements in der GUI anzeigen zu lassen empfiehlt sich die Nutzu
 \subsection{Erstellen eines neuen Plugins} % (fold)
 \label{sub:neues_plugin}
 
-\subsection{Erweiterung von SimProp Annotationen} % (fold)
-\label{sub:erweiterung_von_simulation_property_annotationen}
+Dieses soll ein Leitpfaden sein, der einem Pluginentwickler die Verwendung unseres Frameworks erleichtern soll. Wir gehen dabei davon aus, dass wir ein neues Plugin für einen existierenden Layer schreiben, da dieses der Regelfall sein wird.
+
+Ziel ist es eine neue Implementation einer \emph{delayBox} zu entwickeln, die eine zufällige Verzögerung verursacht (ob dieses sinnvoll ist sei erst einmal dahingestellt). Dazu wird als erstes die Datei \emph{RndDelayBox.java} unter \emph{src/evaluation/simulator/plugins/delayBox} angelegt. In diesem Verzeichnis befindet sich auch die Datei \emph{DelayBoxImpl.java}, welche die Definition der Oberklasse von DelayBoxen beinhaltet und die Schnittstellen festlegt. Der Quellcode dieser Klasse ist in Listing \ref{lst:dbox} dargestellt.
+
+\begin{lstlisting}[caption={DelayBoxImpl.java}, label=lst:dbox]
+...
+@PluginSuperclass( layerName = "Underlay-net",
+	layerKey = "TYPE_OF_DELAY_BOX", position = 7)
+public abstract class DelayBoxImpl {
+
+	public abstract int getSendDelay(
+		int numberOfBytesToSend);
+	
+	public abstract int getReceiveDelay(
+		int numberOfBytesToSend);
+	
+}
+\end{lstlisting}
+
+Die Klasse selbst ist schon mit einer \emph{PluginSuperclass} Annotation annotiert. Die Annotation legt fest, dass Plugins dieser Sorte in der GUI unter der Kategorie \emph{Underlay - net} auftauchen, welche an Position 7 steht. Je höher die Position, desto weiter oben liegt der Layer in der \emph{Plugin Configuration} --- vlg. Abb. \ref{fig:guielements}. Der LayerKey ist ein eindeutiger String, der von der \emph{PluginRegistry} des gMix Simulators verwendet wird, um anhand der EDF das auswählte Plugin zu Bestimmen (Dieser String ist nicht frei wählbar, sondern wurde vom Entwickler des gMix Simulators so festgelegt).\\
+
+\\
+
+Da an dieser Stelle nicht das komplette Framework abgedeckt werden kann, sei darauf hingewiesen, dass die bisher implementierten Plugins gute Beispiele darstellen.
 
 % subsection erweiterung_von_simulation_property_annotationen (end)
 
