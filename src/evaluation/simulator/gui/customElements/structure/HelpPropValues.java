@@ -19,11 +19,13 @@ public class HelpPropValues {
 	
 	private List<String> values;
 	private Class type;
+	private String typename;
 	
 	public HelpPropValues(String value, Class type){
 		
 		values = new LinkedList<String>();
 		this.type = type;
+		typename="UNKOWN";
 		
 		tokenizer = new StringTokenizer( value, "," );
 		while (tokenizer.hasMoreTokens()){
@@ -45,6 +47,7 @@ public class HelpPropValues {
 			
 			if (this.type == Integer.class){
 				logger.log(Level.DEBUG, "checking for Integer");
+				typename="Integer";
 				testresults[i] = true;
 				try{
 					Integer.parseInt(s);
@@ -57,6 +60,7 @@ public class HelpPropValues {
 			
 			if (this.type == Boolean.class){
 				logger.log(Level.DEBUG, "checking for Boolean");
+				typename="Boolean";
 				testresults[i] = true;
 				try{					
 					Boolean.parseBoolean(s);
@@ -69,6 +73,7 @@ public class HelpPropValues {
 			
 			if (this.type == Float.class){
 				logger.log(Level.DEBUG, "checking for Float");
+				typename="Float";
 				testresults[i] = true;
 				try{
 					Float.parseFloat(s);
@@ -81,6 +86,7 @@ public class HelpPropValues {
 			
 			if (this.type == Double.class){
 				logger.log(Level.DEBUG, "checking for Double");
+				typename="Double";
 				testresults[i] = true;
 				try{
 					Double.parseDouble(s);
@@ -104,6 +110,10 @@ public class HelpPropValues {
 	
 	public Class getType(){
 		return type;
+	}
+	
+	public String getTypeName(){
+		return typename;
 	}
 	
 	public List<String> getValues(){
