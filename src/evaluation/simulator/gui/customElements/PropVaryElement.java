@@ -39,6 +39,7 @@ public class PropVaryElement extends JPanel {
 	private HelpPropValues value[];
 	private Class propType[];
 	private final int numOfPropsToVary = 2;
+	private String cBoxItemSave;
 
 	Map<String, SimProp> propMap;
 	Map<JComboBox<String>, Integer> boxToIndexMap;
@@ -78,6 +79,7 @@ public class PropVaryElement extends JPanel {
 		cBox[1].setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
 		addBoxListener(cBox[0]);
 		addBoxListener(cBox[1]);
+		cBoxItemSave = "EMPTY";
 
 		propElement = new JTextField[numOfPropsToVary];
 		propElement[0] = new JTextField();
@@ -127,19 +129,24 @@ public class PropVaryElement extends JPanel {
 		JTextField currentElement = propElement[index];
 
 		currentElement.setText("");
-		value[index] = null;
-		
+		value[index] = null;		
 
 		String currentItem = (String) ComboBox.getSelectedItem();
+		
+		if ((index == 0) && (!cBoxItemSave.equals("EMPTY"))){
+			cBox[1].addItem(cBoxItemSave);
+			cBoxItemSave="EMPTY";
+		}
+		
 		if (currentItem.equals("---")) {
 			propElement[index].setEnabled(false);
 			propType[index] = null;
 			if (index == 0) {
 				cBox[1].setSelectedItem("---");
 				this.cBox[1].setEnabled(false);
-				this.propElement[1].setEnabled(false);
-				
+				this.propElement[1].setEnabled(false);				
 			}
+			
 		} else {
 			propElement[index].setEnabled(true);
 			
@@ -153,11 +160,13 @@ public class PropVaryElement extends JPanel {
 			String prop = SimPropRegistry.getInstance().getPropertiesByName(currentItem).getPropertyID();
 			logger.log(Level.DEBUG,"writing into PROPERTY_TO_VARY: " + prop);
 			SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", prop);
+			cBoxItemSave = currentItem;
+			cBox[1].removeItem(currentItem);
 		}
-		
+				
 		if ((ComboBox == cBox[1]) && (!currentItem.equals("---"))){
-			String prop = SimPropRegistry.getInstance().getPropertiesByName(String.valueOf(cBox[1].getSelectedItem())).getPropertyID();
-			logger.log(Level.DEBUG,"writing into PROPERTY_TO_VARY: " + prop);
+			String prop = SimPropRegistry.getInstance().getPropertiesByName(currentItem).getPropertyID();
+			logger.log(Level.DEBUG,"writing into second PROPERTY_TO_VARY: " + prop);
 			SimPropRegistry.getInstance().setPropertyToVaryValue("SECOND_PROPERTY_TO_VARY", prop);
 		}
 		
