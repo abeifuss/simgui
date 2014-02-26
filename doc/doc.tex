@@ -82,12 +82,33 @@ Mixe ermöglichen die anonyme Kommunikation im Internet. Obwohl ihre Funktionswe
 Dass bisher nur wenige der theoretischen Konzepte für Mixe auch in einer Implementierung umgesetzt wurden führt zu einigen Schwierigkeiten bei der Weiterentwicklung von Mixen. Zum einen ist es schwieriger sich mit den rein theoretischen Konzepten eingehend zu befassen, verglichen mit jenen, die bereits umgesetzt wurden und daher ausführlicher untersuchbar sind. Zum anderen müssen viele Grundkonzepte häufig neu implementiert werden oder sind noch nicht hinreichend gut verstanden, so dass Neuimplementierungen aufwendig sind. Und schließlich sind die verschiedenen bisher realisierten Mix-Techniken nur schwer vergleichbar, da sie nicht einheitlich genug umgesetzt wurden, um sie unter gleichen Bedingungen testen zu können.
 \\
 
-gMix ist als pluginbasiertes Framework konzipiert, bei dem die Funktion verschiedener Mixe untersucht werden kann. Es werden dabei folgende Ziele angestrebt:
+gMix \cite{FHF12} ist als pluginbasiertes Framework konzipiert, bei dem die Funktion verschiedener Mixe untersucht werden kann. Es werden dabei folgende Ziele angestrebt:
 Bereitstellung eines umfassenden Code-Repositorys mit kompatiblen und leicht erweiterbaren Mix-Implementierungen. Vereinfachen der Entwicklung neuer und praktisch nutzbarer Mixe.
 Evaluation existierender und neuer Mix-Techniken unter einheitlichen Bedingungen. Unterstützung der Lehre durch leicht zugängliche und verständliche Mix-Lösungen. Motivation von Wissenschaftlern, Implementierungen auf Basis von gMix zu entwickeln und somit zu seiner Weiterentwicklung bei zu tragen.
 \\
 
 Durch den offenen Aufbau ist es möglich, verschiedene Mixe aus den einzelnen Plugins zusammen zu stellen oder neue Plugins hinzu zu fügen. Da all diese Mixe auf die gleiche Weise erstellt werden, können sie anschließend unter den selben Bedingungen betrieben oder simuliert werden und bleiben vergleichbar.
+\\
+
+gMix ist in Layern organisiert, wie man es vom TCP/IP-Protokollstack oder dem OSI-Modell kennt \ref{img:gMixLayers}. Diese Layer bilden dabei zusammen einen Anonymisierungslayer, der sich in diesen Modellen zwischen Schicht 4 und 5, also zwischen der Transport- und den höheren schichten einordnen lässt. gMix selbst hat intern 7 Layer:
+\begin{itemize}
+	\item Layer 6 sind die tatsächlichen Anwendungen bzw. deren Repräsentationen, also alles was sich im OSI-Modell oberhalb der Transportschicht befindet. In einer Simulation befinden sich in dieser Schicht die Lastgeneratoren und -Senken.
+	\item Layer 5 stellt die Ende-Zu-Ende-Verbindungen für Prozesse her und verbirgt die Anonymisierung vor den Elementen aus Layer 6.
+	\item Layer 4 realisiert die Anonyme Ende-zu-Ende-Verbindung zwischen zwei Endknoten. Auf dieser Ebene werden Knoten anhand von „Global Identifieres“ adressiert, die im Mixnetzwerk eindeutig sein müssen. Dieser Layer fungiert weiterhin als Transportschicht und verbirgt das Mixing der Layer 1-3 vor den Verbindungen der höheren Schichten.
+	\item Layer 3 Beinhaltet die Output-Strategien und Mixalgorithmen, die in jedem Knoten dafür sorgen, dass eingehende und ausgehende Pakete einander nicht zugeordnet werden können. Auf diesem Layer werden außerdem die Routen für die Ende-Zu-Ende-Verbindungen fest gelegt.
+	\item Layer 2 Ist für die Recodierung bzw. Ver- und Entschlüsselung der Pakete zuständig und verhindert die bitweise Zuordnung von eingehenden und ausgehenden Paketen. Außerdem findet hier die Schlüsselverwaltung statt.
+	\item Layer 1 stellt die Verbindungen zwischen den einzelnen Knoten für jeden Hop her. Die Aufgaben dieser Schicht sind daher analog zur Sicherungsschicht im OSI-Modell und sie verbirgt den Aufbau des zugrundeliegenden Übertragungssystems in Layer 0.
+	\item Layer 0 besteht aus der Realisation der Datenübertragung. Sie beinhaltet alles von Schicht 4 des OSI-Modells an abwärts. Auf dieser Schicht treten auch Verzögerungen und Paketverluste auf, die durch die Datenübertragung hervorgerufen werden. Diese Schicht muss nicht zwangsläufig Teil des gMix-Frameworks sein und könnte auch aus komplexen Netzwerksimulatoren oder einem echten Übertragungsnetz (z.B. dem Internet) bestehen, aber auch hierfür gibt es Plugins.
+\end{itemize}
+
+\begin{figure}
+     \centering
+     \includegraphics[width=\textwidth]{img/simulatorNamingNew.pdf}
+     \caption{gMix-Layer}
+     \label{img:gMixLayers}
+\end{figure}
+
+Die Kommunikation der einzelnen Layer untereinander erfolgt asynchron und wird vom Framework verwaltet, so dass sich Pluginentwickler nicht um die Details kümmern müssen. Diese Kapselung ist dichter an dem Prinzip eines Protokollstacks und erleichtert das Verständnis und die Modellierung. Jeder Layer wird durch verschiedene Plugins realisiert. Durch die Kapselung sind die Plugins dabei leicht austauschbar um Vergleiche zwischen verschiedenen Strategien und Algorithmen durchführen zu können.
 % subsection gmix (end)
 
 \subsection{Ziele der GUI} % (fold)ssu
