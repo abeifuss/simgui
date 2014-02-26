@@ -618,7 +618,7 @@ Um Fehler in Requirements in der GUI anzeigen zu lassen empfiehlt sich die Nutzu
 \subsection{Erstellen eines neuen Plugins} % (fold)
 \label{sub:neues_plugin}
 
-Dieses soll ein Leitpfaden sein, der einem Pluginentwickler die Verwendung unseres Frameworks erleichtern soll. Wir gehen dabei davon aus, dass wir ein neues Plugin für einen existierenden Layer schreiben, da dieses der Regelfall sein wird.
+Dieses soll ein Leitpfaden sein, der einem Pluginentwickler die Verwendung unseres Frameworks erleichtern soll. Wir gehen dabei davon aus, dass wir ein neues Plugin für einen existierenden Layer schreiben, da dieses der Regelfall sein wird.\\
 
 Ziel ist es eine neue Implementation einer \emph{delayBox} zu entwickeln, die eine zufällige Verzögerung verursacht (ob dieses sinnvoll ist sei erst einmal dahingestellt). Dazu wird als erstes die Datei \emph{RndDelayBox.java} unter \emph{src/evaluation/simulator/plugins/delayBox} angelegt. In diesem Verzeichnis befindet sich auch die Datei \emph{DelayBoxImpl.java}, welche die Definition der Oberklasse von DelayBoxen beinhaltet und die Schnittstellen festlegt. Der Quellcode dieser Klasse ist in Listing \ref{lst:dbox} dargestellt.
 
@@ -639,9 +639,77 @@ public abstract class DelayBoxImpl {
 
 Die Klasse selbst ist schon mit einer \emph{PluginSuperclass} Annotation annotiert. Die Annotation legt fest, dass Plugins dieser Sorte in der GUI unter der Kategorie \emph{Underlay - net} auftauchen, welche an Position 7 steht. Je höher die Position, desto weiter oben liegt der Layer in der \emph{Plugin Configuration} --- vlg. Abb. \ref{fig:guielements}. Der LayerKey ist ein eindeutiger String, der von der \emph{PluginRegistry} des gMix Simulators verwendet wird, um anhand der EDF das auswählte Plugin zu Bestimmen (Dieser String ist nicht frei wählbar, sondern wurde vom Entwickler des gMix Simulators so festgelegt).\\
 
-\\
+Die neue Implementation soll eine zufällige Verzögerung mit oberer und unterer Schranke ziehen. Dafür benötigt das neue Plugin zwei Properties. Eine für das Minimum (vmin) und eine für das Maximum (vmax). Die fertige Implementation ist in Listing \ref{lst:rnddbox} dargestellt\\
 
-Da an dieser Stelle nicht das komplette Framework abgedeckt werden kann, sei darauf hingewiesen, dass die bisher implementierten Plugins gute Beispiele darstellen.
+\begin{lstlisting}[caption={RndDelayBox.java}, label=lst:rnddbox]
+...
+@Plugin(pluginKey = "RND_DELAY_BOX", 
+	pluginName = "Random delay")
+public class RndDelayBox extends DelayBoxImpl {
+	
+	@IntSimulationProperty(	name = "Minimum delay", 
+			key = "RND_DELAY_BOX_MIN_DELAY", 
+			property_to_vary = true, min = 0, max = 5)
+	private int vmin = new Integer(
+			Simulator.settings.getProperty(
+					"RND_DELAY_BOX_MIN_DELAY"));
+	
+	@IntSimulationProperty(	name = "Maximum delay", 
+			key = "RND_DELAY_BOX_MAX_DELAY",
+			property_to_vary = true, min = 5, max = 10, 
+			guiElement = "slider")
+	private int vmax = new Integer(
+			Simulator.settings.getProperty(
+					"RND_DELAY_BOX_MAX_DELAY"));
+	
+	public RndDelayBox() {
+		super();
+	}
+	
+	@Override
+	public int getReceiveDelay(int numberOfBytesToReceive) {
+		return (int) (vmin + Math.random() * (vmax - vmin));
+	}
+
+	@Override
+	public int getSendDelay(int numberOfBytesToSend) {
+		return (int) (vmin + Math.random() * (vmax - vmin));
+	}
+
+}
+\end{lstlisting}
+
+Die neue Klasse erhält zuerst eine Plugin-Annotation. In der minimalen Konfiguration muss dort der \emph{pluginKey} für die Identifikation in der EDF und der \emph{pluginName} für die Darstellung in der GUI festgelegt werden. Der \emph{pluginKey} ist dabei eindeutig zu wählen und der \emph{pluginName} sollte nach Möglichkeit prägnant sein.\\
+
+Die Properties müssen als Member der Klasse realisiert werden (die Initialisierung kann jedoch zu jedem beliebigen Zeitpunkt geschehen, also auch innerhalb von Funktionen). Diese Member erhalten nun abhängig von ihrem Typ die passende Property-Annotation. In diesem Fall handelt es sich um zwei IntSimulationProperties. Property-Annotationen sollten immer einen \emph{key} und einen \emph{name} festlegen. Der \emph{key} identifiziert die Property in der EDF und der \emph{name} legt fest, wie die Property in der GUI auftritt. Soll eine Property variierbar sein, so muss dieses explizit durch \emph{property\_to\_vary = true} festgelegt werden. Bei numerischen Werten bietet es sich ebenfalls an den zulässigen Wertebereich durch \emph{min} und \emph{max} festzulegen. Es gibt bei numerischen Werten ebenfalls die Möglichkeit festzulegen, was für ein GUI-Element für die Benutzereingabe verwendet werden soll. Zu Demonstrationszwecken soll hier vmax mittels eines \emph{sliders} eingegeben werden (das Standardelement ist ein \emph{spinner}). \emph{vmax} und \emph{vmin} können nun in der Implementation verwendet werden.\\
+
+Nun muss noch die Datei \emph{experiment\_template.cfg} angepasst werden. Hier gilt es gültige Standardwerte für die beiden Properties festzulegen. Die Properties werden innerhalb der EDF durch ihre \emph{keys} identifiziert. Eine mögliche Anpassung ist in Listing \ref{lst:rnddboxedf} dargestellt.
+
+\begin{lstlisting}[caption={Auszug aus der neuen experiment\_template.cfg}, label=lst:rnddboxedf]
+...
+TYPE_OF_DELAY_BOX = BASIC_DELAY_BOX
+BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_SEND = 131072
+BASIC_DELAY_BOX_DEFAULT_CLIENT_BANDWIDTH_RECEIVE = 0
+...
+RND_DELAY_BOX_MIN_DELAY = 1
+RND_DELAY_BOX_MAX_DELAY = 6
+...
+\end{lstlisting}
+
+Zum Schluss muss noch die \emph{PluginRegistry} des gMix Simulators über das neue Plugin informiert werden. Dieses geschieht in diesem Fall der Datei \emph{DelayBox.java} im Verzeichnis \emph{src/evaluation/simulator/pluginRegistry}. Dort muss das Enum um den \emph{pluginKey} des neuen Plugins erweitert werden. Des weiteren müssen die verschiedenen getInstance Funktionen angepasst werden, so dass das neue Plugin verwendet wird, falls Simulator.settings.getProperty ("TYPE\_OF\_DELAY\_BOX") gleich ("RND\_DELAY\_BOX").\\
+
+Damit wäre das neue Plugin nun auch fertig und die GUI sähe wie in Abbildung \ref{fig:rnddbox} dargestellt aus.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.56]{img/rnddbox.png}
+% subsection annotations (end)
+
+\caption{GUI-Elemente für das neue Plugin}
+\label{fig:rnddbox}
+\end{figure}
+
+Da an dieser Stelle nicht das komplette Framework abgedeckt werden kann, sei darauf hingewiesen, dass die bisher implementierten Plugins gute Beispiele darstellen, an denen man sich orientieren kann. Auch ein Blick in die Unterabschnitte \ref{ssub:feld_annotation} bis \ref{ssub:superclass_annotation} ist lohnenswert, da dort alle Felder der jeweiligen Annotationen erläutert werden.
 
 % subsection erweiterung_von_simulation_property_annotationen (end)
 
@@ -651,6 +719,8 @@ Da an dieser Stelle nicht das komplette Framework abgedeckt werden kann, sei dar
 
 % TEST \cite{dummy:svs}.
 % section features (end)
+
+\newpage
 
 \bibliographystyle{plain}
 \bibliography{references}
