@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -65,6 +66,7 @@ public class AccordionEntry extends JPanel {
 		this.fresh = true;
 
 		this.setLayout(new BorderLayout(0, 0));
+		this.setBorder(new TitledBorder(null, this.localName, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		this.entryButton = new JButton(this.localName, new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 		this.entryButton.setForeground(Color.BLACK);
 		this.entryButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -84,7 +86,11 @@ public class AccordionEntry extends JPanel {
 
 					menu.show(entryButton, e.getX(), e.getY());
 				} else {
-					AccordionEntry.this.toggleVisibility(e.getSource(), AccordionEntry.this.comboBox);
+					if (AccordionEntry.this.comboBox.isVisible()) {
+						AccordionEntry.this.setVibility(false);
+					} else {
+						AccordionEntry.this.setVibility(true);
+					}
 				}
 			}
 		});
@@ -138,31 +144,6 @@ public class AccordionEntry extends JPanel {
 
 		this.updateUI();
 
-	}
-
-	// public void setVibility(boolean b) {
-	//
-	// this.propertyPanel.setVisible(b);
-	// this.comboBox.setVisible(b);
-	// this.entryButton.setIcon(new
-	// ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-	// }
-
-	private void toggleVisibility(Object source, JComboBox<String> jComboBox) {
-
-		JButton btn = (JButton) source;
-		if (!jComboBox.isVisible()) {
-			btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-			propertyPanel.setVisible(true);
-			hintLabel.setVisible(true);
-			jComboBox.setVisible(true);
-		} else {
-			btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
-			propertyPanel.setVisible(false);
-			hintLabel.setVisible(false);
-			jComboBox.setVisible(false);
-		}
-		this.repaint();
 	}
 
 	/**
