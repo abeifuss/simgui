@@ -87,4 +87,12 @@ public class SimConfigPanel extends JPanel {
 		this.pluginPanel.update();
 		this.updateUI();
 	}
+
+	public void foldAccordions() {
+		this.pluginPanel.toggleFoldAccordions();
+	}
+
+	public void unfoldAccordions() {
+		this.pluginPanel.toggleUnfoldAccordions();
+	}
 }

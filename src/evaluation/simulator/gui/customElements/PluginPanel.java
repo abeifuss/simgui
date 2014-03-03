@@ -203,6 +203,38 @@ public class PluginPanel extends JScrollPane {
 		this.pluginListsMap.get(pluginLevel).setSelectedItem(selectedPlugin);
 	}
 
+	public void toggleFoldAccordions() {
+		for (Component component : this.pluginSelectionPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(false);
+			}
+		}
+
+		for (Component component : this.generalPreferencesPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(false);
+			}
+		}
+	}
+
+	public void toggleUnfoldAccordions() {
+		for (Component component : this.pluginSelectionPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(true);
+			}
+		}
+
+		for (Component component : this.generalPreferencesPanel.getComponents()) {
+			if (component.getClass().equals(AccordionEntry.class)) {
+				AccordionEntry accordianEntry = (AccordionEntry) (component);
+				accordianEntry.setVibility(true);
+			}
+		}
+	}
+
 	/**
 	 * updates all components in the plugin selection and takes effect on the
 	 * {@link AccordionEntry}
@@ -212,7 +244,7 @@ public class PluginPanel extends JScrollPane {
 		for (Component component : this.pluginSelectionPanel.getComponents()) {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
-				accordianEntry.setVibility();
+				accordianEntry.setVibility(true);
 			}
 		}
 
@@ -227,7 +259,7 @@ public class PluginPanel extends JScrollPane {
 		for (Component component : this.generalPreferencesPanel.getComponents()) {
 			if (component.getClass().equals(AccordionEntry.class)) {
 				AccordionEntry accordianEntry = (AccordionEntry) (component);
-				accordianEntry.setVibility();
+				accordianEntry.setVibility(true);
 			}
 		}
 
