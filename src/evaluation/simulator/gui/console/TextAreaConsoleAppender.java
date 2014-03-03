@@ -28,14 +28,17 @@ public class TextAreaConsoleAppender extends WriterAppender {
 
 	/**
 	 * @param logTextPane
-	 *            the TextArea for arsing log4j information to
+	 *            the TextArea for parsing log4j information to
 	 */
 	public void setTextArea(javax.swing.JTextPane logTextPane) {
 		TextAreaConsoleAppender.logTextPane = logTextPane;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.log4j.WriterAppender#append(org.apache.log4j.spi.LoggingEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.apache.log4j.WriterAppender#append(org.apache.log4j.spi.LoggingEvent)
 	 */
 	@Override
 	public void append(LoggingEvent loggingEvent) {
