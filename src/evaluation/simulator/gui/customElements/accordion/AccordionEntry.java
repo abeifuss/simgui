@@ -3,22 +3,27 @@ package evaluation.simulator.gui.customElements.accordion;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import evaluation.simulator.gui.actionListeners.FoldActionListener;
+import evaluation.simulator.gui.actionListeners.UnfoldActionListener;
 import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
 
@@ -65,15 +70,24 @@ public class AccordionEntry extends JPanel {
 		this.entryButton.setHorizontalAlignment(SwingConstants.LEFT);
 		this.entryButton.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-		ActionListener actionListener = new ActionListener() {
+		this.entryButton.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					JPopupMenu menu = new JPopupMenu();
+					JMenuItem itemFold = new JMenuItem("Fold All");
+					itemFold.addActionListener(new FoldActionListener());
+					JMenuItem itemUnfold = new JMenuItem("Unfold All");
+					itemUnfold.addActionListener(new UnfoldActionListener());
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AccordionEntry.this.toggleVisibility(e.getSource(), AccordionEntry.this.comboBox);
+					menu.add(itemFold);
+					menu.add(itemUnfold);
+
+					menu.show(entryButton, e.getX(), e.getY());
+				} else {
+					AccordionEntry.this.toggleVisibility(e.getSource(), AccordionEntry.this.comboBox);
+				}
 			}
-		};
-
-		this.entryButton.addActionListener(actionListener);
+		});
 		this.entryButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		this.add(this.entryButton, BorderLayout.NORTH);
@@ -153,12 +167,18 @@ public class AccordionEntry extends JPanel {
 
 	/**
 	 * folds/unfolds the {@link AccordionEntry}.
+	 * 
+	 * @param visibility
 	 */
-	public void setVibility() {
-		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
-		propertyPanel.setVisible(true);
-		hintLabel.setVisible(true);
-		comboBox.setVisible(true);
+	public void setVibility(boolean visibility) {
+		if (visibility) {
+			entryButton.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
+		} else {
+			entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
+		}
+		propertyPanel.setVisible(visibility);
+		hintLabel.setVisible(visibility);
+		comboBox.setVisible(visibility);
 		this.repaint();
 	}
 }

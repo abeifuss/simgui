@@ -28,7 +28,9 @@ public class GuiLauncher {
 
 	/**
 	 * Main method - calling this method results in launching the gui
-	 * @param args (not used)
+	 * 
+	 * @param args
+	 *            (not used)
 	 */
 	public static void main(String[] args) {
 		logger.debug("simGUI start.");
@@ -92,6 +94,5 @@ public class GuiLauncher {
 				simulationConfigService.loadConfig(file);
 			}
 		});
-
 	}
 }
