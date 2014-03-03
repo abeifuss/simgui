@@ -44,9 +44,13 @@ public class SaveButtonAction implements ActionListener {
 			}
 		});
 
-		int state = fc.showOpenDialog(null);
+		int state = fc.showSaveDialog(null);
 		if (state == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
+			if (!fc.getSelectedFile().getAbsolutePath().endsWith(".cfg")) {
+				file = new File (fc.getSelectedFile() +".cfg" );
+			}
+		
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 			simulationConfigService.writeConfig(file);
