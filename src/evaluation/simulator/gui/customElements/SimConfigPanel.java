@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import evaluation.simulator.gui.actionListeners.LoadButtonAction;
 import evaluation.simulator.gui.actionListeners.ResetButtonAction;
+import evaluation.simulator.gui.actionListeners.SaveAsButtonAction;
 import evaluation.simulator.gui.actionListeners.SaveButtonAction;
 import evaluation.simulator.gui.customElements.accordion.AccordionEntry;
 
@@ -34,7 +35,7 @@ public class SimConfigPanel extends JPanel {
 	 *            enables the button
 	 */
 	public static void setStatusofSaveButton(Boolean enabled) {
-		getInstance().saveButton.setEnabled(enabled);
+		getInstance().saveAsButton.setEnabled(enabled);
 	}
 
 	// private Accordion _accordian;
@@ -44,6 +45,7 @@ public class SimConfigPanel extends JPanel {
 	private PluginPanel pluginPanel;
 
 	private JButton resetButton;
+	private JButton saveAsButton;
 	private JButton saveButton;
 
 	private SimConfigPanel() {
@@ -63,6 +65,11 @@ public class SimConfigPanel extends JPanel {
 		this.loadButton = new JButton("Load");
 		this.loadButton.addActionListener(new LoadButtonAction());
 		this.buttonBar.add(this.loadButton, BorderLayout.SOUTH);
+		
+		this.saveAsButton = new JButton("Save as");
+		this.saveAsButton.addActionListener(new SaveAsButtonAction());
+		this.buttonBar.add(this.saveAsButton, BorderLayout.SOUTH);
+		
 		this.saveButton = new JButton("Save");
 		this.saveButton.addActionListener(new SaveButtonAction());
 		this.buttonBar.add(this.saveButton, BorderLayout.SOUTH);

@@ -39,6 +39,7 @@ public class SimulationConfigService {
 	}
 
 	public void loadConfig(File file) {
+		
 
 		Properties props = new Properties();
 		try {
@@ -119,7 +120,7 @@ public class SimulationConfigService {
 			// Update GUI in order to inform JComboBoxes
 			SimConfigPanel.getInstance().update();
 		}
-
+		this.simPropRegistry.setCurrentConfigFile(file.getAbsolutePath());
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 	}

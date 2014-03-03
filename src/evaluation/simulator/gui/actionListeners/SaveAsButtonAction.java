@@ -21,16 +21,42 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
  * 
  * @author nachkonvention
  */
-public class SaveButtonAction implements ActionListener {
-	private static Logger logger = Logger.getLogger(SaveButtonAction.class);
+public class SaveAsButtonAction implements ActionListener {
+	private static Logger logger = Logger.getLogger(SaveAsButtonAction.class);
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			File f = new File (SimPropRegistry.getInstance().getCurrentConfigFile());
+
+		logger.log(Level.DEBUG, "Save config");
+
+		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("etc/experiments/"));
+		fc.setFileFilter(new FileFilter() {
+
+			@Override
+			public String getDescription() {
+				return "Config File";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				return f.getName().toLowerCase().endsWith(".cfg");
+			}
+		});
+
+		int state = fc.showSaveDialog(null);
+		if (state == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			if (!fc.getSelectedFile().getAbsolutePath().endsWith(".cfg")) {
+				file = new File (fc.getSelectedFile() +".cfg" );
+			}
+		
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
-			simulationConfigService.writeConfig(f);
-			logger.log(Level.DEBUG, "Saved config");
+			simulationConfigService.writeConfig(file);
+
+		}
+		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}
 
 }

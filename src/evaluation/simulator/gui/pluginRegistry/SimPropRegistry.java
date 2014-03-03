@@ -57,6 +57,8 @@ public class SimPropRegistry {
 	private static Logger logger = Logger.getLogger(SimPropRegistry.class);
 
 	private static SimPropRegistry _instance = null;
+	
+	private static String currentConfigFile;
 
 	/**
 	 * Singleton
@@ -1685,5 +1687,13 @@ public class SimPropRegistry {
 	 */
 	public Map<String, String> getPropertiesToVary() {
 		return propertiesToVary;
+	}
+
+	public String getCurrentConfigFile() {
+		return currentConfigFile;
+	}
+
+	public void setCurrentConfigFile(String currentConfigFile) {
+		SimPropRegistry.currentConfigFile = currentConfigFile;
 	}
 }
