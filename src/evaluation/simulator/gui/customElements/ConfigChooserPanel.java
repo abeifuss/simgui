@@ -9,18 +9,16 @@ import java.io.FileFilter;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
@@ -33,6 +31,7 @@ import evaluation.simulator.gui.actionListeners.ExportButtonAction;
 import evaluation.simulator.gui.actionListeners.StartButtonAction;
 import evaluation.simulator.gui.actionListeners.StopButtonAction;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
+import evaluation.simulator.gui.service.GuiService;
 
 /**
  * {@link JPanel} containing Simulator configuration including config selection,
@@ -49,13 +48,7 @@ public class ConfigChooserPanel extends JPanel {
 	JButton stopButton;
 	private static JProgressBar progressBar;
 
-	JRadioButton defaultPlot;
-	JRadioButton expertPlot;
-	ButtonGroup radioButtonGroup;
-	JTextField expertOptions;
-
-	// JButton rightButton = new JButton(">>");
-	// JButton leftButton = new JButton("<<");
+	JButton leftButton = new JButton("<");
 
 	private static JButton exportPictureButton;
 	private static gMixBinding callSimulation;
@@ -209,18 +202,17 @@ public class ConfigChooserPanel extends JPanel {
 
 	private JPanel createConfigSelectionPanel() {
 
-		MigLayout migLayout = new MigLayout("", "[grow]", "[grow]");
+		MigLayout migLayout = new MigLayout("", "[shrink][grow]", "[grow]");
 		JPanel panel = new JPanel(migLayout);
 		this.setListModel(new DefaultListModel<File>());
 		this.setConfigList(new JList<File>(this.getListModel()));
 		this.getConfigList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		final int[] selection = getConfigList().getSelectedIndices();
 
 		this.getConfigList().addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent e) {
-				final int[] selection = getConfigList().getSelectedIndices();
 				final int hoverIndex = getConfigList().locationToIndex(e.getPoint());
-				System.out.println(getConfigList().getModel().getElementAt(hoverIndex) + " selected");
 				if (SwingUtilities.isRightMouseButton(e)) {
 					JPopupMenu menu = new JPopupMenu();
 					JMenuItem item = new JMenuItem("Load into config tool");
@@ -287,8 +279,26 @@ public class ConfigChooserPanel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(this.getConfigList());
 
-		panel.add(scrollPane, "cell 0 0,growx,growy");
-		panel.add(new JLabel("* Multiple selection is possible"), "cell 0 1,growx,growy");
+		leftButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (getConfigList().getSelectedIndices().length > 1) {
+					JOptionPane.showMessageDialog(GuiService.getInstance().getMainGui(),
+							"Please select only one config to load it into Configuration View.", "Selection Error",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					File file = getConfigList().getSelectedValue();
+					SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+					SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
+					simulationConfigService.loadConfig(file);
+				}
+			}
+		});
+
+		panel.add(leftButton, "cell 0 0,growy,width 10px");
+		panel.add(scrollPane, "cell 1 0,growx,growy, push");
+		panel.add(new JLabel("* Multiple selection is possible"), "cell 1 1,growx,growy");
 
 		panel.setBorder(new TitledBorder(null, "Configuration Selection", TitledBorder.LEADING, TitledBorder.TOP, null,
 				null));
@@ -361,6 +371,7 @@ public class ConfigChooserPanel extends JPanel {
 
 	/**
 	 * Sets the progress bar
+	 * 
 	 * @param progressBar
 	 */
 	public static void setProgressBar(JProgressBar progressBar) {

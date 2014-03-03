@@ -66,21 +66,21 @@ public class GuiService {
 			logger.log(Level.DEBUG, "Seperate config tool");
 			this.configToolFrame.initialize();
 			this.configToolFrame.setVisible(true);
-			this.mainGui.toogleConfTool(false);
+			this.getMainGui().toogleConfTool(false);
 		} else {
 			logger.log(Level.DEBUG, "Integrate config tool");
 			this.configToolFrame.setVisible(false);
-			this.mainGui.toogleConfTool(true);
+			this.getMainGui().toogleConfTool(true);
 		}
 
 		if (showConfHelpInSeparateWindow) {
 			logger.log(Level.DEBUG, "Seperate help tool");
 			this.helpToolFrame.setVisible(true);
-			this.mainGui.toogleHelpTool(false);
+			this.getMainGui().toogleHelpTool(false);
 		} else {
 			logger.log(Level.DEBUG, "Integrate help tool");
 			this.helpToolFrame.setVisible(false);
-			this.mainGui.toogleHelpTool(true);
+			this.getMainGui().toogleHelpTool(true);
 		}
 
 	}
@@ -91,13 +91,13 @@ public class GuiService {
 	public void toogleConfTools() {
 		if (this.configToolFrame.isVisible()) {
 			this.configToolFrame.setVisible(false);
-			this.mainGui.toogleConfTool(true);
+			this.getMainGui().toogleConfTool(true);
 			UserConfigService.setGUISERVICE_SEPERATE_CONF_TOOL(false);
 			return;
 		} else{
 			this.configToolFrame.initialize();
 			this.configToolFrame.setVisible(true);
-			this.mainGui.toogleConfTool(false);
+			this.getMainGui().toogleConfTool(false);
 			UserConfigService.setGUISERVICE_SEPERATE_CONF_TOOL(true);
 		}
 	}
@@ -108,15 +108,19 @@ public class GuiService {
 	public void toogleHelpTools() {
 		if (this.helpToolFrame.isVisible()) {
 			this.helpToolFrame.setVisible(false);
-			this.mainGui.toogleHelpTool(true);
+			this.getMainGui().toogleHelpTool(true);
 			UserConfigService.setGUISERVICE_SEPERATE_HELP_TOOL(false);
 			return;
 		}
 		this.helpToolFrame.initialize();
 		this.helpToolFrame.setVisible(true);
-		this.mainGui.toogleHelpTool(false);
+		this.getMainGui().toogleHelpTool(false);
 		UserConfigService.setGUISERVICE_SEPERATE_HELP_TOOL(true);
 
+	}
+
+	public MainGui getMainGui() {
+		return mainGui;
 	}
 
 }
