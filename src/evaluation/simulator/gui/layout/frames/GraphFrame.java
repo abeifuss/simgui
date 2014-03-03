@@ -41,9 +41,6 @@ public class GraphFrame extends JFrame {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle(filename);
 		this.setVisible(true);
-		System.out.println("JAHHA");
-		System.out.println(uri);
-		System.out.println(filename);
 	}
 
 	/**
