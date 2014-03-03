@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -33,6 +34,7 @@ public class AccordionEntry extends JPanel {
 	private static Logger logger = Logger.getLogger(AccordionEntry.class);
 
 	private final JComboBox<String> comboBox;
+	private final JLabel hintLabel = new JLabel("Plugin:");
 	private boolean fresh;
 	private final JButton entryButton;
 	private final String localName;
@@ -90,6 +92,7 @@ public class AccordionEntry extends JPanel {
 		this.comboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxx");
 
 		if (this.comboBox.getModel().getSize() > 1) {
+			this.add(hintLabel, BorderLayout.WEST);
 			this.add(this.comboBox, BorderLayout.CENTER);
 		}
 
@@ -137,10 +140,12 @@ public class AccordionEntry extends JPanel {
 		if (!jComboBox.isVisible()) {
 			btn.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 			propertyPanel.setVisible(true);
+			hintLabel.setVisible(true);
 			jComboBox.setVisible(true);
 		} else {
 			btn.setIcon(new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 			propertyPanel.setVisible(false);
+			hintLabel.setVisible(false);
 			jComboBox.setVisible(false);
 		}
 		this.repaint();
@@ -152,6 +157,7 @@ public class AccordionEntry extends JPanel {
 	public void setVibility() {
 		entryButton.setIcon(new ImageIcon("etc/img/icons/red/arrow-144-24.png"));
 		propertyPanel.setVisible(true);
+		hintLabel.setVisible(true);
 		comboBox.setVisible(true);
 		this.repaint();
 	}
