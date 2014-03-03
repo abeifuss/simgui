@@ -1,6 +1,13 @@
 package evaluation.simulator.core.binding;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Level;
@@ -10,6 +17,8 @@ import evaluation.simulator.Simulator;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.Statistics;
 import evaluation.simulator.gui.layout.SimulationTab;
+import evaluation.simulator.gui.layout.frames.GraphFrame;
+import evaluation.simulator.gui.results.GnuplotPanel;
 import evaluation.simulator.gui.results.ResultPanelFactory;
 import framework.core.launcher.CommandLineParameters;
 
@@ -67,12 +76,33 @@ public class gMixBinding extends Thread {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					SimulationTab.getInstance().getResultsPanel()
-							.addTab("Experiment " + gMixBinding.this.experimentsPerformed, resultPlot);
-					SimulationTab.getInstance().getResultsPanel().setSelectedComponent(resultPlot);
+					JTabbedPane resultsTabs = SimulationTab.getInstance().getResultsPanel();
+					resultsTabs.addTab("Experiment " + gMixBinding.this.experimentsPerformed, resultPlot);
+					resultsTabs.setSelectedComponent(resultPlot);
+					setMaximizeButton(resultsTabs);
 					resultPlot.updateUI();
 					resultPlot.repaint();
 					gMixBinding.this.experimentsPerformed++;
+				}
+
+				private void setMaximizeButton(JTabbedPane resultsTabs) {
+					int tabIndex = resultsTabs.getSelectedIndex();
+					JPanel tabPanel = new JPanel();
+					JLabel tabLabel = new JLabel("Experiment " + gMixBinding.getInstance().experimentsPerformed);
+					tabPanel.add(tabLabel);
+					final GnuplotPanel tmpGnuplotPanel = (GnuplotPanel) resultPlot;
+					JButton maximizeButton = new JButton(new ImageIcon("etc/img/icons/maximize.png"));
+					maximizeButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							GraphFrame.getInstance(tmpGnuplotPanel.svgCanvas.getURI(),
+									tmpGnuplotPanel.gnuplotResultFileName);
+
+						}
+					});
+					tabPanel.add(maximizeButton);
+					tabPanel.setOpaque(false);
+					resultsTabs.setTabComponentAt(tabIndex, tabPanel);
 				}
 			});
 

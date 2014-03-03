@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -31,6 +30,7 @@ public class GnuplotPanel extends JPanel {
 
 	public JSVGCanvas svgCanvas;
 	public static String outputFolder = "inputOutput/simulator/output/";
+	public String gnuplotResultFileName;
 
 	/**
 	 * Constructor
@@ -39,6 +39,7 @@ public class GnuplotPanel extends JPanel {
 	 *            path to generated output file
 	 */
 	public GnuplotPanel(final String gnuplotResultFileName) {
+		this.gnuplotResultFileName = gnuplotResultFileName;
 		// BufferedImage resultsDiagram = null;
 		try {
 			File f = new File(outputFolder + gnuplotResultFileName);
@@ -66,8 +67,7 @@ public class GnuplotPanel extends JPanel {
 						JMenuItem item = new JMenuItem("Show in seperate window");
 						item.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
-								JFrame externalGraphView = GraphFrame.getInstance(svgCanvas.getURI(),
-										gnuplotResultFileName);
+								GraphFrame.getInstance(svgCanvas.getURI(), gnuplotResultFileName);
 							}
 						});
 						menu.add(item);
