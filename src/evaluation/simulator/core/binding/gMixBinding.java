@@ -15,7 +15,7 @@ import framework.core.launcher.CommandLineParameters;
 
 /**
  * @author alex
- *
+ * 
  */
 public class gMixBinding extends Thread {
 
@@ -36,13 +36,15 @@ public class gMixBinding extends Thread {
 
 	/**
 	 * @param configFile
-	 * 		String with config file content
+	 *            String with config file content
 	 */
 	public void setParams(String[] configFile) {
 		this.params = new CommandLineParameters(configFile);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Thread#run()
 	 */
 	@Override
@@ -67,6 +69,7 @@ public class gMixBinding extends Thread {
 				public void run() {
 					SimulationTab.getInstance().getResultsPanel()
 							.addTab("Experiment " + gMixBinding.this.experimentsPerformed, resultPlot);
+					SimulationTab.getInstance().getResultsPanel().setSelectedComponent(resultPlot);
 					resultPlot.updateUI();
 					resultPlot.repaint();
 					gMixBinding.this.experimentsPerformed++;
@@ -83,8 +86,7 @@ public class gMixBinding extends Thread {
 	/**
 	 * Singleton
 	 * 
-	 * @return
-	 * 		reference of {@link gMixBinding}
+	 * @return reference of {@link gMixBinding}
 	 */
 	public static gMixBinding getInstance() {
 		if (instance == null) {
@@ -108,8 +110,7 @@ public class gMixBinding extends Thread {
 	}
 
 	/**
-	 * @return
-	 * 		file name of the resulting picture / plot
+	 * @return file name of the resulting picture / plot
 	 */
 	public String getGnuplotConsoleOutputFileName() {
 		return this.resultsFileName;
