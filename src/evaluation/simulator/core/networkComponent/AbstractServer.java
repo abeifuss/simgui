@@ -18,6 +18,7 @@
 package evaluation.simulator.core.networkComponent;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
@@ -28,6 +29,16 @@ import evaluation.simulator.pluginRegistry.StatisticsType;
 public abstract class AbstractServer implements EventExecutor {
 
 	private DistantProxy distantProxy;
+	
+	@StringSimulationProperty( key = "COMMUNICATION_MODE",
+			name = "Communication mode",
+			inject = "0:SIMULATION,Simulation",
+			global = true,
+			isStatic = true,
+			possibleValues = "SIMPLEX,SIMPLEX_WITH_FEEDBACK,DUPLEX,SIMPLEX_REPLY"
+			)
+	String commMode; 
+	
 	protected boolean SIMULATE_REPLY_CHANNEL;
 	protected boolean UNLIMITED_BANDWIDTH;
 	protected Simulator simulator;
@@ -37,7 +48,7 @@ public abstract class AbstractServer implements EventExecutor {
 	protected AbstractServer(DistantProxy distantProxy) {
 		this.distantProxy = distantProxy;
 		this.SIMULATE_REPLY_CHANNEL = Simulator.settings.getProperty("COMMUNICATION_MODE").equals("SIMPLEX_REPLY") || Simulator.settings.getProperty("COMMUNICATION_MODE").equals("DUPLEX");
-		this.UNLIMITED_BANDWIDTH = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX").equals("NO_DELAY");
+		this.UNLIMITED_BANDWIDTH = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX").equals("NO_DELAY_BOX");
 		this.simulator = Simulator.getSimulator();
 	}
 	

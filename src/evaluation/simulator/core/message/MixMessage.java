@@ -29,7 +29,8 @@ public abstract class MixMessage extends NetworkMessage {
 	@StringSimulationProperty(name = "Message format",
 			key = "MESSAGE_FORMAT",
 			position = 5,
-			inject = "0:RECODING_SCHEME,Recoding Scheme")
+			inject = "0:RECODING_SCHEME,Recoding Scheme",
+			possibleValues="BASIC_MIX_MESSAGE,STOP_AND_GO_MESSAGE")
 	private static String type;
 
 	protected long creationTime;

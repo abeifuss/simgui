@@ -34,13 +34,13 @@ public class LineChartPlotterCf extends Plotter {
 
 	@BoolSimulationProperty(name = "Calculate average",
 			key = "CALC_AVG_OF_RUNS",
-			inject = "0:PLOTTYPE,Plottype",
+			inject = "1:PLOTTYPE,Plottype",
 			isStatic = true)
 	private final boolean CALC_AVG_OF_RUNS;
 
 	@BoolSimulationProperty(name = "Inverse plot",
 			key = "IS_INVERSE",
-			inject = "0:PLOTTYPE,Plottype",
+			inject = "2:PLOTTYPE,Plottype",
 			isStatic = true)
 	private final boolean IS_INVERSE;
 

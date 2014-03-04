@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.pluginRegistry.PlotType;
@@ -43,6 +44,13 @@ public class ExperimentConfig {
 	public String secondPropertyToVary;
 	public String[] valuesForSecondProperty;
 	
+	@IntSimulationProperty( name = "Number of validation runs",
+			key = "VALIDATION_RUNS",
+			inject = "4:PLOTTYPE,Plottype",
+			isStatic = true,
+			min = 0,
+			max = 25,
+			stepSize = 1)
 	public int runs;
 	public String experimentStart;
 	

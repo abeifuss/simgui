@@ -78,7 +78,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			this.slider = new JSlider(this.property.getMinValue(), this.property.getMaxValue(),
 					(int) this.property.getValue());
 			this.slider.addChangeListener(this);
-			this.valueLabel.setText("" + this.property.getValue() + " (ms)");
+			this.valueLabel.setText("" + this.property.getValue());
 			this.add(this.valueLabel, "growx, push, wrap");
 			this.add(this.slider, "growx, push, wrap");
 			this.component = this.slider;
@@ -136,7 +136,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 			simPropRegistry.setValue(this.property.getPropertyID(), this.spinner.getValue());
 		}
 		if (event.getSource() == this.slider) {
-			this.valueLabel.setText("" + this.property.getValue() + " (ms)");
+			this.valueLabel.setText("" + this.property.getValue());
 			simPropRegistry.setValue(this.property.getPropertyID(), this.slider.getValue());
 		}
 	}
@@ -155,7 +155,7 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (this.auto.isSelected()) {
-			System.err.println("CHANGED AUDO");
+			System.err.println("CHANGED to AUTO");
 			this.unlimited.setEnabled(false);
 			this.component.setEnabled(false);
 			this.simPropRegistry.setAuto(this.property.getPropertyID(), true, Integer.class);

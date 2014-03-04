@@ -18,6 +18,9 @@
 package evaluation.simulator.core.networkComponent;
 
 import evaluation.simulator.Simulator;
+import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.event.ClientEvent;
 import evaluation.simulator.core.event.DistantProxyEvent;
 import evaluation.simulator.core.event.Event;
@@ -34,11 +37,29 @@ public class Mix extends NetworkNode implements ReplyReceiver  {
 	private boolean isFirstMix;
 	private boolean isLastMix;
 	protected Simulator simulator;
+	
+	@BoolSimulationProperty(key="RECEIVER_SUPPORTS_DUMMY_TRAFFIC",
+			name="Receiver supports dummy traffic",
+			inject = "0:RECODING_SCHEME,Recoding Scheme"
+			)
 	private boolean RECEIVER_SUPPORTS_DUMMY_TRAFFIC;
 	private OutputStrategyImpl outputStrategy;
 	private MixSendStyleImpl mixSendStyle;
+	
+	@DoubleSimulationProperty(key = "PROCESSING_TIME_FOR_1000_REQUESTS",
+			name="Processing time for 1000 requests (ms)",
+			inject = "0:RECODING_SCHEME,Recoding Scheme",
+			min = 0
+	)
 	private static double PROCESSING_TIME_FOR_1000_REQUESTS;
+	
+	@DoubleSimulationProperty(key = "PROCESSING_TIME_FOR_1000_REPLIES",
+			name="Processing time for 1000 replies (ms)",
+			inject = "0:RECODING_SCHEME,Recoding Scheme",
+			min = 0
+	)
 	private static double PROCESSING_TIME_FOR_1000_REPLIES;
+	
 	private static int requestProcessingTime;
 	private static int replyProcessingTime;
 	
