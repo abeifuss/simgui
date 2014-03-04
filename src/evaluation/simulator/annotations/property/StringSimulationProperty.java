@@ -96,6 +96,6 @@ public @interface StringSimulationProperty {
 	 * @return
 	 * 		true if property is variable
 	 */
-	public boolean property_to_vary() default false;
+	public boolean property_to_vary() default true;
 
 }

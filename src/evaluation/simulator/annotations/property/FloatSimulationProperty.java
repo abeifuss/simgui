@@ -118,6 +118,6 @@ public @interface FloatSimulationProperty {
 	 * @return
 	 * 		property to vary flag
 	 */
-	public boolean property_to_vary() default false;
+	public boolean property_to_vary() default true;
 
 }
