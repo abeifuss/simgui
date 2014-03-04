@@ -35,12 +35,18 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // DLP Algorithm (2008: Wei Wang, Mehul Motani, Vikram Srinivasan: Dependent Link Padding Algorithms for Low Latency Anonymity Systems)
-@Plugin(pluginKey = "DLPA", documentationURL = "DLPA.html")
+@Plugin(pluginKey = "DLPA", pluginName = "DPLA Basic", documentationURL = "DLPA.html")
 public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 
-	@IntSimulationProperty( name="Maximum request delay", key="MAX_DLPA_REQUEST_DELAY" )
+	// Requirement
+	@IntSimulationProperty( name="Maximum request delay (ms)", 
+			key="MAX_DLPAB_REQUEST_DELAY",
+			min = 0)
 	private int maxRequestDelay;
-	@IntSimulationProperty( name="Maximum reply delay", key="MAX_DLPA_REPLY_DELAY" )
+	
+	@IntSimulationProperty( name="Maximum reply delay (ms)", 
+			key="MAX_DLPAB_REPLY_DELAY",
+			min = 0)
 	private int maxReplyDelay;
 	
 	public Vector<DLPAOutputSlot> requestOutputSlots = new Vector<DLPAOutputSlot>(100,100);
@@ -51,8 +57,8 @@ public class DLPABasic extends OutputStrategyImpl implements Identifiable {
 	
 	public DLPABasic(Mix mix, Simulator simulator) {
 		super(mix, simulator);
-		this.maxRequestDelay = Simulator.settings.getPropertyAsInt("MAX_DLPA_REQUEST_DELAY");
-		this.maxReplyDelay = Simulator.settings.getPropertyAsInt("MAX_DLPA_REPLY_DELAY");
+		this.maxRequestDelay = Simulator.settings.getPropertyAsInt("MAX_DLPAB_REQUEST_DELAY");
+		this.maxReplyDelay = Simulator.settings.getPropertyAsInt("MAX_DLPAB_REPLY_DELAY");
 		this.statistics = new Statistics(this);
 		this.numericIdentifier = IdGenerator.getId();
 	}

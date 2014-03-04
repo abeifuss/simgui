@@ -30,17 +30,36 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(pluginKey = "CONSTANT")
+@Plugin(pluginKey = "CONSTANT",  pluginName="Constant")
 public class SendConstantClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", key = "CONSTANT_REQUEST_SIZE", position = 3, enableAuto = true )
+	@IntSimulationProperty( name = "Request size (byte)",
+			key = "CONSTANT_REQUEST_SIZE",
+			position = 3, 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", key = "CONSTANT_REPLY_SIZE", position = 4, enableAuto = true )
+	
+	@IntSimulationProperty( name = "Reply size (byte)",
+			key = "CONSTANT_REPLY_SIZE",
+			position = 4, 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", key = "CONSTANT_RESOLVE_TIME", position = 5 )
+	
+	@IntSimulationProperty( name = "Resolve time (ms)",
+			key = "CONSTANT_RESOLVE_TIME",
+			position = 5,
+			min = 0)
 	private int RESOLVE_TIME; // in ms
-	@IntSimulationProperty( name = "Average requests per second", key = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", position = 2 )
+	
+	@IntSimulationProperty( name = "Average requests per second (requests)",
+			key = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", 
+			position = 2 )
 	private long TIME_BETWEEN_SENDS;
+	
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
 	

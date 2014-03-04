@@ -33,10 +33,11 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 
 // Kesdogan et. al. 1998: Stop-and-Go MIXes: Providing Probabilistic Anonymity in an Open System
-@Plugin(pluginKey = "STOP_AND_GO")
+@Plugin(pluginKey = "STOP_AND_GO", pluginName="Stop And Go")
 public class StopAndGo extends OutputStrategyImpl implements EventExecutor {
 
-	@BoolSimulationProperty( name = "Use timestamps", key="SGMIX_USE_TIMESTAMPS")
+	@BoolSimulationProperty( name = "Use timestamps",
+			key="SGMIX_USE_TIMESTAMPS")
 	private boolean useTimeStamps;
 	
 	

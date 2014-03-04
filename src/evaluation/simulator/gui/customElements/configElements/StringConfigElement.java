@@ -100,7 +100,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 				// jList.setPreferredSize(new Dimension(10, 25));
 				jScrollPane.setPreferredSize(new Dimension(150, 220));
 				jScrollPane.setViewportView(jList);
-				this.add(jScrollPane, "growx, growy, wmin 10");
+				this.add(jScrollPane, "growx, growy, wmin 10, wrap");
 				this.setComponent(this.jScrollPane);
 			} else {
 				this.jComboBox = new JComboBox<String>();
@@ -109,14 +109,14 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 				}
 				this.jComboBox.addActionListener(this);
 				this.jComboBox.setToolTipText(property.getTooltip());
-				this.add(jComboBox, "growx, push, wmin 10");
+				this.add(jComboBox, "growx, push, wmin 10, wrap");
 				this.setComponent(this.jComboBox);
 			}
 		} else {
 			this.textfield = new JTextField();
 			this.textfield.addActionListener(this);
 			this.textfield.setToolTipText(property.getTooltip());
-			this.add(textfield, "growx, push, wmin 10");
+			this.add(textfield, "growx, push, wmin 10, wrap");
 			this.setComponent(this.textfield);
 		}
 
@@ -127,7 +127,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 			textarea.setLineWrap(true);
 			textarea.setWrapStyleWord(true);
 			textarea.setPreferredSize(new Dimension(10, 25));
-			this.add(textarea, "growx, growy, wmin 10");
+			this.add(textarea, "growx, wmin 10, push, wrap");
 		}
 	}
 

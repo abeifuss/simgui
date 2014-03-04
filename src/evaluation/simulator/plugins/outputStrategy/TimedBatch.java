@@ -36,13 +36,15 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 // Dingledine 2002: Timed Mix
 // "The mix fires (flushes all messages) every t seconds"
-@Plugin(pluginKey = "TIMED_BATCH")
+@Plugin(pluginKey = "TIMED_BATCH", pluginName="Timed Batch")
 public class TimedBatch extends OutputStrategyImpl {
 
 	private SimplexTimedMix requestBatch;
 	private SimplexTimedMix replyBatch;
 	
-	@IntSimulationProperty( name = "Sending rate (ms)", key = "TIMED_BATCH_SEND_INTERVAL_IN_MS" )
+	@IntSimulationProperty( name = "Sending rate (ms)", 
+			key = "TIMED_BATCH_SEND_INTERVAL_IN_MS",
+			min = 0)
 	private int sendingRate;
 	
 	

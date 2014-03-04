@@ -24,14 +24,26 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(pluginKey = "REQUEST_REPLY")
+@Plugin(pluginKey = "REQUEST_REPLY", pluginName="Request Reply")
 public class RequestReplyClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", key = "REQUEST_REPLY_REQUEST_SIZE", enableAuto = true )
+	@IntSimulationProperty( name = "Request size (byte)", 
+			key = "REQUEST_REPLY_REQUEST_SIZE", 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", key = "REQUEST_REPLY_REPLY_SIZE", enableAuto = true )
+	
+	@IntSimulationProperty( name = "Reply size (byte)",
+			key = "REQUEST_REPLY_REPLY_SIZE", 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time", key = "REQUEST_REPLY_RESOLVE_TIME" )
+	
+	@IntSimulationProperty( name = "Resolve time (ms)", 
+			key = "REQUEST_REPLY_RESOLVE_TIME",
+			min = 0)
 	private int RESOLVE_TIME; // in ms
 	
 	

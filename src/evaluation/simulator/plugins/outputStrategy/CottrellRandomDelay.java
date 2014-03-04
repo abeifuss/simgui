@@ -36,14 +36,15 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 
 // Cottrell 1995 ("Mixmaster & Remailer Attacks")
 // delays incoming messages randomly
-@Plugin(pluginKey = "COTTRELL_RANDOM_DELAY")
+@Plugin(pluginKey = "COTTRELL_RANDOM_DELAY", pluginName = "Cottrell Random Delay")
 public class CottrellRandomDelay extends OutputStrategyImpl implements EventExecutor {
 
 	private static SecureRandom secureRandom = new SecureRandom();
 	
 	@IntSimulationProperty(
 			name = "Maximum delay (ms)",
-			key = "COTTRELL_MAX_RANDOM_DELAY_IN_MS"
+			key = "COTTRELL_MAX_RANDOM_DELAY_IN_MS",
+			min = 0
 	)
 	private int maxDelay;
 	

@@ -25,13 +25,15 @@ import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(pluginKey = "POISSON")
+@Plugin(pluginKey = "POISSON", pluginName="Poisson (exponential)")
 public class PoissonModel extends TrafficSourceImplementation implements EventExecutor {
 
 	private PoissonClient[] clients;
 	private Simulator simulator;
 	
-	@IntSimulationProperty( name = "Number of Clients", key = "POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE")
+	@IntSimulationProperty( name = "Number of Clients",
+			key = "POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE",
+			min = 1)
 	private int numberOfClients;
 	
 	@Override

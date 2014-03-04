@@ -43,7 +43,7 @@ import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 // output strategy, that collects messages until "batchSize" messages are reached
 // when "batchSize" messages are reached, all messages are sent (in random order)
 // accepts only one message per participant for each batch
-@Plugin(pluginKey = "DISTINCT_USER_BATCH")
+@Plugin(pluginKey = "DISTINCT_USER_BATCH", pluginName = "Distinct User Batch")
 public class DistinctUserBatch extends OutputStrategyImpl implements EventExecutor {
 	
 	private boolean setupComplete;
@@ -54,8 +54,9 @@ public class DistinctUserBatch extends OutputStrategyImpl implements EventExecut
 	private int replyCounter = 0;
 	
 	@IntSimulationProperty(
-		name = "Maximum reply delay",
-		key = "MAX_REPLY_DELAY_DISTINCT_USER_BATCH"
+		name = "Maximum reply delay (ms)",
+		key = "MAX_REPLY_DELAY_DISTINCT_USER_BATCH",
+		min = 0
 	)
 	private int timeout;
 	private Event timeoutEvent = null;

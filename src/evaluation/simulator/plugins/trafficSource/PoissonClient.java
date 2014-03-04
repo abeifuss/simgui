@@ -31,17 +31,33 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(pluginKey = "POISSON")
+@Plugin(pluginKey = "POISSON", pluginName="Poisson (exponential)")
 public class PoissonClient extends AbstractClient {
 
-	@IntSimulationProperty( name = "Request size", key = "POISSON_REQUEST_SIZE", enableAuto = true )
+	@IntSimulationProperty( name = "Request size (byte)", 
+			key = "POISSON_REQUEST_SIZE", 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", key = "POISSON_REPLY_SIZE", enableAuto = true )
+	
+	@IntSimulationProperty( name = "Reply size (byte)", 
+			key = "POISSON_REPLY_SIZE", 
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", key = "POISSON_RESOLVE_TIME" )
+	
+	@IntSimulationProperty( name = "Resolve time (ms)", 
+			key = "POISSON_RESOLVE_TIME",
+			min = 0)
 	private int RESOLVE_TIME; // in ms
-	@DoubleSimulationProperty( name = "Average requests per second", key = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT" )
+	
+	@DoubleSimulationProperty( name = "Average requests per second (requests)", 
+			key = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT",
+			min = 0.00001)
 	private double LAMBDA;
+	
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
 	

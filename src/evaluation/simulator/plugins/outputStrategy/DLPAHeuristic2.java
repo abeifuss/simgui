@@ -21,6 +21,8 @@ import java.util.Vector;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
+import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.message.MixMessage;
@@ -54,9 +56,30 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
  * 07: endif
  * 08: Go to step 01 until no more packet arrives."
 */
-@Plugin(pluginKey = "DLPA_HEURISTIC_2")
+@Plugin(pluginKey = "DLPA_HEURISTIC_2", pluginName = "DLPA Heuristic II")
 public class DLPAHeuristic2 extends OutputStrategyImpl implements Identifiable {
 
+	// Requirement
+	@IntSimulationProperty( name = "Maximum request delay (ms)", 
+			key = "MAX_DLPAII_REQUEST_DELAY",
+			min = 0)
+	private int maxRequestDelay;
+	
+	@IntSimulationProperty( name = "Maximum reply delay (ms)", 
+			key = "MAX_DLPAII_REPLY_DELAY",
+			min = 0)
+	private int maxReplyDelay;
+	
+	@DoubleSimulationProperty( name = "Request utility threshold (requests)",
+			key = "REQUEST_UTILITY_THRESHOLD_II",
+			min = 0)
+	double requestUtilityThreshold;
+	
+	@DoubleSimulationProperty( name = "Reply utility threshold (requests)",
+			key = "REPLY_UTILITY_THRESHOLD_II",
+			min = 0)
+	double replyUtilityThreshold;
+	
 	private Statistics statistics;
 	private int numericIdentifier;
 	private DLPAHeuristicSimplex requestHandler;
@@ -67,10 +90,10 @@ public class DLPAHeuristic2 extends OutputStrategyImpl implements Identifiable {
 		super(mix, simulator);
 		this.statistics = new Statistics(this);
 		this.numericIdentifier = IdGenerator.getId();
-		int maxRequestDelay = Simulator.settings.getPropertyAsInt("MAX_DLPA_REQUEST_DELAY");
-		int maxReplyDelay = Simulator.settings.getPropertyAsInt("MAX_DLPA_REPLY_DELAY");
-		double requestUtilityThreshold = Simulator.settings.getPropertyAsDouble("REQUEST_UTILITY_THRESHOLD");
-		double replyUtilityThreshold = Simulator.settings.getPropertyAsDouble("REPLY_UTILITY_THRESHOLD");
+		maxRequestDelay = Simulator.settings.getPropertyAsInt("MAX_DLPAII_REQUEST_DELAY");
+		maxReplyDelay = Simulator.settings.getPropertyAsInt("MAX_DLPAII_REPLY_DELAY");
+		requestUtilityThreshold = Simulator.settings.getPropertyAsDouble("REQUEST_UTILITY_THRESHOLD_II");
+		replyUtilityThreshold = Simulator.settings.getPropertyAsDouble("REPLY_UTILITY_THRESHOLD_II");
 		this.requestHandler = new DLPAHeuristicSimplex(true, maxRequestDelay, requestUtilityThreshold);
 		this.replyHandler = new DLPAHeuristicSimplex(false, maxReplyDelay, replyUtilityThreshold);
 		}

@@ -42,7 +42,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // depends on the number of messages inside the mix at the time of flushing"
 // -> normal cumulative distribution
 
-@Plugin(pluginKey = "BINOMIAL_POOL")
+@Plugin(pluginKey = "BINOMIAL_POOL", pluginName = "Binominal Pool")
 public class BinomialPool extends OutputStrategyImpl {
 
 	private SimplexBinomialPool requestBatch;
@@ -51,25 +51,31 @@ public class BinomialPool extends OutputStrategyImpl {
 	
 	@DoubleSimulationProperty(
 			name = "Sending interval (ms)",
-			key = "BINOMIAL_POOL_SENDING_INTERVAL_IN_MS"
+			key = "BINOMIAL_POOL_SENDING_INTERVAL_IN_MS",
+			min = 0
 	)
 	private int sendingInterval;
 	
 	@DoubleSimulationProperty(
-			name = "Maximum output fraction",
-			key = "BINOMIAL_POOL_MAX_OUTPUT_FRACTION"
+			name = "Maximum output fraction (percent)",
+			key = "BINOMIAL_POOL_MAX_OUTPUT_FRACTION",
+			min = 0,
+			max = 1
 	)
 	private double maxOutputFraction;
 	
 	@DoubleSimulationProperty(
 			name = "Mean",
-			key = "BINOMIAL_POOL_MEAN"
+			key = "BINOMIAL_POOL_MEAN",
+			min = 0,
+			max = 1
 	)
 	private double mean;
 	
 	@DoubleSimulationProperty(
 			name = "Standard deviation",
-			key = "BINOMIAL_POOL_STANDARD_DEVIATION"
+			key = "BINOMIAL_POOL_STANDARD_DEVIATION",
+			min = 0
 	)
 	private double stdDev;
 	

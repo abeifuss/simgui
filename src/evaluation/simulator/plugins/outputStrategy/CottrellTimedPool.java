@@ -39,7 +39,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //Cottrell 1995 ("Mixmaster & Remailer Attacks")
 //every "outputRate" ms, send x (= "numberOfMessagesInPool" - "minPoolSize") 
 //randomly chosen messages (if x >= 1)
-@Plugin(pluginKey = "COTTRELL_TIMED_POOL")
+@Plugin(pluginKey = "COTTRELL_TIMED_POOL", pluginName = "Cottrell Timed Pool")
 public class CottrellTimedPool extends OutputStrategyImpl {
 
 	private SimplexCottrellTimedPool requestBatch;
@@ -48,13 +48,15 @@ public class CottrellTimedPool extends OutputStrategyImpl {
 	
 	@IntSimulationProperty(
 			name = "Sending Interval (ms)",
-			key = "COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS"
+			key = "COTTRELL_TIMED_POOL_SENDING_INTERVAL_IN_MS",
+			min = 0
 	)
 	private int sendingRate;
 	
 	@IntSimulationProperty(
-			name = "Minimum pool size",
-			key = "COTTRELL_TIMED_POOL_MIN_POOL_SIZE"
+			name = "Minimum pool size (requests)",
+			key = "COTTRELL_TIMED_POOL_MIN_POOL_SIZE",
+			min = 0
 	)
 	private int poolSize;
 	

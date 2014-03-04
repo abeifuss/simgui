@@ -31,19 +31,36 @@ import evaluation.simulator.core.message.EndToEndMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.ExtendedTransaction;
 
-@Plugin(pluginKey = "PARETO")
+@Plugin(pluginKey = "PARETO", pluginName = "Pareto")
 public class ParetoClient extends AbstractClient {
 
 	// Properties
-	@IntSimulationProperty( name = "Request size", key = "PARETO_REQUEST_SIZE", enableAuto = true)
+	@IntSimulationProperty( name = "Request size (byte)", 
+			key = "PARETO_REQUEST_SIZE",
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REQUEST_SIZE;
-	@IntSimulationProperty( name = "Reply size", key = "PARETO_REPLY_SIZE", enableAuto = true)
+	
+	@IntSimulationProperty( name = "Reply size (byte)", 
+			key = "PARETO_REPLY_SIZE",
+			enableAuto = true,
+			min = 0,
+			max = 9000)
 	private int REPLY_SIZE;
-	@IntSimulationProperty( name = "Resolve time (ms)", key = "PARETO_RESOLVE_TIME")
+	
+	@IntSimulationProperty( name = "Resolve time (ms)", 
+			key = "PARETO_RESOLVE_TIME",
+			min = 0)
 	private int RESOLVE_TIME;
-	@DoubleSimulationProperty( name = "Alpha", key = "PARETO_ALPHA")
+	
+	@DoubleSimulationProperty( name = "Alpha parameter", 
+			key = "PARETO_ALPHA")
 	private double ALPHA;
-	@DoubleSimulationProperty( name = "Average requests per second", key = "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+	
+	@DoubleSimulationProperty( name = "Average requests per second (requests)", 
+			key = "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT",
+			min = 0.0001)
 	private double AVERAGE_REQUESTS_PER_SECOND;
 	
 	private NormalizedPareto pareto;

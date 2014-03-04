@@ -25,12 +25,15 @@ import evaluation.simulator.core.event.EventExecutor;
 import evaluation.simulator.core.event.SimulationEvent;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(pluginKey = "PARETO")
+@Plugin(pluginKey = "PARETO", pluginName = "Pareto")
 public class ParetoModel extends TrafficSourceImplementation implements EventExecutor {
 
 	private ParetoClient[] clients;
 	private Simulator simulator;
-	@IntSimulationProperty(name = "Number of Clients", key = "PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE")
+	
+	@IntSimulationProperty(name = "Number of Clients", 
+			key = "PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE",
+			min = 1)
 	private int numberOfClients;
 	
 	@Override

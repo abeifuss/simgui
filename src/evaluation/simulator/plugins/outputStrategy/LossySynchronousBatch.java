@@ -44,7 +44,7 @@ import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 import evaluation.simulator.plugins.mixSendStyle.ReplyReceiver;
 
-@Plugin(pluginKey = "LOSSY_SYNCHRONOUS_BATCH")
+@Plugin(pluginKey = "LOSSY_SYNCHRONOUS_BATCH", pluginName="Lossy Synchronous Batch")
 public class LossySynchronousBatch extends OutputStrategyImpl implements Identifiable {
 
 	private Statistics statistics;
@@ -53,10 +53,14 @@ public class LossySynchronousBatch extends OutputStrategyImpl implements Identif
 	private SimplexLossySynchronousBatch replyBatch;
 	private Map<String, Vector<TransportMessage>> clientReplyWaitingQueues;
 	
-	@DoubleSimulationProperty( name = "Request rate", key = "LSB_REQUEST_RATE" )
+	@DoubleSimulationProperty( name = "Request rate (Hz)",
+			key = "LSB_REQUEST_RATE",
+			min = 0)
 	private double requestRate;
 	
-	@DoubleSimulationProperty( name = "Reply rate", key = "LSB_REPLY_RATE" )
+	@DoubleSimulationProperty( name = "Reply rate (Hz)",
+			key = "LSB_REPLY_RATE",
+			min = 0)
 	private double replyRate;
 	
 	

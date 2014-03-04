@@ -22,12 +22,15 @@ import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(pluginKey = "CONSTANT")
+@Plugin(pluginKey = "CONSTANT", pluginName="Constant")
 public class SendConstantModel extends TrafficSourceImplementation {
 
 	private SendConstantClient[] clients;
 	
-	@IntSimulationProperty( name = "Number of Clients", key = "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE", position = 1)
+	@IntSimulationProperty(name = "Number of Clients", 
+			key = "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE", 
+			position = 1,
+			min = 1)
 	private int numberOfClients;
 	
 	@Override

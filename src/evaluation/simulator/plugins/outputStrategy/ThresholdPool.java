@@ -39,16 +39,22 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // messages, chosen uniformly at random from all the messages, is retained in 
 // the mix. (Consider these messages as feedback into the mix.) The other n 
 // are forwarded on.
-@Plugin(pluginKey = "THRESHOLD_POOL")
+@Plugin(pluginKey = "THRESHOLD_POOL", pluginName="Threshold Pool")
 public class ThresholdPool extends OutputStrategyImpl {
 
 	private static SecureRandom secureRandom = new SecureRandom();
 	private SimplexTresholdPool requestPool;
 	private SimplexTresholdPool replyPool;
 	
-	@IntSimulationProperty( name = "Pool size", key = "THRESHOLD_POOL_MIN_POOL_SIZE")
+	@IntSimulationProperty( name = "Pool size (requests)", 
+			key = "THRESHOLD_POOL_MIN_POOL_SIZE",
+			min = 1)
 	private int poolSize;
-	@IntSimulationProperty( name = "Threshold", key = "THRESHOLD_POOL_THRESHOLD")
+	
+	// Requirement
+	@IntSimulationProperty( name = "Threshold", 
+			key = "THRESHOLD_POOL_THRESHOLD",
+			min = 1)
 	private int threshold;
 	
 	public ThresholdPool(Mix mix, Simulator simulator) {

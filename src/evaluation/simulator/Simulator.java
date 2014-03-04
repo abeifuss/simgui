@@ -67,7 +67,7 @@ public class Simulator extends GMixTool implements Identifiable {
 			inject = "0:SIMULATION,Simulation",
 //			value=false,
 			isStatic = true,
-			info = "If this option is enabled the simulator will generate debug output. Simulations with debug output may take significantly longer!")
+			info = "If this option is enabled the simulator will generate debug output. Simulations with debug output may perform significantly longer!")
 	public static boolean DEBUG_ON = true;
 	private static long now = 0;
 	private static Simulator currentSimulator = null;
@@ -83,12 +83,14 @@ public class Simulator extends GMixTool implements Identifiable {
 	private volatile boolean stopSimulation = false;
 	private int voteStopCounter = 0;
 	
-	@IntSimulationProperty( name = "Recording start",
+	@IntSimulationProperty( name = "Recording start (ms)",
 			key = "START_RECORDING_STATISTICS_AT",
 			inject = "1:SIMULATION,Simulation",
 			isStatic = true,
 			min = 0)
 	public long ts_recordStatisticsStart = Util.NOT_SET; // timestamp
+	
+	
 	public long ts_recordStatisticsEnd = Util.NOT_SET;
 	
 	@DoubleSimulationProperty( name = "Real time limit (s)",
@@ -96,8 +98,6 @@ public class Simulator extends GMixTool implements Identifiable {
 			inject = "5:SIMULATION,Simulation",
 			isStatic = true,
 			min = 0,
-			max = 3600,
-			guiElement = "slider",
 			enable_requirements = SimulationEndRealTimeEndRequirement.class)
 	int delay; // TODO: pass through constructor
 	
@@ -106,9 +106,11 @@ public class Simulator extends GMixTool implements Identifiable {
 			inject = "2:SIMULATION,Simulation",
 			possibleValues = "@StatisticsType",
 			multiSelection = true,
-			isStatic = true)
+			isStatic = true,
+			info = "Multiselection is possible")
 	private static String desiredExperiments;
 	
+	// Requirement
 	@StringSimulationProperty( name = "Simulation end condition",
 			key = "SIMULATION_END",
 			inject = "3:SIMULATION,Simulation",

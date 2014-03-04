@@ -31,7 +31,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // TODO: Sometimes this plugin is not recognized
 
 // forwards messages without delay (use for base line measurments)
-@Plugin(pluginKey = "NO_DELAY")
+@Plugin(pluginKey = "NO_DELAY", pluginName = "No Delay")
 public class NoDelay extends OutputStrategyImpl {
 
 	

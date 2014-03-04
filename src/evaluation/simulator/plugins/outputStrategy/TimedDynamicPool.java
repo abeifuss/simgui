@@ -43,18 +43,27 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 //in the mix (m >=n). If n = 1, this is the mix that has been used in the 
 //Mixmaster remailer system for years."
 // implemented as described in "Generalising Mixes" (Diaz)
-@Plugin(pluginKey = "TIMED_DYNAMIC_POOL")
+@Plugin(pluginKey = "TIMED_DYNAMIC_POOL", pluginName="Timed Dynamic Pool")
 public class TimedDynamicPool extends OutputStrategyImpl {
 
 	private SimplexTimedDynamicPool requestPool;
 	private SimplexTimedDynamicPool replyPool;
 	private static SecureRandom secureRandom = new SecureRandom();
 	
-	@IntSimulationProperty( name = "Send rate (ms)", key = "TIMED_DYNAMIC_POOL_SEND_INTERVAL_IN_MS" )
+	@IntSimulationProperty( name = "Send rate (ms)",
+			key = "TIMED_DYNAMIC_POOL_SEND_INTERVAL_IN_MS",
+			min = 0)
 	private int sendingRate;
-	@IntSimulationProperty( name = "Minimum messages in pool", key = "TIMED_DYNAMIC_POOL_MIN_MESSAGES_IN_POOL" )
+	
+	@IntSimulationProperty( name = "Minimum messages in pool (requests)",
+			key = "TIMED_DYNAMIC_POOL_MIN_MESSAGES_IN_POOL",
+			min = 0)
 	private int minMessages;
-	@DoubleSimulationProperty( name = "Fraction", key = "TIMED_DYNAMIC_POOL_FRACTION" )
+	
+	@DoubleSimulationProperty( name = "Fraction",
+			key = "TIMED_DYNAMIC_POOL_FRACTION",
+			min = 0,
+			max = 1)
 	private double fraction;
 	
 	public TimedDynamicPool(Mix mix, Simulator simulator) {

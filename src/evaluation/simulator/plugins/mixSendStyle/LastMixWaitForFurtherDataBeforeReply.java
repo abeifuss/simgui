@@ -28,13 +28,14 @@ import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.NetworkNode;
 import evaluation.simulator.plugins.clientSendStyle.ClientSendStyleEvent;
 
-@Plugin(pluginKey = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY")
+@Plugin(pluginKey = "WAIT_FOR_FURTHER_DATA_BEFORE_REPLY", pluginName = "Last Mix Wait For Further Data")
 public class LastMixWaitForFurtherDataBeforeReply extends MixSendStyleImpl
 		implements EventExecutor {
 
 	@IntSimulationProperty(
-			name = "Time to wait for further data from distant proxy (in ms)", 
-			key="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY"
+			name = "Time to wait for further data from distant proxy (ms)", 
+			key="TIME_TO_WAIT_FOR_DATA_FROM_DISTANT_PROXY",
+			min = 0
 	)
 	private final int timeToWaitForFurtherDataFromDistantProxy;
 	

@@ -46,7 +46,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // (blocks until every client has sent a message!)
 // will put out a reply batch every "replyRate" ms
 // (creates dummies if no data available)
-@Plugin(pluginKey = "BASIC_SYNCHRONOUS_BATCH")
+@Plugin(pluginKey = "BASIC_SYNCHRONOUS_BATCH", pluginName = "Basic Synchronous Batch")
 public class BasicSynchronousBatch extends OutputStrategyImpl implements
 		EventExecutor {
 
@@ -86,9 +86,9 @@ public class BasicSynchronousBatch extends OutputStrategyImpl implements
 	private SimplexSynchronousBatch replyBatch;
 	
 	@IntSimulationProperty(
-			name = "Reply interval (in ms)", 
+			name = "Reply interval (ms)", 
 			key = "BASIC_SYNCHRONOUS_REPLY_INTERVAL_IN_MS",
-			property_to_vary = true
+			min = 0
 	)
 	private int replyInterval;
 

@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(pluginKey = "WAIT_FOR_FURTHER_DATA")
+@Plugin(pluginKey = "WAIT_FOR_FURTHER_DATA", pluginName = "Wait For Further Data")
 public class ClientWaitForFurtherDataBeforeSend extends ClientSendStyleImpl
 		implements EventExecutor {
 
@@ -36,8 +36,9 @@ public class ClientWaitForFurtherDataBeforeSend extends ClientSendStyleImpl
 	private Event timeoutEvent;
 
 	@IntSimulationProperty(
-			name = "Time to wait for further data from user (in ms)", 
-			key = "TIME_TO_WAIT_FOR_FURTHER_DATA_FROM_USER")
+			name = "Time to wait for further data from user (ms)", 
+			key = "TIME_TO_WAIT_FOR_FURTHER_DATA_FROM_USER",
+			min = 0)
 	private final int timeToWaitForFurtherDataFromUser;
 
 	public ClientWaitForFurtherDataBeforeSend(AbstractClient owner,

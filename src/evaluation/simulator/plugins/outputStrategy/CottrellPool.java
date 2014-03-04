@@ -37,7 +37,7 @@ import evaluation.simulator.plugins.mixSendStyle.MixSendStyleImpl;
 // put new message in pool and randomly chose and put out one message 
 // see also: ThresholdPool.java (CottrellPool is a ThresholdPool with n=1)
 
-@Plugin(pluginKey = "COTTRELL_POOL")
+@Plugin(pluginKey = "COTTRELL_POOL", pluginName = "Cottrell Pool")
 public class CottrellPool extends OutputStrategyImpl {
 
 	private static SecureRandom secureRandom = new SecureRandom();
@@ -45,8 +45,9 @@ public class CottrellPool extends OutputStrategyImpl {
 	private SimplexCottrellPool replyPool;
 	
 	@IntSimulationProperty(
-		name = "Pool size",
-		key = "POOL_SIZE"
+		name = "Pool size (requests)",
+		key = "POOL_SIZE",
+		min = 1
 	)
 	private int poolSize;
 	

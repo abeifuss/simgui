@@ -31,16 +31,26 @@ import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;
 
-@Plugin(pluginKey = "TRACE_FILE")
+@Plugin(pluginKey = "TRACE_FILE", pluginName = "Tracefile")
 public class TraceFileModel extends TrafficSourceImplementation {
 
 	private TraceReplayClient[] clients;
 	
-	@StringSimulationProperty( name = "Path to trace", key = "PATH_TO_TRACE" )
+	@StringSimulationProperty(
+			name = "Path to trace file",
+			key = "PATH_TO_TRACE",
+			info = "Please provide a relative path")
 	private String pathToTrace;
-	@BoolSimulationProperty( name = "Limit client number", key = "LIMIT_CLIENT_NUMBER" )
+	
+	@BoolSimulationProperty(
+			name = "Limit client number",
+			key = "LIMIT_CLIENT_NUMBER")
 	private boolean limitClients;
-	@IntSimulationProperty( name = "Client limit", key = "CLIENT_LIMIT" )
+	
+	@IntSimulationProperty(
+			name = "Client limit",
+			key = "CLIENT_LIMIT",
+			min = 1)
 	private int limit;
 	
 	@Override

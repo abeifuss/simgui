@@ -35,7 +35,7 @@ import evaluation.simulator.core.networkComponent.NetworkNode;
 // This is an example of how to manually cap a plugin
 // by providing the pluginLayerKay. If the pluginLayer
 // is not present, the SimPropRegistry tries to find a superclass!
-@Plugin(pluginKey = "STOP_AND_GO", pluginLayerKey = "OUTPUT_STRATEGY")
+@Plugin(pluginKey = "STOP_AND_GO", pluginName="Stop And Go", pluginLayerKey = "OUTPUT_STRATEGY")
 public class StopAndGoMessage extends BasicMixMessage {
 
 	private long[] tsMin; // 0: first mix; 1: second mix...
@@ -49,17 +49,30 @@ public class StopAndGoMessage extends BasicMixMessage {
 	private int identifier;
 	private static int idCounter = 0;
 	
-	@FloatSimulationProperty ( name = "Security parameter mu", key = "SGMIX_SECURITY_PARAMETER_MU" )
+	@FloatSimulationProperty ( name = "Security parameter mu", 
+			key = "SGMIX_SECURITY_PARAMETER_MU")
 	private double securityParameterMu;
-	@IntSimulationProperty( name = "Minimum inter mix delay", key = "SGMIX_MIN_INTER_MIX_DELAY" )
+	@IntSimulationProperty( name = "Minimum inter mix delay (ms)", 
+			key = "SGMIX_MIN_INTER_MIX_DELAY",
+			min = 0)
 	private int minInterMixDelay;
-	@IntSimulationProperty( name = "Maximum inter mix delay", key = "SGMIX_MAX_INTER_MIX_DELAY" )
+	@IntSimulationProperty( name = "Maximum inter mix delay (ms)", 
+			key = "SGMIX_MAX_INTER_MIX_DELAY",
+			min = 0)
 	private int maxInterMixDelay;
-	@IntSimulationProperty( name = "Minimum client mix delay", key = "SGMIX_MIN_CLIENT_MIX_DELAY",value_requirements=SgMixMinClientMixDelayRequirement.class )
+	@IntSimulationProperty( name = "Minimum client mix delay (ms)", 
+			key = "SGMIX_MIN_CLIENT_MIX_DELAY",
+			value_requirements=SgMixMinClientMixDelayRequirement.class,
+			min = 0)
 	private int minClientMixDelay;
-	@IntSimulationProperty( name = "Maximum client mix delay", key = "SGMIX_MAX_CLIENT_MIX_DELAY",value_requirements=SgMixMaxClientMixDelayRequirement.class )
+	@IntSimulationProperty( name = "Maximum client mix delay (ms)", 
+			key = "SGMIX_MAX_CLIENT_MIX_DELAY",
+			value_requirements=SgMixMaxClientMixDelayRequirement.class,
+			min = 0)
 	private int maxClientMixDelay;
-	@IntSimulationProperty( name = "Maximum clock deviation", key = "SGMIX_MAX_CLOCK_DEVITION" )
+	@IntSimulationProperty( name = "Maximum clock deviation (ms)", 
+			key = "SGMIX_MAX_CLOCK_DEVITION",
+			min = 0)
 	private int maxClockDeviation;
 	
 	

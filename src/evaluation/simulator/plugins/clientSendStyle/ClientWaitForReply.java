@@ -28,7 +28,7 @@ import evaluation.simulator.core.message.NetworkMessage;
 import evaluation.simulator.core.message.TransportMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 
-@Plugin(pluginKey = "WAIT_FOR_REPLY")
+@Plugin(pluginKey = "WAIT_FOR_REPLY", pluginName = "Wait For Reply")
 public class ClientWaitForReply extends ClientSendStyleImpl {
 	
 	private boolean isFirstCall;

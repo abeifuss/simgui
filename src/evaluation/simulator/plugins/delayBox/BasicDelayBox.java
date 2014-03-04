@@ -25,7 +25,10 @@ import evaluation.simulator.pluginRegistry.DelayBox;
 @Plugin(pluginKey = "BASIC_DELAY_BOX", pluginName = "Basic delay" )
 public class BasicDelayBox extends DelayBoxImpl {
 
-	@IntSimulationProperty(	name = "Packet Size (byte)", key = "NETWORK_PACKET_PAYLOAD_SIZE", property_to_vary = true)
+	@IntSimulationProperty(	name = "Packet Size (byte)", 
+			key = "NETWORK_PACKET_PAYLOAD_SIZE", 
+			min = 0,
+			max = 9000) // Jumboframe Ethernet frame size
 	private int packetSize = new Integer(Simulator.settings.getProperty("NETWORK_PACKET_PAYLOAD_SIZE"));
 	
 	private class SimplexDelayBox {
