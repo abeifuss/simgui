@@ -23,14 +23,12 @@ import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.plugins.delayBox.BasicDelayBox;
 import evaluation.simulator.plugins.delayBox.DelayBoxImpl;
 import evaluation.simulator.plugins.delayBox.NoDelayDelayBox;
-import evaluation.simulator.plugins.delayBox.RndDelayBox;
 
 @Plugin(pluginKey = "BASIC_DELAY_BOX", pluginName = "Basic delay", pluginLayerKey="TYPE_OF_DELAY_BOX")
 public enum DelayBox {
 
 	NO_DELAY_BOX,
-	BASIC_DELAY_BOX,
-	RND_DELAY_BOX
+	BASIC_DELAY_BOX
 	;
 		
 	public static enum TypeOfNode {CLIENT, MIX, DISTANT_PROXY};
@@ -59,8 +57,6 @@ public enum DelayBox {
 		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
 		if (desiredImpl.equals("BASIC_DELAY_BOX"))
 			return new BasicDelayBox(bandwidthSend, bandwidthReceive, latency);
-		else if (desiredImpl.equals("RND_DELAY_BOX"))
-			return new RndDelayBox();
 		else if (desiredImpl.equals("NO_DELAY_BOX"))
 			return new NoDelayDelayBox();
 		else
@@ -74,8 +70,6 @@ public enum DelayBox {
 		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
 		if (desiredImpl.equals("NO_DELAY_BOX")) {
 			return new NoDelayDelayBox();
-		} else if (desiredImpl.equals("RND_DELAY_BOX")){
-			return new RndDelayBox();
 		} else if (desiredImpl.equals("BASIC_DELAY_BOX")) {
 //			int bandwidthSend;
 //			int bandwidthReceive;
@@ -126,12 +120,7 @@ public enum DelayBox {
 		
 		
 	public static DelayBoxImpl getInstance() {
-		String desiredImpl = Simulator.settings.getProperty("TYPE_OF_DELAY_BOX");
-		if (desiredImpl.equals("RND_DELAY_BOX")){
-			return new RndDelayBox();
-		} else {
-			return new NoDelayDelayBox();
-		}
+		return new NoDelayDelayBox();
 	}
 		
 }
