@@ -27,7 +27,7 @@ public class ValueComparator implements Comparator<String> {
 	 */
 	@Override
 	public int compare(String a, String b) {
-		if (this.base.get(a) <= this.base.get(b)) {
+		if (this.base.get(a) > this.base.get(b)) {
 			return 1;
 		} else {
 			return -1;
