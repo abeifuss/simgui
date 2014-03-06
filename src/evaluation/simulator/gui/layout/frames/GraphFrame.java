@@ -1,5 +1,6 @@
 package evaluation.simulator.gui.layout.frames;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -37,7 +38,8 @@ public class GraphFrame extends JFrame {
 		JSVGCanvas svgCanvas = new JSVGCanvas();
 		this.add(svgCanvas, gridBagConstraints);
 		svgCanvas.setURI(uri);
-		this.pack();
+		this.setSize( new Dimension( 640, 480) );
+//		this.pack();
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle(filename);
 		this.setVisible(true);

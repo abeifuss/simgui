@@ -123,6 +123,8 @@ public class SimulationConfigService {
 		this.simPropRegistry.setCurrentConfigFile(file.getAbsolutePath());
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
+		
+		SimConfigPanel.getInstance().foldAccordions();
 	}
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
@@ -148,7 +150,16 @@ public class SimulationConfigService {
 			
 			// Properties to vary
 			for (Entry<String, String> s : this.simPropRegistry.getPropertiesToVary().entrySet()) {
-				props.setProperty(s.getKey(), s.getValue());
+				// quickfix (TODO: find real problem)
+				logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().toString());
+				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
+					logger.log(Level.DEBUG, "A");
+					props.setProperty(s.getKey(), (s.getValue().trim()));
+				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
+					logger.log(Level.DEBUG, "B");
+					props.setProperty(s.getKey(), " " + (s.getValue().trim()));
+				}
+				props.setProperty(s.getKey(), s.getValue().trim());
 			}
 
 			// dynamic part
