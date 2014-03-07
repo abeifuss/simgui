@@ -31,6 +31,7 @@ public class ExportButtonAction implements ActionListener {
 
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.removeChoosableFileFilter(fileChooser.getChoosableFileFilters()[0]);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		fileChooser.addChoosableFileFilter(new PngSaveFilter());
 		fileChooser.addChoosableFileFilter(new EpsSaveFilter());
 
@@ -80,7 +81,7 @@ public class ExportButtonAction implements ActionListener {
 	private class PngSaveFilter extends FileFilter {
 		public boolean accept(File f) {
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 
 			String s = f.getName();
@@ -96,7 +97,7 @@ public class ExportButtonAction implements ActionListener {
 	private class EpsSaveFilter extends FileFilter {
 		public boolean accept(File f) {
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 
 			String s = f.getName();
