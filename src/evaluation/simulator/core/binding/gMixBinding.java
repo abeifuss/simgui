@@ -60,9 +60,19 @@ public class gMixBinding extends Thread {
 	public void run() {
 
 		try {
+			
+			ResultSet results = null;
+			
 			Simulator.reset();
-			Simulator gMixSim = new Simulator(this.params);
-			ResultSet results = gMixSim.results;
+			
+			try {
+				sleep(1);
+				Simulator gMixSim = new Simulator(this.params);
+				results = gMixSim.results;
+			} catch (InterruptedException ex) {
+				this.logger.log(Level.INFO, "Interrupted simulator");
+				return;
+			}
 			if (results != null) {
 				this.logger.log(Level.INFO, "Finished simulator with results");
 			}
