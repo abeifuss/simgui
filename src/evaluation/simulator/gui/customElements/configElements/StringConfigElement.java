@@ -115,6 +115,7 @@ public class StringConfigElement extends JPanel implements ActionListener, Obser
 		} else {
 			this.textfield = new JTextField();
 			this.textfield.addActionListener(this);
+			this.textfield.setText((String) property.getValue());
 			this.textfield.setToolTipText(property.getTooltip());
 			this.add(textfield, "growx, push, wmin 10, wrap");
 			this.setComponent(this.textfield);
