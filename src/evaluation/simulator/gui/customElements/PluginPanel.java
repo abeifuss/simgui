@@ -270,7 +270,6 @@ public class PluginPanel extends JScrollPane {
 				public void run() {
 					String pluginDisplayName = SimPropRegistry.getInstance().getPluginDisplayName(
 							activePlugins.get(pluginLevel));
-					System.err.println(pluginLevel + " -> " + pluginDisplayName);
 					PluginPanel.this.setPlugin(pluginLevel, pluginDisplayName);
 				}
 			});

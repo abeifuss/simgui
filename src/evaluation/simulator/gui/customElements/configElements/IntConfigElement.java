@@ -132,7 +132,6 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		if (event.getSource() == this.spinner) {
-			System.err.println("CHANGED EVENT");
 			simPropRegistry.setValue(this.property.getPropertyID(), this.spinner.getValue());
 		}
 		if (event.getSource() == this.slider) {
@@ -155,17 +154,14 @@ public class IntConfigElement extends JPanel implements ChangeListener, ActionLi
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (this.auto.isSelected()) {
-			System.err.println("CHANGED to AUTO");
 			this.unlimited.setEnabled(false);
 			this.component.setEnabled(false);
 			this.simPropRegistry.setAuto(this.property.getPropertyID(), true, Integer.class);
 		} else if (this.unlimited.isSelected()) {
-			System.err.println("CHANGED UNLIMITED");
 			this.auto.setEnabled(false);
 			this.component.setEnabled(false);
 			this.simPropRegistry.setUnlimited(this.property.getPropertyID(), true, Integer.class);
 		} else {
-			System.err.println("CHANGED UNDO");
 			this.unlimited.setEnabled(true);
 			this.auto.setEnabled(true);
 			this.component.setEnabled(true);

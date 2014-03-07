@@ -1,14 +1,19 @@
 package evaluation.simulator.gui.customElements.structure;
 
+import org.apache.log4j.Logger;
+import evaluation.simulator.gui.launcher.GuiLauncher;
+
 public class HelpTreeNode {
 	private String helpTreeNodeName;
 	private String helpTreeNodeURL;
+	
+	private static Logger logger = Logger.getLogger(GuiLauncher.class);
 
 	public HelpTreeNode(String string, String filename) {
 		setHelpTreeNodeName(string);
 		setHelpTreeNodeURL(filename);
 		if (getHelpTreeNodeURL() == null) {
-			System.err.println("Couldn't find file: " + filename);
+			logger.error("Couldn't find file: " + filename);
 		}
 	}
 

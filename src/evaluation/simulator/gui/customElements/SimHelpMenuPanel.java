@@ -123,7 +123,7 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		Object nodeInfo = node.getUserObject();
 		if (node.isLeaf()) {
 			HelpTreeNode helpTreeNode = (HelpTreeNode) nodeInfo;
-			System.err.println(helpTreeNode.getHelpTreeNodeName() + " " + helpTreeNode.getHelpTreeNodeURL());
+			logger.error(helpTreeNode.getHelpTreeNodeName() + " " + helpTreeNode.getHelpTreeNodeURL());
 			displayURL(helpTreeNode.getHelpTreeNodeURL());
 		}
 	}

@@ -155,7 +155,6 @@ public class IntProp extends SimProp {
 	 */
 	@Override
 	public void setValue(Object o) {
-		System.err.println("CHANGED VALUE IN INTPROP");
 		
 		int tmp = (int) (o);
 		if ((tmp <= this.getMaxValue()) && (tmp >= this.getMinValue())) {
