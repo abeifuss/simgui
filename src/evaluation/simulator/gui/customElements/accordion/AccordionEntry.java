@@ -66,7 +66,7 @@ public class AccordionEntry extends JPanel {
 		this.fresh = true;
 
 		this.setLayout(new BorderLayout(0, 0));
-		this.setBorder(new TitledBorder(null, this.localName, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		this.entryButton = new JButton(this.localName, new ImageIcon("etc/img/icons/green/arrow-144-24.png"));
 		this.entryButton.setForeground(Color.BLACK);
 		this.entryButton.setHorizontalAlignment(SwingConstants.LEFT);
