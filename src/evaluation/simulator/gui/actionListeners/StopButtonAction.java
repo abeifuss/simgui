@@ -12,10 +12,12 @@ import evaluation.simulator.gui.customElements.ConfigChooserPanel;
  */
 public class StopButtonAction implements ActionListener {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ConfigChooserPanel.getInstance();
-		ConfigChooserPanel.getCallSimulation().interrupt();
+//		ConfigChooserPanel.getCallSimulation().interrupt();
+		ConfigChooserPanel.getCallSimulation().stop();
 	}
 
 }
