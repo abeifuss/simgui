@@ -65,16 +65,16 @@ public class UserConfigService {
 
 	// Main Gui
 	private final static String MAINGUI_XPOS = "MAINGUI_XPOS";
-	private final static Integer MAINGUI_XPOS_DEFAULT = 100;
+	private final static Integer MAINGUI_XPOS_DEFAULT = 0;
 
 	private final static String MAINGUI_YPOS = "MAINGUI_YPOS";
-	private final static Integer MAINGUI_YPOS_DEFAULT = 100;
+	private final static Integer MAINGUI_YPOS_DEFAULT = 0;
 
 	private final static String MAINGUI_WIDTH = "MAINGUI_WIDTH";
-	private final static Integer MAINGUI_WIDTH_DEFAULT = 500;
+	private final static Integer MAINGUI_WIDTH_DEFAULT = 1024;
 
 	private final static String MAINGUI_HEIGHT = "MAINGUI_HEIGHT";
-	private final static Integer MAINGUI_HEIGHT_DEFAULT = 750;
+	private final static Integer MAINGUI_HEIGHT_DEFAULT = 768;
 
 	private final static String MAINGUI_HSPLIT_DEVIDER_LOCATION = "MAINGUI_HSPLIT_DEVIDER_LOCATION";
 	private final static Integer MAINGUI_HSPLIT_DEVIDER_LOCATION_DEFAULT = 200;
