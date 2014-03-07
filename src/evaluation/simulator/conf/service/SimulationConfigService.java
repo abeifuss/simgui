@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -124,7 +125,12 @@ public class SimulationConfigService {
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
 		
-		SimConfigPanel.getInstance().foldAccordions();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				SimConfigPanel.getInstance().foldAccordions();
+			}
+		});
 	}
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
