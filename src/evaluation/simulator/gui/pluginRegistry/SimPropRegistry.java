@@ -385,7 +385,7 @@ public class SimPropRegistry {
 						property = new BoolProp();
 						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+						property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -435,7 +435,7 @@ public class SimPropRegistry {
 						property = new IntProp();
 						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+						property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -494,7 +494,7 @@ public class SimPropRegistry {
 						property = new FloatProp();
 						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+						property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -552,7 +552,7 @@ public class SimPropRegistry {
 						property = new DoubleProp();
 						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+						property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -610,7 +610,7 @@ public class SimPropRegistry {
 						property = new StringProp();
 						property.setId(annotation.key());
 						property.setName(annotation.name());
-						property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+						property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 						property.setPluginLayerID(layerConfigName);
 						property.setPluginID(pluginConfigName);
 						property.setEnable_requirements(annotation.enable_requirements());
@@ -990,7 +990,7 @@ public class SimPropRegistry {
 							property.setPluginLayerID(plugInLayer);
 
 							property.setName(annotation.name());
-							property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
+							property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 							property.setInfo(annotation.info());
 							property.isPropertyToVary(annotation.property_to_vary());
 
