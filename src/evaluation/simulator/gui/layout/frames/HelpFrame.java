@@ -125,11 +125,6 @@ public class HelpFrame extends JFrame {
 		this.helpFrameWidth = UserConfigService.getHELPFRAME_WIDTH();
 		this.helpFrameHeight = UserConfigService.getHELPFRAME_HEIGHT();
 
-		System.out.println(this.helpFrameXPos);
-		System.out.println(this.helpFrameYPos);
-		System.out.println(this.helpFrameWidth);
-		System.out.println(this.helpFrameHeight);
-
 	}
 
 	/**

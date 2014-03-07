@@ -98,8 +98,6 @@ public class ConfigParser {
 			}
 		}
 
-		System.out.println(content.toString());
-		
 		return content.toString();
 
 	}

@@ -72,7 +72,6 @@ public class GuiLauncher {
 		try {
 			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Exception e) {
-			System.out.println("failed to set look and feel");
 			e.printStackTrace();
 		}
 

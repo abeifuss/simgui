@@ -19,7 +19,6 @@ public class SimulationEndSimulationTimeEndRequirement extends Requirement {
 		
 		// create warnings if not existent
 		if( simProp.getWarnings() == null ){
-			System.err.println("NEW WARNINGS");
 			simProp.setWarnings( new HashSet<String>() );
 		}
 		
@@ -28,14 +27,12 @@ public class SimulationEndSimulationTimeEndRequirement extends Requirement {
 			warnings.remove(msg);
 			simProp.setWarnings(warnings);
 			simProp.setEnable(true);
-			System.out.println("Enabled Simulation Time");
 			return true;
 		} else {
 			Set<String> warnings = simProp.getWarnings();
 			warnings.add(msg);
 			simProp.setWarnings(warnings);
 			simProp.setEnable(false);
-			System.out.println("Disabled Simulation Time");
 			return false;
 		}
 	}

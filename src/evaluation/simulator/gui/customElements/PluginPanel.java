@@ -135,8 +135,6 @@ public class PluginPanel extends JScrollPane {
 		Map<String, Boolean> isStaticLayerMap = SimPropRegistry.getInstance().getIsStaticLayerMap();
 		sortedStaticMap.putAll(staticMap);
 
-		System.out.println("results: " + sortedLayerMap);
-
 		String[] levelStrings[] = new String[sortedLayerMap.size()][];
 		AccordionEntry accordionElement;
 

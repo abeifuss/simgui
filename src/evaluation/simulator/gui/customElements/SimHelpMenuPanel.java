@@ -93,7 +93,6 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 				if (propertyMap.get(prop).getPluginID().equals("")
 						&& (propertyMap.get(prop).isSuperclass() || propertyMap.get(prop).isGlobal())
 						&& propertyMap.get(prop).getPluginLayerID().equals(layerMapDisplayNameToConfigName.get(layer))) {
-					System.out.println(path + prop + ".html");
 					node = new DefaultMutableTreeNode(new HelpTreeNode(prop, path + prop + ".html"));
 
 					category.add(node);

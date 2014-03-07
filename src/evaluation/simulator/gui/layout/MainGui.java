@@ -241,7 +241,6 @@ public class MainGui extends JFrame {
 	 * Close the GUI
 	 */
 	public void onClose() {
-		System.out.println("Closing...");
 		try {
 			IOActions.cleanOutputFolder();
 		} catch (IOException e1) {

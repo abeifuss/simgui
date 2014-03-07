@@ -53,7 +53,6 @@ public class SimHelpContentPanel extends JPanel {
 			this.add(new FSScrollPane(this._htmlContent));
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("Some problem has occured" + ex.getMessage());
 		}
 
 	}

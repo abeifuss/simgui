@@ -1355,19 +1355,14 @@ public class SimPropRegistry {
 		logger.log(Level.DEBUG, "Set " + key + " to " + arg0);
 
 		if (arg0.getClass() == Boolean.class) {
-			//System.out.println("Boolean");
 			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == Float.class) {
-			//System.out.println("Float");
 			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == Double.class) {
-			//System.out.println("Double");
 			this.getProperties().get(key).setValue(arg0);
 		}else if (arg0.getClass() == Integer.class) {
-			//System.out.println("Integer");
 			this.getProperties().get(key).setValue(arg0);
 		} else if (arg0.getClass() == String.class) {
-			//System.out.println("String");
 			this.getProperties().get(key).setValue(arg0);
 		} else {
 
