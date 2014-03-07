@@ -85,8 +85,8 @@ public class gMixBinding extends Thread {
 					gMixBinding.this.experimentsPerformed++;
 				}
 
-				private void setMaximizeButton(JTabbedPane resultsTabs) {
-					int tabIndex = resultsTabs.getSelectedIndex();
+				private void setMaximizeButton(final JTabbedPane resultsTabs) {
+					final int tabIndex = resultsTabs.getSelectedIndex();
 					JPanel tabPanel = new JPanel();
 					JLabel tabLabel = new JLabel("Experiment " + gMixBinding.getInstance().experimentsPerformed);
 					tabPanel.add(tabLabel);
@@ -100,10 +100,22 @@ public class gMixBinding extends Thread {
 
 						}
 					});
+					JButton closeButton = new JButton("x");
+					closeButton.setOpaque(false);
+					closeButton.setFocusable(false);
+					closeButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+					        	resultsTabs.remove(tabIndex);
+						}
+					});
 					tabPanel.add(maximizeButton);
+					tabPanel.add(closeButton);
 					tabPanel.setOpaque(false);
 					resultsTabs.setTabComponentAt(tabIndex, tabPanel);
 				}
+				
 			});
 
 			// TODO: The tab has to be refreshed!!!

@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -123,6 +124,13 @@ public class SimulationConfigService {
 		this.simPropRegistry.setCurrentConfigFile(file.getAbsolutePath());
 		DependencyChecker.checkAll(this.simPropRegistry);
 		SimConfigPanel.setStatusofSaveButton(!DependencyChecker.errorsInConfig);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				SimConfigPanel.getInstance().foldAccordions();
+			}
+		});
 	}
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
@@ -148,7 +156,15 @@ public class SimulationConfigService {
 			
 			// Properties to vary
 			for (Entry<String, String> s : this.simPropRegistry.getPropertiesToVary().entrySet()) {
-				props.setProperty(s.getKey(), s.getValue());
+				// quickfix (TODO: find real problem)
+				logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().toString());
+				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
+					props.setProperty(s.getKey().trim(), " " + s.getValue());
+				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
+					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " 1,2,3");
+				}else {
+					props.setProperty(s.getKey(), s.getValue());
+				}
 			}
 
 			// dynamic part

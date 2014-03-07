@@ -57,7 +57,7 @@ public class NMixCascadeTopology extends TopologyScript {
 			boolean isLast = (i == numberOfMixes);
 			Mix mix = new Mix("Mix"+i, Simulator.getSimulator(), isFirst, isLast);
 			mix.setDelayBox(DelayBox.getInstance(TypeOfNode.MIX));
-			mixes.put("Mix:Mix1", mix);
+			mixes.put("Mix:Mix"+i, mix);
 		}
 		// connect mixes:
 		for (int i=1; i<=numberOfMixes; i++) {
