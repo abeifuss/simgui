@@ -153,13 +153,12 @@ public class SimulationConfigService {
 				// quickfix (TODO: find real problem)
 				logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().toString());
 				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
-					logger.log(Level.DEBUG, "A");
-					props.setProperty(s.getKey(), (s.getValue().trim()));
+					props.setProperty(s.getKey().trim(), " " + s.getValue());
 				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
-					logger.log(Level.DEBUG, "B");
-					props.setProperty(s.getKey(), " " + (s.getValue().trim()));
+					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " 1,2,3");
+				}else {
+					props.setProperty(s.getKey(), s.getValue());
 				}
-				props.setProperty(s.getKey(), s.getValue().trim());
 			}
 
 			// dynamic part
