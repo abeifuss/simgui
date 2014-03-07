@@ -161,7 +161,7 @@ public class SimulationConfigService {
 				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
 					props.setProperty(s.getKey().trim(), " " + s.getValue());
 				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
-					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " 1,2,3");
+					props.setProperty(s.getKey().trim(), " " + s.getValue());
 				}else {
 					props.setProperty(s.getKey(), s.getValue());
 				}
