@@ -142,7 +142,7 @@ public class SimulationConfigService {
 		PropertiesConfiguration props;
 		try {
 
-			props = new PropertiesConfiguration("etc/templates/experiment.cfg");
+			props = new PropertiesConfiguration("etc/conf/experiment_template.cfg");
 
 			props.setProperty("EDF_VERSION", 1);
 
@@ -158,13 +158,13 @@ public class SimulationConfigService {
 			for (Entry<String, String> s : this.simPropRegistry.getPropertiesToVary().entrySet()) {
 				// quickfix (TODO: find real problem)
 				logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().toString());
-				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
-					props.setProperty(s.getKey().trim(), " " + s.getValue());
-				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
-					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " " + s.getValue());
-				}else {
+//				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
+//					props.setProperty(s.getKey().trim(), " " + s.getValue());
+//				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
+//					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " 1,2,3");
+//				}else {
 					props.setProperty(s.getKey(), s.getValue());
-				}
+//				}
 			}
 
 			// dynamic part
