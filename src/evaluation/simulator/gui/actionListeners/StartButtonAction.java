@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.gui.customElements.ProgressWorker;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
+import evaluation.simulator.gui.service.ProgressRegistry;
 
 /**
  * implements the ActionListener for starting the Simulator with the previosuly
@@ -39,7 +40,11 @@ public class StartButtonAction implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Please select at least one config!");
 		} else {
 			this.logger.log(Level.INFO, "Start simulator");
-			new ProgressWorker().execute();
+			
+			ProgressWorker progress = new ProgressWorker();
+			ProgressRegistry.getInstance().setProgressWorker(progress);
+			progress.enable();
+			progress.execute();
 		}
 	}
 

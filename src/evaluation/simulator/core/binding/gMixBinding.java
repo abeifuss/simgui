@@ -35,6 +35,9 @@ public class gMixBinding extends Thread {
 	private String resultsFileName;
 	Statistics stats;
 	private int experimentsPerformed = 0;
+	Simulator gMixSim;
+	
+	private static boolean stop = false;
 
 	/**
 	 * Default constructor
@@ -50,6 +53,29 @@ public class gMixBinding extends Thread {
 	public void setParams(String[] configFile) {
 		this.params = new CommandLineParameters(configFile);
 	}
+	
+	
+	/**
+	 * Requests the thread to stop working
+	 */
+	public void requestStop() {
+		stop = true;
+		
+		if (gMixSim != null){
+			gMixSim.requestStop();
+		}
+	}
+	
+	/**
+	 * Enables a threads
+	 */
+	public void enable() {
+		stop = false;
+	}
+	
+	public static boolean shouldStop(){
+		return stop;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -58,8 +84,13 @@ public class gMixBinding extends Thread {
 	 */
 	@Override
 	public void run() {
-
+		
 		try {
+			
+//			if (stop){
+//				this.logger.log(Level.INFO, "Interrupted simulator");
+//				return;
+//			}
 			
 			ResultSet results = null;
 			
@@ -67,12 +98,17 @@ public class gMixBinding extends Thread {
 			
 			try {
 				sleep(1);
-				Simulator gMixSim = new Simulator(this.params);
+				gMixSim = new Simulator(this.params);
+				gMixSim.setBinging(this);
 				results = gMixSim.results;
 			} catch (InterruptedException ex) {
-				this.logger.log(Level.INFO, "Interrupted simulator");
+				ex.printStackTrace();
+			}
+			
+			if (stop){
 				return;
 			}
+			
 			if (results != null) {
 				this.logger.log(Level.INFO, "Finished simulator with results");
 			}

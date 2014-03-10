@@ -6,6 +6,8 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import org.apache.log4j.Logger;
+
 import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.gui.layout.SimulationTab;
 import evaluation.simulator.gui.service.ConfigParser;
@@ -19,7 +21,11 @@ import evaluation.simulator.gui.service.ConfigParser;
  */
 @SuppressWarnings("rawtypes")
 public class ProgressWorker extends SwingWorker {
+	
+	private boolean stop = false;
+	
 	protected String doInBackground() {
+		
 		ConfigChooserPanel.getProgressBar().setVisible(true);
 		ConfigChooserPanel.getProgressBar().setIndeterminate(true);
 
@@ -31,10 +37,16 @@ public class ProgressWorker extends SwingWorker {
 
 		int i = 0;
 		for (File file : ConfigChooserPanel.getInstance().getConfigList().getSelectedValuesList()) {
+			
+			if (stop){
+				return null;
+			}
+			
 			params[i][0] = configParser.cleanupConfigurationForSimulator(file);
 
 			ConfigChooserPanel.setCallSimulation(gMixBinding.getInstance());
 			ConfigChooserPanel.getCallSimulation().setParams(params[i]);
+			ConfigChooserPanel.getCallSimulation().enable();
 			ConfigChooserPanel.getCallSimulation().run();
 			final int j = i;
 
@@ -51,5 +63,13 @@ public class ProgressWorker extends SwingWorker {
 
 	protected void done() {
 		ConfigChooserPanel.getProgressBar().setVisible(false);
+	}
+	
+	public void requestStop(){
+		stop = true;
+	}
+	
+	public void enable(){
+		stop = false;
 	}
 }

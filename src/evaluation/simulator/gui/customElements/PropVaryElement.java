@@ -1,7 +1,5 @@
 package evaluation.simulator.gui.customElements;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -9,8 +7,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -23,8 +19,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.LogLevel;
-
 import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.gui.customElements.structure.HelpPropValues;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -33,9 +27,10 @@ import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
  * @author alex
  *
  */
+@SuppressWarnings("serial")
 public class PropVaryElement extends JPanel {
 
-	private static Logger logger = Logger.getLogger(PluginPanel.class);
+	private static Logger logger = Logger.getLogger(PropVaryElement.class);
 
 	private JComboBox<String> cBox[];
 	private JTextField propElement[];

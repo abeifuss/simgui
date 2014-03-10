@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.annotations.property.BoolSimulationProperty;
@@ -29,6 +30,7 @@ import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.annotations.property.requirements.SimulationEndRealTimeEndRequirement;
 import evaluation.simulator.core.ExperimentConfig;
+import evaluation.simulator.core.binding.gMixBinding;
 import evaluation.simulator.core.event.Event;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.DistantProxy;
@@ -60,6 +62,7 @@ public class Simulator extends GMixTool implements Identifiable {
 
 	private final int numericIdentifier;
 	public static Settings settings;
+	gMixBinding gmixbind = null;
 	
 	
 	@BoolSimulationProperty( name = "Debug output",
@@ -82,6 +85,8 @@ public class Simulator extends GMixTool implements Identifiable {
 	//private static XMLResource generalConfig;
 	private volatile boolean stopSimulation = false;
 	private int voteStopCounter = 0;
+	
+	private boolean stop = false;
 	
 	@IntSimulationProperty( name = "Recording start (ms)",
 			key = "START_RECORDING_STATISTICS_AT",
@@ -128,6 +133,7 @@ public class Simulator extends GMixTool implements Identifiable {
 	}
 
 	public Simulator(CommandLineParameters params) {
+		stop = false;
 		Simulator.commandLineParameters = params;
 		now = 0;
 		this.numericIdentifier = IdGenerator.getId();
@@ -214,6 +220,11 @@ public class Simulator extends GMixTool implements Identifiable {
 		Event event;
 		this.trafficSource.startSending();
 		while (true) {
+			
+			if (gMixBinding.shouldStop()){
+				return;
+			}
+			
 			event = this.eventQueue.poll(); // get next event
 			if ((event == null) || this.stopSimulation) { // stop simulation
 				if (event == null) {
@@ -479,5 +490,13 @@ public class Simulator extends GMixTool implements Identifiable {
 	 */
 	public static void main(String[] args) {
 		new Simulator(new CommandLineParameters(args));
+	}
+
+	public void requestStop() {
+		stop = true;
+	}
+
+	public void setBinging(gMixBinding gMixBinding) {
+		gmixbind = gMixBinding;
 	}
 }
