@@ -7,20 +7,17 @@ import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.conf.service.SimulationConfigService;
-
 /**
  * This class represents an integer simprop
- *  
+ * 
  * @author alex
- *
+ * 
  */
 public class IntProp extends SimProp {
-	
+
 	private static Logger logger = Logger.getLogger(IntProp.class);
 
 	private int maxValue;
@@ -31,94 +28,90 @@ public class IntProp extends SimProp {
 	private boolean enableAuto;
 	private boolean unlimited;
 	private boolean enableUnlimited;
-	
+
 	private List<Observer> Observers = new LinkedList<Observer>();
-	
+
 	private String guiElement;
-	
-	private int stepSize; 
-	
+
+	private int stepSize;
+
 	/**
-	 * @return
-	 * 		status of the auto checkbox
+	 * @return status of the auto checkbox
 	 */
-	public boolean getAuto(){
+	public boolean getAuto() {
 		return this.auto;
 	}
-	
+
 	/**
 	 * @param auto
-	 * 		status of the auto checkbox
+	 *            status of the auto checkbox
 	 */
-	public void setAuto( boolean auto ){
+	public void setAuto(boolean auto) {
 		this.auto = auto;
 	}
-	
+
 	/**
-	 * @return
-	 * 		visibility of the auto checkbox
+	 * @return visibility of the auto checkbox
 	 */
-	public boolean getEnableAuto(){
+	public boolean getEnableAuto() {
 		return this.enableAuto;
 	}
-	
+
 	/**
 	 * @param auto
-	 * 		visibility of the auto checkbox
+	 *            visibility of the auto checkbox
 	 */
-	public void setEnableAuto( boolean auto ){
+	public void setEnableAuto(boolean auto) {
 		this.enableAuto = auto;
 	}
-	
+
 	/**
-	 * @return
-	 * 		status of the unlimited checkbox
+	 * @return status of the unlimited checkbox
 	 */
-	public boolean getUnlimited(){
+	public boolean getUnlimited() {
 		return this.unlimited;
 	}
-	
+
 	/**
 	 * @param unlimited
-	 * 		status of the unlimited checkbox
+	 *            status of the unlimited checkbox
 	 */
-	public void setUnlimited( boolean unlimited ){
+	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
 	}
-	
+
 	/**
-	 * @return
-	 * 		visibility of the unlimited checkbox
+	 * @return visibility of the unlimited checkbox
 	 */
-	public boolean getEnableUnlimited(){
+	public boolean getEnableUnlimited() {
 		return this.enableUnlimited;
 	}
-	
+
 	/**
 	 * @param unlimited
-	 * 		visibility of the unlimited checkbox
+	 *            visibility of the unlimited checkbox
 	 */
-	public void setEnableUnlimited( boolean unlimited ){
+	public void setEnableUnlimited(boolean unlimited) {
 		this.enableUnlimited = unlimited;
 	}
 
 	/**
-	 * @return
-	 * 		maximum value
+	 * @return maximum value
 	 */
 	public int getMaxValue() {
 		return this.maxValue;
 	}
 
 	/**
-	 * @return
-	 * 		minimum value
+	 * @return minimum value
 	 */
 	public int getMinValue() {
 		return this.minValue;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#getValue()
 	 */
 	@Override
@@ -126,7 +119,9 @@ public class IntProp extends SimProp {
 		return this.value;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#getValueType()
 	 */
 	@Override
@@ -136,7 +131,7 @@ public class IntProp extends SimProp {
 
 	/**
 	 * @param maxValue
-	 * 		maximum value
+	 *            maximum value
 	 */
 	public void setMaxValue(int maxValue) {
 		this.maxValue = maxValue;
@@ -144,18 +139,22 @@ public class IntProp extends SimProp {
 
 	/**
 	 * @param minValue
-	 * 		minimum value
+	 *            minimum value
 	 */
 	public void setMinValue(int minValue) {
 		this.minValue = minValue;
 	}
 
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#setValue(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#setValue(java.lang.
+	 * Object)
 	 */
 	@Override
 	public void setValue(Object o) {
-		
+
 		int tmp = (int) (o);
 		if ((tmp <= this.getMaxValue()) && (tmp >= this.getMinValue())) {
 			this.value = tmp;
@@ -163,12 +162,15 @@ public class IntProp extends SimProp {
 			return;
 		}
 
-		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(int) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
-		JOptionPane.showMessageDialog(null, "This value is not in range.",
-				"Boundary error", JOptionPane.ERROR_MESSAGE);
+		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(int) is not in ("
+				+ this.getMinValue() + ", " + this.getMaxValue() + ")");
+		JOptionPane.showMessageDialog(null, "The value for " + super.getName() + " is not in range.", "Boundary error",
+				JOptionPane.ERROR_MESSAGE);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#toString()
 	 */
 	@Override
@@ -177,8 +179,7 @@ public class IntProp extends SimProp {
 	}
 
 	/**
-	 * @return
-	 * 		step size for the spinner element (gui)
+	 * @return step size for the spinner element (gui)
 	 */
 	public int getStepSize() {
 		return stepSize;
@@ -186,15 +187,14 @@ public class IntProp extends SimProp {
 
 	/**
 	 * @param stepSize
-	 * 		step size for the spinner element (gui)
+	 *            step size for the spinner element (gui)
 	 */
 	public void setStepSize(int stepSize) {
 		this.stepSize = stepSize;
 	}
 
 	/**
-	 * @return
-	 * 		gui element identifying string ("spinner" or "slider")
+	 * @return gui element identifying string ("spinner" or "slider")
 	 */
 	public String getGuiElement() {
 		return guiElement;
@@ -202,39 +202,49 @@ public class IntProp extends SimProp {
 
 	/**
 	 * @param guiElement
-	 * 	 	gui element identifying string ("spinner" or "slider")
+	 *            gui element identifying string ("spinner" or "slider")
 	 */
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
 	}
-	
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#register(java.util.Observer)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#register(java.util.
+	 * Observer)
 	 */
 	@Override
-	public void register(Observer observer){
-//		System.err.println("REGISTER INTEGER OBSERVER");
+	public void register(Observer observer) {
+		// System.err.println("REGISTER INTEGER OBSERVER");
 		Observers.add(observer);
 	}
-	
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#unregister(java.util.Observer)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#unregister(java.util
+	 * .Observer)
 	 */
 	@Override
-	public void unregister(Observer observer){
-//		System.err.println("UNREGISTER INTEGER OBSERVER");
+	public void unregister(Observer observer) {
+		// System.err.println("UNREGISTER INTEGER OBSERVER");
 		Observers.remove(observer);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#changed()
 	 */
 	@Override
 	public void changed() {
-//		System.err.println("CHANGED");
-		for ( Observer observer : Observers ) {
+		// System.err.println("CHANGED");
+		for (Observer observer : Observers) {
 			observer.update((Observable) this, (Object) this.enabled);
-		} 
+		}
 	}
 
 }

@@ -7,17 +7,14 @@ import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import evaluation.simulator.conf.service.SimulationConfigService;
 
 /**
  * This class represents a float simprop
  * 
  * @author alex
- *
+ * 
  */
 public class FloatProp extends SimProp {
 	private static Logger logger = Logger.getLogger(FloatProp.class);
@@ -25,100 +22,95 @@ public class FloatProp extends SimProp {
 	private float maxValue;
 	private float minValue;
 	private float value;
-	
+
 	private boolean auto;
 	private boolean enableAuto;
 	private boolean unlimited;
 	private boolean enableUnlimited;
-	
+
 	private String guiElement;
-	
-	private float stepSize; 
-	
+
+	private float stepSize;
+
 	private List<Observer> Observers = new LinkedList<Observer>();
-	
-	
+
 	/**
-	 * @return
-	 * 		status of auto checkbox
+	 * @return status of auto checkbox
 	 */
-	public boolean getAuto(){
+	public boolean getAuto() {
 		return this.auto;
 	}
-	
+
 	/**
 	 * @param auto
-	 * 		status of auto checkbox
+	 *            status of auto checkbox
 	 */
-	public void setAuto( boolean auto ){
+	public void setAuto(boolean auto) {
 		this.auto = auto;
 	}
-	
+
 	/**
-	 * @return
-	 * 		visibility of auto checkbox
+	 * @return visibility of auto checkbox
 	 */
-	public boolean getEnableAuto(){
+	public boolean getEnableAuto() {
 		return this.enableAuto;
 	}
-	
+
 	/**
 	 * @param auto
-	 * 		visibility of the auto checkbox
+	 *            visibility of the auto checkbox
 	 */
-	public void setEnableAuto( boolean auto ){
+	public void setEnableAuto(boolean auto) {
 		this.enableAuto = auto;
 	}
-	
+
 	/**
-	 * @return
-	 * 		status of the unlimited checkbox
+	 * @return status of the unlimited checkbox
 	 */
-	public boolean getUnlimited(){
+	public boolean getUnlimited() {
 		return this.unlimited;
 	}
-	
+
 	/**
 	 * @param unlimited
-	 * 		status of the unlimited checkbox
+	 *            status of the unlimited checkbox
 	 */
-	public void setUnlimited( boolean unlimited ){
+	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
 	}
-	
+
 	/**
-	 * @return
-	 * 		visibility of the unlimited checkbox
+	 * @return visibility of the unlimited checkbox
 	 */
-	public boolean getEnableUnlimited(){
+	public boolean getEnableUnlimited() {
 		return this.enableUnlimited;
 	}
-	
+
 	/**
 	 * @param unlimited
-	 * 		visibility of the unlimited checkbox
+	 *            visibility of the unlimited checkbox
 	 */
-	public void setEnableUnlimited( boolean unlimited ){
+	public void setEnableUnlimited(boolean unlimited) {
 		this.enableUnlimited = unlimited;
 	}
 
 	/**
-	 * @return
-	 * 		maximum value
+	 * @return maximum value
 	 */
 	public float getMaxValue() {
 		return this.maxValue;
 	}
 
 	/**
-	 * @return
-	 * 		maximum value
+	 * @return maximum value
 	 */
 	public float getMinValue() {
 		return this.minValue;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#getValue()
 	 */
 	@Override
@@ -126,7 +118,9 @@ public class FloatProp extends SimProp {
 		return this.value;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#getValueType()
 	 */
 	@Override
@@ -136,7 +130,7 @@ public class FloatProp extends SimProp {
 
 	/**
 	 * @param maxValue
-	 * 		maximum value
+	 *            maximum value
 	 */
 	public void setMaxValue(float maxValue) {
 		this.maxValue = maxValue;
@@ -144,14 +138,18 @@ public class FloatProp extends SimProp {
 
 	/**
 	 * @param minValue
-	 * 		minimum value
+	 *            minimum value
 	 */
 	public void setMinValue(float minValue) {
 		this.minValue = minValue;
 	}
 
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#setValue(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#setValue(java.lang.
+	 * Object)
 	 */
 	@Override
 	public void setValue(Object o) {
@@ -170,12 +168,15 @@ public class FloatProp extends SimProp {
 			return;
 		}
 
-		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(float) is not in (" + this.getMinValue() +", "+ this.getMaxValue() + ")");
-		JOptionPane.showMessageDialog(null, "This value is not in range.",
-				"Boundary error", JOptionPane.ERROR_MESSAGE);
+		logger.log(Level.ERROR, "For " + super.getPropertyID() + " Value not in rage! " + tmp + "(float) is not in ("
+				+ this.getMinValue() + ", " + this.getMaxValue() + ")");
+		JOptionPane.showMessageDialog(null, "The value for " + super.getName() + " is not in range.", "Boundary error",
+				JOptionPane.ERROR_MESSAGE);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#toString()
 	 */
 	@Override
@@ -184,8 +185,7 @@ public class FloatProp extends SimProp {
 	}
 
 	/**
-	 * @return
-	 * 		the stepsize for the spinner gui element
+	 * @return the stepsize for the spinner gui element
 	 */
 	public float getStepSize() {
 		return stepSize;
@@ -193,15 +193,14 @@ public class FloatProp extends SimProp {
 
 	/**
 	 * @param stepSize
-	 * 		the stepsize for the spinner gui element
+	 *            the stepsize for the spinner gui element
 	 */
 	public void setStepSize(float stepSize) {
 		this.stepSize = stepSize;
 	}
 
 	/**
-	 * @return
-	 * 		gui element identifying string ("spinner" or "slider")
+	 * @return gui element identifying string ("spinner" or "slider")
 	 */
 	public String getGuiElement() {
 		return guiElement;
@@ -209,39 +208,49 @@ public class FloatProp extends SimProp {
 
 	/**
 	 * @param guiElement
-	 * 		gui element identifying string ("spinner" or "slider")
+	 *            gui element identifying string ("spinner" or "slider")
 	 */
 	public void setGuiElement(String guiElement) {
 		this.guiElement = guiElement;
 	}
 
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#register(java.util.Observer)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#register(java.util.
+	 * Observer)
 	 */
 	@Override
-	public void register(Observer observer){
-//		System.err.println("REGISTER FLOAT OBSERVER");
+	public void register(Observer observer) {
+		// System.err.println("REGISTER FLOAT OBSERVER");
 		Observers.add(observer);
 	}
-	
-	/* (non-Javadoc)
-	 * @see evaluation.simulator.annotations.property.SimProp#unregister(java.util.Observer)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * evaluation.simulator.annotations.property.SimProp#unregister(java.util
+	 * .Observer)
 	 */
 	@Override
-	public void unregister(Observer observer){
-//		System.err.println("UNREGISTER FLOAT OBSERVER");
+	public void unregister(Observer observer) {
+		// System.err.println("UNREGISTER FLOAT OBSERVER");
 		Observers.remove(observer);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see evaluation.simulator.annotations.property.SimProp#changed()
 	 */
 	@Override
 	public void changed() {
-//		System.err.println("CHANGED FLOAT");
-		for ( Observer observer : Observers ) {
+		// System.err.println("CHANGED FLOAT");
+		for (Observer observer : Observers) {
 			observer.update((Observable) this, (Object) this.enabled);
-		} 
+		}
 	}
 
 }
