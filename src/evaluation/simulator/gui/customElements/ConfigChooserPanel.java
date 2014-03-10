@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -218,11 +219,18 @@ public class ConfigChooserPanel extends JPanel {
 					JMenuItem item = new JMenuItem("Load into config tool");
 					item.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							File file = getConfigList().getModel().getElementAt(hoverIndex);
-							SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-							SimulationConfigService simulationConfigService = new SimulationConfigService(
-									simPropRegistry);
-							simulationConfigService.loadConfig(file);
+							getLocale();
+							JOptionPane.setDefaultLocale(Locale.ENGLISH);
+							int reply = JOptionPane.showConfirmDialog(GuiService.getInstance().getMainGui(),
+									"Do you want to overwrite your changes?", "Overwrite Changes",
+									JOptionPane.YES_NO_OPTION);
+							if (reply == JOptionPane.YES_OPTION) {
+								File file = getConfigList().getModel().getElementAt(hoverIndex);
+								SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+								SimulationConfigService simulationConfigService = new SimulationConfigService(
+										simPropRegistry);
+								simulationConfigService.loadConfig(file);
+							}
 						}
 					});
 					JMenuItem addItem = new JMenuItem("Add to selection");
