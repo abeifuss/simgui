@@ -34,9 +34,9 @@ public class gMixBinding extends Thread {
 	private CommandLineParameters params;
 	private String resultsFileName;
 	Statistics stats;
-	private int experimentsPerformed = 0;
+	private static int experimentsPerformed = 0;
 	Simulator gMixSim;
-	
+
 	private static boolean stop = false;
 
 	/**
@@ -53,27 +53,26 @@ public class gMixBinding extends Thread {
 	public void setParams(String[] configFile) {
 		this.params = new CommandLineParameters(configFile);
 	}
-	
-	
+
 	/**
 	 * Requests the thread to stop working
 	 */
 	public void requestStop() {
 		stop = true;
-		
-		if (gMixSim != null){
+
+		if (gMixSim != null) {
 			gMixSim.requestStop();
 		}
 	}
-	
+
 	/**
 	 * Enables a threads
 	 */
 	public void enable() {
 		stop = false;
 	}
-	
-	public static boolean shouldStop(){
+
+	public static boolean shouldStop() {
 		return stop;
 	}
 
@@ -84,91 +83,77 @@ public class gMixBinding extends Thread {
 	 */
 	@Override
 	public void run() {
-		
+
+		ResultSet results = null;
+
+		Simulator.reset();
+
 		try {
-			
-//			if (stop){
-//				this.logger.log(Level.INFO, "Interrupted simulator");
-//				return;
-//			}
-			
-			ResultSet results = null;
-			
-			Simulator.reset();
-			
-			try {
-				sleep(1);
-				gMixSim = new Simulator(this.params);
-				gMixSim.setBinging(this);
-				results = gMixSim.results;
-			} catch (InterruptedException ex) {
-				ex.printStackTrace();
-			}
-			
-			if (stop){
-				return;
-			}
-			
-			if (results != null) {
-				this.logger.log(Level.INFO, "Finished simulator with results");
-			}
-
-			// for (PlotType plotType:results.getDesiredPlotTypes()) {
-			// plotType.plot(results);
-			// }
-
-			final JPanel resultPlot = ResultPanelFactory.getGnuplotResultPanel(this.getGnuplotConsoleOutputFileName());
-
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					JTabbedPane resultsTabs = SimulationTab.getInstance().getResultsPanel();
-					resultsTabs.addTab("Experiment " + gMixBinding.this.experimentsPerformed, resultPlot);
-					resultsTabs.setSelectedComponent(resultPlot);
-					setMaximizeButton(resultsTabs);
-					resultPlot.updateUI();
-					resultPlot.repaint();
-					gMixBinding.this.experimentsPerformed++;
-				}
-
-				private void setMaximizeButton(final JTabbedPane resultsTabs) {
-					final int tabIndex = resultsTabs.getSelectedIndex();
-					JPanel tabPanel = new JPanel();
-					JLabel tabLabel = new JLabel("Experiment " + gMixBinding.getInstance().experimentsPerformed);
-					tabPanel.add(tabLabel);
-					final GnuplotPanel tmpGnuplotPanel = (GnuplotPanel) resultPlot;
-					JButton maximizeButton = new JButton(new ImageIcon("etc/img/icons/maximize.png"));
-					maximizeButton.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							GraphFrame.getInstance(tmpGnuplotPanel.svgCanvas.getURI(),
-									tmpGnuplotPanel.gnuplotResultFileName);
-
-						}
-					});
-					JButton closeButton = new JButton("x");
-					closeButton.setOpaque(false);
-					closeButton.setFocusable(false);
-					closeButton.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							
-					        	resultsTabs.remove(tabIndex);
-						}
-					});
-					tabPanel.add(maximizeButton);
-					tabPanel.add(closeButton);
-					tabPanel.setOpaque(false);
-					resultsTabs.setTabComponentAt(tabIndex, tabPanel);
-				}
-				
-			});
-
-			// TODO: The tab has to be refreshed!!!
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			sleep(1);
+			gMixSim = new Simulator(this.params);
+			gMixSim.setBinging(this);
+			results = gMixSim.results;
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
 		}
+
+		if (stop) {
+			return;
+		}
+
+		if (results != null) {
+			this.logger.log(Level.INFO, "Finished simulator with results");
+		}
+
+	}
+
+	public static void createResult(String gnuplotResultFileName) {
+		final JPanel resultPlot = ResultPanelFactory.getGnuplotResultPanel(gnuplotResultFileName);
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JTabbedPane resultsTabs = SimulationTab.getInstance().getResultsPanel();
+				resultsTabs.addTab("Experiment " + gMixBinding.experimentsPerformed, resultPlot);
+				resultsTabs.setSelectedComponent(resultPlot);
+				setMaximizeButton(resultsTabs);
+				resultPlot.updateUI();
+				resultPlot.repaint();
+				gMixBinding.experimentsPerformed++;
+			}
+
+			private void setMaximizeButton(final JTabbedPane resultsTabs) {
+				final int tabIndex = resultsTabs.getSelectedIndex();
+				JPanel tabPanel = new JPanel();
+				JLabel tabLabel = new JLabel("Experiment " + gMixBinding.getInstance().experimentsPerformed);
+				tabPanel.add(tabLabel);
+				final GnuplotPanel tmpGnuplotPanel = (GnuplotPanel) resultPlot;
+				JButton maximizeButton = new JButton(new ImageIcon("etc/img/icons/maximize.png"));
+				maximizeButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						GraphFrame.getInstance(tmpGnuplotPanel.svgCanvas.getURI(),
+								tmpGnuplotPanel.gnuplotResultFileName);
+
+					}
+				});
+				JButton closeButton = new JButton("x");
+				closeButton.setOpaque(false);
+				closeButton.setFocusable(false);
+				closeButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+
+						resultsTabs.remove(tabIndex);
+					}
+				});
+				tabPanel.add(maximizeButton);
+				tabPanel.add(closeButton);
+				tabPanel.setOpaque(false);
+				resultsTabs.setTabComponentAt(tabIndex, tabPanel);
+			}
+
+		});
 	}
 
 	/**
@@ -184,24 +169,10 @@ public class gMixBinding extends Thread {
 	}
 
 	/**
-	 * @param gnuplotConsoleOutputFileName
-	 */
-	public void setGnuplotConsoleOutputFileName(String gnuplotConsoleOutputFileName) {
-		this.resultsFileName = gnuplotConsoleOutputFileName;
-	}
-
-	/**
 	 * Resets the number of performed experiments
 	 */
 	public void resetExperiments() {
 		this.experimentsPerformed = 0;
-	}
-
-	/**
-	 * @return file name of the resulting picture / plot
-	 */
-	public String getGnuplotConsoleOutputFileName() {
-		return this.resultsFileName;
 	}
 
 }
