@@ -24,6 +24,7 @@ import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.plugin.Plugin;
+import evaluation.simulator.annotations.property.DoubleSimulationProperty;
 import evaluation.simulator.annotations.property.FloatSimulationProperty;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.requirements.SgMixMaxClientMixDelayRequirement;
@@ -49,27 +50,32 @@ public class StopAndGoMessage extends BasicMixMessage {
 	private int identifier;
 	private static int idCounter = 0;
 	
-	@FloatSimulationProperty ( name = "Security parameter mu", 
+	@DoubleSimulationProperty ( name = "Security parameter mu", 
 			key = "SGMIX_SECURITY_PARAMETER_MU")
 	private double securityParameterMu;
+	
 	@IntSimulationProperty( name = "Minimum inter mix delay (ms)", 
 			key = "SGMIX_MIN_INTER_MIX_DELAY",
 			min = 0)
 	private int minInterMixDelay;
+	
 	@IntSimulationProperty( name = "Maximum inter mix delay (ms)", 
 			key = "SGMIX_MAX_INTER_MIX_DELAY",
 			min = 0)
 	private int maxInterMixDelay;
+	
 	@IntSimulationProperty( name = "Minimum client mix delay (ms)", 
 			key = "SGMIX_MIN_CLIENT_MIX_DELAY",
 			value_requirements=SgMixMinClientMixDelayRequirement.class,
 			min = 0)
 	private int minClientMixDelay;
+	
 	@IntSimulationProperty( name = "Maximum client mix delay (ms)", 
 			key = "SGMIX_MAX_CLIENT_MIX_DELAY",
 			value_requirements=SgMixMaxClientMixDelayRequirement.class,
 			min = 0)
 	private int maxClientMixDelay;
+	
 	@IntSimulationProperty( name = "Maximum clock deviation (ms)", 
 			key = "SGMIX_MAX_CLOCK_DEVITION",
 			min = 0)

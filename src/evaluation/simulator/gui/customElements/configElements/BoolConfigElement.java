@@ -54,6 +54,7 @@ public class BoolConfigElement extends JPanel implements ItemListener, Observer 
 		checkbox = new JCheckBox("enable");
 		checkbox.addItemListener(this);
 		checkbox.setToolTipText(property.getTooltip());
+		checkbox.setSelected((boolean) simPropRegistry.getValue(property.getPropertyID()).getValue());
 
 		this.messages = new LinkedList<JTextArea>();
 		this.icons = new HashMap<Component, Component>();
