@@ -1,10 +1,11 @@
 package evaluation.simulator.gui.actionListeners;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Locale;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -29,34 +30,44 @@ public class LoadButtonAction implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JOptionPane.setDefaultLocale(Locale.ENGLISH);
-		int reply = JOptionPane.showConfirmDialog(GuiService.getInstance().getMainGui(),
-				"Do you want to overwrite your changes?", "Overwrite Changes", JOptionPane.YES_NO_OPTION);
-		if (reply == JOptionPane.YES_OPTION) {
-			logger.log(Level.DEBUG, "Load config");
-
-			JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(new File("etc/experiments/"));
-			fc.setFileFilter(new FileFilter() {
-
-				@Override
-				public String getDescription() {
-					return "Config File";
-				}
-
-				@Override
-				public boolean accept(File f) {
-					return f.getName().toLowerCase().endsWith(".cfg");
-				}
-			});
-			int state = fc.showOpenDialog(null);
-			if (state == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-				SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
-				simulationConfigService.loadConfig(file);
+		logger.log(Level.DEBUG, "Load config");
+		if (SimPropRegistry.getInstance().getUnsavedChanges()) {
+			int backValue = JOptionPane
+					.showConfirmDialog(
+							GuiService.getInstance().getMainGui(),
+							"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
+							"Unchanged changes",
+							JOptionPane.YES_NO_OPTION);
+			if (backValue == JOptionPane.YES_OPTION) {
+				load();
 			}
-			ConfigChooserPanel.getInstance().updateConfigDirectory();
+		} else {
+			load();
 		}
+	}
+
+	private void load() {
+		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("etc/experiments/"));
+		fc.setFileFilter(new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "Config File";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				return f.getName().toLowerCase().endsWith(".cfg");
+			}
+		});
+		int state = fc.showOpenDialog(null);
+		if (state == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+			SimulationConfigService simulationConfigService = new SimulationConfigService(
+					simPropRegistry);
+			simulationConfigService.loadConfig(file);
+		}
+		ConfigChooserPanel.getInstance().updateConfigDirectory();
 	}
 }

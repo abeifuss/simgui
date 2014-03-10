@@ -296,11 +296,23 @@ public class ConfigChooserPanel extends JPanel {
 							"Please select only one config to load it into Configuration View.", "Selection Error",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					File file = getConfigList().getSelectedValue();
-					SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-					SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
-					simulationConfigService.loadConfig(file);
+					if (SimPropRegistry.getInstance().getUnsavedChanges()){
+						int backValue = JOptionPane.showConfirmDialog(GuiService.getInstance().getMainGui(),"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?","Unchanged changes",
+								JOptionPane.YES_NO_OPTION);
+						if (backValue == JOptionPane.YES_OPTION) {
+							load();						
+						}
+					} else {
+						load();
+					}
 				}
+			}
+
+			private void load() {
+				File file = getConfigList().getSelectedValue();
+				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+				SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
+				simulationConfigService.loadConfig(file);
 			}
 		});
 

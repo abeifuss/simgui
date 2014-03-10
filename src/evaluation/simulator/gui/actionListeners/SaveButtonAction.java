@@ -30,6 +30,8 @@ public class SaveButtonAction implements ActionListener {
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 			simulationConfigService.writeConfig(f);
+			// Now there are no unsaved changes
+			SimPropRegistry.getInstance().setUnsavedChanges(false);
 			logger.log(Level.DEBUG, "Saved config");
 	}
 

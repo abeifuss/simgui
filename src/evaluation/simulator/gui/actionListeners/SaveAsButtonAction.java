@@ -54,9 +54,12 @@ public class SaveAsButtonAction implements ActionListener {
 			SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
 			SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 			simulationConfigService.writeConfig(file);
+			// Now there are no unsaved changes
+			SimPropRegistry.getInstance().setUnsavedChanges(false);
 
 		}
 		ConfigChooserPanel.getInstance().updateConfigDirectory();
+
 	}
 
 }

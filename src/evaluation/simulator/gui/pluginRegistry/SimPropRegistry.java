@@ -59,6 +59,8 @@ public class SimPropRegistry {
 	private static SimPropRegistry _instance = null;
 	
 	private static String currentConfigFile;
+	
+	private Boolean unsavedChanges = false;
 
 	/**
 	 * Singleton
@@ -1367,6 +1369,7 @@ public class SimPropRegistry {
 		} else {
 
 		}
+		setUnsavedChanges(true);
 		DependencyChecker.checkAll(getInstance());
 	}
 
@@ -1686,5 +1689,13 @@ public class SimPropRegistry {
 
 	public void setCurrentConfigFile(String currentConfigFile) {
 		SimPropRegistry.currentConfigFile = currentConfigFile;
+	}
+
+	public Boolean getUnsavedChanges() {
+		return unsavedChanges;
+	}
+
+	public void setUnsavedChanges(Boolean unsavedChanges) {
+		this.unsavedChanges = unsavedChanges;
 	}
 }
