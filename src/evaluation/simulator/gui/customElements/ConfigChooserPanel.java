@@ -88,7 +88,8 @@ public class ConfigChooserPanel extends JPanel {
 		JPanel exportResultsPanel = this.createExportResultsPanel();
 		JPanel statusPanel = this.createStatusPanel();
 
-		MigLayout migLayout = new MigLayout("", "[grow]", "[grow][grow][grow][grow]");
+		MigLayout migLayout = new MigLayout("", "[grow]",
+				"[grow][grow][grow][grow]");
 		this.setLayout(migLayout);
 		this.add(configurationSelectionPanel, "cell 0 0,grow");
 		// this.add(additionalPlotOptionsPanel, "cell 0 1,growx");
@@ -121,22 +122,27 @@ public class ConfigChooserPanel extends JPanel {
 
 				for (File f : listOfFiles) {
 					boolean insertFlag = true;
-					for (int i = 0; i < ConfigChooserPanel.getInstance().getConfigList().getModel().getSize(); i++) {
-						if (ConfigChooserPanel.getInstance().getConfigList().getModel().getElementAt(i).equals(f)) {
+					for (int i = 0; i < ConfigChooserPanel.getInstance()
+							.getConfigList().getModel().getSize(); i++) {
+						if (ConfigChooserPanel.getInstance().getConfigList()
+								.getModel().getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
-					for (int i = 0; i < ConfigChooserPanel.getInstance().getConfigList().getModel().getSize(); i++) {
-						if (ConfigChooserPanel.getInstance().getConfigList().getModel().getElementAt(i).equals(f)) {
+					for (int i = 0; i < ConfigChooserPanel.getInstance()
+							.getConfigList().getModel().getSize(); i++) {
+						if (ConfigChooserPanel.getInstance().getConfigList()
+								.getModel().getElementAt(i).equals(f)) {
 							insertFlag = false;
 							break;
 						}
 					}
 
 					if (insertFlag) {
-						ConfigChooserPanel.getInstance().getListModel().addElement(f);
+						ConfigChooserPanel.getInstance().getListModel()
+								.addElement(f);
 					}
 				}
 			}
@@ -152,7 +158,8 @@ public class ConfigChooserPanel extends JPanel {
 		getProgressBar().setIndeterminate(true);
 		getProgressBar().setVisible(false);
 		panel.add(getProgressBar(), "growx,push");
-		panel.setBorder(new TitledBorder(null, "Simulation Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(null, "Simulation Status",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
 	}
 
@@ -168,7 +175,8 @@ public class ConfigChooserPanel extends JPanel {
 
 		panel.add(ConfigChooserPanel.getExportPictureButton(), "cell 0 1,growx");
 
-		panel.setBorder(new TitledBorder(null, "Export Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(null, "Export Results",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
 
 	}
@@ -181,7 +189,8 @@ public class ConfigChooserPanel extends JPanel {
 		this.startButton = new JButton("Start Simulation");
 		this.startButton.setMnemonic('S');
 
-		this.startButton.addActionListener(new StartButtonAction(getConfigList()));
+		this.startButton.addActionListener(new StartButtonAction(
+				getConfigList()));
 
 		this.stopButton = new JButton("Stop Simulation");
 		this.stopButton.setMnemonic('T');
@@ -196,7 +205,8 @@ public class ConfigChooserPanel extends JPanel {
 		panel.add(this.stopButton, "cell 0 1,growx");
 		panel.add(this.clearButton, "cell 0 2,growx");
 
-		panel.setBorder(new TitledBorder(null, "Simulation Control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(null, "Simulation Control",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
 
 	}
@@ -207,13 +217,15 @@ public class ConfigChooserPanel extends JPanel {
 		JPanel panel = new JPanel(migLayout);
 		this.setListModel(new DefaultListModel<File>());
 		this.setConfigList(new JList<File>(this.getListModel()));
-		this.getConfigList().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		this.getConfigList().setSelectionMode(
+				ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		final int[] selection = getConfigList().getSelectedIndices();
 
 		this.getConfigList().addMouseListener(new MouseAdapter() {
 
 			public void mousePressed(MouseEvent e) {
-				final int hoverIndex = getConfigList().locationToIndex(e.getPoint());
+				final int hoverIndex = getConfigList().locationToIndex(
+						e.getPoint());
 				if (SwingUtilities.isRightMouseButton(e)) {
 					JPopupMenu menu = new JPopupMenu();
 					JMenuItem item = new JMenuItem("Load into config tool");
@@ -221,12 +233,16 @@ public class ConfigChooserPanel extends JPanel {
 						public void actionPerformed(ActionEvent e) {
 							getLocale();
 							JOptionPane.setDefaultLocale(Locale.ENGLISH);
-							int reply = JOptionPane.showConfirmDialog(GuiService.getInstance().getMainGui(),
-									"Do you want to overwrite your changes?", "Overwrite Changes",
+							int reply = JOptionPane.showConfirmDialog(
+									GuiService.getInstance().getMainGui(),
+									"Do you want to overwrite your changes?",
+									"Overwrite Changes",
 									JOptionPane.YES_NO_OPTION);
 							if (reply == JOptionPane.YES_OPTION) {
-								File file = getConfigList().getModel().getElementAt(hoverIndex);
-								SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
+								File file = getConfigList().getModel()
+										.getElementAt(hoverIndex);
+								SimPropRegistry simPropRegistry = SimPropRegistry
+										.getInstance();
 								SimulationConfigService simulationConfigService = new SimulationConfigService(
 										simPropRegistry);
 								simulationConfigService.loadConfig(file);
@@ -241,13 +257,15 @@ public class ConfigChooserPanel extends JPanel {
 								newSelection.add(i);
 							}
 							newSelection.add(hoverIndex);
-							int[] newIndexSelection = new int[newSelection.size()];
+							int[] newIndexSelection = new int[newSelection
+									.size()];
 							int i = 0;
 							for (int each : newSelection) {
 								newIndexSelection[i] = each;
 								i++;
 							}
-							getConfigList().setSelectedIndices(newIndexSelection);
+							getConfigList().setSelectedIndices(
+									newIndexSelection);
 						}
 					});
 					JMenuItem delItem = new JMenuItem("Delete from Selection");
@@ -258,13 +276,15 @@ public class ConfigChooserPanel extends JPanel {
 								newSelection.add(i);
 							}
 							newSelection.remove(hoverIndex);
-							int[] newIndexSelection = new int[newSelection.size()];
+							int[] newIndexSelection = new int[newSelection
+									.size()];
 							int i = 0;
 							for (int each : newSelection) {
 								newIndexSelection[i] = each;
 								i++;
 							}
-							getConfigList().setSelectedIndices(newIndexSelection);
+							getConfigList().setSelectedIndices(
+									newIndexSelection);
 						}
 					});
 					menu.add(item);
@@ -292,18 +312,28 @@ public class ConfigChooserPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (getConfigList().getSelectedIndices().length > 1) {
-					JOptionPane.showMessageDialog(GuiService.getInstance().getMainGui(),
-							"Please select only one config to load it into Configuration View.", "Selection Error",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane
+							.showMessageDialog(
+									GuiService.getInstance().getMainGui(),
+									"Please select only one config to load it into Configuration View.",
+									"Selection Error",
+									JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					if (SimPropRegistry.getInstance().getUnsavedChanges()){
-						int backValue = JOptionPane.showConfirmDialog(GuiService.getInstance().getMainGui(),"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?","Unchanged changes",
-								JOptionPane.YES_NO_OPTION);
-						if (backValue == JOptionPane.YES_OPTION) {
-							load();						
+					if (getConfigList().getSelectedIndices().length != 0) {
+						if (SimPropRegistry.getInstance().getUnsavedChanges()) {
+							int backValue = JOptionPane
+									.showConfirmDialog(
+											GuiService.getInstance()
+													.getMainGui(),
+											"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
+											"Unchanged changes",
+											JOptionPane.YES_NO_OPTION);
+							if (backValue == JOptionPane.YES_OPTION) {
+								load();
+							}
+						} else {
+							load();
 						}
-					} else {
-						load();
 					}
 				}
 			}
@@ -311,17 +341,19 @@ public class ConfigChooserPanel extends JPanel {
 			private void load() {
 				File file = getConfigList().getSelectedValue();
 				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-				SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
+				SimulationConfigService simulationConfigService = new SimulationConfigService(
+						simPropRegistry);
 				simulationConfigService.loadConfig(file);
 			}
 		});
 
 		panel.add(leftButton, "cell 0 0,growy,width 10px");
 		panel.add(scrollPane, "cell 1 0,growx,growy, push");
-		panel.add(new JLabel("* Multiple selection is possible"), "cell 1 1,growx,growy");
+		panel.add(new JLabel("* Multiple selection is possible"),
+				"cell 1 1,growx,growy");
 
-		panel.setBorder(new TitledBorder(null, "Configuration Selection", TitledBorder.LEADING, TitledBorder.TOP, null,
-				null));
+		panel.setBorder(new TitledBorder(null, "Configuration Selection",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		return panel;
 
 	}
