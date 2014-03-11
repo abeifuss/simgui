@@ -183,6 +183,8 @@ public class PropVaryElement extends JPanel {
 
 		logger.log(Level.DEBUG, currentElement.getSelectedText());
 		this.repaint();
+		SimPropRegistry.getInstance().setUnsavedChanges(true);
+
 	}
 
 	private void addBoxListener(final JComboBox<String> box) {
@@ -248,6 +250,7 @@ public class PropVaryElement extends JPanel {
 				    "Invalid Value",
 				    JOptionPane.ERROR_MESSAGE);
 		}
+		SimPropRegistry.getInstance().setUnsavedChanges(true);
 	}
 
 	/**
@@ -283,6 +286,7 @@ public class PropVaryElement extends JPanel {
 		values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, values);
 		propElement[1].setText(values);
+		
 	}
 
 }

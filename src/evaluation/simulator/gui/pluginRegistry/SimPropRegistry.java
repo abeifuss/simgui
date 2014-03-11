@@ -1430,9 +1430,10 @@ public class SimPropRegistry {
 	 * @param selectedPlugin is the plugin that should be activated
 	 */
 	public void setActivePlugins(String layerDisplayName, String selectedPlugin) {
-		logger.log(Level.DEBUG, "Set " + layerDisplayName + " plugin to " + selectedPlugin);
+		logger.log(Level.DEBUG, "setActivePlugins " + layerDisplayName + " plugin to " + selectedPlugin);
 		this.activePlugins.put(layerDisplayName, selectedPlugin);
 		this.activePluginsMapped.put( this.displayNameToConfigName(layerDisplayName), selectedPlugin);
+		this.setUnsavedChanges(true);
 	}
 
 	/**
@@ -1441,7 +1442,7 @@ public class SimPropRegistry {
 	 * @param selectedPlugin is the plugin that should be activated
 	 */
 	public void setActivePluginsMapped(String layerConfigName, String selectedPlugin) {
-		logger.log(Level.DEBUG, "Set " + layerConfigName + " plugin to " + selectedPlugin);
+		logger.log(Level.DEBUG, "setActivePluginsMapped " + layerConfigName + " plugin to " + selectedPlugin);
 		this.activePlugins.put(this.configNameToDisplayName(layerConfigName), selectedPlugin);
 		this.activePluginsMapped.put(layerConfigName, selectedPlugin);
 	}

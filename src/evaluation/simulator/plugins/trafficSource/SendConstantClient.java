@@ -57,12 +57,12 @@ public class SendConstantClient extends AbstractClient {
 	
 	@IntSimulationProperty( name = "Average requests per second (requests)",
 			key = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", 
+			min = 1,
 			position = 2 )
 	private long TIME_BETWEEN_SENDS;
 	
 	private RandomDataImpl randomDataImpl;
 	private static SecureRandom secureRandom = new SecureRandom();
-	
 	
 	public SendConstantClient(String identifier, Simulator simulator, int clientId) {
 		super(identifier, simulator);
