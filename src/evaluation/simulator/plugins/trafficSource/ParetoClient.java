@@ -55,7 +55,8 @@ public class ParetoClient extends AbstractClient {
 	private int RESOLVE_TIME;
 	
 	@DoubleSimulationProperty( name = "Alpha parameter", 
-			key = "PARETO_ALPHA")
+			key = "PARETO_ALPHA",
+			min = 0.0001)
 	private double ALPHA;
 	
 	@DoubleSimulationProperty( name = "Average requests per second (requests)", 
