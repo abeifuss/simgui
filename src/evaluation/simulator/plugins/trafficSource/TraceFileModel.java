@@ -27,6 +27,7 @@ import evaluation.simulator.annotations.plugin.Plugin;
 import evaluation.simulator.annotations.property.BoolSimulationProperty;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
+import evaluation.simulator.annotations.property.requirements.TrafficSourceTraceFileClientLimitRequirement;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.traceParser.engine.dataStructure.Flow;
 import evaluation.traceParser.engine.fileReader.FlowReader;
@@ -50,7 +51,7 @@ public class TraceFileModel extends TrafficSourceImplementation {
 	@IntSimulationProperty(
 			name = "Client limit",
 			key = "CLIENT_LIMIT",
-			min = 1)
+			min = 1,enable_requirements=TrafficSourceTraceFileClientLimitRequirement.class)
 	private int limit;
 	
 	@Override
