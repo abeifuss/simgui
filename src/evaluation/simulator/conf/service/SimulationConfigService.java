@@ -129,10 +129,11 @@ public class SimulationConfigService {
 			@Override
 			public void run() {
 				SimConfigPanel.getInstance().foldAccordions();
+				SimPropRegistry.getInstance().setUnsavedChanges(false);
 			}
 		});
 		this.simPropRegistry.setUnsavedChanges(false);
-	}
+	} 
 
 	public void setSimPropRegistry(SimPropRegistry simPropRegistry) {
 		this.simPropRegistry = simPropRegistry;
