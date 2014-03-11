@@ -47,7 +47,8 @@ public enum DelayBox {
 	private static int bandwidthReceive_client;
 	
 	@IntSimulationProperty( name="Client latency (ms)", 
-			key="BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY")
+			key="BASIC_DELAY_BOX_DEFAULT_CLIENT_LATENCY",
+			min = 0)
 	private static int latency_client;
 	
 	@IntSimulationProperty( name="Mix send bandwidth (mbit/s)", 
