@@ -28,7 +28,9 @@ import evaluation.simulator.annotations.property.DoubleSimulationProperty;
 import evaluation.simulator.annotations.property.FloatSimulationProperty;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.requirements.SgMixMaxClientMixDelayRequirement;
+import evaluation.simulator.annotations.property.requirements.SgMixMaxInterMixDelayRequirement;
 import evaluation.simulator.annotations.property.requirements.SgMixMinClientMixDelayRequirement;
+import evaluation.simulator.annotations.property.requirements.SgMixMinInterMixDelayRequirement;
 import evaluation.simulator.core.message.BasicMixMessage;
 import evaluation.simulator.core.networkComponent.AbstractClient;
 import evaluation.simulator.core.networkComponent.NetworkNode;
@@ -56,12 +58,12 @@ public class StopAndGoMessage extends BasicMixMessage {
 	
 	@IntSimulationProperty( name = "Minimum inter mix delay (ms)", 
 			key = "SGMIX_MIN_INTER_MIX_DELAY",
-			min = 0)
+			min = 0, value_requirements = SgMixMinInterMixDelayRequirement.class)
 	private int minInterMixDelay;
 	
 	@IntSimulationProperty( name = "Maximum inter mix delay (ms)", 
 			key = "SGMIX_MAX_INTER_MIX_DELAY",
-			min = 0)
+			min = 0, value_requirements = SgMixMaxInterMixDelayRequirement.class)
 	private int maxInterMixDelay;
 	
 	@IntSimulationProperty( name = "Minimum client mix delay (ms)", 
