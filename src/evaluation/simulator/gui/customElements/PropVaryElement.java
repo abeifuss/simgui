@@ -36,6 +36,7 @@ public class PropVaryElement extends JPanel {
 	private JTextField propElement[];
 	private HelpPropValues value[];
 	private Class propType[];
+	private Boolean propUsed[];
 	private final int numOfPropsToVary = 2;
 	private String cBoxItemSave;
 
@@ -90,6 +91,10 @@ public class PropVaryElement extends JPanel {
 		value = new HelpPropValues[numOfPropsToVary];
 		value[0] = null;
 		value[1] = null;
+		
+		propUsed = new Boolean[numOfPropsToVary];
+		propUsed[0] = false;
+		propUsed[1] = false;
 
 		propType = new Class[numOfPropsToVary];
 
@@ -141,15 +146,15 @@ public class PropVaryElement extends JPanel {
 		if (currentItem.equals("---")) {
 			propElement[index].setEnabled(false);
 			propType[index] = null;
+			propUsed[index] = false;
 			if (index == 0) {
 				cBox[1].setSelectedItem("---");
 				this.cBox[1].setEnabled(false);
-				this.propElement[1].setEnabled(false);				
-			}
-			
+				this.propElement[1].setEnabled(false);
+				this.propUsed[1] = false;
+			}			
 		} else {
-			propElement[index].setEnabled(true);
-			
+			propElement[index].setEnabled(true);			
 			SimProp tmp = SimPropRegistry.getInstance().getPropertiesByName(currentItem);
 			propType[index] = tmp.getValueType();
 			logger.log(Level.DEBUG, "Proptype is set to" + propType[index].toString());
@@ -258,6 +263,7 @@ public class PropVaryElement extends JPanel {
 		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
 		logger.log(Level.DEBUG, name);
 		cBox[0].setSelectedItem(name);
+		comboboxChanged(cBox[0]);
 		
 		logger.log(Level.DEBUG, "VALUES_FOR_THE_PROPERTY_TO_VARY");
 		String values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY");
