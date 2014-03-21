@@ -86,6 +86,7 @@ public class NextMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 	public void begin() {
 		this.requestThread.setPriority(Thread.MAX_PRIORITY);
 		this.replyThread.setPriority(Thread.MAX_PRIORITY);
+		this.requestThread.connectToNextMix();
 		this.requestThread.start();
 		this.replyThread.start();
 	}
@@ -119,7 +120,6 @@ public class NextMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 		
 		@Override
 		public void run() {
-			connectToNextMix();
 			while (true) {
 				Request[] requests = anonNode.getFromRequestOutputQueue();
 				for (int i=0; i<requests.length; i++) {
@@ -185,7 +185,7 @@ public class NextMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 					int channelIdentifier = Util.forceReadInt(nextMixInputStream);
 					int messageLength = Util.forceReadInt(nextMixInputStream);
 					if (messageLength < 1) {
-						System.out.println(anonNode +" wrong size for reply message received"); 
+						System.out.println(anonNode +" wrong size for reply message received: " +messageLength); 
 						nextMixSocket.close();
 						continue;
 					}

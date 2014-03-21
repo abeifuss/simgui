@@ -21,9 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import evaluation.simulator.annotations.property.BoolSimulationProperty;
 import evaluation.simulator.annotations.property.DoubleSimulationProperty;
 import evaluation.simulator.annotations.property.IntSimulationProperty;
@@ -58,7 +55,7 @@ import gnu.trove.TDoubleArrayList;
 
 public class Simulator extends GMixTool implements Identifiable {
 
-	private static Logger logger = Logger.getLogger(Simulator.class);
+	//private static Logger logger = Logger.getLogger(Simulator.class);
 
 	private final int numericIdentifier;
 	public static Settings settings;
@@ -85,8 +82,6 @@ public class Simulator extends GMixTool implements Identifiable {
 	//private static XMLResource generalConfig;
 	private volatile boolean stopSimulation = false;
 	private int voteStopCounter = 0;
-	
-	private boolean stop = false;
 	
 	@IntSimulationProperty( name = "Recording start (ms)",
 			key = "START_RECORDING_STATISTICS_AT",
@@ -132,15 +127,20 @@ public class Simulator extends GMixTool implements Identifiable {
 		Simulator.firstRun = true;
 	}
 
+	
+	/*public Simulator(CommandLineParameters params, boolean isGUI) {
+		this(params.setSimGuiTrue());
+	}*/
+	
+	
 	public Simulator(CommandLineParameters params) {
-		stop = false;
 		Simulator.commandLineParameters = params;
 		now = 0;
 		this.numericIdentifier = IdGenerator.getId();
 		this.results = null;
 		if (firstRun) {
 			firstRun = false;
-			if (commandLineParameters.passthroughParameters != null ){ // GUI call
+			if (commandLineParameters.useSimGui){ // GUI call
 				Simulator.settings = new Settings(Paths.SIM_PROPERTY_FILE_PATH);
 				Simulator.settings.addProperties(commandLineParameters.passthroughParameters);
 				Simulator.DEBUG_ON = Simulator.settings.getPropertyAsBoolean("DEBUG_OUTPUT");
@@ -490,10 +490,6 @@ public class Simulator extends GMixTool implements Identifiable {
 	 */
 	public static void main(String[] args) {
 		new Simulator(new CommandLineParameters(args));
-	}
-
-	public void requestStop() {
-		stop = true;
 	}
 
 	public void setBinging(gMixBinding gMixBinding) {

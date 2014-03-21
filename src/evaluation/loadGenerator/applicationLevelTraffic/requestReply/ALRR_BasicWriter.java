@@ -55,6 +55,7 @@ public class ALRR_BasicWriter implements ScheduleTarget<ApplicationLevelMessage>
 				System.out.println(stats); 
 				if (LoadGenerator.VALIDATE_IO)
 					IOTester.findInstance(""+message.getClientId()).addSendRecord(payload);
+				//System.out.println("" +this +": sending (client): " +Util.toHex(payload)); // TODO: remove
 				cw.outputStream.write(payload);
 				cw.outputStream.flush();
 				if (IS_DUPLEX) 

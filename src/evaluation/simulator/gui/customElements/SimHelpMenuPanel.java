@@ -2,14 +2,11 @@ package evaluation.simulator.gui.customElements;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.media.NoPlayerException;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -144,7 +141,7 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 			
 			if ( matcher.matches() ){ // Videotutorials
 				logger.error("A Video");
-				try {
+				/*try {
 					VideoPlayer vp = new VideoPlayer("test", helpTreeNode.getHelpTreeNodeURL());
 					
 					vp.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -153,7 +150,7 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 					
 				} catch (ClassNotFoundException | NoPlayerException | IOException e1) {
 					e1.printStackTrace();
-				}
+				}*/ // TODO: via browser
 			}else{
 				logger.error(helpTreeNode.getHelpTreeNodeName() + " " + helpTreeNode.getHelpTreeNodeURL());
 				displayURL(helpTreeNode.getHelpTreeNodeURL());

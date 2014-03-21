@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.lf5.LogLevel;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -40,7 +39,6 @@ import evaluation.simulator.annotations.property.IntSimulationProperty;
 import evaluation.simulator.annotations.property.SimProp;
 import evaluation.simulator.annotations.property.StringProp;
 import evaluation.simulator.annotations.property.StringSimulationProperty;
-import evaluation.simulator.gui.layout.MainGui;
 
 /**
  * The simprop registry

@@ -21,11 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
-import evaluation.simulator.conf.service.SimulationConfigService;
 import framework.core.config.MatchingMechanism;
 import framework.core.config.Paths;
 import framework.core.config.Settings;
@@ -33,9 +28,8 @@ import framework.core.config.Settings;
 
 public class CommandLineParameters {
 	
-	private static Logger logger = Logger.getLogger(CommandLineParameters.class);
-	
 	public boolean useGui = true;
+	public boolean useSimGui = false;
 	public ToolName gMixTool = null; // the "Launcher" to be started (see framework.core.launcher)
 	public String globalConfigFile = null; // path to the config file to use for this run (all normal/other config files will be ignored)
 	public String overwriteParameters = null; // list of parameters (key-value-pairs) to overwrite the normal or global config
@@ -86,8 +80,6 @@ public class CommandLineParameters {
 		} else {
 			passthroughParameters = new String[0];
 		}
-		
-		logger.log(Level.DEBUG, "Parameters: " + toString());
 	}
 	
 	
@@ -252,5 +244,11 @@ public class CommandLineParameters {
 	
 	}*/
 
+
+	// TODO: this is a workaround..
+	public CommandLineParameters setSimGuiTrue() {
+		this.useSimGui = true;
+		return this;
+	}
 }
 

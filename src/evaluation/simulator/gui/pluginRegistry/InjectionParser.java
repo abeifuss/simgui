@@ -4,8 +4,6 @@ package evaluation.simulator.gui.pluginRegistry;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import evaluation.simulator.conf.service.SimulationConfigService;
-
 /**
  * Parser for simprop injections
  * 

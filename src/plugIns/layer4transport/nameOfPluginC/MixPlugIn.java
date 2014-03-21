@@ -19,6 +19,9 @@ package plugIns.layer4transport.nameOfPluginC;
 
 import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer4TransportMix;
+import framework.core.message.Reply;
+import framework.core.message.Request;
+import framework.core.userDatabase.User;
 
 
 public class MixPlugIn extends Implementation implements Layer4TransportMix {
@@ -41,6 +44,43 @@ public class MixPlugIn extends Implementation implements Layer4TransportMix {
 	public void begin() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void forwardRequest(Request request) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void write(User user, byte[] data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Reply addLayer4Header(Reply reply) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getSizeOfLayer4Header() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMaxSizeOfNextWrite() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMaxSizeOfNextRead() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

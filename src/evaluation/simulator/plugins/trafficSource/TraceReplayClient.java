@@ -106,8 +106,8 @@ public class TraceReplayClient extends AbstractClient {
 				simulator.scheduleEvent(replayNextTransactionEvent, this);
 			} else { // no next transaction (end of flow)
 				//System.out.println(super.toString() +": flow " +activeFlow.flow.flowId +" is finished (now: " +Simulator.getNow() +")");
-				finishedFlows.add(activeFlow.flow.flowId);
-				activeFlows.remove(activeFlow.flow.flowId); 
+				finishedFlows.add(activeFlow.getFlow().flowId);
+				activeFlows.remove(activeFlow.getFlow().flowId); 
 				if (noMoreFlowsToSchedule && activeFlows.size() == 0) { // nothing left to schedule and no more active flows -> end simulation
 					simulator.voteForStop();
 					//simulator.stopSimulation("end of trace reached (variable SIMULATION_END in experiment config)");
@@ -309,68 +309,6 @@ public class TraceReplayClient extends AbstractClient {
 			}
 			nextFlow = null;
 			return result;
-		}
-		
-	}
-	
-	private class ActiveFlow {
-		
-		Flow flow;
-		private int transactionCounter;
-		private int transactions;
-		private ExtendedTransaction currentTransaction;
-		private int expectedReplies;
-		private int replyCounter;
-		private int idOfLatestReply;
-		
-		
-		public ActiveFlow(Flow flow) {
-			this.flow = flow;
-			this.transactionCounter = 0;
-			this.transactions = flow.transactions.size();
-			this.idOfLatestReply = Util.NOT_SET;
-		}
-		
-		
-		public boolean hasNextTransaction() {
-			return transactionCounter < transactions;
-		}
-		
-		
-		public ExtendedTransaction getNextTransaction() {
-			currentTransaction = flow.transactions.get(transactionCounter);
-			transactionCounter++;
-			expectedReplies = currentTransaction.getTotalReplySize() == 0 ? 0 : currentTransaction.getDistinctReplySizes().length;
-			replyCounter = 0;
-			idOfLatestReply = Util.NOT_SET;
-			return currentTransaction;
-		}
-		
-		public ExtendedTransaction getCurrentTransaction() {
-			return currentTransaction;
-		}
-		
-		
-		public void replyReceived() {
-			idOfLatestReply = replyCounter;
-			replyCounter++;
-			//System.out.println("(" +replyCounter +" of " +expectedReplies +")"); 
-			assert replyCounter <= expectedReplies;
-		}
-		
-		
-		public int getArrayOffsetOfCurrentTransaction() {
-			return transactionCounter - 1;
-		}
-		
-		
-		public int getIdOfLatestFinishedReply() {
-			return idOfLatestReply;
-		}
-		
-		
-		public boolean allRepliesForCurrentTransactionReceived() {
-			return replyCounter == expectedReplies;
 		}
 		
 	}

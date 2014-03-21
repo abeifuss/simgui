@@ -20,9 +20,11 @@ package evaluation.loadGenerator.scheduler;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import framework.core.config.Settings;
+
 
 // warning: this scheduler does not allow scheduling tasks with an execution time earlier than the task with the latest execution time already schedules
-public class InOrderYieldWaitScheduler<E> implements Scheduler<E> {
+public class InOrderYieldWaitScheduler<E> extends Scheduler<E> {
 
 	private final static long SLEEP_PRECISION = TimeUnit.MILLISECONDS.toNanos(2); // TODO: determine for current machine
 	private final static long INIT_TIME = System.nanoTime();
@@ -33,12 +35,11 @@ public class InOrderYieldWaitScheduler<E> implements Scheduler<E> {
 	private QueueEntry lastEntry = null;
 	private boolean isFirstEntry = true;
 	private boolean shutdownRequested = false;
-	private long tolerance; // in nanosec
-	
+
 	
 	// @tolerance in microsec (uses microsec as nanosec would imply a higher accuracy than available)
-	public InOrderYieldWaitScheduler(long tolerance) {
-		this.tolerance = TimeUnit.MICROSECONDS.toNanos(tolerance);
+	public InOrderYieldWaitScheduler(Settings settings) {
+		super(settings);
 	}
 	
 	
@@ -118,13 +119,13 @@ public class InOrderYieldWaitScheduler<E> implements Scheduler<E> {
 						break exit;
 				}
 				if (now() >= task.executionTime) { // execute now
-					warnIfDelayed(now() - task.executionTime, task);
+					warnIfDelayed(now() - task.executionTime);
 					if (task.notifyTarget != null)
 						task.notifyTarget.execute(task.attachment);
 					task.scheduleTarget.execute(task.attachment);
 				} else { // wait till execute
 					sleepNanos(task.executionTime - now());
-					warnIfDelayed(now() - task.executionTime, task);
+					warnIfDelayed(now() - task.executionTime);
 					if (task.notifyTarget != null)
 						task.notifyTarget.execute(task.attachment);
 					task.scheduleTarget.execute(task.attachment);
@@ -148,17 +149,6 @@ public class InOrderYieldWaitScheduler<E> implements Scheduler<E> {
 			this.scheduleTarget = scheduleTarget;
 			this.attachment = attachment;
 		}
-	}
-	
-	
-	private void warnIfDelayed(long unintendedDelay, QueueEntry task) {
-		if (unintendedDelay > tolerance)
-			System.err.println(
-					"warning: schedule executor more than " 
-					+((float)tolerance/1000000f) +"ms behind schedule (" 
-					+((float)unintendedDelay/1000000f) +"ms) for " 
-					+task.attachment
-				); 
 	}
 	
 }

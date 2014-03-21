@@ -17,6 +17,8 @@
  */
 package plugIns.layer3outputStrategy.dlpaBasic_v0_001;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -26,6 +28,7 @@ import framework.core.interfaces.Layer3OutputStrategyMix;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
+import framework.core.userDatabase.User;
 
 
 //DLP Algorithm (2008: Wei Wang, Mehul Motani, Vikram Srinivasan: Dependent Link Padding Algorithms for Low Latency Anonymity Systems)
@@ -84,6 +87,7 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	@Override
 	public void addRequest(Request request) {
+		System.out.println("users: " +userDatabase.getNumberOfUsers()); 
 		synchronized(requestOutputSlots) {
 			OutputSlot outputSlot = getUnusedOutputSlot((MixMessage)request);
 			if (outputSlot == null) { // generate new OutputSlot if necessary
@@ -148,14 +152,23 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 
 	
 	@Override
-	public int getMaxSizeOfNextReply() {
+	public int getMaxSizeOfNextWrite() {
 		return super.recodingLayerMix.getMaxSizeOfNextReply();
 	}
 
 
 	@Override
-	public int getMaxSizeOfNextRequest() {
+	public int getMaxSizeOfNextRead() {
 		return super.recodingLayerMix.getMaxSizeOfNextRequest();
+	}
+
+
+	@Override
+	public void write(User user, byte[] data) {
+		Reply reply = MixMessage.getInstanceReply(data, user); 
+		reply.isFirstReplyHop = true;
+		transportLayerMix.addLayer4Header(reply);
+		anonNode.forwardToLayer2(reply);
 	}
 	
 }

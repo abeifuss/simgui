@@ -23,6 +23,7 @@ import framework.core.config.Settings;
 import framework.core.interfaces.Layer3OutputStrategyMix;
 import framework.core.message.Reply;
 import framework.core.message.Request;
+import framework.core.userDatabase.User;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
@@ -63,14 +64,22 @@ public class Layer3OutputStrategyMixController extends Controller implements Lay
 
 
 	@Override
-	public int getMaxSizeOfNextReply() {
-		return implementation.getMaxSizeOfNextReply();
+	public int getMaxSizeOfNextWrite() {
+		return implementation.getMaxSizeOfNextWrite();
 	}
 
 
 	@Override
-	public int getMaxSizeOfNextRequest() {
-		return implementation.getMaxSizeOfNextRequest();
+	public int getMaxSizeOfNextRead() {
+		return implementation.getMaxSizeOfNextRead();
+	}
+
+	
+	@Override
+	public void write(User user, byte[] data) {
+		if (data.length > getMaxSizeOfNextWrite())
+			throw new RuntimeException("use getMaxSizeOfNextReply() to determine the maximum size of a reply..."); 
+		implementation.write(user, data);
 	}
 
 }

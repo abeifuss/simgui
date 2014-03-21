@@ -48,6 +48,7 @@ public class SimConfigPanel extends JPanel {
 	private JButton saveAsButton;
 	private JButton saveButton;
 
+	@SuppressWarnings("deprecation")
 	private SimConfigPanel() {
 		this.initialize();
 		this.resize(this.pluginPanel.getWidth(), this.pluginPanel.getHeight());

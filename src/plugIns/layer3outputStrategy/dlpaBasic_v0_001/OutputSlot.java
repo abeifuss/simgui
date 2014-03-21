@@ -84,9 +84,9 @@ public class OutputSlot {
 				}
 				messagesToSend.put(user, mixMessage);
 			}
-			System.out.println("putting out slot (" +dummyCounter +" dummies and " +normalMessages +" normal messages)"); // TODO: remove 
+			System.out.println("Mix " +anonNode.PUBLIC_PSEUDONYM +" putting out slot (" +dummyCounter +" dummies and " +normalMessages +" normal messages)"); // TODO: remove 
 			MixMessage[] messages = isRequestSlot ? messagesToSend.values().toArray(new Request[0]): messagesToSend.values().toArray(new Reply[0]);
-			Arrays.sort(messages);
+			//Arrays.sort(messages);
 			// send messages
 			if (isRequestSlot)
 				anonNode.putOutRequests((Request[])messages);

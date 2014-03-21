@@ -17,6 +17,20 @@
  */
 package framework.core.message;
 
+import framework.core.AnonNode;
+import framework.core.routing.RoutingMode;
+
 public class Reply extends MixMessage {
+	
+	@Override
+	public boolean isFinalHop(AnonNode anonNode) {
+		if (anonNode.ROUTING_MODE == RoutingMode.FREE_ROUTE_DYNAMIC_ROUTING) {
+			return nextHopAddress == MixMessage.NONE ? true : false; 
+		} else if (anonNode.ROUTING_MODE == RoutingMode.FREE_ROUTE_SOURCE_ROUTING) {
+			return nextHopAddress == MixMessage.NONE ? true : false; 
+		} else { // fixed route
+			return anonNode.IS_FIRST_MIX;
+		}
+	}
 	
 }

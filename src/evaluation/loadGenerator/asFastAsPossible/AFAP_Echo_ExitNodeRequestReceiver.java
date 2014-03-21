@@ -19,6 +19,7 @@ package evaluation.loadGenerator.asFastAsPossible;
 
 import java.io.IOException;
 
+import evaluation.loadGenerator.ExitNodeClientData;
 import evaluation.loadGenerator.ExitNodeRequestReceiver;
 import framework.core.AnonNode;
 import framework.core.config.Settings;
@@ -26,7 +27,7 @@ import framework.core.socket.socketInterfaces.StreamAnonSocketMix;
 import framework.core.userDatabase.User;
 
 
-public class AFAP_Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceiver {
+public class AFAP_Echo_ExitNodeRequestReceiver extends ExitNodeRequestReceiver {
 
 	
 	protected AnonNode anonNode;
@@ -45,7 +46,7 @@ public class AFAP_Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceive
 
 	
 	@Override
-	public void dataReceived(ClientData client, byte[] dataReceived) {
+	public void dataReceived(ExitNodeClientData client, byte[] dataReceived) {
 		if (anonNode.IS_DUPLEX) {
 			try {
 				client.socket.getOutputStream().write(dataReceived);
@@ -56,10 +57,10 @@ public class AFAP_Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceive
 		}
 	}
 
-	
+
 	@Override
-	public ClientData createClientDataInstance(User user,
-			StreamAnonSocketMix socket) {
-		return new ClientData(user, socket);
+	public ExitNodeClientData createClientDataInstance(User user, StreamAnonSocketMix socket, Object callingInstance) {
+		return new ExitNodeClientData(user, socket, callingInstance);
 	}
+
 }

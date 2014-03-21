@@ -26,7 +26,7 @@ import evaluation.loadGenerator.LoadGenerator;
 import framework.core.AnonNode;
 import framework.core.launcher.ToolName;
 import framework.core.socket.socketInterfaces.StreamAnonSocket;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 import framework.core.util.Util;
 
 
@@ -55,7 +55,7 @@ public class AFAP_ThreadBased_LoadGenerator extends AFAP_LoadGenerator {
 		
 		@Override
 		public void run() {
-			CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
+			CommunicationDirection cm = client.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_SENDER;
 			StreamAnonSocket socket = client.createStreamSocket(cm, false);
 			try {
 				socket.connect(settings.getPropertyAsInt("SERVICE_PORT1"));

@@ -17,20 +17,18 @@
  */
 package framework.core.interfaces;
 
-import framework.core.message.Reply;
-import framework.core.message.Request;
-
 
 public interface Layer3OutputStrategyClient extends ArchitectureInterface, ClientSocketReferences {
 
-	public Reply receiveReply();
-	public void sendMessage(Request request);
+	public byte[] receive(); // TODO: add receive(int amount) // see: io-streams of streamSocket
+	public void write(byte[] data);
+	public void write(byte[] data, int destPseudonym);
 	public void connect();
 	public void connect(int destPseudonym);
 	public void disconnect();
-	public int getMaxSizeOfNextRequest();
-	public int getMaxSizeOfNextReply();
+	public int getMaxSizeOfNextWrite();
+	public int getMaxSizeOfNextReceive();
 	public int availableReplies();
-	public int availableReplyPayload();
+	public int availableReplyData();
 	
 }

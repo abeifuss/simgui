@@ -38,7 +38,7 @@ public class BasicInputStreamMix extends InputStream {
 		this.socket = socket;
 		String requestBufferSize = owner.LAYER_4_MIX_INPUT_STREAM_REQUEST_BUFFER_SIZE;
 		if (requestBufferSize.equalsIgnoreCase("AUTO")) {
-			this.buffer = ByteBuffer.allocate((int)Math.ceil(((double)owner.SOCKET_MIX_BACKEND_QUEUE_SIZE * (double)owner.getOutputStrategyLayerControllerMix().getMaxSizeOfNextRequest() * 1.5)));
+			this.buffer = ByteBuffer.allocate((int)Math.ceil(((double)owner.SOCKET_MIX_BACKEND_QUEUE_SIZE * (double)owner.getTransportLayerControllerMix().getMaxSizeOfNextRead() * 1.5)));
 		} else {
 			this.buffer = ByteBuffer.allocate(Integer.parseInt(requestBufferSize));
 		}

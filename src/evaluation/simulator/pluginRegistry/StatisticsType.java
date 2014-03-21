@@ -23,6 +23,7 @@ import evaluation.simulator.core.statistics.aggregator.Aggregator.InputDataType;
 import evaluation.simulator.core.statistics.plotEngine.PlotScale;
 import evaluation.simulator.core.statistics.postProcessor.PostProcessor;
 
+
 @PossibleValues(id="StatisticsType")
 public enum StatisticsType {
 	
@@ -30,6 +31,8 @@ public enum StatisticsType {
 	AVG_CLIENT_LATENCY_LAYER5MESSAGE(		"plot_clientLatencyLayer5", 	PlotType.HISTOGRAM,	PlotScale.LINEAR,	Unit.ms,	Aggregator.AVG, 	new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}), // used in: example_outputStrategy_synchronous.txt	
 	
 	AVG_CLIENT_LATENCY_LAYER5MESSAGE_HIST(		"plot_clientLatencyLayer5hist", 	PlotType.HISTOGRAM,	PlotScale.NONE,	Unit.ms,	Aggregator.AVG, 	new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}), // used in: example_plotType_histogram.txt
+	
+	AVG_BATCH_SIZE(	"plot_batchSize", 	PlotType.LINE_CHART_ABS,	PlotScale.LINEAR,	Unit.event,	Aggregator.AVG,		new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}), // used in: example_plotType_lineChart.txt, example_outputStrategy_batch.txt, example_outputStrategy_pool.txt, example_outputStrategy_batchWithTimeout.txt ...
 	
 	AVG_CLIENT_LATENCY_REQUESTMIXMESSAGE(	"plot_clientLatencyMixMessage", 	PlotType.LINE_CHART_ABS,	PlotScale.LINEAR,	Unit.ms,	Aggregator.AVG,		new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}), // used in: example_plotType_lineChart.txt, example_outputStrategy_batch.txt, example_outputStrategy_pool.txt, example_outputStrategy_batchWithTimeout.txt ...
 	MAX_CLIENT_LATENCY_REQUESTMIXMESSAGE(	"plot_clientLatencyMixMessage", 	PlotType.LINE_CHART_ABS,	PlotScale.LINEAR,	Unit.ms,	Aggregator.MAX,		new Aggregator[]{ Aggregator.MIN, Aggregator.MAX, Aggregator.AVG, Aggregator.MEDIAN },		new PostProcessor[] {PostProcessor.NONE}), // used in: example_plotType_lineChart.txt, example_outputStrategy_batch.txt, example_outputStrategy_pool.txt, example_outputStrategy_batchWithTimeout.txt ...

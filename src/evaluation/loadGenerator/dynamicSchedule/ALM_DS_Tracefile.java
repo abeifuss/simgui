@@ -38,7 +38,7 @@ import framework.core.config.Paths;
 import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 import framework.core.util.IOTester;
 import framework.core.util.Util;
 
@@ -65,7 +65,7 @@ public class ALM_DS_Tracefile {
 	
 	public ALM_DS_Tracefile(LoadGenerator owner) {
 		this.settings = owner.settings;
-		this.scheduler = new ThreadPoolScheduler<ALRR_ClientWrapper>(settings.getPropertyAsInt("TOLERANCE")); // TODO: offer further schedulers
+		this.scheduler = new ThreadPoolScheduler<ALRR_ClientWrapper>(settings); // TODO: offer further schedulers
 		this.traceFileReaderThread = new TraceFileReaderThread();
 		this.replyReceiverThread = new ReplyReceiverThread();
 		this.requestSender = new RequestSender();
@@ -114,7 +114,7 @@ public class ALM_DS_Tracefile {
 						
 		// generate and connect sockets
 		for (ALRR_ClientWrapper cw: clientsArray) // generate sockets
-			cw.socket = client.createStreamSocket(CommunicationMode.DUPLEX, client.ROUTING_MODE != RoutingMode.CASCADE);
+			cw.socket = client.createStreamSocket(CommunicationDirection.DUPLEX, client.ROUTING_MODE != RoutingMode.CASCADE);
 		// connect sockets:
 		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
@@ -355,6 +355,11 @@ public class ALM_DS_Tracefile {
 		} catch (FileNotFoundException e) {
 			System.err.println("TRACE_READER: could not find trace file: " + traceFilePath);
 		}
+	}
+	
+	
+	public static ALM_DS_Tracefile createInstance(LoadGenerator loadGenerator) {
+		return new ALM_DS_Tracefile(loadGenerator);
 	}
 	
 }

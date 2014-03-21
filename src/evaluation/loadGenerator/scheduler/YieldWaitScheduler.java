@@ -20,8 +20,10 @@ package evaluation.loadGenerator.scheduler;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
+import framework.core.config.Settings;
 
-public class YieldWaitScheduler<E> implements Scheduler<E> {
+
+public class YieldWaitScheduler<E> extends Scheduler<E> {
 
 	private final static long SLEEP_PRECISION = TimeUnit.MILLISECONDS.toNanos(2); // TODO: determine for current machine
 	private final static long INIT_TIME = System.nanoTime();
@@ -32,15 +34,16 @@ public class YieldWaitScheduler<E> implements Scheduler<E> {
 	private QueueEntry lastEntry = null;
 	private boolean isFirstEntry = true;
 	private boolean shutdownRequested = false;
-	private long tolerance; // in nanosec
+
 	private int positionTmp;
 	private volatile boolean interruptSleep = false;
 	private volatile boolean executorThreadWaiting = false;
 	private ExecutorThread executorThread;
 	
+	
 	// @tolerance in microsec (uses microsec as nanosec would imply a higher accuracy than available)
-	public YieldWaitScheduler(long tolerance) {
-		this.tolerance = TimeUnit.MICROSECONDS.toNanos(tolerance);
+	public YieldWaitScheduler(Settings settings) {
+		super(settings);
 	}
 	
 	
@@ -135,7 +138,7 @@ public class YieldWaitScheduler<E> implements Scheduler<E> {
 						break exit;
 				}
 				if (now() >= task.executionTime) { // execute now
-					warnIfDelayed(now() - task.executionTime, task);
+					warnIfDelayed(now() - task.executionTime);
 					if (task.notifyTarget != null)
 						task.notifyTarget.execute(task.attachment);
 					task.scheduleTarget.execute(task.attachment);
@@ -151,7 +154,7 @@ public class YieldWaitScheduler<E> implements Scheduler<E> {
 						if (interruptSleep)
 							interruptSleep = false;
 					}
-					warnIfDelayed(now() - task.executionTime, task);
+					warnIfDelayed(now() - task.executionTime);
 					if (task.notifyTarget != null)
 						task.notifyTarget.execute(task.attachment);
 					task.scheduleTarget.execute(task.attachment);
@@ -231,17 +234,6 @@ public class YieldWaitScheduler<E> implements Scheduler<E> {
 			}
 		}
 		return positionTmp;
-	}
-	
-	
-	private void warnIfDelayed(long unintendedDelay, QueueEntry task) {
-		if (unintendedDelay > tolerance)
-			System.err.println(
-					"warning: schedule executor more than " 
-					+((float)tolerance/1000000f) +"ms behind schedule (" 
-					+((float)unintendedDelay/1000000f) +"ms) for " 
-					+task.attachment
-				); 
 	}
 
 

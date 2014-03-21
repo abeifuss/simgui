@@ -9,13 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
@@ -28,10 +25,8 @@ import evaluation.simulator.gui.actionListeners.StopButtonAction;
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
 import evaluation.simulator.gui.customElements.SimConfigPanel;
 import evaluation.simulator.gui.customElements.SimHelpPanel;
-import evaluation.simulator.gui.helper.IOActions;
 import evaluation.simulator.gui.layout.frames.HelpFrame;
 import evaluation.simulator.gui.layout.frames.ToolFrame;
-import evaluation.simulator.gui.results.GnuplotPanel;
 import evaluation.simulator.gui.service.GuiService;
 
 /**
@@ -241,12 +236,12 @@ public class MainGui extends JFrame {
 	 * Close the GUI
 	 */
 	public void onClose() {
-		try {
+		/*try {
 			IOActions.cleanOutputFolder();
 		} catch (IOException e1) {
 			JOptionPane.showMessageDialog(null, "Could not clean up Output directory " + GnuplotPanel.outputFolder,
 					"Cleanup Error", JOptionPane.ERROR_MESSAGE);
-		}
+		}*/
 		MainGui.this.safeProperties();
 		System.exit(0);
 	}

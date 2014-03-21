@@ -29,6 +29,7 @@ import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
+import framework.core.interfaces.Layer4TransportClient;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
@@ -69,11 +70,11 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 
 	
 	@Override
-	public void setReferences(
-			Layer1NetworkClient layer1,
-			Layer2RecodingSchemeClient layer2, 
-			Layer3OutputStrategyClient layer3) {
+	public void setReferences(Layer1NetworkClient layer1,
+			Layer2RecodingSchemeClient layer2,
+			Layer3OutputStrategyClient layer3, Layer4TransportClient layer4) {
 		assert layer1 == this;
+		
 	}
 	
 	
@@ -93,7 +94,6 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 			try {Thread.sleep(5000);} catch (InterruptedException e1) {e1.printStackTrace();}
 			connect();
 		}
-		
 	}
 	
 	
@@ -152,6 +152,7 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 			}
 			if (mixInputStream.available() >= replyLength) {
 				byte[] message = Util.forceRead(mixInputStream, replyLength);
+				//System.out.println("cl received rep (l0-try): " +Util.toHex(message)); // TODO: remove
 				//System.out.println("habe empfangen auf layer 0 (" +anonNode.toString() +"): " +Util.md5(message));
 				replyLength = Util.NOT_SET;
 				return MixMessage.getInstanceReply(message);
@@ -173,6 +174,7 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 				assert (replyLength + 4) < replyBufferSize;
 			}
 			byte[] message = Util.forceRead(mixInputStream, replyLength);
+			//System.out.println("cl received rep (l0): " +Util.toHex(message)); // TODO: remove
 			//System.out.println("habe empfangen auf layer 0 (" +anonNode.toString() +"): " +Util.md5(message));
 			replyLength = Util.NOT_SET; 
 			return MixMessage.getInstanceReply(message);

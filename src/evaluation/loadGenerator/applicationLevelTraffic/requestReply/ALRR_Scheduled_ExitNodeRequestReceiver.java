@@ -25,6 +25,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import evaluation.loadGenerator.ExitNodeClientData;
 import evaluation.loadGenerator.ExitNodeRequestReceiver;
 import evaluation.loadGenerator.LoadGenerator;
 import framework.core.AnonNode;
@@ -35,7 +36,7 @@ import framework.core.util.IOTester;
 import framework.core.util.Util;
 
 
-public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestReceiver {
+public class ALRR_Scheduled_ExitNodeRequestReceiver extends ExitNodeRequestReceiver {
 
 	private AnonNode mix;
 	private ScheduledThreadPoolExecutor scheduler;
@@ -57,7 +58,8 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 	
 	
 	@Override
-	public void dataReceived(ClientData clientData, byte[] dataReceived) {
+	public void dataReceived(ExitNodeClientData clientData, byte[] dataReceived) {
+		//System.out.println("" +this +": received (mix): " +Util.toHex(dataReceived)); // TODO: remove
 		ALRR_ClientData client = (ALRR_ClientData)clientData;
 		byte[] clone;
 		if (LoadGenerator.VALIDATE_IO)
@@ -98,12 +100,12 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 	
 	
 	@Override
-	public ClientData createClientDataInstance(User user, StreamAnonSocketMix socket) {
-		return new ALRR_ClientData(user, socket);
+	public ExitNodeClientData createClientDataInstance(User user, StreamAnonSocketMix socket, Object callingInstance) {
+		return new ALRR_ClientData(user, socket, callingInstance);
 	}
 	
 	
-	private class ALRR_ClientData extends ClientData {
+	private class ALRR_ClientData extends ExitNodeClientData {
 		
 		ApplicationLevelMessage currentRequest = new ApplicationLevelMessage();
 		BasicOutputStreamMix outputStream;
@@ -112,8 +114,8 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 		private ByteBuffer leftOver;
 		
 		
-		public ALRR_ClientData(User user, StreamAnonSocketMix socket) {
-			super(user, socket);
+		public ALRR_ClientData(User user, StreamAnonSocketMix socket, Object callingInstance) {
+			super(user, socket, callingInstance);
 			if (mix.IS_DUPLEX) {
 				this.outputStream = (BasicOutputStreamMix)socket.getOutputStream();
 				this.replyTasks = new ConcurrentLinkedQueue<ApplicationLevelMessage>();
@@ -137,10 +139,11 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 			byte[] result = new byte[amount];
 			if (leftOver.remaining() >= amount) {
 				leftOver.get(result);
-			} else { // leftOver.remaining() < amount
+				} else { // leftOver.remaining() < amount
 				ByteBuffer resultBuffer = ByteBuffer.wrap(result);
-				if (leftOver.hasRemaining())
+				if (leftOver.hasRemaining()) {
 					resultBuffer.put(leftOver);
+				}
 				while(resultBuffer.hasRemaining()) {
 					ApplicationLevelMessage nextEntry;
 					nextEntry = replyTasks.remove();
@@ -225,6 +228,7 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 							byte[] payload = replyTask.getReplyData(payloadSize);
 							if (LoadGenerator.VALIDATE_IO)
 								IOTester.findInstance("reply-"+replyTask.clientId).addSendRecord(payload);
+							//System.out.println("" +this +": sending (reply (mix)): " +Util.toHex(payload)); // TODO: remove
 							replyTask.socket.getOutputStream().write(payload);
 							replyTask.socket.getOutputStream().flush();
 							writeCtr++;
@@ -240,4 +244,5 @@ public class ALRR_Scheduled_ExitNodeRequestReceiver implements ExitNodeRequestRe
 		}
 	
 	}
+
 }

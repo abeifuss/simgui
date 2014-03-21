@@ -28,7 +28,7 @@ import framework.core.AnonNode;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
 import framework.core.socket.socketInterfaces.StreamAnonSocket;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 import framework.core.util.Util;
 
 
@@ -87,7 +87,7 @@ public class AFAP_RR_LoadGenerator_modified extends AFAP_LoadGenerator {
 			try {
 				// create and connect sockets:
 				System.out.println("LOAD_GENERATOR (AFAP): creating " +sockets.length +" connections...");
-				CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
+				CommunicationDirection cm = client.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_SENDER;
 				for (int i=0; i<sockets.length; i++) {
 					sockets[i] = client.createStreamSocket(cm, client.ROUTING_MODE != RoutingMode.CASCADE);
 					sockets[i].connect(settings.getPropertyAsInt("SERVICE_PORT1"));

@@ -21,8 +21,7 @@ import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
-import framework.core.message.Reply;
-import framework.core.message.Request;
+import framework.core.interfaces.Layer4TransportClient;
 
 
 public class ClientPlugIn extends Implementation implements Layer3OutputStrategyClient {
@@ -35,12 +34,6 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 
 	}
 
-	@Override
-	public void setReferences(Layer1NetworkClient layer1,
-			Layer2RecodingSchemeClient layer2, Layer3OutputStrategyClient layer3) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void initialize() {
@@ -50,18 +43,6 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 
 	@Override
 	public void begin() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Reply receiveReply() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void sendMessage(Request request) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -85,13 +66,13 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 	}
 
 	@Override
-	public int getMaxSizeOfNextRequest() {
+	public int getMaxSizeOfNextWrite() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getMaxSizeOfNextReply() {
+	public int getMaxSizeOfNextReceive() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -103,9 +84,38 @@ public class ClientPlugIn extends Implementation implements Layer3OutputStrategy
 	}
 
 	@Override
-	public int availableReplyPayload() {
+	public int availableReplyData() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void setReferences(Layer1NetworkClient layer1,
+			Layer2RecodingSchemeClient layer2,
+			Layer3OutputStrategyClient layer3, Layer4TransportClient layer4) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public byte[] receive() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void write(byte[] data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void write(byte[] data, int destPseudonym) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

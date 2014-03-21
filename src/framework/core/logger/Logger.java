@@ -35,8 +35,6 @@ public class Logger {
 		
 		if (!initDone) {
 			try {
-				// Alex: This will throw an exception!
-				// TODO: create file before using
 				PrintStream filePrintStream = new PrintStream(new FileOutputStream(OUTPUT_FILE));
 				PrintStream duplicateOutPrintStream = new DuplicatePrintStream(System.out, filePrintStream, false);
 				PrintStream duplicateErrPrintStream = new DuplicatePrintStream(System.err, filePrintStream, true);
@@ -44,7 +42,7 @@ public class Logger {
 				System.setErr(duplicateErrPrintStream);
 
 			} catch (FileNotFoundException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 			}
 			initDone = true;
 		}

@@ -44,7 +44,7 @@ public class MPL_FixedScheduleLoadGenerator extends FixedScheduleLoadGenerator {
 	// TODO: use more than one scheduler (distribute events round robin-like to schedulers unless two or more events belong to the same client-socket; in that case, schedule all for the same scheduler as sending through a single socket cant be parallelized)
 	public MPL_FixedScheduleLoadGenerator(LoadGenerator owner) {
 		super(owner);
-		this.scheduler = new ThreadPoolScheduler<MPL_ClientWrapper>(settings.getPropertyAsInt("TOLERANCE")); // TODO: offer further schedulers
+		this.scheduler = new ThreadPoolScheduler<MPL_ClientWrapper>(settings); // TODO: offer further schedulers
 		this.scheduleWriterThread = new ScheduleWriterThread();
 		
 		// create suiting ClientTrafficScheduleWriter:

@@ -17,6 +17,7 @@
  */
 package framework.core.message;
 
+import framework.core.AnonNode;
 import framework.core.userDatabase.User;
 
 
@@ -28,5 +29,9 @@ public interface ExternalMessage {
 	public void setOwner(User user);
 	public byte[] getByteMessage();
 	public void setByteMessage(byte[] byteMessage);
+	public enum DummyStatus {DUMMY, NO_DUMMY, UNKNOWN};
+	public DummyStatus getDummyStatus();
+	public void setDummyStatus(DummyStatus dummyStatus);
+	public boolean isFinalHop(AnonNode anonNode);
 	
 }

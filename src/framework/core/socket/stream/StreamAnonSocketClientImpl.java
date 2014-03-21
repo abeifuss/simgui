@@ -36,7 +36,7 @@ public class StreamAnonSocketClientImpl extends AdaptiveAnonSocket implements St
 		
 	public StreamAnonSocketClientImpl(
 			AnonNode owner,
-			CommunicationMode communicationMode,
+			CommunicationDirection communicationMode,
 			boolean isFreeRoute
 			) {
 		super(	owner, 
@@ -51,12 +51,12 @@ public class StreamAnonSocketClientImpl extends AdaptiveAnonSocket implements St
 
 	@Override
 	public void connect(int destinationPort) throws IOException {
-		layer3.connect();
+		layer4.connect();
 		
 		this.destinationPort = destinationPort;
-		this.outputStream = new BasicOutputStreamClient(this, layer3);
+		this.outputStream = new BasicOutputStreamClient(this, layer4);
 		if (isDuplex)
-			this.inputStream =  new BasicInputStreamClient(owner, layer3);
+			this.inputStream =  new BasicInputStreamClient(owner, layer4);
 		this.isConnected = true;
 	}
 
@@ -65,20 +65,20 @@ public class StreamAnonSocketClientImpl extends AdaptiveAnonSocket implements St
 	public void connect(int destinationPseudonym, int destinationPort) throws IOException {
 		if (!isFreeRoute)
 			throw new RuntimeException("this is a fixed route socket; you cannot specify a destination address; use \"connect(destinationPort)\" instead"); 
-		layer3.connect(destinationPseudonym);
+		layer4.connect(destinationPseudonym);
 		
 		this.destinationPseudonym = destinationPseudonym;
 		this.destinationPort = destinationPort;
-		this.outputStream = new BasicOutputStreamClient(this, layer3);
+		this.outputStream = new BasicOutputStreamClient(this, layer4);
 		if (isDuplex)
-			this.inputStream =  new BasicInputStreamClient(owner, layer3);
+			this.inputStream =  new BasicInputStreamClient(owner, layer4);
 		this.isConnected = true;
 	}
 
 
 	@Override
 	public void disconnect() throws IOException {
-		layer3.disconnect();
+		layer4.disconnect();
 		this.isConnected = false;
 		this.outputStream.close();
 		this.outputStream = null;

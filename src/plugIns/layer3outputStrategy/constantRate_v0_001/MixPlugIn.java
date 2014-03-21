@@ -29,6 +29,7 @@ import framework.core.interfaces.Layer3OutputStrategyMix;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
+import framework.core.userDatabase.User;
 
 
 public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix {
@@ -70,6 +71,10 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	}
 
 	
+	// TODO: requires a resizeable batch
+	// TODO: adjust batch size after each output
+	// TODO: make sure the minimum batch size is 1 (currently it can be 0)
+	// TODO: make sure that the last mix will always send back a reply for each client
 	public class SimplexSynchronousBatch implements Callable<SimplexSynchronousBatch> {
 
 		private boolean isRequestBatch;
@@ -125,14 +130,23 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 
 
 	@Override
-	public int getMaxSizeOfNextReply() {
+	public int getMaxSizeOfNextWrite() {
 		return super.recodingLayerMix.getMaxSizeOfNextReply();
 	}
 
 
 	@Override
-	public int getMaxSizeOfNextRequest() {
+	public int getMaxSizeOfNextRead() {
 		return super.recodingLayerMix.getMaxSizeOfNextRequest();
+	}
+
+
+	@Override
+	public void write(User user, byte[] data) {
+		Reply reply = MixMessage.getInstanceReply(data, user); 
+		reply.isFirstReplyHop = true;
+		transportLayerMix.addLayer4Header(reply);
+		anonNode.forwardToLayer2(reply);
 	}
 
 }

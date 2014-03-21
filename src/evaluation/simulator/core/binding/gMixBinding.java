@@ -52,6 +52,7 @@ public class gMixBinding extends Thread {
 	 */
 	public void setParams(String[] configFile) {
 		this.params = new CommandLineParameters(configFile);
+		this.params.useSimGui = true;
 	}
 
 	/**
@@ -59,10 +60,6 @@ public class gMixBinding extends Thread {
 	 */
 	public void requestStop() {
 		stop = true;
-
-		if (gMixSim != null) {
-			gMixSim.requestStop();
-		}
 	}
 
 	/**

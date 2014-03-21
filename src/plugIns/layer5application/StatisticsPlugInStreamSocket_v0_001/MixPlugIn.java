@@ -23,7 +23,8 @@ import java.io.InputStream;
 import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer5ApplicationMix;
 import framework.core.routing.RoutingMode;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
+import framework.core.socket.socketInterfaces.NoneBlockingAnonSocketOptions.IO_Mode;
 import framework.core.socket.socketInterfaces.StreamAnonServerSocket;
 import framework.core.socket.socketInterfaces.StreamAnonSocketMix;
 import framework.core.socket.stream.BasicOutputStreamMix;
@@ -51,8 +52,9 @@ public class MixPlugIn extends Implementation implements Layer5ApplicationMix {
 	public void begin() {
 		if (anonNode.IS_LAST_MIX) {
 			System.out.println("StatisticsPlugInStreamSocket_v0_001 loaded"); 
-			CommunicationMode cm = anonNode.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_RECEIVER;
-			this.serverSocket = anonNode.createStreamAnonServerSocket(settings.getPropertyAsInt("SERVICE_PORT1"), cm, anonNode.ROUTING_MODE != RoutingMode.CASCADE);
+			CommunicationDirection cd = anonNode.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_RECEIVER;
+			IO_Mode ioMode = IO_Mode.BLOCKING;
+			this.serverSocket = anonNode.createStreamAnonServerSocket(settings.getPropertyAsInt("SERVICE_PORT1"), cd, ioMode, anonNode.ROUTING_MODE != RoutingMode.CASCADE);
 			new AcceptorThread().start(); 
 		}
 	}

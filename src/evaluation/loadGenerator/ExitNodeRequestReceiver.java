@@ -19,26 +19,17 @@ package evaluation.loadGenerator;
 
 import framework.core.socket.socketInterfaces.StreamAnonSocketMix;
 import framework.core.userDatabase.User;
-import framework.core.util.Util;
 
 
-public interface ExitNodeRequestReceiver {
+public abstract class ExitNodeRequestReceiver {
 
-	public void dataReceived(ClientData client, byte[] dataReceived);
-	public ClientData createClientDataInstance(User user, StreamAnonSocketMix socket);
+	public abstract void dataReceived(ExitNodeClientData client, byte[] dataReceived);
 	
+	public abstract ExitNodeClientData createClientDataInstance(User user, StreamAnonSocketMix socket, Object callingInstance);
+
 	
-	public class ClientData {
-		
-		public int clientId = Util.NOT_SET;
-		public User user;
-		public StreamAnonSocketMix socket;
-		
-		
-		public ClientData(User user, StreamAnonSocketMix socket) {
-			this.user = user;
-			this.socket = socket;
-		}
+	public ExitNodeClientData createClientDataInstance(User user, StreamAnonSocketMix socket) {
+		return createClientDataInstance(user, socket, socket);
 	}
-
+	
 }

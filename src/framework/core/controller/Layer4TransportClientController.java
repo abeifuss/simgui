@@ -25,7 +25,7 @@ import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
 
-public class Layer4TransportClientController extends Controller implements Layer4TransportClient {
+public class Layer4TransportClientController extends Controller {
 
 	
 	public Layer4TransportClientController(AnonNode anonNode,
@@ -37,14 +37,18 @@ public class Layer4TransportClientController extends Controller implements Layer
 	
 	@Override
 	public void instantiateSubclass() {
-		/*LocalClassLoader.instantiateImplementation(
+		// not needed for client-side controllers
+	}
+
+
+	public Layer4TransportClient loadClientPluginInstance() {
+		return LocalClassLoader.instantiateImplementation(
 				"plugIns.layer4transport." +settings.getProperty("LAYER_4_PLUG-IN_CLIENT"), 
 				"ClientPlugIn.java",
 				this,
 				Layer4TransportClient.class
-				);*/
+				);
 	}
-
 	
 
 }

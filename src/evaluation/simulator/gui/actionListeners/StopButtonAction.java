@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.gui.customElements.ConfigChooserPanel;
-import evaluation.simulator.gui.customElements.PluginPanel;
 import evaluation.simulator.gui.customElements.ProgressWorker;
 import evaluation.simulator.gui.service.ProgressRegistry;
 

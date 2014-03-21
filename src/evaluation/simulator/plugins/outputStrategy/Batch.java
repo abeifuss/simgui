@@ -86,7 +86,7 @@ public class Batch extends OutputStrategyImpl {
 
 		super(mix, simulator);
 		
-		int batchSize = Simulator.settings.getPropertyAsInt("BASIC_BATCH_BATCH_SIZE");
+		batchSize = Simulator.settings.getPropertyAsInt("BASIC_BATCH_BATCH_SIZE");
 		this.requestBatch = new SimplexBatch(batchSize, true);
 		this.replyBatch = new SimplexBatch(batchSize, false);
 

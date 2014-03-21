@@ -25,6 +25,7 @@ import framework.core.interfaces.Layer3OutputStrategyMix;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
+import framework.core.userDatabase.User;
 
 
 //Kesdogan et. al. 1998: Stop-and-Go MIXes: Providing Probabilistic Anonymity in an Open System
@@ -79,13 +80,13 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 	
 	
 	@Override
-	public int getMaxSizeOfNextReply() {
+	public int getMaxSizeOfNextWrite() {
 		return super.recodingLayerMix.getMaxSizeOfNextReply();
 	}
 
 
 	@Override
-	public int getMaxSizeOfNextRequest() {
+	public int getMaxSizeOfNextRead() {
 		return super.recodingLayerMix.getMaxSizeOfNextRequest();
 	}
 	
@@ -109,6 +110,15 @@ public class MixPlugIn extends Implementation implements Layer3OutputStrategyMix
 			}
 		}
 			
+	}
+
+
+	@Override
+	public void write(User user, byte[] data) {
+		Reply reply = MixMessage.getInstanceReply(data, user); 
+		reply.isFirstReplyHop = true;
+		transportLayerMix.addLayer4Header(reply);
+		anonNode.forwardToLayer2(reply);
 	}
 	
 }

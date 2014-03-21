@@ -38,6 +38,7 @@ public class GnuplotPanel extends JPanel {
 	 * @param gnuplotResultFileName
 	 *            path to generated output file
 	 */
+	@SuppressWarnings({ "static-access", "deprecation" })
 	public GnuplotPanel(final String gnuplotResultFileName) {
 		this.gnuplotResultFileName = gnuplotResultFileName;
 		// BufferedImage resultsDiagram = null;

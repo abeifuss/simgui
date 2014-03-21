@@ -32,18 +32,21 @@ public class BasicMixMessage extends MixMessage {
 			position = 1,
 			inject = "1:RECODING_SCHEME,Recoding Scheme")
 	private int requestPlayloadSize;
+	
 	@IntSimulationProperty(
 			name = "Mix reply playload size (byte)",
 			key = "MIX_REPLY_PAYLOAD_SIZE",
 			position = 2,
 			inject = "2:RECODING_SCHEME,Recoding Scheme")
 	private int replyPlayloadSize;
+	
 	@IntSimulationProperty(
 			name = "Mix request header size (byte)",
 			key = "MIX_REQUEST_HEADER_SIZE",
 			position = 3,
 			inject = "3:RECODING_SCHEME,Recoding Scheme")
 	private int requestHeaderSize;
+	
 	@IntSimulationProperty(
 			name = "Mix reply header size (byte)",
 			key = "MIX_REPLY_HEADER_SIZE",
@@ -66,7 +69,11 @@ public class BasicMixMessage extends MixMessage {
 			boolean isDummy) {
 
 		super(isRequest, source, destination, owner, creationTime, isDummy, null);
-		this.maxPayloadSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
+		// this.maxPayloadSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
+		requestPlayloadSize = Simulator.settings.getPropertyAsInt("MIX_REQUEST_PAYLOAD_SIZE");
+		replyPlayloadSize = Simulator.settings.getPropertyAsInt("MIX_REPLY_PAYLOAD_SIZE");
+		this.maxPayloadSize = isRequest ? requestPlayloadSize : replyPlayloadSize;
+		
 		this.headerSize = isRequest ? Simulator.settings.getPropertyAsInt("MIX_REQUEST_HEADER_SIZE") : Simulator.settings.getPropertyAsInt("MIX_REPLY_HEADER_SIZE");
 		this.totalSize = this.maxPayloadSize + this.headerSize;
 		this.payloadObjectsContained = new Vector<PayloadObject>(10,10); // TODO calculate instead of fixed 10,10

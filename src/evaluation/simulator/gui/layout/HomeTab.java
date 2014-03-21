@@ -1,6 +1,5 @@
 package evaluation.simulator.gui.layout;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,7 +7,6 @@ import java.awt.GridBagLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  * The Welcome Tab of gMix GUI
@@ -23,8 +21,6 @@ public class HomeTab extends JPanel {
 	 * Default Constructor
 	 */
 	public HomeTab() {
-
-		Color bg = this.getBackground();
 
 		JLabel welcomeLabel = new JLabel("Welcome to gMixSim");
 		welcomeLabel.setFont(new Font("arial", 1, 35));

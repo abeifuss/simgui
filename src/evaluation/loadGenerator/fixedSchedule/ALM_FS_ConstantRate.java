@@ -34,7 +34,7 @@ import framework.core.AnonNode;
 import framework.core.config.Settings;
 import framework.core.launcher.ToolName;
 import framework.core.routing.RoutingMode;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 
 
 public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<ApplicationLevelMessage> {
@@ -77,7 +77,7 @@ public class ALM_FS_ConstantRate implements ClientTrafficScheduleWriter<Applicat
 		this.scheduleTarget = new ALRR_BasicWriter(this, client.IS_DUPLEX);
 		// determine number of clients and lines; create ClientWrapper objects etc
 		this.clientsArray = new ALRR_ClientWrapper[numberOfClients];
-		CommunicationMode cm = client.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
+		CommunicationDirection cm = client.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_SENDER;
 		int port = settings.getPropertyAsInt("SERVICE_PORT1");
 		System.out.println("LOAD_GENERATOR: connecting clients..."); 
 		for (int i=0; i<numberOfClients; i++) {

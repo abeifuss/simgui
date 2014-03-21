@@ -18,85 +18,59 @@
 package plugIns.layer5application.loadGeneratorPlugIn_v0_001;
 
 import java.io.IOException;
-import java.util.Vector;
 
+import evaluation.loadGenerator.ExitNodeClientData;
 import evaluation.loadGenerator.ExitNodeRequestReceiver;
 import evaluation.loadGenerator.LoadGenerator;
-import evaluation.loadGenerator.ExitNodeRequestReceiver.ClientData;
 import framework.core.AnonNode;
+import framework.core.controller.Layer5ApplicationMixController;
+import framework.core.message.Request;
 import framework.core.routing.RoutingMode;
-import framework.core.socket.socketInterfaces.StreamAnonServerSocket;
+import framework.core.socket.socketInterfaces.IO_EventObserver_Stream;
+import framework.core.socket.socketInterfaces.NoneBlockingAnonSocketOptions.IO_Mode;
 import framework.core.socket.socketInterfaces.StreamAnonSocketMix;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 import framework.core.util.Util;
 
 
-public class ApplicationLevelHandler {
+public class ApplicationLevelHandler implements IO_EventObserver_Stream {
 
-	private StreamAnonServerSocket serverSocket;
-	private Vector<ClientData> clients;
-	private Vector<ClientData> newClients;
-	private RequestThread requestThread;
 	private ExitNodeRequestReceiver requestReceiver;
+	private Layer5ApplicationMixController owner;
 	
 	
 	public ApplicationLevelHandler(AnonNode owner) {
 		System.out.println("ApplicationLevelHandler started"); 
-		this.clients = new Vector<ClientData>(owner.EXPECTED_NUMBER_OF_USERS);
-		this.newClients = new Vector<ClientData>(50);
-		this.requestThread = new RequestThread();
-		CommunicationMode cm = owner.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_RECEIVER;
-		this.serverSocket = owner.createStreamAnonServerSocket(owner.getSettings().getPropertyAsInt("SERVICE_PORT1"), cm, owner.ROUTING_MODE != RoutingMode.CASCADE);
+		this.owner = owner.getApplicationLayerControllerMix();
+		CommunicationDirection cd = owner.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_RECEIVER;
+		IO_Mode ioMode = IO_Mode.OBSERVER_PATTERN;
+		owner.createStreamAnonServerSocket(owner.getSettings().getPropertyAsInt("SERVICE_PORT1"), cd, ioMode, this, owner.ROUTING_MODE != RoutingMode.CASCADE);
 		this.requestReceiver = LoadGenerator.createExitNodeRequestReceiver(owner);
-		new AcceptorThread().start(); 
-		this.requestThread.start(); 
 	}
 	
 	
-	private class AcceptorThread extends Thread {
-
-		@Override
-		public void run() {
-			while (true) {
-				StreamAnonSocketMix newSocket = serverSocket.accept();
-				ClientData client = requestReceiver.createClientDataInstance(newSocket.getUser(), newSocket);
-				synchronized(newClients) {
-					newClients.add(client);
-				}
-			}	
-		}
+	@Override
+	public void incomingConnection(StreamAnonSocketMix socket) {
+		requestReceiver.createClientDataInstance(socket.getUser(), socket, owner);
 	}
 
 	
-	private class RequestThread extends Thread {
-
-		@Override
-		public void run() {
-			while (true) {
-				// add new clients
-				synchronized(newClients) {
-					for (ClientData client: newClients)
-						clients.add(client);
-				}
-				// read data from sockets
-				int readCtr = 0;
-				for (ClientData client: clients) {
-					try {
-						int available = client.socket.getInputStream().available();
-						if (available > 0) {
-							readCtr++;
-							byte[] dataReceived = Util.forceRead(client.socket.getInputStream(), available);
-							assert dataReceived.length == available;
-							requestReceiver.dataReceived(client, dataReceived);
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-						continue;
-					}
-				}
-				if (readCtr == 0)
-					try {Thread.sleep(1);} catch (InterruptedException e) {e.printStackTrace();} // TODO: wait-notify
-			}
+	@Override
+	public void dataAvailable(StreamAnonSocketMix socket) {
+		try {
+			ExitNodeClientData client = socket.getUser().getAttachment(owner, ExitNodeClientData.class);
+			int available = socket.getInputStream().available();
+			byte[] dataReceived = Util.forceRead(socket.getInputStream(), available);
+			assert dataReceived.length == available;
+			requestReceiver.dataReceived(client, dataReceived);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+	
+	
+	@Override
+	public void incomingRequest(Request request) {
+		throw new RuntimeException("this is a stream socket");  
 	}
 }

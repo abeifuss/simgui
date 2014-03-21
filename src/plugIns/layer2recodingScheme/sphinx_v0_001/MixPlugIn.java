@@ -22,6 +22,7 @@ import framework.core.interfaces.Layer2RecodingSchemeMix;
 import framework.core.message.MixMessage;
 import framework.core.message.Reply;
 import framework.core.message.Request;
+import framework.core.message.ExternalMessage.DummyStatus;
 import framework.core.routing.RoutingMode;
 import framework.core.userDatabase.User;
 
@@ -103,6 +104,7 @@ public class MixPlugIn extends Implementation implements Layer2RecodingSchemeMix
 			return null;
 		Request request = MixMessage.getInstanceRequest(new byte[0]);
 		request.setOwner(user);
+		request.setDummyStatus(DummyStatus.DUMMY);
 		request = messageCreator.applyLayeredEncryption(request);
 		return request;
 	}

@@ -24,7 +24,7 @@ import framework.core.socket.stream.BasicOutputStreamMix;
 import framework.core.userDatabase.User;
 
 
-public class Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceiver {
+public class Echo_ExitNodeRequestReceiver extends ExitNodeRequestReceiver {
 
 	private AnonNode mix;
 	
@@ -37,7 +37,7 @@ public class Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceiver {
 	
 	
 	@Override
-	public void dataReceived(ClientData clientData, byte[] dataReceived) {
+	public void dataReceived(ExitNodeClientData clientData, byte[] dataReceived) {
 		Echo_ClientData client = (Echo_ClientData)clientData;
 		if (mix.IS_DUPLEX) {
 			try {
@@ -52,18 +52,18 @@ public class Echo_ExitNodeRequestReceiver implements ExitNodeRequestReceiver {
 	
 	
 	@Override
-	public ClientData createClientDataInstance(User user, StreamAnonSocketMix socket) {
-		return new Echo_ClientData(user, socket);
+	public ExitNodeClientData createClientDataInstance(User user, StreamAnonSocketMix socket, Object callingInstance) {
+		return new Echo_ClientData(user, socket, callingInstance);
 	}
 	
 	
-	private class Echo_ClientData extends ClientData {
+	private class Echo_ClientData extends ExitNodeClientData {
 		
 		BasicOutputStreamMix outputStream;
 		
 		
-		public Echo_ClientData(User user, StreamAnonSocketMix socket) {
-			super(user, socket);
+		public Echo_ClientData(User user, StreamAnonSocketMix socket, Object callingInstance) {
+			super(user, socket, callingInstance);
 			if (mix.IS_DUPLEX)
 				this.outputStream = (BasicOutputStreamMix)socket.getOutputStream();
 		}

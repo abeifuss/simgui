@@ -108,7 +108,7 @@ public class PrevMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 					}
 					byte[] message = Util.forceRead(previousMixInputStream, messageLength);
 					Request request = MixMessage.getInstanceRequest(message, user);
-					//System.out.println(mix +" received this message (ciphertext): " +Util.md5(request.getByteMessage())); // TODO
+					//System.out.println(this +" received this message (ciphertext): " +Util.md5(request.getByteMessage())); // TODO
 					anonNode.putInRequestInputQueue(request);			
 				} catch (IOException e) { // connection is lost
 					System.out.println(anonNode +" connection to previous mix lost"); 
@@ -179,7 +179,8 @@ public class PrevMixHandler_TCP_multiplexed_sync extends SubImplementation imple
 							continue;
 						}	
 						//System.out.println("id: " +id +", len: " +replies[i].getByteMessage().length); 
-						assert replies[i].getByteMessage().length > 0;
+						//assert replies[i].getByteMessage().length > 0;
+						assert replies[i].getByteMessage().length > 0: replies[i].getDummyStatus();
 						previousMixOutputStream.write(Util.intToByteArray(id));
 						previousMixOutputStream.write(Util.intToByteArray(replies[i].getByteMessage().length));
 						previousMixOutputStream.write(replies[i].getByteMessage());

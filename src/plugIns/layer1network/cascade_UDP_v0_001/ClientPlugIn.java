@@ -26,6 +26,7 @@ import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer1NetworkClient;
 import framework.core.interfaces.Layer2RecodingSchemeClient;
 import framework.core.interfaces.Layer3OutputStrategyClient;
+import framework.core.interfaces.Layer4TransportClient;
 import framework.core.message.Reply;
 import framework.core.message.Request;
 import framework.core.routing.MixList;
@@ -60,7 +61,8 @@ public class ClientPlugIn extends Implementation implements Layer1NetworkClient 
 	public void setReferences(
 			Layer1NetworkClient layer1,
 			Layer2RecodingSchemeClient layer2, 
-			Layer3OutputStrategyClient layer3) {
+			Layer3OutputStrategyClient layer3,
+			Layer4TransportClient layer4) {
 		assert layer1 == this;
 	}
 	

@@ -139,9 +139,15 @@ public class ExtendedTransaction extends Transaction {
 			assert endsOfReplies[endsOfReplies.length-1] >= endOfRequest;
 			//System.out.println(endsOfReplies[endsOfReplies.length-1] + " - " +endOfRequest); 
 			super.distinctReplyDelays = new int[startsOfReplies.length];
-			super.distinctReplyDelays[0] = (int)(startsOfReplies[0] - startOfRequest); // time delta between the start of sending the first request (= timestamp first request packet) and the the start of the first reply reached the client (timestamp of first reply packet)
-			for (int i=1; i<super.distinctReplyDelays.length; i++)
-				super.distinctReplyDelays[i] = (int)(startsOfReplies[i] - endsOfReplies[i-1]); // time delta between the ith reply is fully received (= timestamp of last reply packet for reply i)  and the the start of the i-1th reply reached the client (timestamp of first i-1 reply packet)
+			super.distinctSimplexWithFeedbackReplyDelays = new int[startsOfReplies.length];
+			//super.distinctReplyDelays[0] = (int)(startsOfReplies[0] - startOfRequest); // time delta between the start of sending the first request (= timestamp first request packet) and the the start of the first reply reached the client (timestamp of first reply packet)
+			//for (int i=1; i<super.distinctReplyDelays.length; i++)
+			//	super.distinctReplyDelays[i] = (int)(startsOfReplies[i] - endsOfReplies[i-1]); // time delta between the ith reply is fully received (= timestamp of last reply packet for reply i)  and the the start of the i-1th reply reached the client (timestamp of first i-1 reply packet)
+			for (int i=0; i<super.distinctReplyDelays.length; i++) {
+				super.distinctReplyDelays[i] = (int)(startsOfReplies[i] - startOfRequest);
+				long last = (i == 0) ? startOfRequest : endsOfReplies[i-1];
+				super.distinctSimplexWithFeedbackReplyDelays[i] = (int)(endsOfReplies[i] - last);
+			}
 		}
 	}
 	

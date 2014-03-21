@@ -61,6 +61,7 @@ public class ALRR_ReplyReceiver extends Thread {
 						byte[] arrivedData = new byte[len];
 						int read = cw.inputStream.read(arrivedData);
 						assert read == arrivedData.length: ""+read; // assured by mix io-streams
+						System.out.println("" +this +": received (client): " +Util.toHex(arrivedData)); // TODO: remove
 						if (LoadGenerator.VALIDATE_IO)
 							IOTester.findInstance("reply-"+cw.identifier).addReceiveRecord(arrivedData);
 						//if (read != arrivedData.length)

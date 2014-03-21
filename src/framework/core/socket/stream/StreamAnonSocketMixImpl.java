@@ -41,7 +41,7 @@ public class StreamAnonSocketMixImpl extends AdaptiveAnonSocket implements Strea
 			User user,
 			AnonNode owner,
 			int endToEndPseudonym,
-			CommunicationMode communicationMode,
+			CommunicationDirection communicationMode,
 			boolean isFreeRoute
 			) {
 		super(	owner, 

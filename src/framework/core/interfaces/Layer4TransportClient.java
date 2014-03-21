@@ -18,6 +18,17 @@
 package framework.core.interfaces;
 
 
-public interface Layer4TransportClient extends ArchitectureInterface {
+public interface Layer4TransportClient extends ArchitectureInterface, ClientSocketReferences {
 
+	public byte[] receive();
+	public void write(byte[] data);
+	public void write(byte[] data, int destPseudonym);
+	public void connect();
+	public void connect(int destPseudonym);
+	public void disconnect();
+	public int getMaxSizeOfNextWrite();
+	public int getMaxSizeOfNextReply();
+	public int availableReplies();
+	public int availableReplyPayload();
+	
 }

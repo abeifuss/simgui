@@ -21,12 +21,18 @@ import framework.core.AnonNode;
 import framework.core.clock.Clock;
 import framework.core.config.Settings;
 import framework.core.interfaces.Layer4TransportMix;
+import framework.core.message.Reply;
+import framework.core.message.Request;
+import framework.core.userDatabase.User;
 import framework.core.userDatabase.UserDatabase;
 import framework.infoService.InfoServiceClient;
 
 
 public class Layer4TransportMixController extends Controller implements Layer4TransportMix {
 
+	
+	private Layer4TransportMix implementation;
+	
 	
 	public Layer4TransportMixController(AnonNode anonNode, Settings settings,
 			UserDatabase userDatabase, Clock clock,
@@ -37,7 +43,7 @@ public class Layer4TransportMixController extends Controller implements Layer4Tr
 	
 	@Override
 	public void instantiateSubclass() {
-		/*LocalClassLoader.instantiateImplementation(
+		this.implementation = LocalClassLoader.instantiateImplementation(
 				"plugIns.layer4transport." +settings.getProperty("LAYER_4_PLUG-IN_MIX"), 
 				"MixPlugIn.java",
 				this,
@@ -45,7 +51,43 @@ public class Layer4TransportMixController extends Controller implements Layer4Tr
 				);
 		settings.addProperties("./src/plugIns/layer4transport/" 
 				+settings.getProperty("LAYER_4_PLUG-IN_MIX") 
-				+"/PlugInSettings.txt");*/
+				+"/PlugInSettings.txt");
+	}
+
+
+	@Override
+	public void forwardRequest(Request request) {
+		this.implementation.forwardRequest(request);
+	}
+
+
+	@Override
+	public void write(User user, byte[] data) {
+		this.implementation.write(user, data);
+	}
+	
+
+	@Override
+	public Reply addLayer4Header(Reply reply) {
+		return this.implementation.addLayer4Header(reply);
+	}
+
+
+	@Override
+	public int getSizeOfLayer4Header() {
+		return this.implementation.getSizeOfLayer4Header();
+	}
+
+
+	@Override
+	public int getMaxSizeOfNextWrite() {
+		return this.implementation.getMaxSizeOfNextWrite();
+	}
+
+
+	@Override
+	public int getMaxSizeOfNextRead() {
+		return this.implementation.getMaxSizeOfNextRead();
 	}
 
 

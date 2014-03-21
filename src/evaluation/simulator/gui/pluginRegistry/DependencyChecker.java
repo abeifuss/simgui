@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import evaluation.simulator.annotations.property.Requirement;
 import evaluation.simulator.annotations.property.SimProp;
-import evaluation.simulator.conf.service.UserConfigService;
 
 public class DependencyChecker {
 

@@ -49,13 +49,13 @@ public class Server extends AbstractServer {
 					Transaction at = message.getPayload();
 					int[] replyDelays = at.getDistinctReplyDelays();
 					int[] replySizes = at.getDistinctReplySizes();
-					int sumOfDelays = 0;
+					//int sumOfDelays = 0;
 					for (int i=0; i<replySizes.length; i++) {
-						sumOfDelays += replyDelays[i];
+						//sumOfDelays += replyDelays[i];
 						EndToEndMessage reply = message.createReplyForThisMessage(at, replySizes[i]);
 						assert reply.transportMessage.hasNextFragment();
 						//System.out.println("server: scheduling reply for t=" +(Simulator.getNow() + sumOfDelays) +" (transactionId: " +at.getTransactionId() +")"); 
-						sendReplyIn(sumOfDelays, reply);
+						sendReplyIn(replyDelays[i], reply);
 					} 
 				}
 			} else { // no reply

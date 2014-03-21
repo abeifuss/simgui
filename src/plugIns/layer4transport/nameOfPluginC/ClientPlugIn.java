@@ -18,6 +18,9 @@
 package plugIns.layer4transport.nameOfPluginC;
 
 import framework.core.controller.Implementation;
+import framework.core.interfaces.Layer1NetworkClient;
+import framework.core.interfaces.Layer2RecodingSchemeClient;
+import framework.core.interfaces.Layer3OutputStrategyClient;
 import framework.core.interfaces.Layer4TransportClient;
 
 
@@ -39,6 +42,74 @@ public class ClientPlugIn extends Implementation implements Layer4TransportClien
 
 	@Override
 	public void begin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setReferences(Layer1NetworkClient layer1,
+			Layer2RecodingSchemeClient layer2,
+			Layer3OutputStrategyClient layer3, Layer4TransportClient layer4) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void connect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void connect(int destPseudonym) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getMaxSizeOfNextWrite() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMaxSizeOfNextReply() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int availableReplies() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int availableReplyPayload() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public byte[] receive() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void write(byte[] data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void write(byte[] data, int destPseudonym) {
 		// TODO Auto-generated method stub
 		
 	}

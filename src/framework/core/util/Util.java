@@ -63,6 +63,7 @@ public final class Util {
 	
 	
 	public static final int NOT_SET =-222222222;
+	public static final short NOT_SETs = -2222;
 	private static SecureRandom random = new SecureRandom();
 	
 	

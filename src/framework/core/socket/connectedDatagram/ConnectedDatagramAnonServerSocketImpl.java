@@ -26,6 +26,8 @@ import framework.core.message.Request;
 import framework.core.socket.socketInterfaces.AdaptiveAnonServerSocket;
 import framework.core.socket.socketInterfaces.ConnectedDatagramAnonServerSocket;
 import framework.core.socket.socketInterfaces.ConnectedDatagramAnonSocketMix;
+import framework.core.socket.socketInterfaces.IO_EventObserver;
+import framework.core.socket.socketInterfaces.IO_EventObserver_ConnectedDatagram;
 import framework.core.util.Util;
 
 
@@ -39,7 +41,9 @@ public class ConnectedDatagramAnonServerSocketImpl extends AdaptiveAnonServerSoc
 			AnonNode owner,
 			int bindPseudonym,
 			int bindPort,
-			CommunicationMode communicationMode,
+			CommunicationDirection communicationMode,
+			IO_Mode ioMode,
+			IO_EventObserver requestObserver,
 			boolean isReliable,
 			boolean isOrderPreserving,
 			boolean isFreeRoute
@@ -49,16 +53,43 @@ public class ConnectedDatagramAnonServerSocketImpl extends AdaptiveAnonServerSoc
 				bindPseudonym, 
 				bindPort, 
 				communicationMode, 
+				ioMode,
+				requestObserver,
 				true,
 				isReliable, 
 				isOrderPreserving, 
 				isFreeRoute);
-		if (communicationMode == CommunicationMode.DUPLEX && !owner.IS_DUPLEX)
+		if (communicationMode == CommunicationDirection.DUPLEX && !owner.IS_DUPLEX)
 			throw new RuntimeException("the current plug-in config does not suport duplex sockets");
-		if (communicationMode == CommunicationMode.SIMPLEX_SENDER)
+		if (communicationMode == CommunicationDirection.SIMPLEX_SENDER)
 			throw new RuntimeException("this is a simplex socket (server backend); the server backend can only be \"CommunicationMode.SIMPLEX_RECEIVER\"");
+		if (ioMode == IO_Mode.OBSERVER_PATTERN && !(requestObserver instanceof IO_EventObserver_ConnectedDatagram))
+			throw new RuntimeException("this socket requires an requestObserver of type IO_EventObserver_ConnectedDatagram");
 		this.sockets = new  ConcurrentHashMap<Integer, ConnectedDatagramAnonSocketMixImpl>((int) (owner.EXPECTED_NUMBER_OF_USERS * 1.2));
 		this.newConncetions = new LinkedBlockingQueue<ConnectedDatagramAnonSocketMixImpl>();
+	}
+	
+	
+	public ConnectedDatagramAnonServerSocketImpl(
+			AnonNode owner,
+			int bindPseudonym,
+			int bindPort,
+			CommunicationDirection communicationMode,
+			IO_Mode ioMode,
+			boolean isReliable,
+			boolean isOrderPreserving,
+			boolean isFreeRoute
+			) {
+		
+		this(	owner,
+				bindPseudonym, 
+				bindPort, 
+				communicationMode, 
+				ioMode,
+				null,
+				isReliable, 
+				isOrderPreserving, 
+				isFreeRoute);
 	}
 
 	
@@ -99,14 +130,20 @@ public class ConnectedDatagramAnonServerSocketImpl extends AdaptiveAnonServerSoc
 					request.getOwner(),
 					owner, 
 					endToEndPseudonym,
-					communicationMode,
+					communicationDirection,
 					isReliable,
 					isOrderPreserving, 
 					isFreeRoute);
 			sockets.put(endToEndPseudonym, socket);
-			putInNewConnectionQueue(socket);
+			if (requestObserver != null) { // notify observer
+				((IO_EventObserver_ConnectedDatagram)requestObserver).incomingConnection(socket);
+			} else { // store for later async read
+				putInNewConnectionQueue(socket);
+			}
 		}
 		socket.newIncomingMessage(request);
+		if (requestObserver != null) // notify observer
+			((IO_EventObserver_ConnectedDatagram)requestObserver).dataAvailable(socket);
 	}
 
 

@@ -21,20 +21,28 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import framework.core.config.Settings;
 
-public class ThreadPoolScheduler<E> implements Scheduler<E> {
+
+public class ThreadPoolScheduler<E> extends Scheduler<E> {
 
 	private ScheduledThreadPoolExecutor scheduler;
 	private final static long INIT_TIME = System.nanoTime();
 	private long latestExecutionScheduled = Long.MIN_VALUE;
 	private QueueEntry lastEntry = null;
-	private long tolerance; // in nanosec
 	
 	
 	// @tolerance in microsec (uses microsec as nanosec would imply a higher accuracy than available)
-	public ThreadPoolScheduler(long tolerance) {
-		this.tolerance = TimeUnit.MICROSECONDS.toNanos(tolerance);
-		this.scheduler = new ScheduledThreadPoolExecutor(4); // TODO: dynamic
+	public ThreadPoolScheduler(Settings settings) {
+		super(settings);
+		this.scheduler = new ScheduledThreadPoolExecutor(4);
+	}
+	
+	
+	// @tolerance in microsec (uses microsec as nanosec would imply a higher accuracy than available)
+	public ThreadPoolScheduler(Settings settings, int numberOfThreads) {
+		super(settings);
+		this.scheduler = new ScheduledThreadPoolExecutor(numberOfThreads);
 	}
 
 
@@ -102,23 +110,12 @@ public class ThreadPoolScheduler<E> implements Scheduler<E> {
 
 		@Override
 		public E call() throws Exception {
-			warnIfDelayed(now() - this.executionTime, this);
+			warnIfDelayed(now() - this.executionTime);
 			if (this.notifyTarget != null)
 				this.notifyTarget.execute(this.attachment);
 			this.scheduleTarget.execute(this.attachment);
 			return this.attachment;
 		}
-	}
-	
-	
-	private void warnIfDelayed(long unintendedDelay, QueueEntry task) {
-		if (unintendedDelay > tolerance)
-			System.err.println(
-					"warning: schedule executor more than " 
-					+((float)tolerance/1000000f) +"ms behind schedule (" 
-					+((float)unintendedDelay/1000000f) +"ms) for " 
-					+task.attachment
-				); 
 	}
 	
 }

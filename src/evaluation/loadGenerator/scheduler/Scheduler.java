@@ -17,15 +17,47 @@
  */
 package evaluation.loadGenerator.scheduler;
 
+import java.util.concurrent.TimeUnit;
 
-public interface Scheduler<E> {
+import framework.core.config.Settings;
 
-	public void executeAt(long executionTime, ScheduleTarget<E> scheduleTarget, E attachment);
-	public void executeIn(long delayInNanoSec, ScheduleTarget<E> scheduleTarget, E attachment);
+
+public abstract class Scheduler<E> {
+
+	protected long tolerance; // in nanosec
 	
-	public long now();
-	
-	public void notifyOnOutputOfLast(ScheduleTarget<E> scheduleTarget); // notify the "scheduleTarget", when the last "element" currently scheduled is executed
+	public abstract void executeAt(long executionTime, ScheduleTarget<E> scheduleTarget, E attachment);
+	public abstract void executeIn(long delayInNanoSec, ScheduleTarget<E> scheduleTarget, E attachment);
 
-	public void shutdown();
+	public abstract long now();
+	
+	public abstract void notifyOnOutputOfLast(ScheduleTarget<E> scheduleTarget); // notify the "scheduleTarget", when the last "element" currently scheduled is executed
+
+	public abstract void shutdown();
+	
+	
+	public Scheduler(Settings settings) {
+		this.tolerance = TimeUnit.MICROSECONDS.toNanos(settings.getPropertyAsLong("TOLERANCE"));
+	}
+	
+	
+	public void executeAt(long executionTime, ScheduleTarget<E> scheduleTarget) {
+		executeAt(executionTime, scheduleTarget, null);
+	}
+	
+	
+	public void executeIn(long delayInNanoSec, ScheduleTarget<E> scheduleTarget) {
+		executeIn(delayInNanoSec, scheduleTarget, null);
+	}
+	
+	
+	protected void warnIfDelayed(long unintendedDelayInNs) {
+		if (unintendedDelayInNs > tolerance)
+			System.err.println(
+					"warning: schedule executor more than " 
+					+((float)tolerance/1000000f) +"ms behind schedule. a delay of " 
+					+((float)unintendedDelayInNs/1000000f) +"ms was measured"
+				); 
+	}
+	
 }

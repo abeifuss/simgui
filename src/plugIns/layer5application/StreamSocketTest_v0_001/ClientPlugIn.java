@@ -24,7 +24,7 @@ import java.util.Random;
 
 import framework.core.controller.Implementation;
 import framework.core.interfaces.Layer5ApplicationClient;
-import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationMode;
+import framework.core.socket.socketInterfaces.AnonSocketOptions.CommunicationDirection;
 import framework.core.socket.socketInterfaces.StreamAnonSocket;
 import framework.core.util.Util;
 
@@ -59,7 +59,7 @@ public class ClientPlugIn extends Implementation implements Layer5ApplicationCli
 		@Override
 		public void run() {
 			
-			CommunicationMode cm = anonNode.IS_DUPLEX ? CommunicationMode.DUPLEX : CommunicationMode.SIMPLEX_SENDER;
+			CommunicationDirection cm = anonNode.IS_DUPLEX ? CommunicationDirection.DUPLEX : CommunicationDirection.SIMPLEX_SENDER;
 			StreamAnonSocket socket = anonNode.createStreamSocket(cm, false);
 			
 			long ct = 0;
