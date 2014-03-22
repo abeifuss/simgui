@@ -24,6 +24,7 @@ public class SimGuiPlugin {
 	private String fallbackLayer;
 	private boolean allowGlobalFields;
 
+	@Deprecated
 	public String getDocumentationURL() {
 		return this.documentationURL;
 	}

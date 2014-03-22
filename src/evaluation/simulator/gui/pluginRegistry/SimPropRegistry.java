@@ -380,7 +380,7 @@ public class SimPropRegistry {
 						String pluginDisplayName = injection.getPluginDisplayName();
 						String pluginConfigName = injection.getPluginConfigName();
 						int layerPosition = injection.getLayerPosition();
-						int pluginPosition = injection.getPluginPosition();
+//						int pluginPosition = injection.getPluginPosition();
 
 						property = new BoolProp();
 						property.setId(annotation.key());
@@ -392,6 +392,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
+						property.setPosition(annotation.position());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -430,7 +431,7 @@ public class SimPropRegistry {
 						String pluginDisplayName = injection.getPluginDisplayName();
 						String pluginConfigName = injection.getPluginConfigName();
 						int layerPosition = injection.getLayerPosition();
-						int pluginPosition = injection.getPluginPosition();
+//						int pluginPosition = injection.getPluginPosition();
 
 						property = new IntProp();
 						property.setId(annotation.key());
@@ -442,6 +443,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
+						property.setPosition(annotation.position());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -489,7 +491,7 @@ public class SimPropRegistry {
 						String pluginDisplayName = injection.getPluginDisplayName();
 						String pluginConfigName = injection.getPluginConfigName();
 						int layerPosition = injection.getLayerPosition();
-						int pluginPosition = injection.getPluginPosition();
+//						int pluginPosition = injection.getPluginPosition();
 
 						property = new FloatProp();
 						property.setId(annotation.key());
@@ -501,6 +503,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
+						property.setPosition(annotation.position());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -547,7 +550,7 @@ public class SimPropRegistry {
 						String pluginDisplayName = injection.getPluginDisplayName();
 						String pluginConfigName = injection.getPluginConfigName();
 						int layerPosition = injection.getLayerPosition();
-						int pluginPosition = injection.getPluginPosition();
+//						int pluginPosition = injection.getPluginPosition();
 
 						property = new DoubleProp();
 						property.setId(annotation.key());
@@ -559,6 +562,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
+						property.setPosition(annotation.position());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -605,7 +609,7 @@ public class SimPropRegistry {
 						String pluginDisplayName = injection.getPluginDisplayName();
 						String pluginConfigName = injection.getPluginConfigName();
 						int layerPosition = injection.getLayerPosition();
-						int pluginPosition = injection.getPluginPosition();
+//						int pluginPosition = injection.getPluginPosition();
 
 						property = new StringProp();
 						property.setId(annotation.key());
@@ -617,6 +621,7 @@ public class SimPropRegistry {
 						property.setValue_requirements(annotation.value_requirements());
 						property.setEnable(true);
 						property.setInfo(annotation.info());
+						property.setPosition(annotation.position());
 
 						globalProperty = annotation.global() || injection.isGlobalProperty();
 						property.setIsGlobal(globalProperty);
@@ -687,7 +692,6 @@ public class SimPropRegistry {
 			plugin.setId(pluginClass.getName());
 			plugin.setConfigName(pluginAnnotation.pluginKey());
 			plugin.setDisplayName(pluginAnnotation.pluginName());
-			plugin.setDocumentationURL(pluginAnnotation.documentationURL());
 			plugin.setPluginLayer(pluginAnnotation.pluginLayerKey());
 			plugin.isVisible(pluginAnnotation.visible());
 			plugin.isGlobal(pluginAnnotation.global());
@@ -992,6 +996,8 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip("Key: " + annotation.key() + "\n " + annotation.tooltip());
 							property.setInfo(annotation.info());
+							property.setPosition(annotation.position());
+							
 							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
@@ -1054,6 +1060,8 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
 							property.setInfo(annotation.info());
+							property.setPosition(annotation.position());
+							
 							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
@@ -1121,6 +1129,8 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
 							property.setInfo(annotation.info());
+							property.setPosition(annotation.position());
+							
 							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
@@ -1188,6 +1198,8 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
 							property.setInfo(annotation.info());
+							property.setPosition(annotation.position());
+							
 							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls
@@ -1255,6 +1267,8 @@ public class SimPropRegistry {
 							property.setName(annotation.name());
 							property.setTooltip("Key: " + annotation.key() + ", " + annotation.tooltip());
 							property.setInfo(annotation.info());
+							property.setPosition(annotation.position());
+							
 							property.isPropertyToVary(annotation.property_to_vary());
 
 							// This is why we have to defer all readFields() calls

@@ -61,6 +61,7 @@ class InjectionParser {
 		return layerPosition;
 	}
 
+	@Deprecated
 	/**
 	 * @return
 	 * 		the plugin position (gui ordering)

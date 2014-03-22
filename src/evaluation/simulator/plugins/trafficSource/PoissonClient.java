@@ -50,12 +50,14 @@ public class PoissonClient extends AbstractClient {
 	
 	@IntSimulationProperty( name = "Resolve time (ms)", 
 			key = "POISSON_RESOLVE_TIME",
-			min = 0)
+			min = 0,
+			position = 1)
 	private int RESOLVE_TIME; // in ms
 	
-	@DoubleSimulationProperty( name = "Average requests per second (requests)", 
+	@DoubleSimulationProperty( name = "Average requests per second (requests) - lambda", 
 			key = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT",
-			min = 0.00001)
+			min = 0.00001,
+			position = 0)
 	private double LAMBDA;
 	
 	private RandomDataImpl randomDataImpl;

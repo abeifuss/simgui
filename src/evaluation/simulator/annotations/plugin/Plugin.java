@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Plugin {
 
-	public String documentationURL() default "dummyPlugin.html";
+//	public String documentationURL() default "dummyPlugin.html";
 
 	public String pluginName() default "";
 	

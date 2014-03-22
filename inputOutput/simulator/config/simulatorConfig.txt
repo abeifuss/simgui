@@ -42,7 +42,7 @@ EXPERIMENTS_TO_PERFORM = batch_with_timeout.cfg
 #
 #
 # GNUPLOT_FOLDER
-GNUPLOT_FOLDER = /opt/local/bin/
+GNUPLOT_FOLDER = 
 #
 #
 # DEBUG_OUTPUT

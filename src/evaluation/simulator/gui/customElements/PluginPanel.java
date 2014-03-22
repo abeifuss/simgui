@@ -3,6 +3,7 @@ package evaluation.simulator.gui.customElements;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -143,8 +144,13 @@ public class PluginPanel extends JScrollPane {
 			if ((isStaticLayerMap.get(layer) == null) || !isStaticLayerMap.get(layer)) {
 				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer(layer).keySet()
 						.toArray(new String[0]);
+				
 				String key = layer;
-				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
+				
+				String[] tmp = levelStrings[i];
+				Arrays.sort(tmp);
+				
+				this.pluginListsMap.put(key, new JComboBox<String>(tmp));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);
@@ -157,7 +163,11 @@ public class PluginPanel extends JScrollPane {
 				levelStrings[i] = SimPropRegistry.getInstance().getPluginsInLayer(layer).keySet()
 						.toArray(new String[0]);
 				String key = layer;
-				this.pluginListsMap.put(key, new JComboBox<String>(levelStrings[i]));
+				
+				String[] tmp = levelStrings[i];
+				Arrays.sort(tmp);
+				
+				this.pluginListsMap.put(key, new JComboBox<String>(tmp));
 				this.pluginListsMap.get(key).insertItemAt("Choose your " + key + " plugin", 0);
 				this.pluginListsMap.get(key).setSelectedIndex(0);
 				logger.log(Level.DEBUG, "New Accordion Entry for " + key);

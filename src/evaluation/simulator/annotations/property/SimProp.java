@@ -1,6 +1,5 @@
 package evaluation.simulator.annotations.property;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -33,6 +32,7 @@ public abstract class SimProp extends Observable {
 	private Set<String> warnings;
 	private Set<String> errors;
 	private boolean isPropertyToVary;
+	private int position;
 	
 	/**
 	 * @return
@@ -366,6 +366,16 @@ public abstract class SimProp extends Observable {
 	public void setErrors(Set<String> errors) {
 		this.errors = errors;
 		this.changed();
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+		
+	}
+	
+	public int getPosition() {
+		return this.position;
+		
 	}
 
 }

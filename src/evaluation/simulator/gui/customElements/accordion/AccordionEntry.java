@@ -131,8 +131,7 @@ public class AccordionEntry extends JPanel {
 		String pluginName = (String) jComboBox.getSelectedItem();
 
 		logger.log(Level.DEBUG, "Set plugin-level " + pluginLevel + " to " + this.model.get(pluginName));
-		simPropRegistry.setActivePlugins(pluginLevel, this.model.get(pluginName)); // GGF
-																					// Mapped
+		simPropRegistry.setActivePlugins(pluginLevel, this.model.get(pluginName)); 
 
 		if (this.fresh == true) {
 			fresh = false;

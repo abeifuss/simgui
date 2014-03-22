@@ -55,7 +55,7 @@ public class SendConstantClient extends AbstractClient {
 			min = 0)
 	private int RESOLVE_TIME; // in ms
 	
-	@IntSimulationProperty( name = "Average requests per second (requests)",
+	@IntSimulationProperty( name = "Requests per second (requests)",
 			key = "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT", 
 			min = 1,
 			position = 2 )

@@ -43,7 +43,7 @@ public @interface IntSimulationProperty {
 	 * @return
 	 * 		simprop position (gui) within the plugin
 	 */
-	public int position() default 0;
+	public int position() default 50;
 
 	/**
 	 * @return
