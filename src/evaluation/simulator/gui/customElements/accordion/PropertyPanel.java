@@ -54,6 +54,7 @@ public class PropertyPanel extends JPanel {
 		String pluginLayer = this.localName;
 		List<SimProp> tmpListOfAllVisibleSimProperties = simPropRegistry
 				.getGlobalSimPropertiesByPluginLayer(pluginLayer);
+		
 		Collections.sort(tmpListOfAllVisibleSimProperties, new SimpropComparator());
 
 		// add content

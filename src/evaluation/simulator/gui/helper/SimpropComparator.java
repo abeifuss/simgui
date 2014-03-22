@@ -17,6 +17,15 @@ public class SimpropComparator implements Comparator<SimProp> {
 	 */
 	@Override
 	public int compare(SimProp o1, SimProp o2) {
+		
+		if (o1.getPosition() != o2.getPosition()) {
+			
+			if (o1.getPosition() > o2.getPosition() )
+				return -1;
+			
+			return 1;
+			
+		}
 		return o1.getName().compareTo(o2.getName());
 	}
 

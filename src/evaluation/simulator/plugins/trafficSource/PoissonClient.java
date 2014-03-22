@@ -38,26 +38,28 @@ public class PoissonClient extends AbstractClient {
 			key = "POISSON_REQUEST_SIZE", 
 			enableAuto = true,
 			min = 0,
-			max = 9000)
+			max = 9000,
+			position = 57)
 	private int REQUEST_SIZE;
 	
 	@IntSimulationProperty( name = "Reply size (byte)", 
 			key = "POISSON_REPLY_SIZE", 
 			enableAuto = true,
 			min = 0,
-			max = 9000)
+			max = 9000,
+			position = 56)
 	private int REPLY_SIZE;
 	
 	@IntSimulationProperty( name = "Resolve time (ms)", 
 			key = "POISSON_RESOLVE_TIME",
 			min = 0,
-			position = 1)
+			position = 58)
 	private int RESOLVE_TIME; // in ms
 	
 	@DoubleSimulationProperty( name = "Average requests per second (requests) - lambda", 
 			key = "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT",
 			min = 0.00001,
-			position = 0)
+			position = 59)
 	private double LAMBDA;
 	
 	private RandomDataImpl randomDataImpl;

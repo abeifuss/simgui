@@ -33,7 +33,8 @@ public class PoissonModel extends TrafficSourceImplementation implements EventEx
 	
 	@IntSimulationProperty( name = "Number of Clients",
 			key = "POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE",
-			min = 1)
+			min = 1,
+			position = 60)
 	private int numberOfClients;
 	
 	@Override
