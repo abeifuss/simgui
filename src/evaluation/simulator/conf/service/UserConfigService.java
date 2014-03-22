@@ -103,9 +103,14 @@ public class UserConfigService {
 	 * Config
 	 */
 	private static Properties configuration = null;
+	private static String OUTPUTFOLDERPATH = "./inputOutput/simulator/output";
 
 	// this will be parsed always at program start!
 	static {
+		File f = new File (OUTPUTFOLDERPATH);
+		if (!f.exists() && !f.mkdir()){
+			throw new RuntimeException("Failed to create folder "+OUTPUTFOLDERPATH+"!. Please check user rights!");
+		}
 		new UserConfigService();
 	}
 

@@ -25,6 +25,7 @@ import evaluation.simulator.gui.service.GuiService;
 public class GuiLauncher {
 
 	private static Logger logger = Logger.getLogger(GuiLauncher.class);
+	private static String LOG_OUTPUT_FOLDER = "./etc/log";
 
 	/**
 	 * Main method - calling this method results in launching the gui
@@ -34,6 +35,12 @@ public class GuiLauncher {
 	 */
 	public static void main(String[] args) {
 		logger.debug("simGUI start.");
+		logger.debug("creating folder etc/log if not exists");
+		File f = new File (LOG_OUTPUT_FOLDER);
+		if (!f.exists() && !f.mkdir()){
+			throw new RuntimeException("Failed to create folder "+LOG_OUTPUT_FOLDER+"!. Please check user rights!");
+		}
+		
 		@SuppressWarnings("unused")
 		SimPropRegistry simPropRegistry;
 
