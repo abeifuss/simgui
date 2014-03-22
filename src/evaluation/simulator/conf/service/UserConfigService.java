@@ -25,6 +25,10 @@ public class UserConfigService {
 	 */
 
 	// Console Frame
+	
+	private final static String BROWSER_PATH = "BROWSER_PATH";
+	private final static String BROWSER_PATH_DEFAULT = "firefox-bin";
+	
 	private final static String CONSOLEFRAME_XPOS = "CONSOLEFRAME_XPOS";
 	private final static Integer CONSOLEFRAME_XPOS_DEFAULT = 600;
 
@@ -128,6 +132,16 @@ public class UserConfigService {
 			logger.log(Level.FATAL, "Initializing User Properties failed! Reason:" + e.toString());
 			// Without storable UserOptions the GUI should stop
 			throw new RuntimeException("Initializing User Properties failed! Reason:" + e.toString());
+		}
+	}
+	
+	public static String getBRWOSER_PATH(){
+		String result = getString(BROWSER_PATH);
+		if (result != null) {
+			return result;
+		} else {
+			logger.log(Level.DEBUG, "Using default value for Item " + GUISERVICE_TOGGLE_HOME_TAB);
+			return BROWSER_PATH_DEFAULT;
 		}
 	}
 
@@ -443,6 +457,20 @@ public class UserConfigService {
 	 * private helper methods
 	 */
 
+	private static String getString(String item) {
+		String readValue = configuration.getProperty(item);
+		if (readValue == null) {
+			logger.log(Level.DEBUG, "Item in property not found: " + item);
+			return null;
+		}
+		if (readValue.equals("true") || readValue.equals("false")) {
+			return String.valueOf(readValue);
+		} else {
+			logger.log(Level.DEBUG, "Item:  " + item + " could not be parsed to a boolean");
+			return null;
+		}
+	}
+	
 	private static Boolean getBool(String item) {
 		String readValue = configuration.getProperty(item);
 		if (readValue == null) {

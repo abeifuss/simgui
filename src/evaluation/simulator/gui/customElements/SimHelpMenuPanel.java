@@ -2,11 +2,14 @@ package evaluation.simulator.gui.customElements;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.naming.ldap.UnsolicitedNotificationEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -18,6 +21,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.apache.log4j.Logger;
 
 import evaluation.simulator.annotations.property.SimProp;
+import evaluation.simulator.conf.service.UserConfigService;
 import evaluation.simulator.gui.customElements.structure.HelpTreeNode;
 import evaluation.simulator.gui.helper.ValueComparator;
 import evaluation.simulator.gui.pluginRegistry.SimPropRegistry;
@@ -64,7 +68,8 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		createNodes(top);
 		tree = new JTree(top);
 
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.getSelectionModel().setSelectionMode(
+				TreeSelectionModel.SINGLE_TREE_SELECTION);
 
 		tree.addTreeSelectionListener(this);
 
@@ -78,52 +83,72 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		DefaultMutableTreeNode category = null;
 		DefaultMutableTreeNode node = null;
 
-		layerMapDisplayNameToConfigName = SimPropRegistry.getInstance().getLayerMapDisplayNameToConfigName();
+		layerMapDisplayNameToConfigName = SimPropRegistry.getInstance()
+				.getLayerMapDisplayNameToConfigName();
 		propertyMap = SimPropRegistry.getInstance().getProperties();
-		registeredPlugins = SimPropRegistry.getInstance().getRegisteredPlugins();
+		registeredPlugins = SimPropRegistry.getInstance()
+				.getRegisteredPlugins();
 
-		Map<String, Integer> layerMap = SimPropRegistry.getInstance().getLayerMapDisplayNameToOrder();
+		Map<String, Integer> layerMap = SimPropRegistry.getInstance()
+				.getLayerMapDisplayNameToOrder();
 		ValueComparator comperatorLayer = new ValueComparator(layerMap);
-		TreeMap<String, Integer> sortedLayerMap = new TreeMap<String, Integer>(comperatorLayer);
+		TreeMap<String, Integer> sortedLayerMap = new TreeMap<String, Integer>(
+				comperatorLayer);
 		sortedLayerMap.putAll(layerMap);
 
 		category = new DefaultMutableTreeNode("Videotutorials");
 		top.add(category);
-		category.add( new DefaultMutableTreeNode(new HelpTreeNode("Load and Start", "gmix1_load_and_start.avi")) );
-		category.add( new DefaultMutableTreeNode(new HelpTreeNode("Configuratrion Tool", "gmix2_configurator.avi")) );
-		category.add( new DefaultMutableTreeNode(new HelpTreeNode("Experiments and Graphs", "gmix3_multipleexp_graphs.avi")) );
-		
+		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
+				"Load and Start", "http://www.youtube.com/")));
+		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
+				"Configuratrion Tool", "http://www.youtube.com/")));
+		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
+				"Experiments and Graphs", "http://www.youtube.com/")));
+
 		for (String layer : sortedLayerMap.keySet()) {
 			category = new DefaultMutableTreeNode(layer);
 			top.add(category);
 
 			for (String prop : propertyMap.keySet()) {
 				if (propertyMap.get(prop).getPluginID().equals("")
-						&& (propertyMap.get(prop).isSuperclass() || propertyMap.get(prop).isGlobal())
-						&& propertyMap.get(prop).getPluginLayerID().equals(layerMapDisplayNameToConfigName.get(layer))) {
-					node = new DefaultMutableTreeNode(new HelpTreeNode(prop, path + prop + ".html"));
+						&& (propertyMap.get(prop).isSuperclass() || propertyMap
+								.get(prop).isGlobal())
+						&& propertyMap
+								.get(prop)
+								.getPluginLayerID()
+								.equals(layerMapDisplayNameToConfigName
+										.get(layer))) {
+					node = new DefaultMutableTreeNode(new HelpTreeNode(prop,
+							path + prop + ".html"));
 
 					category.add(node);
 				}
 			}
 			for (String plugin : registeredPlugins.keySet()) {
-				if (registeredPlugins.get(plugin).equals(layerMapDisplayNameToConfigName.get(layer))) {
+				if (registeredPlugins.get(plugin).equals(
+						layerMapDisplayNameToConfigName.get(layer))) {
 
-					node = new DefaultMutableTreeNode(new HelpTreeNode(plugin, path + plugin + ".html"));
+					node = new DefaultMutableTreeNode(new HelpTreeNode(plugin,
+							path + plugin + ".html"));
 					category.add(node);
 				}
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
+	 * .TreeSelectionEvent)
 	 */
 	public void valueChanged(TreeSelectionEvent e) {
 		// Returns the last path element of the selection.
 		// This method is useful only when the selection model allows a single
 		// selection.
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
 
 		if (node == null) {
 			return;
@@ -131,28 +156,40 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		Object nodeInfo = node.getUserObject();
 		if (node.isLeaf()) {
 			
-			final String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(mov|mpg|avi))$)";
+			boolean fallback = false;
+
+			final String IMAGE_PATTERN = "\\b(http|https)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 			Pattern pattern = Pattern.compile(IMAGE_PATTERN);
-			
+
 			HelpTreeNode helpTreeNode = (HelpTreeNode) nodeInfo;
 			pattern.matcher(helpTreeNode.getHelpTreeNodeURL());
-			
-			Matcher matcher = pattern.matcher(helpTreeNode.getHelpTreeNodeURL());
-			
-			if ( matcher.matches() ){ // Videotutorials
-				logger.error("A Video");
-				/*try {
-					VideoPlayer vp = new VideoPlayer("test", helpTreeNode.getHelpTreeNodeURL());
-					
-					vp.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-					vp.setSize(400, 300);
-					vp.setVisible(true);
-					
-				} catch (ClassNotFoundException | NoPlayerException | IOException e1) {
+
+			Matcher matcher = pattern
+					.matcher(helpTreeNode.getHelpTreeNodeURL());
+
+			if (matcher.matches()) { // Videotutorials
+				try {
+					java.awt.Desktop.getDesktop().browse(java.net.URI.create(helpTreeNode.getHelpTreeNodeURL()));
+				} catch ( java.lang.UnsupportedOperationException ex ) {
+					fallback = true;
+				} catch (IOException e1) {
 					e1.printStackTrace();
-				}*/ // TODO: via browser
-			}else{
-				logger.error(helpTreeNode.getHelpTreeNodeName() + " " + helpTreeNode.getHelpTreeNodeURL());
+				}
+				
+				if ( fallback ){
+					try {
+						new ProcessBuilder(UserConfigService.getBRWOSER_PATH(), helpTreeNode.getHelpTreeNodeURL()).start();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(this, "Can not find Browser. Plase specify the variable \"BROWSER_PATH\" " +
+							"in \"/etc/conf/user.properties\" ");
+				}
+				
+			} else { // static pages
+				logger.error(helpTreeNode.getHelpTreeNodeName() + " "
+						+ helpTreeNode.getHelpTreeNodeURL());
 				displayURL(helpTreeNode.getHelpTreeNodeURL());
 			}
 		}
@@ -160,7 +197,9 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 
 	/**
 	 * Loads a given url into the SimHelpContentPanel
-	 * @param helpTreeNodeURL is the url which should be loaded
+	 * 
+	 * @param helpTreeNodeURL
+	 *            is the url which should be loaded
 	 */
 	private void displayURL(String helpTreeNodeURL) {
 		SimHelpContentPanel p = SimHelpContentPanel.getInstance();
