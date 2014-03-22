@@ -33,8 +33,8 @@ public class LoadButtonAction implements ActionListener {
 			int backValue = JOptionPane
 					.showConfirmDialog(
 							GuiService.getInstance().getMainGui(),
-							"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
-							"Unchanged changes",
+							"There are unsaved changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
+							"Unsaved changes",
 							JOptionPane.YES_NO_OPTION);
 			if (backValue == JOptionPane.YES_OPTION) {
 				load();
@@ -46,7 +46,7 @@ public class LoadButtonAction implements ActionListener {
 
 	private void load() {
 		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("etc/experiments/"));
+		fc.setCurrentDirectory(new File("inputOutput/simulator/experimentDefinitions"));
 		fc.setFileFilter(new FileFilter() {
 			@Override
 			public String getDescription() {

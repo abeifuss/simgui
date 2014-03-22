@@ -30,7 +30,7 @@ public class SaveAsButtonAction implements ActionListener {
 		logger.log(Level.DEBUG, "Save config");
 
 		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("etc/experiments/"));
+		fc.setCurrentDirectory(new File("inputOutput/simulator/experimentDefinitions"));
 		fc.setFileFilter(new FileFilter() {
 
 			@Override

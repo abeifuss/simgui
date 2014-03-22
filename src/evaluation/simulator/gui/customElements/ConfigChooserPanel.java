@@ -107,7 +107,7 @@ public class ConfigChooserPanel extends JPanel {
 	 * updates the available experiment configs in the config selection
 	 */
 	public void updateConfigDirectory() {
-		final File folder = new File("etc/experiments/");
+		final File folder = new File("inputOutput/simulator/experimentDefinitions");
 		final File[] listOfFiles = folder.listFiles(new FileFilter() {
 
 			@Override
@@ -325,8 +325,8 @@ public class ConfigChooserPanel extends JPanel {
 									.showConfirmDialog(
 											GuiService.getInstance()
 													.getMainGui(),
-											"There are unchanged changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
-											"Unchanged changes",
+											"There are unsaved changes! They will get lost if you load a new configuration. Do you want to discard changes and load a new configuration?",
+											"Unsaved changes",
 											JOptionPane.YES_NO_OPTION);
 							if (backValue == JOptionPane.YES_OPTION) {
 								load();
