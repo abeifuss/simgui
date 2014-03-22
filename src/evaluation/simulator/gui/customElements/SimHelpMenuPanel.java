@@ -99,11 +99,11 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 		category = new DefaultMutableTreeNode("Videotutorials");
 		top.add(category);
 		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
-				"Load and Start", "http://www.youtube.com/")));
+				"Load and Start", "http://www.youtube.com/watch?v=cVH1mCc5EvU")));
 		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
-				"Configuratrion Tool", "http://www.youtube.com/")));
+				"Configuratrion Tool", "http://www.youtube.com/watch?v=cVH1mCc5EvU")));
 		category.add(new DefaultMutableTreeNode(new HelpTreeNode(
-				"Experiments and Graphs", "http://www.youtube.com/")));
+				"Experiments and Graphs", "http://www.youtube.com/watch?v=cVH1mCc5EvU")));
 
 		for (String layer : sortedLayerMap.keySet()) {
 			category = new DefaultMutableTreeNode(layer);
