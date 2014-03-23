@@ -28,9 +28,10 @@ public @interface StringSimulationProperty {
 
 	/**
 	 * @return
-	 * 		simporp's position / order (gui)
+	 * 		the positon of the simprop (within the plugin).
+	 * 		The higher the value the higher the position of the GUI-element
 	 */
-	public int position() default 0;
+	public int position() default 50;
 
 	/**
 	 * @return

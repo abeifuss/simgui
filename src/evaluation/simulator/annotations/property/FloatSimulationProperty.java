@@ -41,9 +41,10 @@ public @interface FloatSimulationProperty {
 
 	/**
 	 * @return
-	 * 		simprop position (gui) within the plugin
+	 * 		the positon of the simprop (within the plugin).
+	 * 		The higher the value the higher the position of the GUI-element
 	 */
-	public int position() default 0;
+	public int position() default 50;
 
 	/**
 	 * Unique
