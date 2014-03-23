@@ -184,7 +184,7 @@ public class SimHelpMenuPanel extends JPanel implements TreeSelectionListener {
 					}
 				} else {
 					JOptionPane.showMessageDialog(this, "Can not find Browser. Plase specify the variable \"BROWSER_PATH\" " +
-							"in \"/etc/conf/user.properties\" ");
+							"in \"/inputOutput/simulator/config/user.properties\" ");
 				}
 				
 			} else { // static pages

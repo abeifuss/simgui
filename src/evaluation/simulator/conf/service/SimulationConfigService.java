@@ -144,7 +144,7 @@ public class SimulationConfigService {
 		PropertiesConfiguration props;
 		try {
 
-			props = new PropertiesConfiguration("etc/conf/experiment_template.cfg");
+			props = new PropertiesConfiguration("inputOutput/simulator/config/experiment_template.cfg");
 
 			props.setProperty("EDF_VERSION", 1);
 

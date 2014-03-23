@@ -95,7 +95,7 @@ public class GuiLauncher {
 			public void run() {
 				// loading initial experiment configuration (template)
 				SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
-				File file = new File("etc/conf/experiment_template.cfg");
+				File file = new File("inputOutput/simulator/config/experiment_template.cfg");
 				SimulationConfigService simulationConfigService = new SimulationConfigService(simPropRegistry);
 				simulationConfigService.loadConfig(file);
 			}

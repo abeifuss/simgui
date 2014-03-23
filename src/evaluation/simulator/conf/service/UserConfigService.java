@@ -17,7 +17,7 @@ public class UserConfigService {
 	 * Constants for file
 	 */
 	private final static String CONFIGFILENAME = "user.properties";
-	private final static String CONFIGPATH = "etc/conf";
+	private final static String CONFIGPATH = "inputOutput/simulator/config";
 	private final static String CONFIGFILE = CONFIGPATH + "/" + CONFIGFILENAME;
 
 	/**
