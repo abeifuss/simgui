@@ -6,8 +6,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -63,11 +66,15 @@ public class PropVaryElement extends JPanel {
 		// added by alex		
 		Vector<String> tmp = new Vector<String>();
 		for (String key: propMap.keySet()){
-			if (propMap.get(key).isPropertyToVary()){
-				tmp.add(propMap.get(key).getName());
+			SimProp tmpProp = propMap.get(key);
+			if (tmpProp.isPropertyToVary()){
+				String tmpString = tmpProp.getPluginID()+ ":" + tmpProp.getName();
+				tmp.add(tmpString);
 			}
 		}
+		
 		tmp.add(0, "---");
+		Collections.sort(tmp);
 		
 		//String propertyStrings[] = tmp.toArray(new String[1]);		
 		
@@ -137,8 +144,19 @@ public class PropVaryElement extends JPanel {
 		value[index] = null;		
 
 		String currentItem = (String) ComboBox.getSelectedItem();
+		String propname = currentItem;
+		StringTokenizer	tokenizer = new StringTokenizer(currentItem, ":" );
+		
+		System.err.println(propname);
+		
+		while (tokenizer.hasMoreTokens()){
+			propname = (String) tokenizer.nextElement();
+			System.err.println(propname);
+		}
+		System.err.println(propname);
 		
 		if ((index == 0) && (!cBoxItemSave.equals("EMPTY"))){
+			
 			cBox[1].addItem(cBoxItemSave);
 			cBoxItemSave="EMPTY";
 		}
@@ -155,14 +173,14 @@ public class PropVaryElement extends JPanel {
 			}			
 		} else {
 			propElement[index].setEnabled(true);			
-			SimProp tmp = SimPropRegistry.getInstance().getPropertiesByName(currentItem);
+			SimProp tmp = SimPropRegistry.getInstance().getPropertiesByName(propname);			
 			propType[index] = tmp.getValueType();
 			logger.log(Level.DEBUG, "Proptype is set to" + propType[index].toString());
 		}
 
 		if ((ComboBox == cBox[0]) && (!currentItem.equals("---"))) {
 			this.cBox[1].setEnabled(true);			
-			String prop = SimPropRegistry.getInstance().getPropertiesByName(currentItem).getPropertyID();
+			String prop = SimPropRegistry.getInstance().getPropertiesByName(propname).getPropertyID();
 			logger.log(Level.DEBUG,"writing into PROPERTY_TO_VARY: " + prop);
 			SimPropRegistry.getInstance().setPropertyToVaryValue("PROPERTY_TO_VARY", prop);
 			cBoxItemSave = currentItem;
@@ -170,7 +188,7 @@ public class PropVaryElement extends JPanel {
 		}
 				
 		if ((ComboBox == cBox[1]) && (!currentItem.equals("---"))){
-			String prop = SimPropRegistry.getInstance().getPropertiesByName(currentItem).getPropertyID();
+			String prop = SimPropRegistry.getInstance().getPropertiesByName(propname).getPropertyID();
 			logger.log(Level.DEBUG,"writing into second PROPERTY_TO_VARY: " + prop);
 			SimPropRegistry.getInstance().setPropertyToVaryValue("SECOND_PROPERTY_TO_VARY", prop);
 		}
@@ -179,7 +197,7 @@ public class PropVaryElement extends JPanel {
 			SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "FALSE");
 		}else{
 			SimPropRegistry.getInstance().setPropertyToVaryValue("USE_SECOND_PROPERTY_TO_VARY", "TRUE");
-		}
+		}		
 
 		logger.log(Level.DEBUG, currentElement.getSelectedText());
 		this.repaint();
@@ -258,11 +276,13 @@ public class PropVaryElement extends JPanel {
 	 */
 	public void update() {
 		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
-		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");
-		logger.log(Level.DEBUG, id);
+		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");		
+		logger.log(Level.DEBUG, id);		
 		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
+		SimProp prop = SimPropRegistry.getInstance().getPropertiesByName(name);
+		String plugin = prop.getPluginID();
 		logger.log(Level.DEBUG, name);
-		cBox[0].setSelectedItem(name);
+		cBox[0].setSelectedItem(plugin +":"+ name);
 		comboboxChanged(cBox[0]);
 		
 		logger.log(Level.DEBUG, "VALUES_FOR_THE_PROPERTY_TO_VARY");
@@ -277,8 +297,10 @@ public class PropVaryElement extends JPanel {
 		id = SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, id);
 		name = SimPropRegistry.getInstance().getPropertieNameByID(id);
-		logger.log(Level.DEBUG, name);
-		cBox[1].setSelectedItem(name);
+		prop = SimPropRegistry.getInstance().getPropertiesByName(name);
+		plugin = prop.getPluginID();
+		logger.log(Level.DEBUG, name);		
+		cBox[1].setSelectedItem(plugin+ ":" +name);
 		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY"));
 		
