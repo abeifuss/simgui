@@ -61,7 +61,9 @@ public class SimulationConfigService {
 				this.simPropRegistry.setPropertyToVaryValue(s, props.getProperty(s));
 				logger.log(Level.DEBUG, s + " = " + props.getProperty(s));
 			} catch (Exception e) {
+				
 				logger.log(Level.ERROR,"Can not read value for " + s);
+				
 			}
 		}
 		
@@ -104,10 +106,151 @@ public class SimulationConfigService {
 				} else if (s.getValue().getValueType() == Boolean.class) {
 					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
 				}
+				
 				s.getValue().changed();
+				
 			} catch (NullPointerException e) {
-				logger.log(Level.ERROR,"Can not read value for " + s.getKey());
+
+//				logger.log(Level.ERROR,"Fallback mode:" + s.getValue().getPropertyID());
+				
+				// Load EDFVersion=0 Files
+				
+				String fallback = "FALLBACK";
+				
+				if ( s.getKey().equals("PARETO_RESOLVE_TIME") ||
+						s.getKey().equals("REQUEST_REPLY_RESOLVE_TIME") ||
+						s.getKey().equals("POISSON_RESOLVE_TIME") ||
+						s.getKey().equals("CONSTANT_RESOLVE_TIME") 
+					){
+					
+					fallback = "RESOLVE_TIME";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+					
+				} else if ( s.getKey().equals("POISSON_REPLY_SIZE") ||
+						s.getKey().equals("CONSTANT_REPLY_SIZE") ||
+						s.getKey().equals("PARETO_REPLY_SIZE") ||
+						s.getKey().equals("REQUEST_REPLY_REPLY_SIZE")
+					){
+					
+					fallback = "REPLY_SIZE";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+					
+				} else if ( s.getKey().equals("CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT") ||
+						s.getKey().equals("POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT") ||
+						s.getKey().equals("PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+						
+					){
+					
+					fallback = "AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				} else if ( s.getKey().equals("POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE") ||
+						s.getKey().equals("PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE") ||
+						s.getKey().equals("CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE") ||
+						s.getKey().equals("REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE")
+						
+					){
+					
+					fallback = "NUMBER_OF_CLIENTS_TO_SIMULATE";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				}  else if ( s.getKey().equals("MAX_DLPAB_REQUEST_DELAY") ||
+						s.getKey().equals("MAX_DLPAI_REQUEST_DELAY") ||
+						s.getKey().equals("MAX_DLPAII_REQUEST_DELAY")
+						
+					){
+					
+					fallback = "MAX_DLPA_REQUEST_DELAY";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				} else if ( s.getKey().equals("MAX_DLPAII_REPLY_DELAY") ||
+						s.getKey().equals("MAX_DLPAI_REPLY_DELAY") ||
+						s.getKey().equals("MAX_DLPAB_REPLY_DELAY")
+						
+					){
+					
+					fallback = "MAX_DLPA_REPLY_DELAY";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				}  else if ( s.getKey().equals("REQUEST_REPLY_REQUEST_SIZE") ||
+						s.getKey().equals("POISSON_REQUEST_SIZE") ||
+						s.getKey().equals("CONSTANT_REQUEST_SIZE") ||
+						s.getKey().equals("PARETO_REQUEST_SIZE")
+						
+					){
+					
+					fallback = "REQUEST_SIZE";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				} else if ( s.getKey().equals("THRESHOLD_OR_TIMED_BATCH_BATCH_SIZE") ||
+						s.getKey().equals("BASIC_BATCH_BATCH_SIZE") ||
+						s.getKey().equals("THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE") ||
+						s.getKey().equals("BATCH_WITH_TIMEOUT_BATCH_SIZE")
+						
+					){
+					
+					fallback = "BATCH_SIZE";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
+				}  else {
+					logger.log(Level.ERROR,"No fallback available for " + s.getKey());
+					continue;
+				}
+				
+				logger.log(Level.DEBUG, "Load value for " + s.getKey());
+				try {
+					if (s.getValue().getValueType() == String.class) {
+						s.getValue().setValue((props.get(fallback)));
+					} else if (s.getValue().getValueType() == Integer.class) {
+						if (props.get(fallback).equals("AUTO")) {
+							((IntProp) s.getValue() ).setAuto(true);
+						} else if (props.get(fallback).equals("UNLIMITED")) {
+							((IntProp) s.getValue() ).setUnlimited(true);
+						}else{
+							((IntProp) s.getValue() ).setAuto(false);
+							((IntProp) s.getValue() ).setUnlimited(false);
+							s.getValue().setValue(Integer.parseInt((String) props.get(fallback)));
+						}
+					} else if (s.getValue().getValueType() == Float.class) {
+						if (props.get(fallback).equals("AUTO")) {
+							((FloatProp) s.getValue() ).setAuto(true);
+						} else if (props.get(fallback).equals("UNLIMITED")) {
+							((FloatProp) s.getValue() ).setUnlimited(true);
+						}else{
+							((FloatProp) s.getValue() ).setAuto(false);
+							((FloatProp) s.getValue() ).setUnlimited(false);
+							s.getValue().setValue(Float.parseFloat((String) props.get(fallback)));
+						}
+					} else if (s.getValue().getValueType() == Double.class) {
+						if (props.get(fallback).equals("AUTO")) {
+							((DoubleProp) s.getValue() ).setAuto(true);
+						} else if (props.get(fallback).equals("UNLIMITED")) {
+							((DoubleProp) s.getValue() ).setUnlimited(true);
+						}else{
+							((DoubleProp) s.getValue() ).setAuto(false);
+							((DoubleProp) s.getValue() ).setUnlimited(false);
+							s.getValue().setValue(Double.parseDouble((String) props.get(fallback)));
+						}
+					} else if (s.getValue().getValueType() == Boolean.class) {
+						s.getValue().setValue(Boolean.parseBoolean((String) props.get(fallback)));
+					}
+					
+					s.getValue().changed();
+					
+			} catch (NullPointerException ex) {
+				logger.log(Level.ERROR,"Can not read value for fallback " + fallback);
 			}
+		}
 		}
 
 		SimPropRegistry simPropRegistry = SimPropRegistry.getInstance();
