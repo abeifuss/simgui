@@ -58,8 +58,186 @@ public class SimulationConfigService {
 		for (String s : this.simPropRegistry.getPropertiesToVary().keySet()) {
 			logger.log(Level.DEBUG, "Load value for property to vary " + s);
 			try {
-				this.simPropRegistry.setPropertyToVaryValue(s, props.getProperty(s));
-				logger.log(Level.DEBUG, s + " = " + props.getProperty(s));
+				
+				// fallback to EDFVersion=0 
+				if ( props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("POISSON") &&
+						props.getProperty(s).equals("RESOLVE_TIME")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "POISSON_RESOLVE_TIME");
+					logger.log(Level.ERROR, s + " = POISSON_RESOLVE_TIME");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("CONSTANT") &&
+						props.getProperty(s).equals("RESOLVE_TIME")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "CONSTANT_RESOLVE_TIME");
+					logger.log(Level.ERROR, s + " = CONSTANT_RESOLVE_TIME");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("PARETO") &&
+						props.getProperty(s).equals("RESOLVE_TIME")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "PARETO_RESOLVE_TIME");
+					logger.log(Level.ERROR, s + " = PARETO_RESOLVE_TIME");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("REQUEST_REPLY") &&
+						props.getProperty(s).equals("RESOLVE_TIME")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "REQUEST_REPLY_RESOLVE_TIME");
+					logger.log(Level.ERROR, s + " = REQUEST_REPLY_RESOLVE_TIME");
+					
+				} else if ( props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("POISSON") &&
+						props.getProperty(s).equals("REPLY_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "POISSON_REPLY_SIZE");
+					logger.log(Level.ERROR, s + " = POISSON_REPLY_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("CONSTANT") &&
+						props.getProperty(s).equals("REPLY_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "CONSTANT_REPLY_SIZE");
+					logger.log(Level.ERROR, s + " = CONSTANT_REPLY_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("PARETO") &&
+						props.getProperty(s).equals("REPLY_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "PARETO_REPLY_SIZE");
+					logger.log(Level.ERROR, s + " = PARETO_REPLY_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("REQUEST_REPLY") &&
+						props.getProperty(s).equals("REPLY_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "REQUEST_REPLY_REPLY_SIZE");
+					logger.log(Level.ERROR, s + " = REQUEST_REPLY_REPLY_SIZE");
+					
+				} else if ( props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("POISSON") &&
+						props.getProperty(s).equals("REQUEST_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "POISSON_REQUEST_SIZE");
+					logger.log(Level.ERROR, s + " = POISSON_REQUEST_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("CONSTANT") &&
+						props.getProperty(s).equals("REQUEST_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "CONSTANT_REQUEST_SIZE");
+					logger.log(Level.ERROR, s + " = CONSTANT_REQUEST_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("PARETO") &&
+						props.getProperty(s).equals("REQUEST_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "PARETO_REQUEST_SIZE");
+					logger.log(Level.ERROR, s + " = PARETO_REQUEST_SIZE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("REQUEST_REPLY") &&
+						props.getProperty(s).equals("REQUEST_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "REQUEST_REPLY_REQUEST_SIZE");
+					logger.log(Level.ERROR, s + " = REQUEST_REPLY_REQUEST_SIZE");
+					
+				} else if ( props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("POISSON") &&
+						props.getProperty(s).equals("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					logger.log(Level.ERROR, s + " = POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("CONSTANT") &&
+						props.getProperty(s).equals("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					logger.log(Level.ERROR, s + " = CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("PARETO") &&
+						props.getProperty(s).equals("AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					logger.log(Level.ERROR, s + " = PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT");
+					
+				} else if ( props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("POISSON") &&
+						props.getProperty(s).equals("NUMBER_OF_CLIENTS_TO_SIMULATE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					logger.log(Level.ERROR, s + " = POISSON_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("CONSTANT") &&
+						props.getProperty(s).equals("NUMBER_OF_CLIENTS_TO_SIMULATE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					logger.log(Level.ERROR, s + " = CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("PARETO") &&
+						props.getProperty(s).equals("NUMBER_OF_CLIENTS_TO_SIMULATE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					logger.log(Level.ERROR, s + " = PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					
+				} else if (props.getProperty("TYPE_OF_TRAFFIC_GENERATOR").equals("REQUEST_REPLY") &&
+						props.getProperty(s).equals("NUMBER_OF_CLIENTS_TO_SIMULATE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					logger.log(Level.ERROR, s + " = REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE");
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_BASIC") &&
+						props.getProperty(s).equals("REQUEST_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAB_REQUEST_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAB_REQUEST_DELAY");
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_HEURISTIC") &&
+						props.getProperty(s).equals("REQUEST_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAI_REQUEST_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAI_REQUEST_DELAY");
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_HEURISTIC_2") &&
+						props.getProperty(s).equals("REQUEST_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAII_REQUEST_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAII_REQUEST_DELAY");
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_BASIC") &&
+						props.getProperty(s).equals("REPLY_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAB_REPLY_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAB_REPLY_DELAY");
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_HEURISTIC") &&
+						props.getProperty(s).equals("REPLY_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAI_REPLY_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAI_REPLY_DELAY");
+					
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("DLPA_HEURISTIC_2") &&
+						props.getProperty(s).equals("REPLY_DELAY")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "MAX_DLPAII_REPLY_DELAY");
+					logger.log(Level.ERROR, s + " = MAX_DLPAII_REPLY_DELAY");
+					
+					
+				}else if (props.getProperty("OUTPUT_STRATEGY").equals("BASIC_BATCH") &&
+						props.getProperty(s).equals("BATCH_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "BASIC_BATCH_BATCH_SIZE");
+					logger.log(Level.ERROR, s + " = BASIC_BATCH_BATCH_SIZE");
+					
+					
+				} else if (props.getProperty("OUTPUT_STRATEGY").equals("BATCH_WITH_TIMEOUT") &&
+						props.getProperty(s).equals("BATCH_SIZE")
+					){
+					this.simPropRegistry.setPropertyToVaryValue(s, "BATCH_WITH_TIMEOUT_BATCH_SIZE");
+					logger.log(Level.ERROR, s + " = BATCH_WITH_TIMEOUT_BATCH_SIZE");
+					
+				} else {
+					this.simPropRegistry.setPropertyToVaryValue(s, props.getProperty(s));
+					logger.log(Level.DEBUG, s + " = " + props.getProperty(s));
+					
+				}
+				
+//				if ( props.getProperty("SECOND_PROPERTY_TO_VARY").equals("") || 
+//						props.getProperty("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY").equals("")
+//						){
+//					this.simPropRegistry.setPropertyToVaryValue(s, "FALSE");
+//					
+//				}
+				
 			} catch (Exception e) {
 				
 				logger.log(Level.ERROR,"Can not read value for " + s);
@@ -107,6 +285,10 @@ public class SimulationConfigService {
 					s.getValue().setValue(Boolean.parseBoolean((String) props.get(s.getKey())));
 				}
 				
+				if ( s.getKey().equals("NAME_OF_PLOT_SCRIPT") ){
+					s.getValue().setValue("simguiPlotScript.txt");
+				}
+				
 				s.getValue().changed();
 				
 			} catch (NullPointerException e) {
@@ -139,6 +321,16 @@ public class SimulationConfigService {
 					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
 					
 					
+				}  else if ( s.getKey().equals("REQUEST_REPLY_REQUEST_SIZE") ||
+						s.getKey().equals("POISSON_REQUEST_SIZE") ||
+						s.getKey().equals("CONSTANT_REQUEST_SIZE") ||
+						s.getKey().equals("PARETO_REQUEST_SIZE")
+					){
+					
+					fallback = "REQUEST_SIZE";
+					
+					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
+					
 				} else if ( s.getKey().equals("CONSTANT_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT") ||
 						s.getKey().equals("POISSON_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT") ||
 						s.getKey().equals("PARETO_AVERAGE_REQUESTS_PER_SECOND_AND_CLIENT")
@@ -153,7 +345,6 @@ public class SimulationConfigService {
 						s.getKey().equals("PARETO_NUMBER_OF_CLIENTS_TO_SIMULATE") ||
 						s.getKey().equals("CONSTANT_NUMBER_OF_CLIENTS_TO_SIMULATE") ||
 						s.getKey().equals("REQUEST_REPLY_NUMBER_OF_CLIENTS_TO_SIMULATE")
-						
 					){
 					
 					fallback = "NUMBER_OF_CLIENTS_TO_SIMULATE";
@@ -163,7 +354,6 @@ public class SimulationConfigService {
 				}  else if ( s.getKey().equals("MAX_DLPAB_REQUEST_DELAY") ||
 						s.getKey().equals("MAX_DLPAI_REQUEST_DELAY") ||
 						s.getKey().equals("MAX_DLPAII_REQUEST_DELAY")
-						
 					){
 					
 					fallback = "MAX_DLPA_REQUEST_DELAY";
@@ -173,29 +363,14 @@ public class SimulationConfigService {
 				} else if ( s.getKey().equals("MAX_DLPAII_REPLY_DELAY") ||
 						s.getKey().equals("MAX_DLPAI_REPLY_DELAY") ||
 						s.getKey().equals("MAX_DLPAB_REPLY_DELAY")
-						
 					){
 					
 					fallback = "MAX_DLPA_REPLY_DELAY";
 					
 					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
 					
-				}  else if ( s.getKey().equals("REQUEST_REPLY_REQUEST_SIZE") ||
-						s.getKey().equals("POISSON_REQUEST_SIZE") ||
-						s.getKey().equals("CONSTANT_REQUEST_SIZE") ||
-						s.getKey().equals("PARETO_REQUEST_SIZE")
-						
-					){
-					
-					fallback = "REQUEST_SIZE";
-					
-					logger.log(Level.DEBUG,"Fallback mode: " + s.getKey() + " --> " + fallback);
-					
-				} else if ( s.getKey().equals("THRESHOLD_OR_TIMED_BATCH_BATCH_SIZE") ||
-						s.getKey().equals("BASIC_BATCH_BATCH_SIZE") ||
-						s.getKey().equals("THRESHOLD_AND_TIMED_BATCH_BATCH_SIZE") ||
+				} else if ( s.getKey().equals("BASIC_BATCH_BATCH_SIZE") ||
 						s.getKey().equals("BATCH_WITH_TIMEOUT_BATCH_SIZE")
-						
 					){
 					
 					fallback = "BATCH_SIZE";
@@ -301,15 +476,8 @@ public class SimulationConfigService {
 			
 			// Properties to vary
 			for (Entry<String, String> s : this.simPropRegistry.getPropertiesToVary().entrySet()) {
-				// quickfix (TODO: find real problem)
 				logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().toString());
-//				if ( s.getKey().equals("SECOND_PROPERTY_TO_VARY") ){
-//					props.setProperty(s.getKey().trim(), " " + s.getValue());
-//				}else if (s.getKey().equals("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY") ) {
-//					props.setProperty("VALUES_FOR_THE_SECOND_PROPERTY", " 1,2,3");
-//				}else {
-					props.setProperty(s.getKey(), s.getValue());
-//				}
+				props.setProperty(s.getKey(), s.getValue());
 			}
 
 			// dynamic part
