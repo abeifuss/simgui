@@ -78,8 +78,25 @@ public class ConfigParser {
 				
 				// filter comments
 				if ( !string.matches("^#.*") ){
-					content.append(string.replace(" = ", "=")).append(System.getProperty("line.separator"));
-					// content.append(string).append(System.getProperty("line.separator"));
+					
+					if ( string.matches("^OVERWRITABLE_PARAMETERS = ") ){
+						content.append("OVERWRITABLE_PARAMETERS=#").append(System.getProperty("line.separator"));
+					} else if ( string.matches("^NONE_OVERWRITABLE_PARAMETERS = ") ) {
+						content.append("NONE_OVERWRITABLE_PARAMETERS=#").append(System.getProperty("line.separator"));
+					} else if ( string.matches("^OVERWRITABLE_PARAMETERS =") ){
+						content.append("OVERWRITABLE_PARAMETERS=#").append(System.getProperty("line.separator"));
+					} else if ( string.matches("^NONE_OVERWRITABLE_PARAMETERS =") ) {
+						content.append("NONE_OVERWRITABLE_PARAMETERS=#").append(System.getProperty("line.separator"));
+					} else {
+						string = string.replace(" =", "=");
+						string = string.replace("= ", "=");
+						string = string.replace(" =", "=");
+						string = string.replace("= ", "=");
+						string = string.replace(" =", "=");
+						string = string.replace("= ", "=");
+						content.append(string).append(System.getProperty("line.separator"));
+					}
+				
 					continue;
 				}
 			}

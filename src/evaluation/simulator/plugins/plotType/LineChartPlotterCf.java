@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import evaluation.simulator.Simulator;
 import evaluation.simulator.annotations.property.BoolSimulationProperty;
+import evaluation.simulator.annotations.property.StringSimulationProperty;
 import evaluation.simulator.core.statistics.ResultSet;
 import evaluation.simulator.core.statistics.aggregator.Aggregator;
 import evaluation.simulator.core.statistics.plotEngine.PlotScript;
@@ -43,6 +44,18 @@ public class LineChartPlotterCf extends Plotter {
 			inject = "2:PLOTTYPE,Plottype",
 			isStatic = true)
 	private final boolean IS_INVERSE;
+	
+	@StringSimulationProperty(name = "Overwritable parameters",
+			key = "OVERWRITABLE_PARAMETERS",
+			inject = "3:PLOTTYPE,Plottype",
+			isStatic = true)
+	private final String OVERWRITABLE_PARAMETERS = "";
+	
+	@StringSimulationProperty(name = "None overwritable parameters",
+			key = "NONE_OVERWRITABLE_PARAMETERS",
+			inject = "4:PLOTTYPE,Plottype",
+			isStatic = true)
+	private final String NONE_OVERWRITABLE_PARAMETERS = "";
 
 	public LineChartPlotterCf() {
 		this.CALC_AVG_OF_RUNS = Simulator.settings.getPropertyAsBoolean("CALC_AVG_OF_RUNS");

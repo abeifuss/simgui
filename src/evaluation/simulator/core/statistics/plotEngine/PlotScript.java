@@ -127,7 +127,7 @@ public class PlotScript {
 	public void plot() {
 		logger.log(Level.DEBUG, this.plotScript);
 		new GnuPlotTask(this.plotScriptFileName, this.gnuplotConsoleOutputFileName).start();
-		// TODO build hack properly to notify GUI
+
 		gMixBinding.getInstance().createResult(this.resultDiagramFileName + ".svg");
 		logger.log(Level.DEBUG, "SVG: " + this.resultDiagramFileName);
 	}
