@@ -485,16 +485,16 @@ public class SimulationConfigService {
 				try {
 					if (s.getValue().getValueType() == Integer.class && ((IntProp)(s.getValue())).getAuto()) {
 						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
-						props.setProperty(s.getKey(), " AUTO");
+						props.setProperty(s.getKey(), "AUTO");
 					}else if (s.getValue().getValueType() == Integer.class && ((IntProp)(s.getValue())).getUnlimited()) {
 						logger.log(Level.DEBUG, s.getKey() + "=UNLIMITED");
-						props.setProperty(s.getKey(), " UNLIMITED");
+						props.setProperty(s.getKey(), "UNLIMITED");
 					}else if (s.getValue().getValueType() == Float.class && ((FloatProp)(s.getValue())).getAuto()) {
 						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
-						props.setProperty(s.getKey(), " AUTO");
+						props.setProperty(s.getKey(), "AUTO");
 					}else if (s.getValue().getValueType() == Float.class && ((FloatProp)(s.getValue())).getUnlimited()) {
 						logger.log(Level.DEBUG, s.getKey() + "=UNLIMITED");
-						props.setProperty(s.getKey(), " UNLIMITED");
+						props.setProperty(s.getKey(), "UNLIMITED");
 					}else if (s.getValue().getValueType() == Double.class && ((DoubleProp)(s.getValue())).getAuto()) {
 						logger.log(Level.DEBUG, s.getKey() + "=AUTO");
 						props.setProperty(s.getKey(), "AUTO");
@@ -503,7 +503,7 @@ public class SimulationConfigService {
 						props.setProperty(s.getKey(), "UNLIMITED");
 					}else{
 						logger.log(Level.DEBUG, s.getKey() + "=" + s.getValue().getValue().toString());
-						props.setProperty(s.getKey(), s.getValue().getValue().toString());
+						props.setProperty(s.getKey(), s.getValue().getValue().toString().trim());
 					}
 				} catch (Exception e) {
 					logger.log(Level.DEBUG, s.getKey() + " has no associated property -> SKIP");
