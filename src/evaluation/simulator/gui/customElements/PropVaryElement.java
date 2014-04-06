@@ -141,7 +141,8 @@ public class PropVaryElement extends JPanel {
 		JTextField currentElement = propElement[index];
 
 		currentElement.setText("");
-		value[index] = null;		
+		value[index] = null;
+		textfieldused(currentElement);
 
 		String currentItem = (String) ComboBox.getSelectedItem();
 		String propname = currentItem;
@@ -253,7 +254,7 @@ public class PropVaryElement extends JPanel {
 	private void textfieldused(JTextField field) {
 		int i = PropVaryElement.this.propToIndexMap.get(field);
 		value[i] = new HelpPropValues(field.getText(), propType[i]);
-		logger.log(Level.DEBUG, "PropertyType is: " + value[i].getType().toString());
+		//logger.log(Level.DEBUG, "PropertyType is: " + value[i].getType().toString());
 		logger.log(Level.DEBUG, "PropertyValue is: " + field.getText());
 		boolean validity = value[i].isValid();
 		logger.log(Level.DEBUG, "Validity is: " + validity);
@@ -276,38 +277,61 @@ public class PropVaryElement extends JPanel {
 	 */
 	public void update() {
 		logger.log(Level.DEBUG, "PROPERTY_TO_VARY");
-		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");		
-		logger.log(Level.DEBUG, id);		
-		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
-		SimProp prop = SimPropRegistry.getInstance().getPropertiesByName(name);
-		String plugin = prop.getPluginID();
-		logger.log(Level.DEBUG, name);
-		cBox[0].setSelectedItem(plugin +":"+ name);
-		comboboxChanged(cBox[0]);
-		
+		String id = SimPropRegistry.getInstance().getPropertiesToVary().get("PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, "VALUES_FOR_THE_PROPERTY_TO_VARY");
-		String values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY");
-		logger.log(Level.DEBUG, values);
-		propElement[0].setText(values);
+		String values0 = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, values0);
+		
+		System.err.println("FIRST PROP TO VARRY");
+		System.err.println("id: "+ id);		
+		String name = SimPropRegistry.getInstance().getPropertieNameByID(id);
+		System.err.println("name: "+ name);
+		if(name !="---"){
+			SimProp prop = SimPropRegistry.getInstance().getPropertiesByName(name);
+			System.err.println("prop: "+ prop);
+			String plugin = prop.getPluginID();		
+			cBox[0].setSelectedItem(plugin +":"+ name);
+		}
+		else{
+			cBox[0].setSelectedItem("---");
+		}
+		
+		comboboxChanged(cBox[0]);		
+		propElement[0].setText(values0);
+		textfieldused(propElement[0]);
+		
+				
 		
 		logger.log(Level.DEBUG, "USE_SECOND_PROPERTY_TO_VARY");
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("USE_SECOND_PROPERTY_TO_VARY"));
 		
 		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY"));
 		id = SimPropRegistry.getInstance().getPropertiesToVary().get("SECOND_PROPERTY_TO_VARY");
-		logger.log(Level.DEBUG, id);
-		name = SimPropRegistry.getInstance().getPropertieNameByID(id);
-		prop = SimPropRegistry.getInstance().getPropertiesByName(name);
-		plugin = prop.getPluginID();
-		logger.log(Level.DEBUG, name);		
-		cBox[1].setSelectedItem(plugin+ ":" +name);
-		
-		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY"));
-		
+		logger.log(Level.DEBUG, SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY"));		
 		logger.log(Level.DEBUG, "VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
-		values = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
-		logger.log(Level.DEBUG, values);
-		propElement[1].setText(values);
+		String values1 = SimPropRegistry.getInstance().getPropertiesToVary().get("VALUES_FOR_THE_SECOND_PROPERTY_TO_VARY");
+		logger.log(Level.DEBUG, values1);
+		
+		System.err.println("SECOND PROP TO VARRY");
+		System.err.println("id: "+ id);	
+		name = SimPropRegistry.getInstance().getPropertieNameByID(id);
+		System.err.println("name: "+ name);
+		if(name !="---"){
+			SimProp prop = SimPropRegistry.getInstance().getPropertiesByName(name);
+			System.err.println("prop: "+ prop);
+			String plugin = prop.getPluginID();			
+			cBox[1].setSelectedItem(plugin+ ":" +name);
+			
+		}
+		else{
+			cBox[1].setSelectedItem("---");
+		}
+		
+		comboboxChanged(cBox[1]);		
+		propElement[1].setText(values1);
+		textfieldused(propElement[0]);
+		
+		
 		
 	}
 
