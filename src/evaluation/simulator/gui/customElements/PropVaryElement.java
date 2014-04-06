@@ -141,7 +141,7 @@ public class PropVaryElement extends JPanel {
 		JTextField currentElement = propElement[index];
 
 		currentElement.setText("");
-		value[index] = null;
+		//value[index] = null;
 		textfieldused(currentElement);
 
 		String currentItem = (String) ComboBox.getSelectedItem();
@@ -254,7 +254,7 @@ public class PropVaryElement extends JPanel {
 	private void textfieldused(JTextField field) {
 		int i = PropVaryElement.this.propToIndexMap.get(field);
 		value[i] = new HelpPropValues(field.getText(), propType[i]);
-		//logger.log(Level.DEBUG, "PropertyType is: " + value[i].getType().toString());
+		logger.log(Level.DEBUG, "PropertyType is: " + value[i].getTypeName());
 		logger.log(Level.DEBUG, "PropertyValue is: " + field.getText());
 		boolean validity = value[i].isValid();
 		logger.log(Level.DEBUG, "Validity is: " + validity);
